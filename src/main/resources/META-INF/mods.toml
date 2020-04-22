@@ -1,0 +1,46 @@
+modLoader="javafml" #mandatory
+
+loaderVersion="[31,)"
+
+issueTrackerURL="https://my.issue.tracker/"
+
+[[mods]]
+
+modId="jojomod"
+
+version="1.0.0"
+
+displayName="Jojo Mod"
+
+updateJSONURL="http://example.com/"
+
+displayURL="http://example.com/"
+
+logoFile="logofile.png"
+
+credits="Novarch" 
+
+authors="Novarch"
+
+description='''
+	A mod that adds Stands from JoJo's Bizarre Adventure into Minecraft.
+'''
+
+[[dependencies.jojomod]] 
+    # the modid of the dependency
+    modId="forge" #mandatory
+    # Does this dependency have to exist - if not, ordering below must be specified
+    mandatory=true #mandatory
+    # The version range of the dependency
+    versionRange="[31,)" #mandatory
+    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+    ordering="NONE"
+    # Side this dependency is applied on - BOTH, CLIENT or SERVER
+    side="BOTH"
+
+[[dependencies.jojomod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.15.2]"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,121 @@
+{
+    "dorarush":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:dorarush", "stream": false}]
+    },
+    
+    "knife_stab": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:knife_stab", "stream": false}]
+    },
+    
+    "knife_swing_miss1": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:knife_swing_miss1", "stream": false}]
+    },
+      
+    "knife_swing_miss2": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:knife_swing_miss2", "stream": false}]
+    },
+      
+    "last_ora": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:last_ora", "stream": false}]
+    },
+    
+    "last_ora_kc": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:last_ora_kc", "stream": false}]
+    },
+      
+    "ora": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:ora", "stream": false}]
+    },
+      
+    "orarush": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:orarush", "stream": false}]
+    },
+    
+    "mudarush":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:mudarush", "stream": false}]
+    },
+    
+    "stoptime":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:stoptime", "stream": false}]
+    },
+    
+    "mudagiorno":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:mudagiorno", "stream": false}]
+    },
+    
+    "transmute":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:transmute", "stream": false}]
+    },
+    
+    "spawn_cd": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_cd", "stream": false}]
+    },
+    
+    "spawn_kc": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_kc", "stream": false}]
+    },
+    
+    "spawn_d4c": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_d4c", "stream": false}]
+    },
+    
+    "spawn_mih": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_mih", "stream": false}]
+    },
+    
+    "spawn_wr": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_wr", "stream": false}]
+    },
+    
+    "spawn_ge": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_ge", "stream": false}]
+    },
+    
+    "spawn_ger": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_ger", "stream": false}]
+    },
+    
+    "spawn_tw": 
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_tw", "stream": false}]
+    }
+}
