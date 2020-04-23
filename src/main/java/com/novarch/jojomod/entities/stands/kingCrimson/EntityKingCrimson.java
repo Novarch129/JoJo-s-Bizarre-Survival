@@ -232,7 +232,7 @@ public class EntityKingCrimson extends EntityStandBase
 	              {
 	                this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.KNIFE_SWING_MISS1, getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 	                EntityStandPunch.kingCrimson kingCrimson = new EntityStandPunch.kingCrimson(this.world, this, player);
-	                kingCrimson.setIsCritical(true);
+	                //kingCrimson.setIsCritical(true);
 	                kingCrimson.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 	                this.world.addEntity((Entity)kingCrimson);
 	              } 
@@ -249,12 +249,12 @@ public class EntityKingCrimson extends EntityStandBase
 	              {
 	                player.setSprinting(false);
 	                EntityStandPunch.kingCrimson kingCrimson1 = new EntityStandPunch.kingCrimson(this.world, this, player);
-	                kingCrimson1.setIsCritical(true);
+	                //kingCrimson1.setIsCritical(true);
 	                kingCrimson1.setRandomPositions();
 	                kingCrimson1.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 	                this.world.addEntity((Entity)kingCrimson1);
 	                EntityStandPunch.kingCrimson kingCrimson2 = new EntityStandPunch.kingCrimson(this.world, this, player);
-	                kingCrimson2.setIsCritical(true);
+	               //kingCrimson2.setIsCritical(true);
 	                kingCrimson2.setRandomPositions();
 	                kingCrimson2.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 	                this.world.addEntity((Entity)kingCrimson2);

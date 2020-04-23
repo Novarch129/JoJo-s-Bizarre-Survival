@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -46,6 +47,7 @@ import net.minecraftforge.registries.ObjectHolder;
 public class EntityStandPunch extends Entity implements IProjectile
 {
 	@ObjectHolder(JojoMod.MOD_ID + ":stand_punch") public static EntityType<EntityStandPunch> TYPE;
+    @ObjectHolder(JojoMod.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
 	/*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
 		@Override
 		public boolean apply(Entity input)
@@ -102,28 +104,16 @@ public EntityStandPunch(EntityType<? extends Entity> type, World worldIn) {
   this.pickupStatus = PickupStatus.DISALLOWED;
   this.damage = 2.0D;
   if (worldIn.isRemote);
-    setNoGravity(true);
+  setNoGravity(true);
 }
 
-public EntityStandPunch(World worldIn)
-{
-	  super(TYPE, worldIn);
-	  this.xTile = -1;
-	  this.yTile = -1;
-	  this.zTile = -1;
-	  this.pickupStatus = PickupStatus.DISALLOWED;
-	  this.damage = 2.0D;
-	  if (worldIn.isRemote);
-	  setNoGravity(true);	
-}
-
-public EntityStandPunch(World worldIn, double x, double y, double z) {
-  this(worldIn);
+public EntityStandPunch(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
+  this(type, worldIn);
   setPosition(x, y, z);
 }
 
-public EntityStandPunch(World worldIn, EntityStandBase shooter, PlayerEntity player) {
-  this(worldIn, shooter.getPosX(), shooter.getPosY() + (shooter.getMaster()).getEyeHeight(), shooter.getPosZ());
+public EntityStandPunch(EntityType<? extends Entity> type, World worldIn, EntityStandBase shooter, PlayerEntity player) {
+  this(type, worldIn, shooter.getPosX(), shooter.getPosY() + (shooter.getMaster()).getEyeHeight(), shooter.getPosZ());
   this.shootingEntity = (Entity)shooter;
   this.shootingStand = shooter;
   this.standID = shooter.standID;
@@ -155,6 +145,7 @@ public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, flo
 	  this.setMotion(this.getMotion().getX(), this.getMotion().getY() + shooter.getMotion().getY(), this.getMotion().getZ());
 }
 
+@Override
 public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
   float f = MathHelper.sqrt(x * x + y * y + z * z);
   x /= f;
@@ -176,6 +167,7 @@ public void shoot(double x, double y, double z, float velocity, float inaccuracy
 }
 
 @OnlyIn(Dist.CLIENT)
+@Override
 public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
   setPosition(x, y, z);
   setRotation(yaw, pitch);
@@ -204,6 +196,7 @@ public void setRandomPositions() {
 }
 
 @OnlyIn(Dist.CLIENT)
+@Override
 public void setVelocity(double x, double y, double z) {
   this.setMotion(x, y, z);
   if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
@@ -217,6 +210,7 @@ public void setVelocity(double x, double y, double z) {
   } 
 }
 
+@Override
 public void tick() {
   super.tick();
   if (this.shootingEntity == null && !this.world.isRemote)
@@ -240,19 +234,20 @@ public void tick() {
     Vec3d vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     Vec3d vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
     RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.COLLIDER, FluidMode.ANY, this));
+    EntityRayTraceResult entityRayTraceResult = null;
     vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
     if (raytraceresult != null)
       vec3d = new Vec3d(raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z); 
     Entity entity = findEntityOnPath(vec3d1, vec3d);
     if (entity != null) {
-      raytraceresult = new EntityRayTraceResult(entity);
-      if (raytraceresult != null && ((EntityRayTraceResult)raytraceresult).getEntity() instanceof EntityStandPunch) {
-        EntityStandPunch punch = (EntityStandPunch)((EntityRayTraceResult)raytraceresult).getEntity();
+      entityRayTraceResult = new EntityRayTraceResult(entity);
+      if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof EntityStandPunch) {
+        EntityStandPunch punch = (EntityStandPunch)entityRayTraceResult.getEntity();
         if (punch.shootingEntity == this.shootingEntity)
           raytraceresult = null; 
       } 
-      if (raytraceresult != null && ((EntityRayTraceResult)raytraceresult).getEntity() instanceof PlayerEntity) {
+      if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof PlayerEntity) {
         PlayerEntity PlayerEntity = (PlayerEntity)((EntityRayTraceResult)raytraceresult).getEntity();
         if (PlayerEntity.isEntityEqual((Entity)this.standMaster)) {
           raytraceresult = null;
@@ -261,15 +256,16 @@ public void tick() {
         } 
       } 
       if (raytraceresult != null && ((IForgeEntity) raytraceresult).getEntity() instanceof EntityStandBase) {
-        EntityStandBase stand = (EntityStandBase)((EntityRayTraceResult)raytraceresult).getEntity();
+        EntityStandBase stand = (EntityStandBase)entityRayTraceResult.getEntity();
         if (stand.isEntityEqual((Entity)this.shootingStand))
           raytraceresult = null; 
       } 
     } 
-    if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
-      onHit(raytraceresult); 
-    if (getIsCritical())
-      this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z, -this.getMotion().x, -this.getMotion().y + 0.2D, -this.getMotion().z); 
+    if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult)) {
+      onHit(entityRayTraceResult);
+    }
+    //if (getIsCritical())
+    this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z, -this.getMotion().x, -this.getMotion().y + 0.2D, -this.getMotion().z);
     this.setPosition(this.getPosX() + this.getMotion().getX(), this.getPosY() + this.getMotion().getY(), this.getPosZ() + this.getMotion().getZ());
     float f4 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
     this.rotationYaw = (float)(MathHelper.atan2(this.getMotion().x, this.getMotion().z) * 57.29577951308232D);
@@ -299,7 +295,6 @@ public void tick() {
   } 
 }
 
-@SuppressWarnings("deprecation")
 protected void onHit(RayTraceResult raytraceResultIn) {
   Entity entity = ((EntityRayTraceResult)raytraceResultIn).getEntity();
   if (entity != null) {
@@ -343,7 +338,7 @@ protected void onHit(RayTraceResult raytraceResultIn) {
     this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D); 
     this.inGround = true;
     this.arrowShake = 7;
-    setIsCritical(false);
+    //setIsCritical(false);
     StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
     if (BlockState.getMaterial() != Material.AIR) {
       this.inTile.onEntityCollision(BlockState, world, blockpos, (Entity)this);
@@ -372,8 +367,9 @@ public int getzTile() {
   return this.zTile;
 }
 
-public void move(MoverType type, double x, double y, double z) {
-  super.move(type, new Vec3d(x, y, z));
+@Override
+public void move(MoverType type, Vec3d pos) {
+  super.move(type, pos);
   if (this.inGround) {
     this.xTile = MathHelper.floor(this.getPosX());
     this.yTile = MathHelper.floor(this.getPosY());
@@ -419,7 +415,7 @@ public void writeAdditional(CompoundNBT compound) {
   compound.putByte("inGround", (byte)(this.inGround ? 1 : 0));
   compound.putByte("pickup", (byte)this.pickupStatus.ordinal());
   compound.putDouble("damage", this.damage);
-  compound.putBoolean("crit", getIsCritical());
+  //compound.putBoolean("crit", getIsCritical());
 }
 
 @Override
@@ -438,19 +434,22 @@ public void readAdditional(CompoundNBT compound) {
   } else if (compound.contains("player", 99)) {
     this.pickupStatus = compound.getBoolean("player") ? PickupStatus.ALLOWED : PickupStatus.DISALLOWED;
   } 
-  setIsCritical(compound.getBoolean("crit"));
+  //setIsCritical(compound.getBoolean("crit"));
 }
 
+@Override
 public void onCollideWithPlayer(PlayerEntity entityIn) {
   if (!this.world.isRemote && this.inGround && this.arrowShake <= 0 && entityIn != this.standMaster)
     remove();
 }
 
+@Override
 public void applyEntityCollision(Entity entityIn) {
   if (entityIn != this.shootingStand && entityIn != this.standMaster)
     super.applyEntityCollision(entityIn); 
 }
 
+@Override
 protected boolean canTriggerWalking() {
   return false;
 }
@@ -467,24 +466,29 @@ public void setKnockbackStrength(int knockbackStrengthIn) {
   this.knockbackStrength = knockbackStrengthIn;
 }
 
+@Override
 public boolean canBeAttackedWithItem() {
   return false;
 }
 
 
-public void setIsCritical(boolean critical) {
-  byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
-  if (critical) {
-    this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 | 0x1)));
-  } else {
-    this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 & 0xFFFFFFFE)));
-  } 
-}
+    public void setIsCritical(boolean critical)
+    {
+        byte b0 = (Byte) this.dataManager.get(CRITICAL);
+        if (critical)
+        {
+           this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 | 0x1)));
+        } else
+        {
+          this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 & 0xFFFFFFFE)));
+        }
+    }
 
-public boolean getIsCritical() {
-  byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
-  return ((b0 & 0x1) != 0);
-}
+        public boolean getIsCritical()
+        {
+          byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
+          return ((b0 & 0x1) != 0);
+          }
 
 public enum PickupStatus
 {
@@ -497,7 +501,7 @@ public enum PickupStatus
     return values()[ordinal];
   }
 }
- public static class crazyDiamond extends EntityStandPunch
+ /*public static class crazyDiamond extends EntityStandPunch
  {
 	    public crazyDiamond(World worldIn)
 	    {
@@ -508,25 +512,25 @@ public enum PickupStatus
 	    {
 	      super(worldIn, shooter, player);
 	    }
- }
+ }*/
   public static class kingCrimson extends EntityStandPunch
   {
       public kingCrimson(World worldIn)
       {
-        super(worldIn);
+        super(KING_CRIMSON, worldIn);
       }
-      
+
       public kingCrimson(EntityType<? extends EntityStandPunch> type, World worldIn)
       {
         super(type, worldIn);
       }
-      
+
       public kingCrimson(World worldIn, EntityStandBase shooter, PlayerEntity player)
       {
-        super(worldIn, shooter, player);
+        super(KING_CRIMSON, worldIn, shooter, player);
       }
   }
-  	public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch
+  	/*public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch
   	{
   		public dirtyDeedsDoneDirtCheap(World worldIn)
   		{
@@ -634,7 +638,7 @@ public enum PickupStatus
           {
             super(worldIn, shooter, player);
           }
-  }
+  }*/
 	@Override
 	protected void registerData()
 	{
