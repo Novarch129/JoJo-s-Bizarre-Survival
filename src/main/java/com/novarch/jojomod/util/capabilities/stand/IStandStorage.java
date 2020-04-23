@@ -28,6 +28,6 @@ public class IStandStorage implements IStorage<IStand>
         instance.setStandOn(propertyData.getBoolean("StandOn"));
         instance.setPowerSpawned(propertyData.getBoolean("PowerOn"));
         instance.setJojoPower(propertyData.getInt("PowerID"));
-        instance.setCooldown(propertyData.getInt("Cooldown"));
+        propertyData.getInt("Cooldown");
       }
 }

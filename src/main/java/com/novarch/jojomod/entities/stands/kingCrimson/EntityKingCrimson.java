@@ -43,6 +43,8 @@ public class EntityKingCrimson extends EntityStandBase
 	  private boolean timeSkipped = true;
 	  
 	  PlayerEntity player = getMaster();
+
+	  int timeleft = 200;
 	  
 	  protected boolean canDespawn() 
 	  {
@@ -134,13 +136,15 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
 	        //King Crimson's Ability
-	        if(this.timeSkipped && props.getCooldown() < 200)
+			  //TODO Fix cooldown bugs
+	        if(this.timeSkipped)
 	        {
-				player.sendMessage((ITextComponent)new TranslationTextComponent("Time skipped" + String.valueOf(props.getCooldown()), new Object[0]));
-	        if(props.getCooldown()==0) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));}
-	        if(props.getCooldown() <= 200)
+				if(JojoMod.debug) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time skipped" + String.valueOf(props.getCooldown()), new Object[0]));}
+
+	        	if(this.timeleft==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));}
+	        if(this.timeleft >= 0)
 	        {
-	        props.addCooldown(1);
+	        this.timeleft--;
 	        if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
 	        {
 	        for (Entity entity : Minecraft.getInstance().world.getAllEntities())
@@ -188,7 +192,25 @@ public class EntityKingCrimson extends EntityStandBase
 	        }
 	        }
 
-	        if(props.getCooldown()==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
+	        if(!timeSkipped)
+			{
+				props.setCooldown(200);
+				if(props.getCooldown()==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
+
+				player.sendMessage((ITextComponent)new TranslationTextComponent(String.valueOf(props.getCooldown()), new Object[0]));
+
+				if(props.getCooldown() > 0)
+				{
+					props.subtractCooldown(1);
+				}
+
+				if(props.getCooldown() <= 0)
+				{
+					player.sendMessage((ITextComponent)new TranslationTextComponent("YES YES YES", new Object[0]));
+					this.timeleft = 200;
+					this.timeSkipped = true;
+				}
+			}
 
 	        //Orarush food check       
 	        if (!player.isAlive())

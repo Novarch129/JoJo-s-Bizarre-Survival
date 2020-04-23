@@ -39,6 +39,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 @Mod("jojomod")
 public class JojoMod
 {
+    public static final boolean debug = true;
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
     public static JojoMod instance;
@@ -122,7 +123,13 @@ public class JojoMod
     {
         LazyOptional<IStand> power = event.player.getCapability(JojoProvider.STAND, null);
         IStand props = power.orElse(new IStandCapability());
-        if(props.getCooldown() > 200)
+
+        if(props.getStandOn() && props.getCooldown() >= 0)
+        {
+            props.subtractCooldown(1);
+        }
+
+        if(!props.getStandOn() && props.getCooldown() >= 0)
         {
             props.subtractCooldown(1);
         }
