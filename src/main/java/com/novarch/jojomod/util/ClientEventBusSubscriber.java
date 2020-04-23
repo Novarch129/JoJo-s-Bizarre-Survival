@@ -2,6 +2,7 @@ package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoMod;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
+import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.init.EntityInit;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,5 +19,6 @@ public class ClientEventBusSubscriber {
 	public static void clientSetup(FMLClientSetupEvent event)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON.get(), RenderKingCrimson::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON_PUNCH.get(), RenderKingCrimsonPunch::new);
 	}
 }

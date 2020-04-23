@@ -15,6 +15,7 @@ import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 @SuppressWarnings("unused")
 public class EntityStandBase extends MobEntity
@@ -110,7 +112,13 @@ public class EntityStandBase extends MobEntity
             this.hungerTimer = 0;
         }
     }
-    
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
     public void setAttackTrue(final boolean value)
     {
         this.attack = value;

@@ -1,5 +1,10 @@
 package com.novarch.jojomod;
 
+import com.novarch.jojomod.util.capabilities.stand.IStand;
+import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
+import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.TickEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.Loader;
@@ -110,5 +115,16 @@ public class JojoMod
 		{
 			return new ItemStack(ItemInit.stand_arrow);
 		}
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        LazyOptional<IStand> power = event.player.getCapability(JojoProvider.STAND, null);
+        IStand props = power.orElse(new IStandCapability());
+        if(props.getCooldown() > 200)
+        {
+            props.subtractCooldown(1);
+        }
     }
 }

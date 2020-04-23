@@ -90,7 +90,7 @@ public class IStandCapability implements IStand
 	  @Override
 	  public void setCooldown(int new_cooldown)
 	  {
-		  cooldown = new_cooldown;
+		  this.cooldown = new_cooldown;
 	  }
 	  
 	  @Override
@@ -98,6 +98,18 @@ public class IStandCapability implements IStand
 	  {
 		  return this.cooldown;
 	  }
+
+	@Override
+	public void addCooldown(int addition)
+	{
+		this.cooldown += addition;
+	}
+
+	@Override
+	public void subtractCooldown(int subtraction)
+	{
+		this.cooldown -= subtraction;
+	}
 
 	@Override
 	public void setDiavolo(PlayerEntity truth)

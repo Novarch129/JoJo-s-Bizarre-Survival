@@ -12,7 +12,7 @@ public class CommonProxy
 {
 	public static void registerCapabilities()
     {
-    	CapabilityManager.INSTANCE.register(IStand.class, new IStandStorage(), IStandCapability::new);
+    	CapabilityManager.INSTANCE.register(IStand.class, new IStand.Storage(), IStandCapability::new);
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 }

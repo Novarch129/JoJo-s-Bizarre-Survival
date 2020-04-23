@@ -1,6 +1,8 @@
 package com.novarch.jojomod.entities.stands;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -25,6 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,11 +45,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.extensions.IForgeEntity;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityStandPunch extends Entity implements IProjectile
 {
-	@ObjectHolder(JojoMod.MOD_ID + ":stand_punch") public static EntityType<EntityStandPunch> TYPE;
     @ObjectHolder(JojoMod.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
 	/*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
 		@Override
@@ -248,17 +251,17 @@ public void tick() {
           raytraceresult = null; 
       } 
       if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof PlayerEntity) {
-        PlayerEntity PlayerEntity = (PlayerEntity)((EntityRayTraceResult)raytraceresult).getEntity();
+        PlayerEntity PlayerEntity = (PlayerEntity)entityRayTraceResult.getEntity();
         if (PlayerEntity.isEntityEqual((Entity)this.standMaster)) {
           raytraceresult = null;
         } else {
-          raytraceresult = new EntityRayTraceResult((Entity)PlayerEntity);
+          entityRayTraceResult = new EntityRayTraceResult((Entity)PlayerEntity);
         } 
       } 
-      if (raytraceresult != null && ((IForgeEntity) raytraceresult).getEntity() instanceof EntityStandBase) {
+      if (entityRayTraceResult != null && entityRayTraceResult.getEntity() instanceof EntityStandBase) {
         EntityStandBase stand = (EntityStandBase)entityRayTraceResult.getEntity();
         if (stand.isEntityEqual((Entity)this.shootingStand))
-          raytraceresult = null; 
+          entityRayTraceResult = null;
       } 
     } 
     if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult)) {
@@ -391,7 +394,7 @@ protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
       punch = (EntityStandPunch)entity1; 
     if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || entity1 != this.shootingStand || entity1 != this.standMaster || (entity1 instanceof EntityStandPunch && punch != null && punch.shootingEntity != this.shootingEntity) || this.ticksInAir >= 6)) {
       AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(0.30000001192092896D);
-      RayTraceResult raytraceresult = AxisAlignedBB.rayTrace((Iterable<AxisAlignedBB>) axisalignedbb, start, end, getPosition()); // TODO fix
+      RayTraceResult raytraceresult =  new EntityRayTraceResult(entity1); // TODO fix
       if (raytraceresult != null) {
         double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
         if (d1 < d0 || d0 == 0.0D) {
@@ -501,6 +504,7 @@ public enum PickupStatus
     return values()[ordinal];
   }
 }
+
  /*public static class crazyDiamond extends EntityStandPunch
  {
 	    public crazyDiamond(World worldIn)
@@ -642,12 +646,12 @@ public enum PickupStatus
 	@Override
 	protected void registerData()
 	{
-		
+
 	}
 
 	@Override
 	public IPacket<?> createSpawnPacket()
 	{
-		return null;
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

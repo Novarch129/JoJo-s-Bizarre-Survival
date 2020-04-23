@@ -7,6 +7,9 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 
+import com.novarch.jojomod.util.capabilities.stand.IStand;
+import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
+import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -16,6 +19,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +27,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityKingCrimson extends EntityStandBase
@@ -34,16 +39,6 @@ public class EntityKingCrimson extends EntityStandBase
 	  private int oratickr = 0;
 	  
 	  private int changetick = 0;
-	  
-	  /**
-	   * Max duration for King Crimson's timeskip
-	   */
-	  private int timeleft = 200;
-	  
-	  /**
-	   * Cooldown for King Crimson's timeskip
-	   */
-	  private int cooldown = 200;
 	  
 	  private boolean timeSkipped = true;
 	  
@@ -68,8 +63,14 @@ public class EntityKingCrimson extends EntityStandBase
 	  {
 	    super.writeAdditional(nbttagcompound);
 	  }
-	  
-	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world) 
+
+	@Override
+	public IPacket<?> createSpawnPacket()
+	{
+		return super.createSpawnPacket();
+	}
+
+	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
 	    this.spawnSound = SoundInit.SPAWN_KC;
@@ -90,9 +91,11 @@ public class EntityKingCrimson extends EntityStandBase
 	{
 		super.tick();
 		this.fallDistance = 0.0F; 
-	    if (getMaster() != null) 
+	    if (getMaster() != null)
 	    {
 	      PlayerEntity player = getMaster();
+	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
+	      IStand props = power.orElse(new IStandCapability());
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching()) 
@@ -131,32 +134,28 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
 	        //King Crimson's Ability
-	        if(timeSkipped)
+	        if(this.timeSkipped && props.getCooldown() < 200)
 	        {
-	        if(timeleft==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));}
-	        cooldown=200;
-	        if(timeleft > 0)
+				player.sendMessage((ITextComponent)new TranslationTextComponent("Time skipped" + String.valueOf(props.getCooldown()), new Object[0]));
+	        if(props.getCooldown()==0) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));}
+	        if(props.getCooldown() <= 200)
 	        {
-	        timeleft--;
+	        props.addCooldown(1);
 	        if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
 	        {
 	        for (Entity entity : Minecraft.getInstance().world.getAllEntities())
-	    	{
+			{
 	    	if(entity != null && entity instanceof EntityKingCrimson == false)
 	    	{
-	    			if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
-	    			{
-	    				player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-	    				player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-	    				player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-	    				player.setSprinting(true);
-	    			}
+	    			if (entity == this.getMaster() || entity.getName() == this.getMaster().getName()) {
+						player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
+						player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
+						player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
+						player.setSprinting(true);
+					}
 	    	
-	    			if(entity instanceof EntityKingCrimson || entity instanceof EntityStandPunch.kingCrimson){((LivingEntity) entity).clearActivePotions();}
-	    	
-	    			if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false /*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
-	    			{	
-	    				player.sendMessage(entity.getName());
+	    			if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
+					{
 	    				((MobEntity)entity).setAttackTarget((LivingEntity)null);
 	    				((MobEntity)entity).setRevengeTarget((LivingEntity)null);
 	    				((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
@@ -185,17 +184,12 @@ public class EntityKingCrimson extends EntityStandBase
 	        }
 	        else
 	        {
-	        	timeSkipped = false;
+	        	this.timeSkipped = false;
 	        }
 	        }
-	        if(timeSkipped==false)
-	        {
-	        	if(cooldown==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
-	        	timeleft=200;
-	        	cooldown--;
-	        	timeSkipped = cooldown <= 0;
-	        }
-	        
+
+	        if(props.getCooldown()==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
+
 	        //Orarush food check       
 	        if (!player.isAlive())
 	          setDead(); 
