@@ -21,8 +21,8 @@ build
 # other
 eclipse
 run
-.LICENSE
-CREDITS.txt
+/LICENSE.txt
+/CREDITS.txt
 
 # Files from Forge MDK
 forge*changelog.txt
