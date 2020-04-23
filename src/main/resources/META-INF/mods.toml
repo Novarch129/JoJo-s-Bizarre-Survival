@@ -10,13 +10,13 @@ modId="jojomod"
 
 version="1.0.0"
 
-displayName="Jojo Mod"
+displayName="JoJo's Blocky Adventure"
 
 updateJSONURL="http://example.com/"
 
-displayURL="http://example.com/"
+displayURL="https://github.com/Novarch129/JoJo-s-Blocky-Adventure"
 
-logoFile="logofile.png"
+logoFile="https://github.com/Novarch129/JoJo-s-Blocky-Adventure/blob/master/src/main/resources/assets/jojomod/logo.png"
 
 credits="Novarch" 
 

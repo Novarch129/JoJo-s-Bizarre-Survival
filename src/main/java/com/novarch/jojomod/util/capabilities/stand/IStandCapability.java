@@ -1,42 +1,51 @@
 package com.novarch.jojomod.util.capabilities.stand;
 
+import net.minecraft.entity.player.PlayerEntity;
+
 public class IStandCapability implements IStand
 {
 	private int playerStandID = 0;
 	  
-	  private int playerStandAct = 0;
+	private int playerStandAct = 0;
 	  
-	  private boolean playerStandOn = false;
+	private boolean playerStandOn = false;
 	  
-	  private int playerStandExp = 0;
+	private int playerStandExp = 0;
 	  
-	  private boolean playerPowerSpawned = false;
+	private boolean playerPowerSpawned = false;
 	  
-	  private int playerJojoPower = 0;
+	private int playerJojoPower = 0;
 	  
-	  private int cooldown = 0;
+	private int cooldown = 0;
+
+	private PlayerEntity diavolo = null;
 	  
-	  private String playerStandName = "";
+	private String playerStandName = "";
 	  
-	  public void addStandExp(int value) {
+	public void addStandExp(int value)
+	{
 	    this.playerStandExp += value;
-	  }
-	  
-	  public void setStandID(int value) {
+	}
+
+	public void setStandID(int value)
+	{
 	    this.playerStandID = value;
-	  }
+	}
 	  
-	  public void setStandExp(int value) {
+	public void setStandExp(int value)
+	{
 	    this.playerStandExp = value;
-	  }
+	}
 	  
-	  public void setStandAct(int value) {
+	public void setStandAct(int value)
+	{
 	    this.playerStandAct = value;
-	  }
+	}
 	  
-	  public void setStandOn(boolean value) {
+	public void setStandOn(boolean value)
+	{
 	    this.playerStandOn = value;
-	  }
+	}
 	  
 	  public void setJojoPower(int value) {
 	    this.playerJojoPower = value;
@@ -89,21 +98,39 @@ public class IStandCapability implements IStand
 	  {
 		  return this.cooldown;
 	  }
-	  
-	  public void cloneSaveFunction(IStand props) {
+
+	@Override
+	public void setDiavolo(PlayerEntity truth)
+	{
+		this.diavolo = truth;
+	}
+
+	@Override
+	public PlayerEntity getDiavolo()
+	{
+		return this.diavolo;
+	}
+
+	public void cloneSaveFunction(IStand props)
+	{
 	    setStandID(props.getStandID());
 	    setStandAct(props.getStandAct());
 	    setStandOn(props.getStandOn());
 	    setJojoPower(props.getJojoPower());
 	    setPowerSpawned(props.getPowerSpawned());
 	    setPlayerStandName(props.getPlayerStandName());
+	    setCooldown(props.getCooldown());
+	    setDiavolo(props.getDiavolo());
 	  }
 	  
-	  public void setStandRemoved() {
+	  public void setStandRemoved()
+	  {
 	    setStandOn(false);
 	    setStandAct(0);
 	    setStandExp(0);
 	    setStandID(0);
 	    setPlayerStandName("");
+	    setCooldown(0);
+	    setDiavolo(null);
 	  }
 }

@@ -29,14 +29,23 @@ public class EventControlInputs
 			 {
 				 JojoMod.INSTANCE.sendToServer(new SyncStandSummonButton()); 
 			 }
-		 } 
+		 }
+
+		 if(KeyHandler.keys[1].isPressed())
+		 {
+			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
+			 if (entityPlayerSP != null)
+			 {
+				 JojoMod.INSTANCE.sendToServer(new SyncStandSummonButton()); //TODO Toggle for ability
+			 }
+		 }
 	    
 		 if (Minecraft.getInstance().gameSettings.keyBindAttack.isKeyDown())
 		 {
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 //JojoMod.INSTANCE.sendToServer(new SyncPlayerAttackMessage()); 
+				 JojoMod.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
 			 }
 		 }
 	 }

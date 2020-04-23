@@ -102,7 +102,7 @@ public EntityStandPunch(EntityType<? extends Entity> type, World worldIn) {
   this.pickupStatus = PickupStatus.DISALLOWED;
   this.damage = 2.0D;
   if (worldIn.isRemote);
-  setNoGravity(true);
+    setNoGravity(true);
 }
 
 public EntityStandPunch(World worldIn)

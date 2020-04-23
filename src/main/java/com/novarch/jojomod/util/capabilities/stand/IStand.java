@@ -1,5 +1,7 @@
 package com.novarch.jojomod.util.capabilities.stand;
 
+import net.minecraft.entity.player.PlayerEntity;
+
 @SuppressWarnings("unused")
 public interface IStand
 {
@@ -34,4 +36,8 @@ public interface IStand
     void setCooldown(int new_cooldown);
     
     int getCooldown();
+
+    PlayerEntity getDiavolo();
+
+    void setDiavolo(PlayerEntity truth);
 }
