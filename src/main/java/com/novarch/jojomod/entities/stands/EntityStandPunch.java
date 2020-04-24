@@ -236,7 +236,7 @@ public void tick() {
         remove();  
     Vec3d vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     Vec3d vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
-    RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.COLLIDER, FluidMode.ANY, this));
+    RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, this));
     EntityRayTraceResult entityRayTraceResult = null;
     vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
@@ -344,7 +344,7 @@ protected void onHit(RayTraceResult raytraceResultIn) {
     //setIsCritical(false);
     StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
     if (BlockState.getMaterial() != Material.AIR) {
-      this.inTile.onEntityCollision(BlockState, world, blockpos, (Entity)this);
+      this.inTile.onProjectileCollision(this.world, BlockState, (BlockRayTraceResult) raytraceResultIn, this);
       remove();
     } 
   } 
@@ -537,7 +537,7 @@ public enum PickupStatus
       @Override
       public IPacket<?> createSpawnPacket()
       {
-        return super.createSpawnPacket();
+        return NetworkHooks.getEntitySpawningPacket(this);
       }
   }
   	/*public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch

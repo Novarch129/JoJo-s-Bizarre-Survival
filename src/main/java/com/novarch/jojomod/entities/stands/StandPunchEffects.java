@@ -37,11 +37,11 @@ public class StandPunchEffects
                 break;
             }
             case 1: {
-                crazyDiamond(result, entityIn, punch, entityBlock);
+                kingCrimson(result, entityIn, punch, entityBlock);
                 break;
             }
             case 2: {
-                kingCrimson(result, entityIn, punch, entityBlock);
+                crazyDiamond(result, entityIn, punch, entityBlock);
                 break;
             }
             /*case 3: {

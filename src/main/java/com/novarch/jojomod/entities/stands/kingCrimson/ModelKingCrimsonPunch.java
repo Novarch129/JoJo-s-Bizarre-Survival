@@ -14,19 +14,19 @@ public class ModelKingCrimsonPunch <T extends EntityStandPunch.kingCrimson> exte
 	 public ModelKingCrimsonPunch()
 	 {
 		this.textureWidth = 64;
-	   	this.textureHeight = 32;
+	   	this.textureHeight = 64;
 	   	
 	    this.Punch = new ModelRenderer(this, 0, 0);
 	    this.Punch.addBox(-1.0F, -1.0F, 0.0F, 3, 3, 7);
 	    this.Punch.setRotationPoint(0.0F, 0.0F, 0.0F);
-	    this.Punch.setTextureSize(64, 32);
+	    this.Punch.setTextureSize(64, 64);
 	    setRotationAngle(this.Punch, 0.0F, 0.0F, 0.0F);
 	 }
 	  
 	 @Override
 	 public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) 
 	 {
-		 Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		 this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	 }
 
 	 @Override

@@ -166,12 +166,13 @@ public class EntityKingCrimson extends EntityStandBase
 	    	
 	    						if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
 								{
+									//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
 	    							((MobEntity)entity).setAttackTarget((LivingEntity)null);
 	    							((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-	    							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 2));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.INSTANT_DAMAGE, 100, 2));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 	    						}
 	    			
 								/*if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)

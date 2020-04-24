@@ -377,11 +377,11 @@ public class EntityStandBase extends MobEntity
     private void catchPassive() 
     {
         Entity entity = null;
-        if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
+        if(Minecraft.getInstance().world.getAllEntities() != null /*&& Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0*/)
         {
             if(Minecraft.getInstance().world != null)
             {
-                for (@Nonnull Entity oneEntity : Minecraft.getInstance().world.getAllEntities())
+                for (Entity oneEntity : Minecraft.getInstance().world.getAllEntities())
 		        {
         	        Entity entityplayer = null;
 
