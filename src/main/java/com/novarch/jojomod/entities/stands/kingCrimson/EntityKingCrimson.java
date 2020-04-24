@@ -33,6 +33,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class EntityKingCrimson extends EntityStandBase
 {
@@ -151,7 +152,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        		props.addTimeLeft(1);
 	        		if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
 	        		{
-	        			for (@Nonnull Entity entity : Minecraft.getInstance().world.getAllEntities())
+	        			for (Entity entity : Minecraft.getInstance().world.getAllEntities())
 						{
 	    					if(entity != null && entity instanceof EntityKingCrimson == false)
 	    					{
@@ -288,8 +289,14 @@ public class EntityKingCrimson extends EntityStandBase
 	  }
 	  
 
-	public boolean isEntityInsideOpaqueBlock() 
+	  public boolean isEntityInsideOpaqueBlock()
 	  {
-	    return false;
+	  	return false;
 	  }
+
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return super.canBeCollidedWith();
+	}
 }

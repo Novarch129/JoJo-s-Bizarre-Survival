@@ -533,6 +533,12 @@ public enum PickupStatus
       {
         super(KING_CRIMSON, worldIn, shooter, player);
       }
+
+      @Override
+      public IPacket<?> createSpawnPacket()
+      {
+        return super.createSpawnPacket();
+      }
   }
   	/*public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch
   	{

@@ -26,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
+
 @SuppressWarnings("unused")
 public class EntityStandBase extends MobEntity
 {
@@ -143,8 +145,14 @@ public class EntityStandBase extends MobEntity
 	{
 		return this.masterUUID;
 	}
-	
-	public void setMastername(final String par1Str) {
+
+    @Override
+    public boolean canBeCollidedWith()
+    {
+        return false;
+    }
+
+    public void setMastername(final String par1Str) {
         if (!this.world.isRemote) {
             this.mastername = par1Str;
         }
@@ -336,7 +344,9 @@ public class EntityStandBase extends MobEntity
             this.setJumped(true);
         }
     }
-    
+
+
+
     public void setJumped(final boolean value)
     {
         this.jumpCheck = value;
@@ -369,30 +379,30 @@ public class EntityStandBase extends MobEntity
         Entity entity = null;
         if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
         {
-        if(Minecraft.getInstance().world != null)
-        {
-        for (Entity oneEntity : Minecraft.getInstance().world.getAllEntities())
-		{
-        	Entity entityplayer = null;
-        	
-        	if(oneEntity != null)
-        		entityplayer = oneEntity;
-        	
-            final double distance = entityplayer.getDistance(this.getMaster());
-            final double distance2 = 3.141592653589793 * 2 * 2 * 2;
-            
-            if(entityplayer != null)
-            	entity = entityplayer;
-            
-            if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2 && entity != null)
+            if(Minecraft.getInstance().world != null)
             {
-            	if(entityplayer != null)
-            		entity = entityplayer;
+                for (@Nonnull Entity oneEntity : Minecraft.getInstance().world.getAllEntities())
+		        {
+        	        Entity entityplayer = null;
+
+        	        if(oneEntity != null)
+        		        entityplayer = oneEntity;
+        	
+                    final double distance = entityplayer.getDistance(this.getMaster());
+                    final double distance2 = 3.141592653589793 * 2 * 2 * 2;
+            
+                  if(entityplayer != null)
+                      entity = entityplayer;
+            
+                   if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2 && entity != null)
+                   {
+                  	if(entityplayer != null)
+                  	    entity = entityplayer;
             	
-                final double distanceX = this.getPosX() - entity.getPosX();
-                final double distanceY = this.getPosY() - entity.getPosY();
-                final double distanceZ = this.getPosZ() - entity.getPosZ();
-                final float speed = 0.3f;
+                      final double distanceX = this.getPosX() - entity.getPosX();
+                      final double distanceY = this.getPosY() - entity.getPosY();
+                      final double distanceZ = this.getPosZ() - entity.getPosZ();
+                      final float speed = 0.3f;
                 
                 if (distanceX > 0.0)
                 {
