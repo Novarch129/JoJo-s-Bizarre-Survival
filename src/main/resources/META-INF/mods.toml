@@ -26,7 +26,7 @@ description='''
 	A mod that adds Stands from JoJo's Bizarre Adventure into Minecraft.
 '''
 
-[[dependencies.jojomod]] 
+[[dependencies.jojomod]]
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified

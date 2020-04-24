@@ -1,29 +1,26 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
-import com.google.common.collect.Iterables;
 import com.novarch.jojomod.JojoMod;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
-import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import net.minecraft.client.Minecraft;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -31,9 +28,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class EntityKingCrimson extends EntityStandBase
 {
@@ -93,7 +87,6 @@ public class EntityKingCrimson extends EntityStandBase
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
-	//TODO add old code
 	
 	public void tick()
 	{
@@ -145,25 +138,23 @@ public class EntityKingCrimson extends EntityStandBase
 	          //King Crimson's Ability
 			  // TODO Fix cooldown bugs
 	        if(this.timeSkipped && props.getStandOn())
-	        {
+				{
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
 	        	if(props.getTimeLeft() <= 200)
 	        	{
 	        		props.addTimeLeft(1);
-	        		if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
-	        		{
-	        			for (Entity entity : Minecraft.getInstance().world.getAllEntities())
+	        			for (Entity entity : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(1000000.0, 4000000.0, 1000000.0), EntityPredicates.NOT_SPECTATING))
 						{
 	    					if(entity != null && entity instanceof EntityKingCrimson == false)
 	    					{
 	    						if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
 	    						{
 								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
+								//player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
 								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
 								player.setSprinting(true);
 								}
-	    	
+
 	    						if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
 								{
 									//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
@@ -174,7 +165,7 @@ public class EntityKingCrimson extends EntityStandBase
 	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
 	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 	    						}
-	    			
+
 								/*if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
 								{
 									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
@@ -188,9 +179,8 @@ public class EntityKingCrimson extends EntityStandBase
 									((ArrowEntity)entity).setMotion(-1, -1, -1);
 									((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
 								}
-	    			
+
 	    					}
-	    				}
 	       			}
 	        	}
 	        	else
@@ -218,77 +208,66 @@ public class EntityKingCrimson extends EntityStandBase
 	        //Orarush food check       
 	        if (!player.isAlive())
 	          setDead(); 
-	        if (player instanceof PlayerEntity) 
-	        {
-	          if (player.isSprinting()) 
-	          {
-	            if (attackSwing(player))
-	              if (player.getFoodStats().getFoodLevel() > 6) 
-	              {
-	                this.oratick++;
-	                if (this.oratick == 1) 
-	                {
-	                	if(!this.world.isRemote)
-	                		this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.LAST_ORA_KC, getSoundCategory(), 6.0F, 1.0F);
-	                  
-	                	if (!player.isCreative())
-	                    player.getFoodStats().addStats(0, 0.0F); 
-	                  if (!this.world.isRemote)
-	                    this.orarush = true; 
-	                } 
-	              } 
-	              else 
-	              {
-	                hungerMessage();
-	              }  
-	          } 
-	          else if (attackSwing(getMaster())) 
-	          {
-	            if (!this.world.isRemote) 
-	            {
-	              this.oratick++;
-	              if (this.oratick == 1) 
-	              {
-	                this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.KNIFE_SWING_MISS1, getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-	                EntityStandPunch.kingCrimson kingCrimson = new EntityStandPunch.kingCrimson(this.world, this, player);
-	                //kingCrimson.setIsCritical(true);
-	                kingCrimson.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-	                this.world.addEntity((Entity)kingCrimson);
-	              } 
-	            } 
-	          } 
-	          if (player.swingProgressInt == 0)
-	            this.oratick = 0; 
-	          if (this.orarush) 
-	          {
-	            player.setSprinting(false);
-	            this.oratickr++;
-	            if (this.oratickr >= 10)
-	              if (!this.world.isRemote) 
-	              {
-	                player.setSprinting(false);
-	                EntityStandPunch.kingCrimson kingCrimson1 = new EntityStandPunch.kingCrimson(this.world, this, player);
-	                //kingCrimson1.setIsCritical(true);
-	                kingCrimson1.setRandomPositions();
-	                kingCrimson1.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-	                this.world.addEntity((Entity)kingCrimson1);
-	                EntityStandPunch.kingCrimson kingCrimson2 = new EntityStandPunch.kingCrimson(this.world, this, player);
-	               //kingCrimson2.setIsCritical(true);
-	                kingCrimson2.setRandomPositions();
-	                kingCrimson2.shoot((Entity)player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-	                this.world.addEntity((Entity)kingCrimson2);
-	              }  
-	            if (this.oratickr >= 80) 
-	            {
-	              this.orarush = false;
-	              this.oratickr = 0;
-	            } 
-	          } 
+	        if (player instanceof PlayerEntity) {
+	        	if(!this.timeSkipped) {
+				if (player.isSprinting()) {
+					if (attackSwing(player))
+						if (player.getFoodStats().getFoodLevel() > 6) {
+							this.oratick++;
+							if (this.oratick == 1) {
+								if (!this.world.isRemote)
+									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.LAST_ORA_KC, getSoundCategory(), 6.0F, 1.0F);
+
+								if (!player.isCreative())
+									player.getFoodStats().addStats(0, 0.0F);
+								if (!this.world.isRemote)
+									this.orarush = true;
+							}
+						} else {
+							hungerMessage();
+						}
+				} else if (attackSwing(getMaster())) {
+					if (!this.world.isRemote) {
+						this.oratick++;
+						if (this.oratick == 1) {
+							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.KNIFE_SWING_MISS1, getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+							EntityStandPunch.kingCrimson kingCrimson = new EntityStandPunch.kingCrimson(this.world, this, player);
+							//kingCrimson.setIsCritical(true);
+							kingCrimson.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity((Entity) kingCrimson);
+						}
+					}
+				}
+				if (player.swingProgressInt == 0)
+					this.oratick = 0;
+				if (this.orarush) {
+					player.setSprinting(false);
+					this.oratickr++;
+					if (this.oratickr >= 10)
+						if (!this.world.isRemote) {
+							player.setSprinting(false);
+							EntityStandPunch.kingCrimson kingCrimson1 = new EntityStandPunch.kingCrimson(this.world, this, player);
+							//kingCrimson1.setIsCritical(true);
+							kingCrimson1.setRandomPositions();
+							kingCrimson1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity((Entity) kingCrimson1);
+							EntityStandPunch.kingCrimson kingCrimson2 = new EntityStandPunch.kingCrimson(this.world, this, player);
+							//kingCrimson2.setIsCritical(true);
+							kingCrimson2.setRandomPositions();
+							kingCrimson2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity((Entity) kingCrimson2);
+						}
+					if (this.oratickr >= 80) {
+						this.orarush = false;
+						this.oratickr = 0;
+					}
+				}
+			}
 	        } 
 	      }
 	    } 
 	  }
-	  
+
 
 	  public boolean isEntityInsideOpaqueBlock()
 	  {

@@ -1,7 +1,4 @@
-package com.novarch.jojomod.util.capabilities.stand;
-
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
+package com.novarch.jojomod.capabilities;
 
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;

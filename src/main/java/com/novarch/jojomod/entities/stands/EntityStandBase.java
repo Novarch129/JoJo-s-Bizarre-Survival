@@ -2,12 +2,10 @@ package com.novarch.jojomod.entities.stands;
 
 import java.util.UUID;
 
-import com.google.common.collect.Iterables;
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
-import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -17,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -26,10 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nonnull;
-
 @SuppressWarnings("unused")
-public class EntityStandBase extends MobEntity
+public abstract class EntityStandBase extends MobEntity
 {
 	private PlayerEntity master;
     protected boolean standOn;
@@ -373,15 +370,13 @@ public class EntityStandBase extends MobEntity
     }
     
     public void changeAct() {}
-    
+
     private void catchPassive() 
     {
         Entity entity = null;
-        if(Minecraft.getInstance().world.getAllEntities() != null /*&& Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0*/)
-        {
-            if(Minecraft.getInstance().world != null)
+            if(this.world != null)
             {
-                for (Entity oneEntity : Minecraft.getInstance().world.getAllEntities())
+                for (Entity oneEntity : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(1000000.0, 4000000.0, 1000000.0), EntityPredicates.NOT_SPECTATING))
 		        {
         	        Entity entityplayer = null;
 
@@ -430,7 +425,6 @@ public class EntityStandBase extends MobEntity
                 }
             }
         }
-    }
         }
     }
 }

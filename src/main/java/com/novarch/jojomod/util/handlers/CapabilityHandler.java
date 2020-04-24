@@ -2,7 +2,7 @@ package com.novarch.jojomod.util.handlers;
 
 import com.novarch.jojomod.JojoMod;
 
-import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;

@@ -1,12 +1,6 @@
-package com.novarch.jojomod.util.capabilities.stand;
+package com.novarch.jojomod.capabilities;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.util.Direction;
-import net.minecraftforge.common.capabilities.Capability;
-
-import javax.annotation.Nullable;
 
 @SuppressWarnings("unused")
 public interface IStand

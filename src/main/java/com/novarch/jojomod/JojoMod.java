@@ -1,12 +1,8 @@
 package com.novarch.jojomod;
 
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
-import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import org.apache.logging.log4j.LogManager;

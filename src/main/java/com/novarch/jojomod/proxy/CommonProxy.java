@@ -1,8 +1,8 @@
 package com.novarch.jojomod.proxy;
 
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
-import com.novarch.jojomod.util.capabilities.stand.IStandStorage;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.IStandStorage;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 
 import net.minecraftforge.common.MinecraftForge;

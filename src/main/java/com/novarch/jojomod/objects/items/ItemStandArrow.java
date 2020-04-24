@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.util.capabilities.stand.IStand;
-import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;

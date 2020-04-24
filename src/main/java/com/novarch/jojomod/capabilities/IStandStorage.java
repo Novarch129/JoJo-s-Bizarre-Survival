@@ -1,4 +1,4 @@
-package com.novarch.jojomod.util.capabilities.stand;
+package com.novarch.jojomod.capabilities;
 
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
