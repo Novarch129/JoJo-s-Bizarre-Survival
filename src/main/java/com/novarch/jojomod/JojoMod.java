@@ -1,8 +1,12 @@
 package com.novarch.jojomod;
 
+import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.util.capabilities.stand.IStand;
 import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
 import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import org.apache.logging.log4j.LogManager;
@@ -124,14 +128,19 @@ public class JojoMod
         LazyOptional<IStand> power = event.player.getCapability(JojoProvider.STAND, null);
         IStand props = power.orElse(new IStandCapability());
 
-        if(props.getStandOn() && props.getCooldown() >= 0)
+        if(!props.getStandOn() && props.getCooldown() >= 0)
         {
             props.subtractCooldown(1);
         }
 
-        if(!props.getStandOn() && props.getCooldown() >= 0)
+        if(props.getCooldown() <= 0)
         {
-            props.subtractCooldown(1);
+
+        }
+
+        if(!props.getStandOn() && props.getTimeLeft() > 0)
+        {
+            props.subtractTimeLeft(1);
         }
     }
 }

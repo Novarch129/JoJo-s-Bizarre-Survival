@@ -18,6 +18,8 @@ public class IStandCapability implements IStand
 	  
 	private int cooldown = 0;
 
+	private int timeleft = 0;
+
 	private PlayerEntity diavolo = null;
 	  
 	private String playerStandName = "";
@@ -109,6 +111,26 @@ public class IStandCapability implements IStand
 	public void subtractCooldown(int subtraction)
 	{
 		this.cooldown -= subtraction;
+	}
+
+	@Override
+	public void setTimeLeft(int new_time_left) {
+		this.timeleft = new_time_left;
+	}
+
+	@Override
+	public int getTimeLeft() {
+		return this.timeleft;
+	}
+
+	@Override
+	public void addTimeLeft(int addition) {
+		this.timeleft += addition;
+	}
+
+	@Override
+	public void subtractTimeLeft(int subtraction) {
+		this.timeleft -= subtraction;
 	}
 
 	@Override

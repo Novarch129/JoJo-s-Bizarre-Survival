@@ -47,6 +47,14 @@ public interface IStand
     
     int getCooldown();
 
+    void setTimeLeft(int new_time_left);
+
+    int getTimeLeft();
+
+    void addTimeLeft(int addition);
+
+    void subtractTimeLeft(int subtraction);
+
     PlayerEntity getDiavolo();
 
     void setDiavolo(PlayerEntity truth);

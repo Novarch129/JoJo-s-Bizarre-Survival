@@ -10,12 +10,14 @@ import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.capabilities.stand.IStand;
 import com.novarch.jojomod.util.capabilities.stand.IStandCapability;
 import com.novarch.jojomod.util.capabilities.stand.JojoProvider;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -30,9 +32,11 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nonnull;
+
 public class EntityKingCrimson extends EntityStandBase
 {
-	@ObjectHolder(JojoMod.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
+	  @ObjectHolder(JojoMod.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
 	
 	  private int oratick = 0;
 	  
@@ -44,30 +48,31 @@ public class EntityKingCrimson extends EntityStandBase
 	  
 	  PlayerEntity player = getMaster();
 
-	  int timeleft = 200;
-	  
-	  protected boolean canDespawn() 
+	  //int timeleft = 200;
+
+	  @Override
+	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
+
+	  @Override
+	  public boolean isAIDisabled()
 	  {
 	    return false;
 	  }
-	  
-	  protected boolean isAIEnabled() 
-	  {
-	    return true;
-	  }
-	  
-	  public void readEntityFromNBT(CompoundNBT nbttagcompound) 
+
+	  @Override
+	  public void readAdditional(CompoundNBT nbttagcompound)
 	  {
 	    super.readAdditional(nbttagcompound);
 	  }
-	  
-	  public void writeEntityToNBT(CompoundNBT nbttagcompound) 
+
+	  @Override
+	  public void writeAdditional(CompoundNBT nbttagcompound)
 	  {
 	    super.writeAdditional(nbttagcompound);
 	  }
 
-	@Override
-	public IPacket<?> createSpawnPacket()
+	  @Override
+	  public IPacket<?> createSpawnPacket()
 	{
 		return super.createSpawnPacket();
 	}
@@ -98,6 +103,7 @@ public class EntityKingCrimson extends EntityStandBase
 	      PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	      IStand props = power.orElse(new IStandCapability());
+	      this.timeSkipped = props.getCooldown() <= 0;
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching()) 
@@ -135,70 +141,66 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotationYawHead(player.rotationYaw);
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
-	        //King Crimson's Ability
-			  //TODO Fix cooldown bugs
-	        if(this.timeSkipped)
+	          //King Crimson's Ability
+			  // TODO Fix cooldown bugs
+	        if(this.timeSkipped && props.getStandOn())
 	        {
-				if(JojoMod.debug) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time skipped" + String.valueOf(props.getCooldown()), new Object[0]));}
-
-	        	if(this.timeleft==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));}
-	        if(this.timeleft >= 0)
-	        {
-	        this.timeleft--;
-	        if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
-	        {
-	        for (Entity entity : Minecraft.getInstance().world.getAllEntities())
-			{
-	    	if(entity != null && entity instanceof EntityKingCrimson == false)
-	    	{
-	    			if (entity == this.getMaster() || entity.getName() == this.getMaster().getName()) {
-						player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-						player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-						player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-						player.setSprinting(true);
-					}
+	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
+	        	if(props.getTimeLeft() <= 200)
+	        	{
+	        		props.addTimeLeft(1);
+	        		if(Minecraft.getInstance().world.getAllEntities() != null && Iterables.size(Minecraft.getInstance().world.getAllEntities()) > 0)
+	        		{
+	        			for (@Nonnull Entity entity : Minecraft.getInstance().world.getAllEntities())
+						{
+	    					if(entity != null && entity instanceof EntityKingCrimson == false)
+	    					{
+	    						if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
+	    						{
+								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
+								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
+								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
+								player.setSprinting(true);
+								}
 	    	
-	    			if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
-					{
-	    				((MobEntity)entity).setAttackTarget((LivingEntity)null);
-	    				((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-	    				((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-	    				((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-	    				((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-	    				((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-	    			}
+	    						if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
+								{
+	    							((MobEntity)entity).setAttackTarget((LivingEntity)null);
+	    							((MobEntity)entity).setRevengeTarget((LivingEntity)null);
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+	    							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+	    						}
 	    			
-	    			/*if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
-	    			{
-	    				((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-	    				((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-	    				((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-	    				((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-	    			}*/
+								/*if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
+								{
+									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								}*/
+
+								if(entity instanceof ArrowEntity)
+								{
+									((ArrowEntity)entity).setMotion(-1, -1, -1);
+									((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
+								}
 	    			
-	    			if(entity instanceof ArrowEntity)
-	    			{
-	    				((ArrowEntity)entity).setMotion(-1, -1, -1);
-	    				((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
-	    			}
-	    			
-	    	}
-	    	}
-	        }
-	        }
-	        else
-	        {
-	        	this.timeSkipped = false;
-	        }
+	    					}
+	    				}
+	       			}
+	        	}
+	        	else
+	        	{
+	        		this.timeSkipped = false;
+	        		props.setCooldown(200);
+	        	}
 	        }
 
 	        if(!timeSkipped)
 			{
-				props.setCooldown(200);
-				if(props.getCooldown()==200) {player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
-
-				player.sendMessage((ITextComponent)new TranslationTextComponent(String.valueOf(props.getCooldown()), new Object[0]));
-
+				if(props.getCooldown()==200) {player.sendMessage(new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
 				if(props.getCooldown() > 0)
 				{
 					props.subtractCooldown(1);
@@ -206,8 +208,7 @@ public class EntityKingCrimson extends EntityStandBase
 
 				if(props.getCooldown() <= 0)
 				{
-					player.sendMessage((ITextComponent)new TranslationTextComponent("YES YES YES", new Object[0]));
-					this.timeleft = 200;
+					props.setTimeLeft(0);
 					this.timeSkipped = true;
 				}
 			}

@@ -17,6 +17,7 @@ public class IStandStorage implements IStorage<IStand>
         props.putBoolean("PowerOn", instance.getPowerSpawned());
         props.putInt("PowerID", instance.getJojoPower());
         props.putInt("Cooldown", instance.getCooldown());
+        props.putInt("Timeleft", instance.getTimeLeft());
         return (INBT)props;
       }
       
@@ -29,5 +30,6 @@ public class IStandStorage implements IStorage<IStand>
         instance.setPowerSpawned(propertyData.getBoolean("PowerOn"));
         instance.setJojoPower(propertyData.getInt("PowerID"));
         propertyData.getInt("Cooldown");
+        propertyData.getInt("Timeleft");
       }
 }

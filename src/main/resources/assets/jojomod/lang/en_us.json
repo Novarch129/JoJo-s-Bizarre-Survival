@@ -1,10 +1,10 @@
 {
-"item.jojomod.stand_arrow": "Stand Arrow",
-"item.jojomod.summon_kc": "King Crimson",
+  "item.jojomod.stand_arrow": "Stand Arrow",
+  "item.jojomod.summon_kc": "King Crimson",
 
   "key.categories.Jojo's Blocky Adventure": "Jojo's Blocky Adventure",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Stand Ability",
 
-"itemGroup.jojotab": "JoJo's Bizarre Adventure"
+  "itemGroup.jojotab": "JoJo's Blocky Adventure"
 }
