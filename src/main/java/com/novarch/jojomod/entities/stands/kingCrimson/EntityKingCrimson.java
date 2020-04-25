@@ -21,6 +21,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -143,9 +144,9 @@ public class EntityKingCrimson extends EntityStandBase
 	        	if(props.getTimeLeft() <= 200)
 	        	{
 	        		props.addTimeLeft(1);
-	        			for (Entity entity : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(1000000.0, 4000000.0, 1000000.0), EntityPredicates.NOT_SPECTATING))
+	        			for (Entity entity : this.world.getEntitiesInAABBexcluding(this, new AxisAlignedBB(this.getPosX(), this.getPosY(), this.getPosZ(), this.world.getMaxEntityRadius(), this.world.getMaxEntityRadius(), this.world.getMaxEntityRadius()), EntityPredicates.NOT_SPECTATING))
 						{
-	    					if(entity != null && entity instanceof EntityKingCrimson == false)
+	    					if(entity != null && entity instanceof EntityKingCrimson == false && entity.isAlive())
 	    					{
 	    						if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
 	    						{
