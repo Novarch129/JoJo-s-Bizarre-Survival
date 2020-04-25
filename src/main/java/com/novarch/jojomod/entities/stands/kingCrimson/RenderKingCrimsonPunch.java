@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.kingCrimson>
 {
 	protected ModelKingCrimsonPunch punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoMod.MOD_ID, "textures/stands/kc_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBlockyAdventure.MOD_ID, "textures/stands/kc_punch.png");
 
 	public RenderKingCrimsonPunch(EntityRendererManager renderManagerIn) 
 	{

@@ -1,6 +1,6 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = JojoMod.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {
 
 	@SubscribeEvent

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,7 +45,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityStandPunch extends Entity implements IProjectile
 {
-    @ObjectHolder(JojoMod.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
+    @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
 	/*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
 		@Override
 		public boolean apply(Entity input)

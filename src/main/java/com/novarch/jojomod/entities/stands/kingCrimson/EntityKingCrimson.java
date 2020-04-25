@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
@@ -21,7 +21,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
@@ -33,7 +32,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityKingCrimson extends EntityStandBase
 {
-	  @ObjectHolder(JojoMod.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
+	  @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
 	
 	  private int oratick = 0;
 	  
@@ -141,171 +140,219 @@ public class EntityKingCrimson extends EntityStandBase
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
 	        	if(props.getTimeLeft() <= 200)
 	        	{
+	        		this.getMaster().setInvulnerable(true);
+	        		player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
+	        		player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 1));
+	        		player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
+	        		player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+					player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 40, 255));
+					player.canEat(false);
+	        		player.setSprinting(true);
 	        		props.addTimeLeft(1);
-	        			for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 1500.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
-						{
-	    					if(entity != null && entity instanceof EntityKingCrimson == false && entity instanceof ItemEntity == false && entity.isAlive())
-	    					{
-								player.sendMessage(entity.getName());
-	    						if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
-	    						{
-								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-								player.setSprinting(true);
-								}
-
-	    						if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
-								{
-									//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
-	    							((MobEntity)entity).setAttackTarget((LivingEntity)null);
-	    							((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 2));
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 2));
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
-	    							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
-	    						}
-
-								if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
-								{
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-								}
-
-								if(entity instanceof ArrowEntity)
-								{
-									((ArrowEntity)entity).setMotion(-1, -1, -1);
-									((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
-								}
-
-	    					}
-	       			}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 1500.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
-						if(entity != null && entity instanceof EntityKingCrimson == false && entity instanceof ItemEntity == false && entity.isAlive())
+					if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
 						{
-							player.sendMessage(entity.getName());
-							if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
+							if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 							{
-								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-								player.setSprinting(true);
+								((MobEntity) entity).setAttackTarget(null);
+								((MobEntity) entity).setRevengeTarget(null);
 							}
+							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
+							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
+						}
 
-							if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
+						if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+						{
+							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+						}
+					}
+				}
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+					{
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
 							{
-								//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
-								((MobEntity)entity).setAttackTarget((LivingEntity)null);
-								((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-								if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
-								{
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-								}
-
-							if(entity instanceof ArrowEntity)
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
 							{
-								((ArrowEntity)entity).setMotion(-1, -1, -1);
-								((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
-
 						}
 					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 1500.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
-						if(entity != null && entity instanceof EntityKingCrimson == false && entity instanceof ItemEntity == false && entity.isAlive())
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							player.sendMessage(entity.getName());
-							if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
 							{
-								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-								player.setSprinting(true);
-							}
-
-							if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
-							{
-								//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
-								((MobEntity)entity).setAttackTarget((LivingEntity)null);
-								((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-								if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
-								{
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-								}
-
-							if(entity instanceof ArrowEntity)
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
 							{
-								((ArrowEntity)entity).setMotion(-1, -1, -1);
-								((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
-
 						}
 					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 1500.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
-						if(entity != null && entity instanceof EntityKingCrimson == false && entity instanceof ItemEntity == false && entity.isAlive())
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							player.sendMessage(entity.getName());
-							if (entity == this.getMaster() || entity.getName() == this.getMaster().getName())
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
 							{
-								player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
-								player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 0));
-								player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
-								player.setSprinting(true);
-							}
-
-							if(entity instanceof MobEntity && entity instanceof EntityKingCrimson==false && entity instanceof EntityStandPunch.kingCrimson==false/*|| entity instanceof AnimalEntity || entity instanceof AgeableEntity || entity instanceof AmbientEntity || entity instanceof WaterMobEntity || entity instanceof MonsterEntity || entity instanceof Entity || entity instanceof LivingEntity || entity instanceof ZombieEntity || entity instanceof CreeperEntity || entity instanceof SkeletonEntity*/&& entity instanceof PlayerEntity == false && entity instanceof ItemEntity == false)
-							{
-								//player.sendMessage(new TranslationTextComponent(((MobEntity) entity).getActivePotionEffects().toString(), new Object[0]));
-								((MobEntity)entity).setAttackTarget((LivingEntity)null);
-								((MobEntity)entity).setRevengeTarget((LivingEntity)null);
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 2));
-								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 100, 50));
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-								if(entity instanceof PlayerEntity && entity != this.getMaster() && entity.getCustomName().equals("Giorno Giovanna")==false)
-								{
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-									((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-								}
-
-							if(entity instanceof ArrowEntity)
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
 							{
-								((ArrowEntity)entity).setMotion(-1, -1, -1);
-								((ArrowEntity)entity).dimension = DimensionType.THE_NETHER;
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
-
 						}
 					}
-	        	}
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+					{
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
+							}
+
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							{
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+							}
+						}
+					}
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+					{
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
+							}
+
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							{
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+							}
+						}
+					}
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+					{
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
+							}
+
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							{
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+							}
+						}
+					}
+					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+					{
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget(null);
+									((MobEntity) entity).setRevengeTarget(null);
+								}
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
+							}
+
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							{
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
+								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+							}
+						}
+					}
+				}
 
 	        	else
 	        	{
+	        		this.getMaster().setInvulnerable(false);
+					player.canEat(true);
 	        		this.timeSkipped = false;
 	        		props.setCooldown(200);
 	        	}

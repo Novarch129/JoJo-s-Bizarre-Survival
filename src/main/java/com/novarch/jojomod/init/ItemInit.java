@@ -1,7 +1,7 @@
 package com.novarch.jojomod.init;
 
-import com.novarch.jojomod.JojoMod;
-import com.novarch.jojomod.JojoMod.JojoItemGroup;
+import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.JojoBlockyAdventure.JojoItemGroup;
 import com.novarch.jojomod.objects.items.ItemStandArrow;
 import com.novarch.jojomod.objects.items.ItemSummonKingCrimson;
 
@@ -12,8 +12,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ObjectHolder;
 
-@Mod.EventBusSubscriber(modid = JojoMod.MOD_ID, bus = Bus.MOD)
-@ObjectHolder(JojoMod.MOD_ID)
+@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.MOD)
+@ObjectHolder(JojoBlockyAdventure.MOD_ID)
 public class ItemInit
 {
 	public static final Item stand_arrow = null;

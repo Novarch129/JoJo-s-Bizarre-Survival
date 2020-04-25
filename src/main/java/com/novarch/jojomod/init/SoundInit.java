@@ -1,6 +1,6 @@
 package com.novarch.jojomod.init;
 
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -9,8 +9,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
-@Mod.EventBusSubscriber(modid = JojoMod.MOD_ID, bus = Bus.MOD)
-@ObjectHolder(JojoMod.MOD_ID)
+@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.MOD)
+@ObjectHolder(JojoBlockyAdventure.MOD_ID)
 public class SoundInit 
 {
 	public static SoundEvent DORARUSH;
@@ -98,7 +98,7 @@ public class SoundInit
 	
 	private static SoundEvent registerSound(String name)
 	{
-		ResourceLocation location = new ResourceLocation(JojoMod.MOD_ID, name);
+		ResourceLocation location = new ResourceLocation(JojoBlockyAdventure.MOD_ID, name);
 		SoundEvent event = new SoundEvent(location);
 		event.setRegistryName(name);
 		ForgeRegistries.SOUND_EVENTS.register(event);

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.events;
 
 
-import com.novarch.jojomod.JojoMod;
+import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
 import com.novarch.jojomod.network.message.SyncStandSummonButton;
 import com.novarch.jojomod.util.handlers.KeyHandler;
@@ -13,7 +13,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@Mod.EventBusSubscriber(modid = JojoMod.MOD_ID, bus = Bus.FORGE)
+@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.FORGE)
 public class EventControlInputs
 {
 	 @SubscribeEvent
@@ -24,7 +24,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoMod.INSTANCE.sendToServer(new SyncStandSummonButton()); 
+				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncStandSummonButton());
 			 }
 		 }
 
@@ -33,7 +33,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoMod.INSTANCE.sendToServer(new SyncStandSummonButton()); //TODO Toggle for ability
+				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncStandSummonButton()); //TODO Toggle for ability
 			 }
 		 }
 	    
@@ -42,7 +42,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoMod.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
+				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
 			 }
 		 }
 	 }

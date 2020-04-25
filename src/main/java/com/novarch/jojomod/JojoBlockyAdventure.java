@@ -37,12 +37,12 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 @SuppressWarnings("unused")
 @Mod("jojomod")
-public class JojoMod
+public class JojoBlockyAdventure
 {
     public static final boolean debug = true;
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
-    public static JojoMod instance;
+    public static JojoBlockyAdventure instance;
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
@@ -51,7 +51,7 @@ public class JojoMod
         PROTOCOL_VERSION::equals
     );
 
-    public JojoMod()
+    public JojoBlockyAdventure()
     {
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
@@ -87,7 +87,6 @@ public class JojoMod
     
     private void setup(final FMLCommonSetupEvent event)
     {
-    	//PacketHandler.init();
     	CommonProxy.registerCapabilities();
     }
 
@@ -137,6 +136,11 @@ public class JojoMod
         if(!props.getStandOn() && props.getTimeLeft() > 0)
         {
             props.subtractTimeLeft(1);
+        }
+
+        if(!props.getStandOn())
+        {
+            event.player.setInvulnerable(false);
         }
     }
 }
