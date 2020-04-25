@@ -376,7 +376,7 @@ public abstract class EntityStandBase extends MobEntity
         Entity entity = null;
             if(this.world != null)
             {
-                for (Entity oneEntity : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(1000000.0, 4000000.0, 1000000.0), EntityPredicates.NOT_SPECTATING))
+                for (Entity oneEntity : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(100.0, 400.0, 100.0), EntityPredicates.NOT_SPECTATING))
 		        {
         	        Entity entityplayer = null;
 
