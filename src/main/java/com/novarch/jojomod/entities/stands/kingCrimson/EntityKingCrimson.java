@@ -146,8 +146,8 @@ public class EntityKingCrimson extends EntityStandBase
 	        		player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
 	        		player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
 					player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 40, 255));
-					player.canEat(false);
 	        		player.setSprinting(true);
+	        		player.abilities.allowEdit = false;
 	        		props.addTimeLeft(1);
 	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
@@ -351,8 +351,8 @@ public class EntityKingCrimson extends EntityStandBase
 
 	        	else
 	        	{
+	        		this.getMaster().abilities.allowEdit = true;
 	        		this.getMaster().setInvulnerable(false);
-					player.canEat(true);
 	        		this.timeSkipped = false;
 	        		props.setCooldown(200);
 	        	}
