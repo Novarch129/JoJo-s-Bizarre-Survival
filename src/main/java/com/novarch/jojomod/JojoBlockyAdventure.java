@@ -5,13 +5,16 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -129,7 +132,6 @@ public class JojoBlockyAdventure
 
         if(!props.getStandOn() && props.getCooldown() >= 0)
         {
-            event.player.sendMessage(new TranslationTextComponent(String.valueOf(props.getCooldown()), new Object[0]));
             props.subtractCooldown(1);
         }
 
@@ -149,5 +151,13 @@ public class JojoBlockyAdventure
             if(!event.player.isCreative() && !event.player.isSpectator())
                 event.player.setGameType(GameType.SURVIVAL);
         }
+    }
+
+    @SubscribeEvent
+    public void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event)
+    {
+        LazyOptional<IStand> power = event.getPlayer().getCapability(JojoProvider.STAND, null);
+        IStand props = power.orElse(new IStandCapability());
+        props.cloneSaveFunction(props);
     }
 }

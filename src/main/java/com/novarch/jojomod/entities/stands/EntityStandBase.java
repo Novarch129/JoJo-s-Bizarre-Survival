@@ -74,7 +74,7 @@ public abstract class EntityStandBase extends MobEntity
 		return this.spawnSound;
 	}
 	
-	public void setMaster(final String name) 
+	public void setMaster(final String name)
 	{
         if (!this.world.isRemote)
         {
@@ -86,6 +86,11 @@ public abstract class EntityStandBase extends MobEntity
             	}
             }
         }
+    }
+
+    public void setMaster(PlayerEntity playerEntity)
+    {
+        this.master = playerEntity;
     }
 	
 	public int getStandByID()
@@ -202,20 +207,23 @@ public abstract class EntityStandBase extends MobEntity
         super.tick();
         this.fallDistance = 0.0f;
         if (!this.world.isRemote) {
-            if (this.getMaster() == null) {
+            if (this.getMaster() == null)
+            {
                 this.setDead();
             }
             else {
-                final PlayerEntity thePlayer = this.getMaster();
                 try {
                     this.setHealth(1000.0f);
                 }
                 catch (ClassCastException ex) {}
-                if (!thePlayer.isAlive()) {
+                if (!this.getMaster().isAlive())
+                {
                     this.setDead();
+                    this.getMaster().sendMessage(new TranslationTextComponent("dead master", new Object[0]));
+
                 }
                 if (this.getGiveItems()) {
-                    this.givePlayerItems(thePlayer);
+                    this.givePlayerItems(this.getMaster());
                 }
                 if (this.getCatchPassive()) {
                     this.catchPassive();
@@ -230,10 +238,12 @@ public abstract class EntityStandBase extends MobEntity
                 if (this.getAir() < 20) {
                     this.setAir(60);
                 }
-                LazyOptional<IStand> power = thePlayer.getCapability(JojoProvider.STAND, null);
+                LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
                 IStand props = power.orElse(new IStandCapability());
-                if (!props.getStandOn()) {
+                if (!props.getStandOn())
+                {
                     this.setDead();
+                    this.getMaster().sendMessage(new TranslationTextComponent("stand off", new Object[0]));
                 }
                 else {
                     this.followMaster();
@@ -241,7 +251,7 @@ public abstract class EntityStandBase extends MobEntity
                         ++this.hungerTimer;
                     }
                 }
-                this.resetAllChecks(thePlayer);
+                this.resetAllChecks(this.getMaster());
             }
         }
     }

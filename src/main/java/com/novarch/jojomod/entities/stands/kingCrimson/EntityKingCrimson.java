@@ -1,14 +1,13 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
 import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -164,7 +163,7 @@ public class EntityKingCrimson extends EntityStandBase
 							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 						}
 
-						if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+						if(entity instanceof PlayerEntity && entity != this.getMaster())
 						{
 							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -188,11 +187,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -212,12 +211,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -237,12 +235,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -262,12 +259,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -287,12 +283,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -312,12 +307,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}
@@ -337,12 +331,11 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && !entity.getCustomName().equals("Giorno Giovanna"))
+							if(entity instanceof PlayerEntity && entity != this.getMaster())
 							{
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-								((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
 							}
 						}
 					}

@@ -78,7 +78,7 @@ public class ItemSummonKingCrimson extends Item
 	{
 		if (!world.isRemote && entity instanceof PlayerEntity) 
         {
-            final PlayerEntity player = (PlayerEntity)entity;
+            PlayerEntity player = (PlayerEntity)entity;
             LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
             IStand props = stand.orElse(new IStandCapability());
             this.hasStand = true;													 
@@ -94,12 +94,13 @@ public class ItemSummonKingCrimson extends Item
                     {
                         stack.shrink(1);
                     }
-                    props.setStandID(1);
+                    props.setStandID(JojoLibs.StandID.kingCrimson);
                     props.setStandOn(true);
                     final EntityStandBase theStand = JojoLibs.getStand(standID, world);
                     if (theStand != null) {
                         theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                        theStand.setMaster(player.getCommandSource().getName());
+                        theStand.setMaster(player);
+                        //theStand.setMaster(player.getCommandSource().getName());
                         theStand.setMastername(player.getDisplayName().toString());
                         world.addEntity((Entity)theStand);
                         theStand.spawnSound();

@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -107,21 +108,27 @@ public class SyncStandSummonButton
 			  
 			  if (theStand != null)
 			  {
-				  int standAct = props.getStandAct();
-				  props.setStandOn(true);
-				  theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-				  theStand.setMaster(player.getCommandSource().getName());
-				  theStand.setMastername(player.getDisplayName().toString());
-				  String name = props.getPlayerStandName();
-				  
-				  if (!name.equals(""))
-					  theStand.setCustomName(((ITextComponent)new TranslationTextComponent(name, null, new Object[0]))); 
-				  
-				  player.world.addEntity((Entity)theStand);
-				  theStand.spawnSound();
-				  theStand.world.playSound(null, new BlockPos(theStand.getMaster().getPosX(), theStand.getMaster().getPosY(), theStand.getMaster().getPosZ()), theStand.getSpawnSound(), theStand.getSoundCategory(), 1.0f, 1.0f);
-				  theStand.setGiveItems();
-				  theStand.changeAct();
+			  	if(!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), EntityPredicates.NOT_SPECTATING).contains(theStand))
+			  	{
+					int standAct = props.getStandAct();
+					props.setStandOn(true);
+					theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+					theStand.setMaster(player);
+					theStand.setMastername(player.getDisplayName().toString());
+					String name = props.getPlayerStandName();
+					player.sendMessage(theStand.getMastername());
+
+					if (!name.equals(""))
+						theStand.setCustomName((new TranslationTextComponent(name, null, new Object[0])));
+
+					player.world.addEntity((Entity) theStand);
+					theStand.spawnSound();
+					theStand.world.playSound(null, new BlockPos(theStand.getMaster().getPosX(), theStand.getMaster().getPosY(), theStand.getMaster().getPosZ()), theStand.getSpawnSound(), theStand.getSoundCategory(), 1.0f, 1.0f);
+					theStand.setGiveItems();
+					theStand.changeAct();
+				}
+			  	else
+			  		theStand.remove();
 		      return;
 		    } 
 		}
