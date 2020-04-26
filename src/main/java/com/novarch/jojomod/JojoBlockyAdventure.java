@@ -3,8 +3,16 @@ package com.novarch.jojomod;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.GameType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.Loader;
@@ -59,7 +67,9 @@ public class JojoBlockyAdventure
            
         KeyHandler.addKeys();
         MinecraftForge.EVENT_BUS.register(EventControlInputs.class);
+        ItemInit.ITEMS.register(modEventBus);
 		EntityInit.ENTITY_TYPES.register(modEventBus);
+		SoundInit.SOUNDS.register(modEventBus);
 		
 	    if (Loader.isClassAvailable("endercore"))
 			   JojoLibs.setEnderCore(true); 
@@ -78,13 +88,7 @@ public class JojoBlockyAdventure
 				SyncPlayerAttackMessage::decode,
 				SyncPlayerAttackMessage::handle);
     }
-    
-    @SubscribeEvent
-    public static void registerSounds(final RegistryEvent.Register<SoundEvent> event)
-    {
-    	SoundInit.registerSounds();
-    }
-    
+
     private void setup(final FMLCommonSetupEvent event)
     {
     	CommonProxy.registerCapabilities();
@@ -113,7 +117,7 @@ public class JojoBlockyAdventure
 		@Override
 		public ItemStack createIcon() 
 		{
-			return new ItemStack(ItemInit.stand_arrow);
+			return new ItemStack(ItemInit.stand_arrow.get());
 		}
     }
 
@@ -125,6 +129,7 @@ public class JojoBlockyAdventure
 
         if(!props.getStandOn() && props.getCooldown() >= 0)
         {
+            event.player.sendMessage(new TranslationTextComponent(String.valueOf(props.getCooldown()), new Object[0]));
             props.subtractCooldown(1);
         }
 
@@ -141,6 +146,8 @@ public class JojoBlockyAdventure
         if(!props.getStandOn())
         {
             event.player.setInvulnerable(false);
+            if(!event.player.isCreative() && !event.player.isSpectator())
+                event.player.setGameType(GameType.SURVIVAL);
         }
     }
 }

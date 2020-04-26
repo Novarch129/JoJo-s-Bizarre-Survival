@@ -14,7 +14,7 @@ public class ModelKingCrimsonPunch <T extends EntityStandPunch.kingCrimson> exte
 	 public ModelKingCrimsonPunch()
 	 {
 		this.textureWidth = 64;
-	   	this.textureHeight = 64;
+	   	this.textureHeight = 32;
 	   	
 	    this.Punch = new ModelRenderer(this, 0, 0);
 	    this.Punch.addBox(-1.0F, -1.0F, 0.0F, 3, 3, 7);

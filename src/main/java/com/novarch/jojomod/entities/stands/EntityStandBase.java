@@ -22,7 +22,9 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 @SuppressWarnings("unused")
@@ -69,7 +71,7 @@ public abstract class EntityStandBase extends MobEntity
 	
 	public SoundEvent getSpawnSound()
 	{
-		return spawnSound;
+		return this.spawnSound;
 	}
 	
 	public void setMaster(final String name) 
@@ -246,8 +248,8 @@ public abstract class EntityStandBase extends MobEntity
     
 	public void spawnSound() 
 	{
-		this.world.playSound(this.getMaster(), new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 1.0f, 1.0f);
-	}
+	    this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 1.0f, 1.0f);
+    }
 	
 	protected void followMaster()
 	{

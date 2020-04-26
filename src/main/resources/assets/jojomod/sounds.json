@@ -70,7 +70,19 @@
         "category": "neutral", 
         "sounds": [{"name": "jojomod:transmute", "stream": false}]
     },
-    
+
+    "look_here":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:look_here", "stream": false}]
+    },
+
+    "canzoni_preferite":
+    {
+        "category": "record",
+        "sounds": [{"name": "jojomod:canzoni_preferite", "stream": true}]
+    },
+
     "spawn_cd": 
     {
         "category": "neutral", 
@@ -117,5 +129,23 @@
     {
         "category": "neutral", 
         "sounds": [{"name": "jojomod:spawn_tw", "stream": false}]
+    },
+
+    "spawn_kq":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_kq", "stream": false}]
+    },
+
+    "spawn_sha":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_sha", "stream": false}]
+    },
+
+    "spawn_sf":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_sf", "stream": false}]
     }
 }

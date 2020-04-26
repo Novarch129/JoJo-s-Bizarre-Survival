@@ -60,6 +60,7 @@ public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.king
 		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(2.0F, 2.0F, 2.0F);
 		this.punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityTranslucent(getEntityTexture(entityIn))), packedLightIn, 1, 0.1f, 0.1f, 0.1f, 1.0f);
+		//this.punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityTranslucent(getEntityTexture(entityIn))), packedLightIn, 0, 0.0F, 0.0F, 0.0F, 0.0F);
 		GL11.glDisable(32826);
 		GL11.glPopMatrix();
 	}

@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -118,6 +119,7 @@ public class SyncStandSummonButton
 				  
 				  player.world.addEntity((Entity)theStand);
 				  theStand.spawnSound();
+				  theStand.world.playSound(null, new BlockPos(theStand.getMaster().getPosX(), theStand.getMaster().getPosY(), theStand.getMaster().getPosZ()), theStand.getSpawnSound(), theStand.getSoundCategory(), 1.0f, 1.0f);
 				  theStand.setGiveItems();
 				  theStand.changeAct();
 		      return;

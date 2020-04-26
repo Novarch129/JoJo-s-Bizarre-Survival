@@ -15,7 +15,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
@@ -25,8 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -74,7 +73,7 @@ public class EntityKingCrimson extends EntityStandBase
 	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_KC;
+	    this.spawnSound = SoundInit.SPAWN_KC.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
@@ -82,7 +81,7 @@ public class EntityKingCrimson extends EntityStandBase
 	public EntityKingCrimson(World world) 
 	{
 		super(TYPE, world);
-	    this.spawnSound = SoundInit.SPAWN_KC;
+	    this.spawnSound = SoundInit.SPAWN_KC.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
@@ -93,7 +92,7 @@ public class EntityKingCrimson extends EntityStandBase
 		this.fallDistance = 0.0F; 
 	    if (getMaster() != null)
 	    {
-	      PlayerEntity player = getMaster();
+	    	PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	      IStand props = power.orElse(new IStandCapability());
 	      this.timeSkipped = props.getCooldown() <= 0;
@@ -145,9 +144,9 @@ public class EntityKingCrimson extends EntityStandBase
 	        		player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 1));
 	        		player.addPotionEffect(new EffectInstance(Effects.SPEED, 50, 0));
 	        		player.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 40, 255));
-					player.addPotionEffect(new EffectInstance(Effects.MINING_FATIGUE, 40, 255));
 	        		player.setSprinting(true);
-	        		player.abilities.allowEdit = false;
+	        		if(!player.isCreative() && !player.isSpectator())
+						player.setGameType(GameType.ADVENTURE);
 	        		props.addTimeLeft(1);
 	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
@@ -351,7 +350,9 @@ public class EntityKingCrimson extends EntityStandBase
 
 	        	else
 	        	{
-	        		this.getMaster().abilities.allowEdit = true;
+
+	        		if(!this.getMaster().isCreative() && !this.getMaster().isSpectator())
+						this.getMaster().setGameType(GameType.SURVIVAL);
 	        		this.getMaster().setInvulnerable(false);
 	        		this.timeSkipped = false;
 	        		props.setCooldown(200);
@@ -384,7 +385,7 @@ public class EntityKingCrimson extends EntityStandBase
 							this.oratick++;
 							if (this.oratick == 1) {
 								if (!this.world.isRemote)
-									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.LAST_ORA_KC, getSoundCategory(), 6.0F, 1.0F);
+									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.LAST_ORA_KC.get(), getSoundCategory(), 6.0F, 1.0F);
 
 								if (!player.isCreative())
 									player.getFoodStats().addStats(0, 0.0F);
@@ -398,7 +399,7 @@ public class EntityKingCrimson extends EntityStandBase
 					if (!this.world.isRemote) {
 						this.oratick++;
 						if (this.oratick == 1) {
-							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.KNIFE_SWING_MISS1, getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
+							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.kingCrimson kingCrimson = new EntityStandPunch.kingCrimson(this.world, this, player);
 							//kingCrimson.setIsCritical(true);
 							kingCrimson.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);

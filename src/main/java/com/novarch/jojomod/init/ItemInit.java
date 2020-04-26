@@ -8,31 +8,18 @@ import com.novarch.jojomod.objects.items.ItemSummonKingCrimson;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ObjectHolder;
 
-@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.MOD)
-@ObjectHolder(JojoBlockyAdventure.MOD_ID)
 public class ItemInit
 {
-	public static final Item stand_arrow = null;
-	public static final Item summon_kc = null;
-	
-	@SubscribeEvent
-	public static void registerItems(final RegistryEvent.Register<Item> event)
-	{
-		event.getRegistry().registerAll
-		(
-			(new ItemStandArrow(new Item.Properties()
-				.maxStackSize(1)
-					.group(JojoItemGroup.instance))
-						.setRegistryName("stand_arrow")),
-		
-			(new ItemSummonKingCrimson(new Item.Properties()
-				.maxStackSize(1)
-					.group(JojoItemGroup.instance))
-						.setRegistryName("summon_kc"))
-		);
-	}	
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, JojoBlockyAdventure.MOD_ID);
+
+	public static final RegistryObject<Item> stand_arrow =ITEMS.register("stand_arrow", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
+	public static final RegistryObject<Item> summon_kc =ITEMS.register("summon_kc", () -> new ItemSummonKingCrimson(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
+
 }
