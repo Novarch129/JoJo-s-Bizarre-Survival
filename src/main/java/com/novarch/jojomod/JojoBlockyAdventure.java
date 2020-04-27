@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
+import com.novarch.jojomod.network.message.SyncAbilityButton;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -90,6 +91,11 @@ public class JojoBlockyAdventure
 				SyncPlayerAttackMessage::encode,
 				SyncPlayerAttackMessage::decode,
 				SyncPlayerAttackMessage::handle);
+		INSTANCE.registerMessage(networkId++,
+                SyncAbilityButton.class,
+                SyncAbilityButton::encode,
+                SyncAbilityButton::decode,
+                SyncAbilityButton::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)

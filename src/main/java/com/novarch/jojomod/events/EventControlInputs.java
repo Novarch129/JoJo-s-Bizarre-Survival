@@ -2,6 +2,7 @@ package com.novarch.jojomod.events;
 
 
 import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
 import com.novarch.jojomod.network.message.SyncStandSummonButton;
 import com.novarch.jojomod.util.handlers.KeyHandler;
@@ -33,7 +34,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncStandSummonButton()); //TODO Toggle for ability
+				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncAbilityButton()); //TODO Toggle for ability
 			 }
 		 }
 	    

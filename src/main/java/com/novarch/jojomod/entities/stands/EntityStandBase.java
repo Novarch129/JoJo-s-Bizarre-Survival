@@ -50,6 +50,7 @@ public abstract class EntityStandBase extends MobEntity
 	public boolean life;
 	public boolean timeSkipped;
 	public boolean heaven;
+	public boolean ability;
     
 	public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn)
 	{
@@ -67,6 +68,7 @@ public abstract class EntityStandBase extends MobEntity
         this.longTick = 2;
         this.tick = 0;
         this.hungerTimer = 0;
+        this.ability = true;
 	}
 	
 	public SoundEvent getSpawnSound()
@@ -219,7 +221,7 @@ public abstract class EntityStandBase extends MobEntity
                 if (!this.getMaster().isAlive())
                 {
                     this.setDead();
-                    this.getMaster().sendMessage(new TranslationTextComponent("dead master", new Object[0]));
+                    //this.getMaster().sendMessage(new TranslationTextComponent("dead master", new Object[0]));
 
                 }
                 if (this.getGiveItems()) {
@@ -243,7 +245,7 @@ public abstract class EntityStandBase extends MobEntity
                 if (!props.getStandOn())
                 {
                     this.setDead();
-                    this.getMaster().sendMessage(new TranslationTextComponent("stand off", new Object[0]));
+                    //this.getMaster().sendMessage(new TranslationTextComponent("stand off", new Object[0]));
                 }
                 else {
                     this.followMaster();

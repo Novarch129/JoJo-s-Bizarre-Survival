@@ -6,11 +6,12 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ModelKingCrimsonPunch <T extends EntityStandPunch.kingCrimson> extends EntityModel<T>
 {
-	private final ModelRenderer Punch;
-	  
+	 private final ModelRenderer Punch;
+
 	 public ModelKingCrimsonPunch()
 	 {
 		this.textureWidth = 64;
@@ -18,16 +19,21 @@ public class ModelKingCrimsonPunch <T extends EntityStandPunch.kingCrimson> exte
 	   	
 	    this.Punch = new ModelRenderer(this, 0, 0);
 	    this.Punch.addBox(-1.0F, -1.0F, 0.0F, 3, 3, 7);
-	    this.Punch.setRotationPoint(0.0F, 0.0F, 0.0F);
-	    this.Punch.setTextureSize(64, 64);
-	    setRotationAngle(this.Punch, 0.0F, 0.0F, 0.0F);
+	    this.Punch.setRotationPoint(0.0f, 0.0f, 0.0f);
+	    this.Punch.setTextureSize(64, 32);
+	    setRotationAngle(this.Punch, 0.0f, 0.0f, 0.0f);
 	 }
 	  
 	 @Override
-	 public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) 
+	 public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
 	 {
-		 this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		 this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
 	 }
+
+	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn)
+	{
+		this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+	}
 
 	 @Override
 	 public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadBaseYaw, float headPitch) 

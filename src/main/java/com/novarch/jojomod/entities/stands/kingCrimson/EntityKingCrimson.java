@@ -133,7 +133,8 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
 	        //King Crimson's Ability
-	        if(this.timeSkipped && props.getStandOn())
+			  this.ability = false;
+	        if(this.timeSkipped && this.ability &&props.getStandOn())
 				{
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
 	        	if(props.getTimeLeft() <= 200)
@@ -371,7 +372,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        if (!player.isAlive())
 	          setDead(); 
 	        if (player instanceof PlayerEntity) {
-	        	if(!this.timeSkipped) {
+	        	if(this.timeSkipped) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {
@@ -394,7 +395,6 @@ public class EntityKingCrimson extends EntityStandBase
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.kingCrimson kingCrimson = new EntityStandPunch.kingCrimson(this.world, this, player);
-							//kingCrimson.setIsCritical(true);
 							kingCrimson.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 							this.world.addEntity((Entity) kingCrimson);
 						}
@@ -409,12 +409,10 @@ public class EntityKingCrimson extends EntityStandBase
 						if (!this.world.isRemote) {
 							player.setSprinting(false);
 							EntityStandPunch.kingCrimson kingCrimson1 = new EntityStandPunch.kingCrimson(this.world, this, player);
-							//kingCrimson1.setIsCritical(true);
 							kingCrimson1.setRandomPositions();
 							kingCrimson1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 							this.world.addEntity((Entity) kingCrimson1);
 							EntityStandPunch.kingCrimson kingCrimson2 = new EntityStandPunch.kingCrimson(this.world, this, player);
-							//kingCrimson2.setIsCritical(true);
 							kingCrimson2.setRandomPositions();
 							kingCrimson2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 							this.world.addEntity((Entity) kingCrimson2);

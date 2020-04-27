@@ -35,15 +35,17 @@ import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class EntityStandPunch extends Entity implements IProjectile
+public abstract class EntityStandPunch extends Entity implements IProjectile
 {
     @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
 	/*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
@@ -172,8 +174,8 @@ public void setPositionAndRotationDirect(double x, double y, double z, float yaw
 }
 
 public void movePunchInFront(EntityStandBase base) {
-  PlayerEntity PlayerEntity = base.getMaster();
-  Vec3d vector = PlayerEntity.getLookVec();
+  PlayerEntity playerEntity = base.getMaster();
+  Vec3d vector = playerEntity.getLookVec();
   double x = this.getPosX() + vector.x * 0.5D;
   double y = this.getPosY() + vector.y * 0.4D * 0.5D;
   double z = this.getPosZ() + vector.z * 0.5D;
@@ -181,8 +183,8 @@ public void movePunchInFront(EntityStandBase base) {
 }
 
 public void setRandomPositions() {
-  EntityStandBase EntityStandBase = this.shootingStand;
-  Vec3d vector = EntityStandBase.getLookVec();
+  EntityStandBase entityStandBase = this.shootingStand;
+  Vec3d vector = entityStandBase.getLookVec();
   double randp = this.rand.nextDouble() * 2.0D - 1.0D;
   double randp2 = this.rand.nextDouble() * 2.0D - 1.0D;
   double randp3 = this.rand.nextDouble() * 2.0D - 1.0D;
@@ -190,7 +192,19 @@ public void setRandomPositions() {
   double y = this.getPosY() + randp2 + vector.y * 1.5D;
   double z = this.getPosZ() + randp3 + vector.z * 1.5D;
   setPosition(x, y, z);
-  setRotation(((LivingEntity)EntityStandBase).rotationYaw, ((LivingEntity)EntityStandBase).rotationPitch);
+  setRotation(entityStandBase.rotationYaw, entityStandBase.rotationPitch);
+  setInFront();
+}
+
+public void setInFront()
+{
+  EntityStandBase stand = this.shootingStand;
+  PlayerEntity player = this.standMaster;
+  if(stand != null)
+    setRotation(stand.rotationYaw, stand.rotationPitch);
+  else
+    if(player != null)
+      setRotation(player.rotationYaw, player.rotationPitch);
 }
 
 @OnlyIn(Dist.CLIENT)
@@ -211,6 +225,10 @@ public void setVelocity(double x, double y, double z) {
 @Override
 public void tick() {
   super.tick();
+  /*if(this.shootingStand.getMaster() != null) {
+    this.setRotation(shootingStand.getMaster().rotationYaw, shootingStand.getMaster().rotationPitch);
+    this.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Rotating", new Object[0])); TODO fix punch rotation
+  }*/
   if (this.shootingEntity == null && !this.world.isRemote)
     remove(); 
   baseTick();
@@ -231,7 +249,7 @@ public void tick() {
         remove();  
     Vec3d vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     Vec3d vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
-    RayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, this));
+    BlockRayTraceResult raytraceresult = this.world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, FluidMode.ANY, this));
     EntityRayTraceResult entityRayTraceResult = null;
     vec3d1 = new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ());
     vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
@@ -261,6 +279,10 @@ public void tick() {
     } 
     if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult)) {
       onHit(entityRayTraceResult);
+    }
+    if(raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
+    {
+      onHit(raytraceresult);
     }
     //if (getIsCritical())
     this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z, -this.getMotion().x, -this.getMotion().y + 0.2D, -this.getMotion().z);
@@ -293,9 +315,9 @@ public void tick() {
   } 
 }
 
-protected void onHit(RayTraceResult raytraceResultIn) {
-  Entity entity = ((EntityRayTraceResult)raytraceResultIn).getEntity();
-  if (entity != null) {
+protected void onHit(EntityRayTraceResult raytraceResultIn) {
+  Entity entity = raytraceResultIn.getEntity();
+  if (entity != null && entity != this.standMaster) {
     DamageSource damagesource;
     if (this.shootingStand == null) {
       damagesource = DamageSource.causeThrownDamage(this, this);
@@ -322,27 +344,30 @@ protected void onHit(RayTraceResult raytraceResultIn) {
     } else if (!this.world.isRemote && this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z < 0.0010000000474974513D) {
         remove(); 
     } 
-  } else {
-    BlockPos blockpos = ((BlockRayTraceResult)raytraceResultIn).getPos();
-    this.xTile = blockpos.getX();
-    this.yTile = blockpos.getY();
-    this.zTile = blockpos.getZ();
-    this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0D, 0.0D, 0.0D);
-    BlockState BlockState = this.world.getBlockState(blockpos);
-    this.inTile = BlockState.getBlock();
-    this.inData = Block.getStateId(BlockState);
-    this.setMotion((float)(raytraceResultIn.getHitVec().x - this.getPosX()), (float)(raytraceResultIn.getHitVec().y - this.getPosY()), (float)(raytraceResultIn.getHitVec().z - this.getPosZ()));
-    float f2 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
-    this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D); 
-    this.inGround = true;
-    this.arrowShake = 7;
-    //setIsCritical(false);
-    StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
-    if (BlockState.getMaterial() != Material.AIR) {
-      this.inTile.onProjectileCollision(this.world, BlockState, (BlockRayTraceResult) raytraceResultIn, this);
-      remove();
-    } 
-  } 
+  }
+  }
+
+protected void onHit(BlockRayTraceResult raytraceResultIn)
+{
+  BlockPos blockpos = raytraceResultIn.getPos();
+  this.xTile = blockpos.getX();
+  this.yTile = blockpos.getY();
+  this.zTile = blockpos.getZ();
+  //this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0D, 0.0D, 0.0D);
+  BlockState BlockState = this.world.getBlockState(blockpos);
+  this.inTile = BlockState.getBlock();
+  this.inData = Block.getStateId(BlockState);
+  this.setMotion((float)(raytraceResultIn.getHitVec().x - this.getPosX()), (float)(raytraceResultIn.getHitVec().y - this.getPosY()), (float)(raytraceResultIn.getHitVec().z - this.getPosZ()));
+  float f2 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
+  this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D);
+  this.inGround = true;
+  this.arrowShake = 7;
+  //setIsCritical(false);
+  StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
+  if (BlockState.getMaterial() != Material.AIR) {
+    this.inTile.onProjectileCollision(this.world, BlockState, (BlockRayTraceResult) raytraceResultIn, this);
+    remove();
+  }
 }
 
 public Block getinTile() {
@@ -389,7 +414,7 @@ protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
       punch = (EntityStandPunch)entity1; 
     if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || entity1 != this.shootingStand || entity1 != this.standMaster || (entity1 instanceof EntityStandPunch && punch != null && punch.shootingEntity != this.shootingEntity) || this.ticksInAir >= 6)) {
       AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(0.30000001192092896D);
-      RayTraceResult raytraceresult =  new EntityRayTraceResult(entity1); // TODO fix
+      RayTraceResult raytraceresult =  new EntityRayTraceResult(entity1);
       if (raytraceresult != null) {
         double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
         if (d1 < d0 || d0 == 0.0D) {
@@ -468,7 +493,6 @@ public void setKnockbackStrength(int knockbackStrengthIn) {
 public boolean canBeAttackedWithItem() {
   return false;
 }
-
 
     public void setIsCritical(boolean critical)
     {
