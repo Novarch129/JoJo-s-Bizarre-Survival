@@ -9,6 +9,9 @@ import com.novarch.jojomod.JojoBlockyAdventure;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
@@ -193,18 +196,6 @@ public void setRandomPositions() {
   double z = this.getPosZ() + randp3 + vector.z * 1.5D;
   setPosition(x, y, z);
   setRotation(entityStandBase.rotationYaw, entityStandBase.rotationPitch);
-  setInFront();
-}
-
-public void setInFront()
-{
-  EntityStandBase stand = this.shootingStand;
-  PlayerEntity player = this.standMaster;
-  if(stand != null)
-    setRotation(stand.rotationYaw, stand.rotationPitch);
-  else
-    if(player != null)
-      setRotation(player.rotationYaw, player.rotationPitch);
 }
 
 @OnlyIn(Dist.CLIENT)
@@ -225,10 +216,10 @@ public void setVelocity(double x, double y, double z) {
 @Override
 public void tick() {
   super.tick();
-  /*if(this.shootingStand.getMaster() != null) {
-    this.setRotation(shootingStand.getMaster().rotationYaw, shootingStand.getMaster().rotationPitch);
-    this.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Rotating", new Object[0])); TODO fix punch rotation
-  }*/
+  if(this.standMaster != null) {
+    this.rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
+    this.setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
+  }
   if (this.shootingEntity == null && !this.world.isRemote)
     remove(); 
   baseTick();
