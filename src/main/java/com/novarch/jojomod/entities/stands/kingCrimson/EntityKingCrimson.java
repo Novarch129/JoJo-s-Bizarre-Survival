@@ -133,7 +133,6 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
 	        //King Crimson's Ability
-			  this.ability = false;
 	        if(this.timeSkipped && this.ability &&props.getStandOn())
 				{
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
@@ -372,7 +371,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        if (!player.isAlive())
 	          setDead(); 
 	        if (player instanceof PlayerEntity) {
-	        	if(this.timeSkipped) {
+	        	if(!this.timeSkipped) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {

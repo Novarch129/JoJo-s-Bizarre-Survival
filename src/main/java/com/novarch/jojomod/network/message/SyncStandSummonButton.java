@@ -116,14 +116,12 @@ public class SyncStandSummonButton
 					theStand.setMaster(player);
 					theStand.setMastername(player.getDisplayName().toString());
 					String name = props.getPlayerStandName();
-					player.sendMessage(theStand.getMastername());
 
 					if (!name.equals(""))
 						theStand.setCustomName((new TranslationTextComponent(name, null, new Object[0])));
 
 					player.world.addEntity((Entity) theStand);
 					theStand.spawnSound();
-					theStand.world.playSound(null, new BlockPos(theStand.getMaster().getPosX(), theStand.getMaster().getPosY(), theStand.getMaster().getPosZ()), theStand.getSpawnSound(), theStand.getSoundCategory(), 1.0f, 1.0f);
 					theStand.setGiveItems();
 					theStand.changeAct();
 				}
