@@ -343,7 +343,6 @@ public class EntityKingCrimson extends EntityStandBase
 
 	        	else
 	        	{
-
 	        		if(!this.getMaster().isCreative() && !this.getMaster().isSpectator())
 						this.getMaster().setGameType(GameType.SURVIVAL);
 	        		this.getMaster().setInvulnerable(false);
@@ -354,7 +353,8 @@ public class EntityKingCrimson extends EntityStandBase
 
 	        if(!timeSkipped)
 			{
-				if(props.getCooldown()==200) {player.sendMessage(new TranslationTextComponent("Time Skip : OFF", new Object[0])); player.clearActivePotions();}
+				if(props.getCooldown()==200) { player.sendMessage(new TranslationTextComponent("Time Skip : OFF", new Object[0])); }
+				if(props.getCooldown()==199) { player.clearActivePotions(); }
 				if(props.getCooldown() > 0)
 				{
 					props.subtractCooldown(1);
@@ -371,7 +371,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        if (!player.isAlive())
 	          setDead(); 
 	        if (player instanceof PlayerEntity) {
-	        	if(!this.timeSkipped) {
+	        	if(!this.timeSkipped || !props.getAbility()) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {

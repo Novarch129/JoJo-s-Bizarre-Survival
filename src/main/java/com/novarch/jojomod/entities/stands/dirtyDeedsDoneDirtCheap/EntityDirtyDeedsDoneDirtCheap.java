@@ -123,7 +123,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					  DimensionHopHelper.teleportToDimension(player, DimensionType.THE_NETHER, player.getPosX(), player.getPosY(), player.getPosZ());
 					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
 						  //try {
-						  if (!world.isRemote()) {
 							  player.changeDimension(DimensionType.THE_NETHER, new ITeleporter() {
 								  @Override
 								  public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
@@ -132,7 +131,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 									  return repositionedEntity;
 								  }
 							  });
-						  }
 						  //} catch (IllegalStateException e) {e.printStackTrace();}
 					  }
 					  /*case -1:

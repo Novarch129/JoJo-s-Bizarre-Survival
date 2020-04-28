@@ -19,20 +19,20 @@ import java.util.function.Supplier;
 
 public class SyncAbilityButton
 {
-    public int entityID;
+    public boolean ability;
 
     public SyncAbilityButton() {}
 
-    public SyncAbilityButton(int entityId) { this.entityID = entityId; }
+    public SyncAbilityButton(boolean value) { this.ability = value; }
 
     public static void encode(SyncAbilityButton msg, PacketBuffer buffer)
     {
-        buffer.writeInt(msg.entityID);
+        buffer.writeBoolean(msg.ability);
     }
 
     public static SyncAbilityButton decode(PacketBuffer buffer)
     {
-        return new SyncAbilityButton(buffer.readInt());
+        return new SyncAbilityButton(buffer.readBoolean());
     }
 
     public static void handle(SyncAbilityButton msg, Supplier<NetworkEvent.Context> supplier)
@@ -45,7 +45,7 @@ public class SyncAbilityButton
                 ServerPlayerEntity sender = ctx.getSender();
                 if(sender == null)
                     return;
-                abilityToggle(sender);
+                abilityToggle((PlayerEntity) sender);
             });
         }
         ctx.setPacketHandled(true);
@@ -57,8 +57,9 @@ public class SyncAbilityButton
             LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
             IStand props = power.orElse(new IStandCapability());
 
-            if (props != null) {
-                props.setAbility(props.getAbility());
+            if (props != null)
+            {
+                props.setAbility(!props.getAbility());
             }
 
             if (!props.getAbility()) {

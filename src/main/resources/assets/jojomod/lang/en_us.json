@@ -3,6 +3,11 @@
   "item.jojomod.summon_kc": "King Crimson",
   "item.jojomod.summon_d4c": "Dirty Deeds Done Dirt Cheap",
 
+  "entity.jojomod.king_crimson": "King Crimson",
+  "entity.jojomod.king_crimson": "King Crimson's punch",
+  "entity.jojomod.d4c": "Dirty Deeds Done Dirt Cheap",
+  "entity.jojomod.d4c_punch": "Dirty Deeds Done Dirt Cheap's punch",
+
   "key.categories.Jojo's Blocky Adventure": "Jojo's Blocky Adventure",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Stand Ability",
