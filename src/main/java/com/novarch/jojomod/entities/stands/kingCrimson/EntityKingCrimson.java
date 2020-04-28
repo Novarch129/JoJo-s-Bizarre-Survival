@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,6 +26,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -415,6 +417,12 @@ public class EntityKingCrimson extends EntityStandBase
 							kingCrimson2.setRandomPositions();
 							kingCrimson2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
 							this.world.addEntity((Entity) kingCrimson2);
+							/*for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-1000.0, -1000.0 , 1000.0)), EntityPredicates.NOT_SPECTATING))
+							{
+								if(entity instanceof EntityStandPunch.kingCrimson)
+									if(((EntityStandPunch.kingCrimson) entity).standMaster == this.getMaster())
+										((EntityStandPunch.kingCrimson) entity).setPositionAndRotation(entity.getPosX(), entity.getPosY(), entity.getPosZ(), this.getMaster().rotationYaw, this.getMaster().rotationPitch);
+							}*/
 						}
 					if (this.oratickr >= 80) {
 						this.orarush = false;

@@ -55,7 +55,6 @@ public class DimensionHopHelper extends Teleporter
 
     public static void teleportToDimension(PlayerEntity player, DimensionType dimension, double x, double y, double z)
     {
-        DimensionType oldDimension = player.getEntityWorld().getDimension().getType();
         ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity) player;
         MinecraftServer server = player.getEntityWorld().getServer();
         ServerWorld worldServer = server.getWorld(dimension);
