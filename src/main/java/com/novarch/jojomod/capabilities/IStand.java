@@ -52,4 +52,8 @@ public interface IStand
     PlayerEntity getDiavolo();
 
     void setDiavolo(PlayerEntity truth);
+
+    boolean getAbility();
+
+    void setAbility(boolean value);
 }

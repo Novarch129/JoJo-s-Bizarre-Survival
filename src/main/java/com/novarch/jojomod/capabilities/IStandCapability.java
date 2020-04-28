@@ -23,6 +23,8 @@ public class IStandCapability implements IStand
 	private PlayerEntity diavolo = null;
 	  
 	private String playerStandName = "";
+
+	private boolean ability = true;
 	  
 	public void addStandExp(int value)
 	{
@@ -145,6 +147,18 @@ public class IStandCapability implements IStand
 		return this.diavolo;
 	}
 
+	@Override
+	public boolean getAbility()
+	{
+		return this.ability;
+	}
+
+	@Override
+	public void setAbility(boolean value)
+	{
+		this.ability = value;
+	}
+
 	public void cloneSaveFunction(IStand props)
 	{
 	    setStandID(props.getStandID());
@@ -155,6 +169,7 @@ public class IStandCapability implements IStand
 	    setPlayerStandName(props.getPlayerStandName());
 	    setCooldown(props.getCooldown());
 	    setDiavolo(props.getDiavolo());
+	    setAbility(props.getAbility());
 	  }
 	  
 	  public void setStandRemoved()
@@ -166,5 +181,6 @@ public class IStandCapability implements IStand
 	    setPlayerStandName("");
 	    setCooldown(0);
 	    setDiavolo(null);
+	    setAbility(true);
 	  }
 }

@@ -133,7 +133,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        setRotation(player.rotationYaw, player.rotationPitch);
 	        
 	        //King Crimson's Ability
-	        if(this.timeSkipped && this.ability &&props.getStandOn())
+	        if(this.timeSkipped && props.getAbility() && props.getStandOn())
 				{
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
 	        	if(props.getTimeLeft() <= 200)

@@ -65,7 +65,7 @@ public class DimensionHopHelper extends Teleporter
         {
             throw new IllegalArgumentException("Dimension: "+dimension+" doesn't exist!");
         }
-        entityPlayerMP.changeDimension(dimension);
+        entityPlayerMP.changeDimension(dimension, new DimensionHopHelper(worldServer, x, y, z));
         player.setPositionAndUpdate(x, y, z);
     }
 }

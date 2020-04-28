@@ -32,8 +32,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.server.command.CommandSetDimension;
+
+import java.util.function.Function;
 
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 {
@@ -109,18 +113,28 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	        if (playerJump(player) || player.isAirBorne) 
 	        {
 	          this.changetick++;
-	          if (this.changetick == 1) 
-	          {
-	            this.d4c = !this.d4c;
-				  if(player.dimension == DimensionType.OVERWORLD)
-				  {
+	          if (this.changetick == 1) {
+				  this.d4c = !this.d4c;
+				  if (props.getAbility()) {
+					  if (player.dimension == DimensionType.OVERWORLD) {
 					  /*player.getFoodStats().addStats(-2, 0.0F);
 					  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
 					  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
 					  DimensionHopHelper.teleportToDimension(player, DimensionType.THE_NETHER, player.getPosX(), player.getPosY(), player.getPosZ());
 					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
-					  player.changeDimension(DimensionType.THE_NETHER);
-				  }
+						  //try {
+						  if (!world.isRemote()) {
+							  player.changeDimension(DimensionType.THE_NETHER, new ITeleporter() {
+								  @Override
+								  public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
+									  Entity repositionedEntity = repositionEntity.apply(false);
+									  repositionedEntity.setPositionAndUpdate(player.getPosX(), player.getPosY(), player.getPosZ());
+									  return repositionedEntity;
+								  }
+							  });
+						  }
+						  //} catch (IllegalStateException e) {e.printStackTrace();}
+					  }
 					  /*case -1:
 						  player.getFoodStats().addStats(-2, 0.0F);
 						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
@@ -156,7 +170,8 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 						  DimensionHopHelper.teleportToDimension(player, 1, player.posX, player.posY + 60, player.posZ);
 						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.overworld.txt", new Object[0]));
 						  break;*/
-	          }
+				  }
+			  }
 	        } 
 	      } else 
 	      {
@@ -177,7 +192,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	        if (!player.isAlive())
 	          setDead(); 
 	        if (player instanceof PlayerEntity) {
-	        	if(!this.d4c) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {
@@ -224,7 +238,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 						this.oratickr = 0;
 					}
 				}
-			}
 	        } 
 	      }
 	    } 

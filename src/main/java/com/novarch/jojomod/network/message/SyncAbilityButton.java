@@ -53,21 +53,21 @@ public class SyncAbilityButton
 
     protected static void abilityToggle(PlayerEntity player)
     {
-        LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-        IStand props = power.orElse(new IStandCapability());
-        int standID = props.getStandID();
-        EntityStandBase theStand = JojoLibs.getStand(standID, player.world);
+        if(player != null) {
+            LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
+            IStand props = power.orElse(new IStandCapability());
 
-        if (theStand != null)
-        {
-            if (theStand.ability) {
-                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
-                theStand.ability = false;
+            if (props != null) {
+                props.setAbility(props.getAbility());
             }
 
-            if (!theStand.ability) {
+            if (!props.getAbility()) {
+                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
+            }
+
+            if (props.getAbility()) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
-                theStand.ability = true;
+
             }
         }
     }
