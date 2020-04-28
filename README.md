@@ -12,7 +12,7 @@
 - [ ] C-Moon
 - [ ] Made in Heaven
 - [ ] Weather Report
-- [ ] King Crimson
+- [x] King Crimson
 - [ ] Gold Experience
 - [ ] Gold Experience Requiem
 - [ ] Aerosmith
