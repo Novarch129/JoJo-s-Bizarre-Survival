@@ -1,6 +1,7 @@
 package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,22 +41,22 @@ public class JojoLibs
 
         public static int kingCrimson = 1;
 
-        public static int crazyDiamond = 2;
+        public static int dirtyDeedsDoneDirtCheap = 2;
 
-        public static int dirtyDeedsDoneDirtCheap = 3;
+        public static int madeInHeaven = 3;
 
-        public static int madeInHeaven = 4;
+        public static int weatherReport = 4;
 
-        public static int weatherReport = 5;
+        public static int goldExperience = 5;
 
-        public static int goldExperience = 6;
+        public static int GER = 6;
 
-        public static int GER = 7;
+        public static int theWorld = 7;
 
-        public static int theWorld = 8;
+        public static int killerQueen = 8;
     }
 
-    public static int numberOfStands = 1;
+    public static int numberOfStands = 2;
 
     public static EntityStandBase getStand(int standID, World world)
     {
@@ -65,6 +66,8 @@ public class JojoLibs
                 return null;
             case 1:
                 return (EntityStandBase)new EntityKingCrimson(world);
+            case 2:
+                return (EntityStandBase)new EntityDirtyDeedsDoneDirtCheap(world);
         }
         return null;
     }

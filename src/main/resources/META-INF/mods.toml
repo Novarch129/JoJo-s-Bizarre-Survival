@@ -2,13 +2,13 @@ modLoader="javafml" #mandatory
 
 loaderVersion="[31,)"
 
-issueTrackerURL="https://my.issue.tracker/"
+issueTrackerURL="https://github.com/Novarch129/JoJo-s-Blocky-Adventure/issues"
 
 [[mods]]
 
 modId="jojomod"
 
-version="1.15.2-0.0.1.0"
+version="1.15.2-0.0.2.0"
 
 displayName="JoJo's Blocky Adventure"
 

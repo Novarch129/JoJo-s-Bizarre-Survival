@@ -32,14 +32,10 @@ public class StandPunchEffects
                 break;
             }
             case 2: {
-                crazyDiamond(result, entityIn, punch, entityBlock);
-                break;
-            }
-            /*case 3: {
                 dirtyDeedsDoneDirtCheap(result, entityIn, punch, entityBlock);
                 break;
             }
-            case 4: {
+            /*case 4: {
             	madeInHeaven(result, entityIn, punch, entityBlock);
             	break;
             }
@@ -91,7 +87,7 @@ public class StandPunchEffects
      * Crazy Diamond's punch
      */
     
-    public static void crazyDiamond(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock) 
+    /*public static void crazyDiamond(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock) 
     {
         if (entityBlock) 
         {
@@ -148,7 +144,7 @@ public class StandPunchEffects
                 else
                 {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    //blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    //blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
                 }
             }
@@ -157,7 +153,7 @@ public class StandPunchEffects
                 punch.remove();
             }
         }
-    }
+    }*/
     
     /**
      * King Crimson's punch
@@ -215,24 +211,9 @@ public class StandPunchEffects
      * D4C's punch
      */
     
-    /*public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
+    public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
     {
     	if (entityBlock) {
-            if (punch.shootingStand.timeSkipped) {
-                if (punch.shootingStand.orarush) {
-                    LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
-                }
-                else {
-                    LivingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 1));
-                }
-                LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 0.0f);
-                LivingEntity.hurtResistantTime = 0;
-                LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-                LivingEntity.setMotion(LivingEntity.getMotion().getX(), 0, LivingEntity.getMotion().getZ());
-                LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-                punch.remove();
-            }
-            else {
                 final float p = 0.2f;
                 final float p2 = 0.4f;
                     LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
@@ -246,7 +227,6 @@ public class StandPunchEffects
                     }
                     LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
                     punch.remove();
-            }
         }
         else if (!entityBlock) {
             final Block blockB = punch.getinTile();
@@ -255,14 +235,14 @@ public class StandPunchEffects
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
             }
             else {
                 punch.remove();
             }
         }
-    }*/
+    }
     
     /**
      * Made in Heaven's punch
@@ -345,7 +325,7 @@ public class StandPunchEffects
                 }
                 else {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
                 }
             }
@@ -402,7 +382,7 @@ public class StandPunchEffects
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
             }
             else {
@@ -714,7 +694,7 @@ public class StandPunchEffects
                 	if(!punch.shootingStand.life)
                 	{
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     blockB.getDr
                     punch.remove();
                 	}
@@ -986,7 +966,7 @@ public class StandPunchEffects
                 	if(!punch.shootingStand.ger)
                 	{
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
                 	}
                 else
@@ -1065,7 +1045,7 @@ public class StandPunchEffects
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.dropBlockAsItemWithChance(punch.world, blockpos, BlockState, 1.0f, 0);
+                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
             }
             else {

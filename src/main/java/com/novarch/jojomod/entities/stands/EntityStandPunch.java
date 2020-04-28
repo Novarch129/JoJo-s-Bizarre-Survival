@@ -51,7 +51,8 @@ import net.minecraftforge.registries.ObjectHolder;
 public abstract class EntityStandPunch extends Entity implements IProjectile
 {
     @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
-	/*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
+    @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":d4c_punch") public static EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap> D4C;
+  /*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
 		@Override
 		public boolean apply(Entity input)
 		{
@@ -550,20 +551,31 @@ public enum PickupStatus
         return NetworkHooks.getEntitySpawningPacket(this);
       }
   }
-  	/*public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch
+  	public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch
   	{
-  		public dirtyDeedsDoneDirtCheap(World worldIn)
-  		{
-  			super(worldIn);
-  		}
-      
-  		public dirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player)
-  		{
-  			super(worldIn, shooter, player);
-  		}
+      public dirtyDeedsDoneDirtCheap(World worldIn)
+      {
+        super(D4C, worldIn);
+      }
+
+      public dirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandPunch> type, World worldIn)
+      {
+        super(type, worldIn);
+      }
+
+      public dirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player)
+      {
+        super(D4C, worldIn, shooter, player);
+      }
+
+      @Override
+      public IPacket<?> createSpawnPacket()
+      {
+        return NetworkHooks.getEntitySpawningPacket(this);
+      }
   	}
   		
-      public static class madeInHeaven extends EntityStandPunch 
+      /*public static class madeInHeaven extends EntityStandPunch
       {
           public madeInHeaven(World worldIn)
           {

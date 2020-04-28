@@ -1,13 +1,10 @@
 package com.novarch.jojomod.objects.items;
 
-import java.util.List;
-
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
-
+import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -27,16 +24,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class ItemSummonKingCrimson extends Item
+import java.util.List;
+
+public class ItemSummonD4C extends Item
 {
 	private boolean hasStand;
 	private int standID;
-	
-	public ItemSummonKingCrimson(Properties properties)
+
+	public ItemSummonD4C(Properties properties)
 	{
 		super(properties);
 		this.hasStand = true;
-		this.standID = JojoLibs.StandID.kingCrimson;
+		this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
 	}
 	
 	@Override
@@ -64,7 +63,7 @@ public class ItemSummonKingCrimson extends Item
 	@Override
 	public Rarity getRarity(ItemStack stack)
 	{
-		return Rarity.create("kc", TextFormatting.DARK_RED);
+		return Rarity.create("d4c", TextFormatting.AQUA);
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class ItemSummonKingCrimson extends Item
                     {
                         stack.shrink(1);
                     }
-                    props.setStandID(JojoLibs.StandID.kingCrimson);
+                    props.setStandID(JojoLibs.StandID.dirtyDeedsDoneDirtCheap);
                     props.setStandOn(true);
                     final EntityStandBase theStand = JojoLibs.getStand(standID, world);
                     if (theStand != null) {
@@ -137,18 +136,18 @@ public class ItemSummonKingCrimson extends Item
         return (ActionResult<ItemStack>) new ActionResult(ActionResultType.PASS, (Object)stack);
 	}	
 	
-	public enum KingCrimson implements IExtensibleEnum
+	public enum DirtyDeedsDoneDirtCheap implements IExtensibleEnum
 	{
-		KC(TextFormatting.DARK_RED);
+		D4C(TextFormatting.AQUA);
 
 		public final TextFormatting color;
 
-		private KingCrimson(TextFormatting format)
+		private DirtyDeedsDoneDirtCheap(TextFormatting format)
 		{
 			this.color = format;
 		}
 
-		public static KingCrimson create(String name, TextFormatting format)
+		public static DirtyDeedsDoneDirtCheap create(String name, TextFormatting format)
 		{
 			throw new IllegalStateException("Enum not extended");
 		}

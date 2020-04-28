@@ -2,6 +2,7 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import net.minecraft.entity.EntityClassification;
@@ -31,5 +32,16 @@ public class EntityInit
 			.register("king_crimson_punch", () -> EntityType.Builder.<EntityStandPunch.kingCrimson>create(EntityStandPunch.kingCrimson::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "king_crimson_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityDirtyDeedsDoneDirtCheap>> D4C = ENTITY_TYPES
+			.register("d4c",
+					() -> EntityType.Builder.<EntityDirtyDeedsDoneDirtCheap>create(EntityDirtyDeedsDoneDirtCheap::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "d4c").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap>> D4C_PUNCH = ENTITY_TYPES
+			.register("d4c_punch", () -> EntityType.Builder.<EntityStandPunch.dirtyDeedsDoneDirtCheap>create(EntityStandPunch.dirtyDeedsDoneDirtCheap::new, EntityClassification.MISC)
+					.size(0.2f, 0.2f)
+					.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "d4c_punch").toString()));
 			
 }

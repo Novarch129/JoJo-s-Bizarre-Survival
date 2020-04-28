@@ -1,6 +1,8 @@
 package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
+import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -20,5 +22,7 @@ public class ClientEventBusSubscriber {
 	{
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON.get(), RenderKingCrimson::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON_PUNCH.get(), RenderKingCrimsonPunch::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.D4C.get(), RenderDirtyDeedsDoneDirtCheap::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.D4C_PUNCH.get(), RenderDirtyDeedsDoneDirtCheapPunch::new);
 	}
 }

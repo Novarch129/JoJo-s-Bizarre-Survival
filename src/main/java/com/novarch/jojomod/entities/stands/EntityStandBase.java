@@ -49,6 +49,7 @@ public abstract class EntityStandBase extends MobEntity
 	public boolean ger;
 	public boolean life;
 	public boolean timeSkipped;
+	public boolean d4c;
 	public boolean heaven;
 	public boolean ability;
     
@@ -59,6 +60,7 @@ public abstract class EntityStandBase extends MobEntity
         this.standOn = true;
         this.orarush = false;
         this.onheal = false;
+        this.d4c = false;
         this.timeSkipped = true;
         this.heaven = false;
         this.life = false;
