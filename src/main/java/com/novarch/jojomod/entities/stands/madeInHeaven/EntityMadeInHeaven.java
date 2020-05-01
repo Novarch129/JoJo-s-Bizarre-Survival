@@ -6,13 +6,19 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
@@ -24,8 +30,10 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class EntityMadeInHeaven extends EntityStandBase
@@ -37,6 +45,13 @@ public class EntityMadeInHeaven extends EntityStandBase
 	  private int oratickr = 0;
 
 	  private int heaventickr = 3600;
+
+	  public int getHeaventickr()
+	  {
+	  	return this.heaventickr;
+	  }
+
+	  GUICounter counter = new GUICounter(Minecraft.getInstance(), this);
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -79,6 +94,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 	    this.spawnSound = SoundInit.SPAWN_MIH.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;
+	    counter.render();
 	}
 	
 	public void tick()
@@ -97,7 +113,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 			if(this.getMaster().isCrouching()&&JojoBlockyAdventure.debug)
 			{
 				heaventickr-=100;
-				player.sendMessage((ITextComponent)new TranslationTextComponent(String.valueOf(heaventickr), new Object[0]));
+				player.sendMessage(new TranslationTextComponent(String.valueOf(heaventickr), new Object[0]));
 			}
 
 			//Made In Heaven's Ability

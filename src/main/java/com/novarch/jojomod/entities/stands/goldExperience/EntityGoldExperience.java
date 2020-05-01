@@ -39,8 +39,6 @@ public class EntityGoldExperience extends EntityStandBase
 	  
 	  private int changetick = 0;
 
-	  private boolean life = true;
-
 	  PlayerEntity player = getMaster();
 
 	  @Override

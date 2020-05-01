@@ -391,6 +391,7 @@ public class StandPunchEffects
 
 		public static void goldExperience (RayTraceResult result,final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
 		{
+			//TODO fix punches not despawning
 			if (entityBlock) {
 				if (punch.shootingStand.life) {
 					if (punch.shootingStand.orarush) {
