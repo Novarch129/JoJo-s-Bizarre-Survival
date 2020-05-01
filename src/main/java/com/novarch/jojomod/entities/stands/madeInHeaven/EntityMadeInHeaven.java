@@ -64,7 +64,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 	public EntityMadeInHeaven(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_MIH.get();
+		this.spawnSound = SoundInit.SPAWN_MIH.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;
 	}
