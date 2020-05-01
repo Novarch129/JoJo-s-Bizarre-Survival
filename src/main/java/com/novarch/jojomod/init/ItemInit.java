@@ -2,9 +2,7 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.JojoBlockyAdventure.JojoItemGroup;
-import com.novarch.jojomod.objects.items.ItemStandArrow;
-import com.novarch.jojomod.objects.items.ItemSummonD4C;
-import com.novarch.jojomod.objects.items.ItemSummonKingCrimson;
+import com.novarch.jojomod.objects.items.*;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -23,5 +21,6 @@ public class ItemInit
 	public static final RegistryObject<Item> stand_arrow =ITEMS.register("stand_arrow", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> summon_kc =ITEMS.register("summon_kc", () -> new ItemSummonKingCrimson(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> summon_d4c =ITEMS.register("summon_d4c", () -> new ItemSummonD4C(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
-
+	public static final RegistryObject<Item> summon_ge =ITEMS.register("summon_ge", () -> new ItemSummonGoldExperience(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
+	public static final RegistryObject<Item> summon_mih =ITEMS.register("summon_mih", () -> new ItemSummonMadeInHeaven(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 }

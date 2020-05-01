@@ -267,8 +267,8 @@ public abstract class EntityStandBase extends MobEntity
 	
 	protected void followMaster()
 	{
-        final Entity entity = (Entity)this.getMaster();
-        final double distance = entity.getDistance((Entity)this);
+        final Entity entity = this.getMaster();
+        final double distance = entity.getDistance(this);
         final double minimum = 0.5;
         final double maximum = 3.0;
         if (distance < minimum)

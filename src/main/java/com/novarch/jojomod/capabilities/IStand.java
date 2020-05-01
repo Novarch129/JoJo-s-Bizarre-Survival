@@ -56,4 +56,8 @@ public interface IStand
     boolean getAbility();
 
     void setAbility(boolean value);
+
+    int getTransformed();
+
+    void setTransformed(int value);
 }

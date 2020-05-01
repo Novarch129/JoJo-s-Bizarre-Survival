@@ -1,13 +1,10 @@
 package com.novarch.jojomod.objects.items;
 
-import java.util.List;
-
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
-
+import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -27,17 +24,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.IExtensibleEnum;
 import net.minecraftforge.common.util.LazyOptional;
 
-@SuppressWarnings("unused")
-public class ItemStandArrow extends Item
-{ // TODO add method to obtain GER
+import java.util.List;
+
+public class ItemSummonGoldExperience extends Item
+{
 	private boolean hasStand;
 	private int standID;
-		
-	public ItemStandArrow(Properties properties) 
-    {
+
+	public ItemSummonGoldExperience(Properties properties)
+	{
 		super(properties);
 		this.hasStand = true;
-		this.standID = 0;
+		this.standID = JojoLibs.StandID.goldExperience;
 	}
 	
 	@Override
@@ -65,7 +63,7 @@ public class ItemStandArrow extends Item
 	@Override
 	public Rarity getRarity(ItemStack stack)
 	{
-		return Rarity.create("jojo", TextFormatting.YELLOW);
+		return Rarity.create("ge", TextFormatting.GOLD);
 	}
 
 	@Override
@@ -79,7 +77,7 @@ public class ItemStandArrow extends Item
 	{
 		if (!world.isRemote && entity instanceof PlayerEntity) 
         {
-            final PlayerEntity player = (PlayerEntity)entity;
+            PlayerEntity player = (PlayerEntity)entity;
             LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
             IStand props = stand.orElse(new IStandCapability());
             this.hasStand = true;													 
@@ -89,30 +87,19 @@ public class ItemStandArrow extends Item
             }
             if (this.hasStand) 
             {
-                int randomstand = 0;
-                if (this.standID == 0)
-                {
-                    while (randomstand == 0) 
-                    {
-                        randomstand = ItemStandArrow.random.nextInt(JojoLibs.numberOfStands);
-                    }
-                }
-                else 
-                {
-                    randomstand = this.standID;
-                }
-                if (randomstand != 0) 
+                if (props.getStandID() == 0) 
                 {
                     if (!player.isCreative()) 
                     {
                         stack.shrink(1);
                     }
-                    props.setStandID(randomstand);
+                    props.setStandID(JojoLibs.StandID.goldExperience);
                     props.setStandOn(true);
-                    final EntityStandBase theStand = JojoLibs.getStand(randomstand, world);
+                    final EntityStandBase theStand = JojoLibs.getStand(standID, world);
                     if (theStand != null) {
                         theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                        theStand.setMaster(player.getCommandSource().getName());
+                        theStand.setMaster(player);
+                        //theStand.setMaster(player.getCommandSource().getName());
                         theStand.setMastername(player.getDisplayName().toString());
                         world.addEntity((Entity)theStand);
                         theStand.spawnSound();
@@ -141,7 +128,6 @@ public class ItemStandArrow extends Item
         }
         if (props.getStandID() == 0) 
         {
-        	playerIn.sendMessage((ITextComponent)new TranslationTextComponent("Success " + String.valueOf(props.getStandID()), new Object[0]));
             playerIn.setActiveHand(handIn);
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, (Object)stack);
         }
@@ -150,18 +136,18 @@ public class ItemStandArrow extends Item
         return (ActionResult<ItemStack>) new ActionResult(ActionResultType.PASS, (Object)stack);
 	}	
 	
-	public enum ModRarity implements IExtensibleEnum
+	public enum GoldExperience implements IExtensibleEnum
 	{
-		JOJO(TextFormatting.YELLOW);
+		GE(TextFormatting.GOLD);
 
 		public final TextFormatting color;
 
-		private ModRarity(TextFormatting format)
+		private GoldExperience(TextFormatting format)
 		{
 			this.color = format;
 		}
 
-		public static ModRarity create(String name, TextFormatting format)
+		public static GoldExperience create(String name, TextFormatting format)
 		{
 			throw new IllegalStateException("Enum not extended");
 		}
@@ -170,7 +156,7 @@ public class ItemStandArrow extends Item
 	@Override
 	public int getUseDuration(final ItemStack itemStack) 
     {
-        return 7200;
+        return 10;
     }
     
 	@Override

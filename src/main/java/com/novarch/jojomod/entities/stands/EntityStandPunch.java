@@ -52,6 +52,10 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
 {
     @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
     @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":d4c_punch") public static EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap> D4C;
+    @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":gold_experience_punch") public static EntityType<EntityStandPunch.goldExperience> GOLD_EXPERIENCE;
+    @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
+
+
   /*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
 		@Override
 		public boolean apply(Entity input)
@@ -575,19 +579,30 @@ public enum PickupStatus
       }
   	}
   		
-      /*public static class madeInHeaven extends EntityStandPunch
+      public static class madeInHeaven extends EntityStandPunch
       {
-          public madeInHeaven(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public madeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
+        public madeInHeaven(World worldIn)
+        {
+          super(MADE_IN_HEAVEN, worldIn);
+        }
+
+        public madeInHeaven(EntityType<? extends EntityStandPunch> type, World worldIn)
+        {
+          super(type, worldIn);
+        }
+
+        public madeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player)
+        {
+          super(MADE_IN_HEAVEN, worldIn, shooter, player);
+        }
+
+        @Override
+        public IPacket<?> createSpawnPacket()
+        {
+          return NetworkHooks.getEntitySpawningPacket(this);
+        }
   }
-      public static class weatherReport extends EntityStandPunch 
+      /*public static class weatherReport extends EntityStandPunch
       {
           public weatherReport(World worldIn)
           {
@@ -598,20 +613,31 @@ public enum PickupStatus
           {
             super(worldIn, shooter, player);
           }
-  }
+  }*/
       public static class goldExperience extends EntityStandPunch 
       {
-          public goldExperience(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public goldExperience(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
+        public goldExperience(World worldIn)
+        {
+          super(GOLD_EXPERIENCE, worldIn);
+        }
+
+        public goldExperience(EntityType<? extends EntityStandPunch> type, World worldIn)
+        {
+          super(type, worldIn);
+        }
+
+        public goldExperience(World worldIn, EntityStandBase shooter, PlayerEntity player)
+        {
+          super(GOLD_EXPERIENCE, worldIn, shooter, player);
+        }
+
+        @Override
+        public IPacket<?> createSpawnPacket()
+        {
+          return NetworkHooks.getEntitySpawningPacket(this);
+        }
   }
-      public static class goldExperienceRequiem extends EntityStandPunch 
+      /*public static class goldExperienceRequiem extends EntityStandPunch
       {
           public goldExperienceRequiem(World worldIn)
           {

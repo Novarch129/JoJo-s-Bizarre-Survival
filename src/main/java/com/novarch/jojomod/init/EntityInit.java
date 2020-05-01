@@ -3,8 +3,10 @@ package com.novarch.jojomod.init;
 import com.novarch.jojomod.JojoBlockyAdventure;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
+import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
+import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -43,5 +45,26 @@ public class EntityInit
 			.register("d4c_punch", () -> EntityType.Builder.<EntityStandPunch.dirtyDeedsDoneDirtCheap>create(EntityStandPunch.dirtyDeedsDoneDirtCheap::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "d4c_punch").toString()));
-			
+
+	public static final RegistryObject<EntityType<EntityGoldExperience>> GOLD_EXPERIENCE = ENTITY_TYPES
+			.register("gold_experience",
+					() -> EntityType.Builder.<EntityGoldExperience>create(EntityGoldExperience::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "gold_experience").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.goldExperience>> GOLD_EXPERIENCE_PUNCH = ENTITY_TYPES
+			.register("gold_experience_punch", () -> EntityType.Builder.<EntityStandPunch.goldExperience>create(EntityStandPunch.goldExperience::new, EntityClassification.MISC)
+					.size(0.2f, 0.2f)
+					.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "gold_experience_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityMadeInHeaven>> MADE_IN_HEAVEN = ENTITY_TYPES
+			.register("made_in_heaven",
+					() -> EntityType.Builder.<EntityMadeInHeaven>create(EntityMadeInHeaven::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "made_in_heaven").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.madeInHeaven>> MADE_IN_HEAVEN_PUNCH = ENTITY_TYPES
+			.register("made_in_heaven_punch", () -> EntityType.Builder.<EntityStandPunch.madeInHeaven>create(EntityStandPunch.madeInHeaven::new, EntityClassification.MISC)
+					.size(0.2f, 0.2f)
+					.build(new ResourceLocation(JojoBlockyAdventure.MOD_ID, "made_in_heaven_punch").toString()));
 }

@@ -9,214 +9,111 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 public class ModelDirtyDeedsDoneDirtCheap <T extends EntityDirtyDeedsDoneDirtCheap> extends EntityModel<T>
 {
     private final ModelRenderer Head;
-
-    private final ModelRenderer BodyBase;
-
-    private final ModelRenderer Legs;
-
     private final ModelRenderer Ear1;
-
-    private final ModelRenderer Ear3;
-
-    private final ModelRenderer Ear5;
-
     private final ModelRenderer Ear2;
+    private final ModelRenderer RightArm;
+    private final ModelRenderer LeftArm;
+    private final ModelRenderer Legs;
+    private final ModelRenderer Feet;
+    private final ModelRenderer bone2;
+    private final ModelRenderer bone3;
+    private final ModelRenderer Crotch;
+    private final ModelRenderer bone;
+    private final ModelRenderer Foot1;
+    private final ModelRenderer Foot2;
 
-    private final ModelRenderer Ear4;
 
-    private final ModelRenderer Ear6;
-
-    private final ModelRenderer Shape10;
-
-    private final ModelRenderer Shape3;
-
-    private final ModelRenderer leftleg;
-
-    private final ModelRenderer rightleg;
-
-    private final ModelRenderer leftarm;
-
-    private final ModelRenderer rightarm;
-
-    private final ModelRenderer Body;
-
-    private final ModelRenderer Shape4;
-
-    private final ModelRenderer Shape2;
-
-    private final ModelRenderer Shape1;
-
-    public ModelDirtyDeedsDoneDirtCheap() 
-    {
+    public ModelDirtyDeedsDoneDirtCheap() {
         textureWidth = 128;
         textureHeight = 128;
-        
-        BodyBase = new ModelRenderer(this);
-        BodyBase.setRotationPoint(0.0f, 0.0f, 0.0f);
-        
+
+        Head = new ModelRenderer(this);
+        Head.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Head.setTextureOffset(0, 0).addBox(-4.0F, -34.5F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+
+        Ear1 = new ModelRenderer(this);
+        Ear1.setRotationPoint(-7.0F, 10.0F, 0.0F);
+        Ear1.setTextureOffset(32, 1).addBox(4.0F, -27.5F, -2.0F, 2.0F, 8.0F, 2.0F, 0.0F, false);
+
+        Ear2 = new ModelRenderer(this);
+        Ear2.setRotationPoint(5.0F, 0.0F, 2.0F);
+        Ear1.addChild(Ear2);
+        Ear2.setTextureOffset(32, 1).addBox(3.0F, -27.5F, -4.0F, 2.0F, 8.0F, 2.0F, 0.0F, true);
+
+        RightArm = new ModelRenderer(this);
+        RightArm.setRotationPoint(-16.9521F, 7.9395F, -2.4439F);
+        setRotationAngle(RightArm, -0.2618F, 0.0F, 0.3491F);
+        RightArm.setTextureOffset(67, 73).addBox(4.4341F, -10.4344F, -2.272F, 4.0F, 12.0F, 4.0F, 0.0F, false);
+
+        LeftArm = new ModelRenderer(this);
+        LeftArm.setRotationPoint(16.9521F, 7.9395F, 0.0561F);
+        setRotationAngle(LeftArm, -0.2618F, 0.0F, -0.3491F);
+        LeftArm.setTextureOffset(67, 73).addBox(-8.4106F, -9.8438F, -4.4431F, 4.0F, 12.0F, 4.0F, 0.0F, true);
+
         Legs = new ModelRenderer(this);
-		Legs.setRotationPoint(0.0F, 0.0F, 0.0F);
-		BodyBase.addChild(Legs);
-           
-        Head = new ModelRenderer(this, 0, 0);
-        Head.setTextureOffset(0, 0).addBox(-4.0f, -11.0f, -4.0f, 8, 8, 8);
-        Head.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Head.setTextureSize(128, 128);
-        setRotationAngle(Head, 0.2617994f, 0.0f, 0.0f);
-        BodyBase.addChild(Head);
+        Legs.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Legs.setTextureOffset(53, 103).addBox(-4.35F, -16.6048F, -2.2967F, 4.0F, 9.0F, 4.0F, 0.0F, false);
+        Legs.setTextureOffset(53, 103).addBox(0.325F, -16.6048F, -2.2967F, 4.0F, 9.0F, 4.0F, 0.0F, true);
 
-        Ear1 = new ModelRenderer(this, 32, 0);
-        Ear1.setTextureOffset(32, 0).addBox(-3.0f, -14.0f, -2.0f, 1, 7, 5);
-        Ear1.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear1.setTextureSize(128, 128);
-        setRotationAngle(Ear1, 0.2617994f, 0.0f, 0.0f);
-        Head.addChild(Ear1);
+        Feet = new ModelRenderer(this);
+        Feet.setRotationPoint(-0.0125F, -4.2437F, 0.6746F);
+        Legs.addChild(Feet);
+        setRotationAngle(Feet, 0.2618F, 0.0F, 0.0F);
 
-        Ear5 = new ModelRenderer(this, 32, 1);
-        Ear5.setTextureOffset(32, 1).addBox(-3.0f, -17.0f, -5.8f, 1, 3, 5);
-        Ear5.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear5.setTextureSize(128, 128);
-        Head.addChild(Ear5);
 
-        Ear3 = new ModelRenderer(this, 32, 1);
-        Ear3.setTextureOffset(32, 1).addBox(-3.0f, -16.0f, -2.0f, 1, 7, 5);
-        Ear3.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear3.setTextureSize(128, 128);
-        setRotationAngle(Ear3, 0.2617994f, 0.0f, 0.0f);
-        Head.addChild(Ear3);
+        Foot1 = new ModelRenderer(this);
+        Foot1.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Feet.addChild(Foot1);
+        Foot1.setTextureOffset(36, 103).addBox(-4.3375F, -4.5647F, -2.2415F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 
-        Ear2 = new ModelRenderer(this, 32, 0);
-        Ear2.setTextureOffset(32, 0).addBox(2.0f, -14.0f, -2.0f, 1, 7, 5);
-        Ear2.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear2.setTextureSize(128, 128);
-        setRotationAngle(Ear2, 0.2617994f, 0.0f, 0.0f);
-        Head.addChild(Ear2);
+        Foot2 = new ModelRenderer(this);
+        Foot2.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Feet.addChild(Foot2);
+        setRotationAngle(Foot2, 0.2618F, 0.0F, 0.0F);
+        Foot2.setTextureOffset(36, 103).addBox(0.3375F, -4.075F, -1.2639F, 4.0F, 9.0F, 4.0F, 0.0F, true);
 
-        Ear4 = new ModelRenderer(this, 32, 1);
-        Ear4.setTextureOffset(32, 1).addBox(2.0f, -16.0f, -2.0f, 1, 7, 5);
-        Ear4.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear4.setTextureSize(128, 128);
-        setRotationAngle(Ear4, 0.2617994f, 0.0f, 0.0f);
-        Head.addChild(Ear4);
+        bone2 = new ModelRenderer(this);
+        bone2.setRotationPoint(0.0F, 21.0F, -1.5F);
+        setRotationAngle(bone2, -0.3229F, 0.0F, 0.0F);
+        bone2.setTextureOffset(16, 16).addBox(-5.5F, -22.4406F, -8.0047F, 11.0F, 6.0F, 5.0F, 0.0F, false);
 
-        Ear6 = new ModelRenderer(this, 32, 1);
-        Ear6.setTextureOffset(32, 1).addBox(2.0f, -17.0f, -5.8f, 1, 3, 5);
-        Ear6.setRotationPoint(0.0f, 0.0f, 0.0f);
-        Ear6.setTextureSize(128, 128);
-        Head.addChild(Ear6);
-        
-        Shape10 = new ModelRenderer(this, 36, 103);
-        Shape10.addBox(-2.0f, 0.0f, -2.0f, 4, 9, 4);
-        Shape10.setRotationPoint(3.0f, 18.0f, -5.0f);
-        Shape10.setTextureSize(128, 128);
-        setRotationAngle(Shape10, 0.5759587f, 0.0f, 0.0f);
-        BodyBase.addChild(Shape10);
+        bone3 = new ModelRenderer(this);
+        bone3.setRotationPoint(0.0F, 23.9575F, 0.0F);
+        setRotationAngle(bone3, 0.0091F, 0.0F, 0.0F);
+        bone3.setTextureOffset(18, 28).addBox(-3.5F, -22.9992F, -1.8309F, 7.0F, 8.0F, 4.0F, 0.0F, false);
 
-        Shape3 = new ModelRenderer(this, 36, 103);
-        Shape3.addBox(-2.0f, 0.0f, -2.0f, 4, 9, 4);
-        Shape3.setRotationPoint(-3.0f, 18.0f, -2.0f);
-        Shape3.setTextureSize(128, 128);
-        setRotationAngle(Shape3, 0.2792527f, 0.0f, 0.0f);
-        BodyBase.addChild(Shape3);
-        
-        leftleg = new ModelRenderer(this, 53, 103);
-        leftleg.addBox(-1.5f, 0.0f, -2.0f, 4, 9, 4);
-        leftleg.setRotationPoint(2.0f, 10.0f, -3.0f);
-        leftleg.setTextureSize(128, 128);
-        setRotationAngle(leftleg, -0.1570796f, 0.0f, 0.0f);
-        Legs.addChild(leftleg);
+        Crotch = new ModelRenderer(this);
+        Crotch.setRotationPoint(0.0F, 29.0F, 0.0F);
+        setRotationAngle(Crotch, -0.0349F, 0.0F, 0.0F);
+        Crotch.setTextureOffset(36, 79).addBox(-4.5F, -22.4875F, -3.7154F, 9.0F, 4.0F, 6.0F, 0.0F, false);
 
-        rightleg = new ModelRenderer(this, 53, 103);
-        rightleg.addBox(-2.5f, 0.0f, -2.0f, 4, 9, 4);
-        rightleg.setRotationPoint(-2.0f, 10.0f, -3.0f);
-        rightleg.setTextureSize(128, 128);
-        setRotationAngle(rightleg, 0.1396263f, 0.0f, 0.0f);
-        Legs.addChild(rightleg);
-        
-        leftarm = new ModelRenderer(this, 67, 73);
-        leftarm.addBox(0.0f, 1.0f, -3.0f, 4, 12, 4);
-        leftarm.setRotationPoint(5.0f, 0.0f, 0.0f);
-        leftarm.setTextureSize(128, 128);
-        leftarm.mirror = true;
-        setRotationAngle(leftarm, 0.0f, 0.0f, -0.3141593f);
-        BodyBase.addChild(leftarm);
-        
-        rightarm = new ModelRenderer(this, 67, 73);
-        rightarm.addBox(-3.0f, 1.0f, -2.0f, 4, 12, 4);
-        rightarm.setRotationPoint(-6.0f, 0.0f, 0.0f);
-        rightarm.setTextureSize(128, 128);
-        setRotationAngle(rightarm, 0.0f, 0.0f, 0.3141593f);
-        BodyBase.addChild(rightarm);
-        
-        Body = new ModelRenderer(this, 16, 16);
-        Body.addBox(-5.5f, 0.0f, -3.0f, 11, 6, 5);
-        Body.setRotationPoint(0.0f, -0.5f, -1.0f);
-        Body.setTextureSize(128, 128);
-        setRotationAngle(Body, -0.4770567f, 0.0f, 0.0f);
-        BodyBase.addChild(Body);
-        
-        Shape4 = new ModelRenderer(this, 36, 91);
-        Shape4.addBox(-10.0f, 0.0f, 0.0f, 20, 5, 6);
-        Shape4.setRotationPoint(0.0f, -2.0f, -4.0f);
-        Shape4.setTextureSize(128, 128);
-        setRotationAngle(Shape4, 0.1919862f, 0.0f, 0.0f);
-        BodyBase.addChild(Shape4);
-        
-        Shape2 = new ModelRenderer(this, 36, 79);
-        Shape2.addBox(-4.5f, -1.0f, -3.0f, 9, 4, 6);
-        Shape2.setRotationPoint(0.0f, 9.0f, -4.0f);
-        Shape2.setTextureSize(128, 128);
-        setRotationAngle(Shape2, 0.2094395f, 0.0f, 0.0f);
-        BodyBase.addChild(Shape2);
-        
-        Shape1 = new ModelRenderer(this, 18, 28);
-        Shape1.addBox(-3.5f, -3.466667f, -1.0f, 7, 7, 4);
-        Shape1.setRotationPoint(0.0f, 6.0f, -5.0f);
-        Shape1.setTextureSize(128, 128);
-        setRotationAngle(Shape1, -0.0523599f, 0.0f, 0.0f);
-        BodyBase.addChild(Shape1);
-        
+        bone = new ModelRenderer(this);
+        bone.setRotationPoint(0.0F, 20.5F, 0.5F);
+        setRotationAngle(bone, -0.2443F, 0.0F, 0.0F);
+        bone.setTextureOffset(36, 91).addBox(-10.0F, -22.3911F, -7.9594F, 20.0F, 5.0F, 6.0F, 0.0F, false);
+    }
+
+    @Override
+    public void setRotationAngles(EntityDirtyDeedsDoneDirtCheap entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
-    
+
     @Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) 
-    {
-		BodyBase.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-	}
+    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+        Head.render(matrixStack, buffer, packedLight, packedOverlay);
+        Ear1.render(matrixStack, buffer, packedLight, packedOverlay);
+        RightArm.render(matrixStack, buffer, packedLight, packedOverlay);
+        LeftArm.render(matrixStack, buffer, packedLight, packedOverlay);
+        Legs.render(matrixStack, buffer, packedLight, packedOverlay);
+        bone2.render(matrixStack, buffer, packedLight, packedOverlay);
+        bone3.render(matrixStack, buffer, packedLight, packedOverlay);
+        Crotch.render(matrixStack, buffer, packedLight, packedOverlay);
+        bone.render(matrixStack, buffer, packedLight, packedOverlay);
+    }
 
-	@Override
-	public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadBaseYaw, float headPitch) 
-	{
-
-	}
-
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-	{
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
-	}
-	
-	@Override
-	public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick)
-	{
-		super.setLivingAnimations(entityIn, limbSwing, limbSwingAmount, partialTick);
-	}
-
-	public ModelRenderer getHead()
-	{
-		return Head;
-	}
-	
-	public ModelRenderer getBody()
-	{
-		return BodyBase;
-	}
-	
-	public ModelRenderer getLegs() 
-	{
-		return Legs;
-	}
-
+    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
 }

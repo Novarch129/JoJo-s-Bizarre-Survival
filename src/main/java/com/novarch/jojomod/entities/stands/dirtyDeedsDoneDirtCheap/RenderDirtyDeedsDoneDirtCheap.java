@@ -10,7 +10,7 @@ public class RenderDirtyDeedsDoneDirtCheap extends MobRenderer<EntityDirtyDeedsD
 {
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBlockyAdventure.MOD_ID, "textures/stands/d4c.png");
 
-	public RenderDirtyDeedsDoneDirtCheap(EntityRendererManager renderManagerIn) 
+	public RenderDirtyDeedsDoneDirtCheap(EntityRendererManager renderManagerIn)
 	{
 		super(renderManagerIn, new ModelDirtyDeedsDoneDirtCheap<EntityDirtyDeedsDoneDirtCheap>(), 0.5f);
 	}

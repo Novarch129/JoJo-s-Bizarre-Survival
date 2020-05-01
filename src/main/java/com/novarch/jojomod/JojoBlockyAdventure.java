@@ -1,11 +1,15 @@
 package com.novarch.jojomod;
 
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.StandPunchEffects;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
+import com.novarch.jojomod.util.helpers.DimensionHopHelper;
+import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -111,7 +115,7 @@ public class JojoBlockyAdventure
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event)
     {
-        
+        DimensionHopHelper.register();
     }
     
     public static class JojoItemGroup extends ItemGroup 

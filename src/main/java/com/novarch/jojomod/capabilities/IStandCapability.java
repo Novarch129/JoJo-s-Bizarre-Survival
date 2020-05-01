@@ -25,6 +25,8 @@ public class IStandCapability implements IStand
 	private String playerStandName = "";
 
 	private boolean ability = true;
+
+	private int transformed = 0;
 	  
 	public void addStandExp(int value)
 	{
@@ -157,6 +159,16 @@ public class IStandCapability implements IStand
 	public void setAbility(boolean value)
 	{
 		this.ability = value;
+	}
+
+	@Override
+	public int getTransformed() {
+		return this.transformed;
+	}
+
+	@Override
+	public void setTransformed(int value) {
+		this.transformed = value;
 	}
 
 	public void cloneSaveFunction(IStand props)

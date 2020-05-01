@@ -1,70 +1,81 @@
 package com.novarch.jojomod.util.helpers;
 
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.block.Blocks;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.BlockPosArgument;
+import net.minecraft.command.arguments.DimensionArgument;
+import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Teleporter;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.ITeleporter;
 
-public class DimensionHopHelper extends Teleporter
+import java.util.Collection;
+import java.util.function.Function;
+
+public class DimensionHopHelper extends Commands
 {
-    private final ServerWorld world;
-    private double x,y,z;
-    public DimensionHopHelper(ServerWorld worldIn, double x, double y, double z)
-    {
-        super(worldIn);
-        this.world = worldIn;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    private static final SimpleCommandExceptionType NO_ENTITIES = new SimpleCommandExceptionType(new TranslationTextComponent("commands.forge.setdim.invalid.entity"));
+    private static final DynamicCommandExceptionType INVALID_DIMENSION = new DynamicCommandExceptionType(dim -> new TranslationTextComponent("commands.forge.setdim.invalid.dim", dim));
+
+    public DimensionHopHelper(boolean isDedicatedServer) {
+        super(isDedicatedServer);
     }
 
-    @Override
-    public boolean placeInPortal(Entity entityIn, float rotationYaw) {
-        this.world.getBlockState(new BlockPos((int)this.x, (int)this.y, (int)this.z));
-        entityIn.setPosition(this.x, this.y, this.z);
-        int i = MathHelper.floor(entityIn.getPosX());
-        int j = MathHelper.floor(entityIn.getPosY()) - 1;
-        int k = MathHelper.floor(entityIn.getPosZ());
-        int l = 1;
-        int i1 = 0;
-        for (int j1 = -2; j1 <= 2; ++j1)
+    public static ArgumentBuilder<CommandSource, ?> register()
+    {
+        return Commands.literal("tpdimension")
+                .requires(cs->cs.hasPermissionLevel(2)) //permission
+                .then(Commands.argument("targets", EntityArgument.entities())
+                        .then(Commands.argument("dim", DimensionArgument.getDimension())
+                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                        .executes(ctx -> execute(ctx.getSource(), EntityArgument.getEntitiesAllowingNone(ctx, "targets"), DimensionArgument.getDimensionArgument(ctx, "dim"), BlockPosArgument.getBlockPos(ctx, "pos")))
+                                )
+                                .executes(ctx -> execute(ctx.getSource(), EntityArgument.getEntitiesAllowingNone(ctx, "targets"), DimensionArgument.getDimensionArgument(ctx, "dim"), new BlockPos(ctx.getSource().getPos())))
+                        )
+                );
+    }
+
+    public static int execute(CommandSource sender, Collection<? extends Entity> entities, DimensionType dim, BlockPos pos) throws CommandSyntaxException
+    {
+        entities.removeIf(e -> !canEntityTeleport(e));
+        if (entities.isEmpty())
+            throw NO_ENTITIES.create();
+
+        //if (!DimensionManager.isDimensionRegistered(dim))
+        //    throw INVALID_DIMENSION.create(dim);
+
+        entities.stream().filter(e -> e.dimension == dim).forEach(e -> sender.sendFeedback(new TranslationTextComponent("commands.forge.setdim.invalid.nochange", e.getDisplayName().getFormattedText(), dim), true));
+        entities.stream().filter(e -> e.dimension != dim).forEach(e ->  e.changeDimension(dim, new ITeleporter()
         {
-            for (int k1 = -2; k1 <= 2; ++k1)
+            @Override
+            public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity)
             {
-                for (int l1 = -1; l1 < 3; ++l1)
-                {
-                    int i2 = i + k1 * 1 + j1 * 0;
-                    int j2 = j + l1;
-                    int k2 = k + k1 * 0 - j1 * 1;
-                    boolean flag = l1 < 0;
-                    this.world.setBlockState(new BlockPos(i2, j2, k2), flag ? Blocks.AIR.getDefaultState() : Blocks.AIR.getDefaultState());
-                }
+                Entity repositionedEntity = repositionEntity.apply(false);
+                repositionedEntity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+                return repositionedEntity;
             }
-        }
-        entityIn.setLocationAndAngles((double)i, (double)j, (double)k, entityIn.rotationYaw, 0.0F);
-        entityIn.setMotion(0.0d, 0.0d, 0.0d);
-        return true;
+        }));
+
+        return 0;
     }
 
-    public static void teleportToDimension(PlayerEntity player, DimensionType dimension, double x, double y, double z)
+    private static boolean canEntityTeleport(Entity entity)
     {
-        ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity) player;
-        MinecraftServer server = player.getEntityWorld().getServer();
-        ServerWorld worldServer = server.getWorld(dimension);
-        player.addExperienceLevel(0);
-
-        if (worldServer == null || worldServer.getServer() == null)
-        {
-            throw new IllegalArgumentException("Dimension: "+dimension+" doesn't exist!");
-        }
-        entityPlayerMP.changeDimension(dimension, new DimensionHopHelper(worldServer, x, y, z));
-        player.setPositionAndUpdate(x, y, z);
+        // use vanilla portal logic from BlockPortal#onEntityCollision
+        return !entity.isPassenger() && !entity.isBeingRidden() && entity.isNonBoss();
     }
 }

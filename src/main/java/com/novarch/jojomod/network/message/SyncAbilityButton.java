@@ -11,6 +11,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -62,11 +63,19 @@ public class SyncAbilityButton
                 props.setAbility(!props.getAbility());
             }
 
-            if (!props.getAbility()) {
+            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
+                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Normal", new Object[0]));
+            }
+
+            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
+                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Lifegiver", new Object[0]));
+            }
+
+            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.kingCrimson) {
                 player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
             }
 
-            if (props.getAbility()) {
+            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.kingCrimson) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
 
             }

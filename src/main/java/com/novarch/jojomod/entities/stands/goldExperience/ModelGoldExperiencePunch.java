@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
+package com.novarch.jojomod.entities.stands.goldExperience;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -6,20 +6,20 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelDirtyDeedsDoneDirtCheapPunch <T extends EntityStandPunch.dirtyDeedsDoneDirtCheap> extends EntityModel<T>
+public class ModelGoldExperiencePunch <T extends EntityStandPunch.goldExperience> extends EntityModel<T>
 {
 	 private final ModelRenderer Punch;
 
-	 public ModelDirtyDeedsDoneDirtCheapPunch()
+	 public ModelGoldExperiencePunch()
 	 {
-		 this.textureWidth = 64;
-		 this.textureHeight = 32;
-
-		 this.Punch = new ModelRenderer(this, 0, 0);
-		 this.Punch.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 12);
-		 this.Punch.setRotationPoint(0.0f, 0.0f, 0.0f);
-		 this.Punch.setTextureSize(64, 32);
-		 setRotationAngle(this.Punch, 0.0f, 0.0f, 0.0f);
+		this.textureWidth = 64;
+	   	this.textureHeight = 32;
+	   	
+	    this.Punch = new ModelRenderer(this, 0, 0);
+	    this.Punch.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 12);
+	    this.Punch.setRotationPoint(0.0f, 0.0f, 0.0f);
+	    this.Punch.setTextureSize(64, 32);
+	    setRotationAngle(this.Punch, 0.0f, 0.0f, 0.0f);
 	 }
 	  
 	 @Override
