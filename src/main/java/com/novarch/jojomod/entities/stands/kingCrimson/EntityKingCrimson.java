@@ -151,6 +151,8 @@ public class EntityKingCrimson extends EntityStandBase
 	        		props.addTimeLeft(1);
 	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 					if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -165,7 +167,7 @@ public class EntityKingCrimson extends EntityStandBase
 							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 						}
 
-						if(entity instanceof PlayerEntity && entity != this.getMaster())
+						if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 						{
 							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -175,6 +177,8 @@ public class EntityKingCrimson extends EntityStandBase
 				}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -189,7 +193,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -199,6 +203,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -213,7 +219,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -223,6 +229,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -237,7 +245,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -247,6 +255,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -261,7 +271,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -271,6 +281,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -285,7 +297,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -295,6 +307,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -309,7 +323,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
@@ -319,6 +333,8 @@ public class EntityKingCrimson extends EntityStandBase
 					}
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
+						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
@@ -333,7 +349,7 @@ public class EntityKingCrimson extends EntityStandBase
 								((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster())
+							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));

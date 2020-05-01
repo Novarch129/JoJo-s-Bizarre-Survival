@@ -50,6 +50,10 @@ public class JojoLibs
         public static int goldExperience = 3;
 
         public static int madeInHeaven = 4;
+
+        public static int weatherReport = 5;
+
+        public static int GER = 6;
     }
 
     public static int numberOfStands = 4;

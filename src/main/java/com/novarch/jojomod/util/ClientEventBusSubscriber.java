@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperiencePu
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
+import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
 import com.novarch.jojomod.init.EntityInit;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,8 +19,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientEventBusSubscriber {
-
+public class ClientEventBusSubscriber
+{
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event)
 	{
@@ -33,5 +34,6 @@ public class ClientEventBusSubscriber {
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), RenderGoldExperiencePunch::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MADE_IN_HEAVEN.get(), RenderMadeInHeaven::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), RenderMadeInHeavenPunch::new);
 	}
 }
