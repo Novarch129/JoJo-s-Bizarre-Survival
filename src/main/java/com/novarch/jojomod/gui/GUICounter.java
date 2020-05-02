@@ -1,44 +1,33 @@
 package com.novarch.jojomod.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.LazyOptional;
 
-@OnlyIn(Dist.CLIENT)
-public class GUICounter extends AbstractGui
+public class GUICounter
 {
-    private String s;
-    private EntityMadeInHeaven stand;
-
-    private Minecraft mc;
-
-    public GUICounter(Minecraft mc, EntityMadeInHeaven madeInHeaven)
+    public static void render()
     {
-        super();
-        this.mc = mc;
-        this.stand = madeInHeaven;
-        s = "";
-        s = String.valueOf(stand.getHeaventickr());
-    }
-
-    public void render()
-    {
-        if(!mc.world.isRemote) {
-            mc.player.sendMessage(new TranslationTextComponent("str", new Object[0]));
-            this.mc.fontRenderer.drawStringWithShadow(s, 2.0f, 4.0f, 16777215);
-            this.mc.fontRenderer.drawStringWithShadow("String", 4.0f, 4.0f, 1);
-            this.mc.fontRenderer.drawStringWithShadow(s, (float) mc.mouseHelper.getMouseX(), (float) mc.mouseHelper.getMouseY(), 16777215);
+        Minecraft mc = Minecraft.getInstance();
+        if(mc != null) {
+            if (mc.player != null)
+            {
+                LazyOptional<IStand> power = mc.player.getCapability(JojoProvider.STAND);
+                IStand props = power.orElse(new IStandCapability());
+                EntityStandBase stand = JojoLibs.getStand(props.getStandID(), mc.world);
+                if(stand != null && stand.standID == JojoLibs.StandID.madeInHeaven)
+                {
+                    RenderSystem.pushMatrix();
+                    mc.fontRenderer.drawStringWithShadow(String.valueOf(((EntityMadeInHeaven) stand).getHeaventickr()), 4.0f, 4.0f, 1);
+                    RenderSystem.popMatrix();
+                }
+            }
         }
-    }
-
-    public String getS() {
-        return s;
-    }
-
-    public void setS(String s) {
-        this.s = s;
     }
 }

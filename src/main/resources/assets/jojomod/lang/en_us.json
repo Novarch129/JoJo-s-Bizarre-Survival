@@ -1,4 +1,5 @@
 {
+  "item.jojomod.canzoni_preferite": "Canzoni Preferite",
   "item.jojomod.stand_arrow": "Stand Arrow",
   "item.jojomod.summon_kc": "King Crimson",
   "item.jojomod.summon_d4c": "Dirty Deeds Done Dirt Cheap",
@@ -10,9 +11,10 @@
   "entity.jojomod.d4c": "Dirty Deeds Done Dirt Cheap",
   "entity.jojomod.d4c_punch": "Dirty Deeds Done Dirt Cheap's punch",
 
-  "key.categories.Jojo's Blocky Adventure": "Jojo's Blocky Adventure",
+  "key.categories.Steve's Bizarre Survival": "Steve's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Stand Ability",
+  "key.ability2.desc": "Stand Ability 2",
 
-  "itemGroup.jojotab": "JoJo's Blocky Adventure"
+  "itemGroup.jojotab": "Steve's Bizarre Survival"
 }

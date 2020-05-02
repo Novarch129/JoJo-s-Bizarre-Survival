@@ -41,8 +41,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 	  	return this.heaventickr;
 	  }
 
-	  GUICounter counter = new GUICounter(Minecraft.getInstance(), this);
-
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
 

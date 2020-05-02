@@ -9,7 +9,11 @@ import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.util.helpers.DimensionHopHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.GameType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -54,6 +58,7 @@ public class StevesBizarreSurvival
     public static final String MOD_ID = "jojomod";
     public static StevesBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
+    public PlayerEntity playerEntity = Minecraft.getInstance().player;
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
         () -> PROTOCOL_VERSION,
@@ -174,6 +179,18 @@ public class StevesBizarreSurvival
             {
                 ((EntityStandBase) event.getEntity()).getMaster().clearActivePotions();
             }
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void render(RenderGameOverlayEvent event)
+    {
+        if(playerEntity != null)
+        {
+            LazyOptional<IStand> power = playerEntity.getCapability(JojoProvider.STAND);
+            IStand props = power.orElse(new IStandCapability());
+            GUICounter.render();
         }
     }
 }

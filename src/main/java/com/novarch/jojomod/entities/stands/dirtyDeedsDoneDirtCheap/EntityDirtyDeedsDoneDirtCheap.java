@@ -9,6 +9,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.handlers.KeyHandler;
 import com.novarch.jojomod.util.helpers.DimensionHopHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -19,6 +20,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -36,6 +38,8 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	  private int oratickr = 0;
 	  
 	  private int changetick = 0;
+
+	  private int dimensionTick = 0;
 	  
 	  private boolean d4c = true;
 	  
@@ -89,7 +93,12 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	public void tick()
 	{
 		super.tick();
-		this.fallDistance = 0.0F; 
+		this.fallDistance = 0.0F;
+		if(KeyHandler.keys[2].isPressed())
+		{
+			this.getMaster().changeDimension(DimensionType.THE_NETHER);
+		}
+
 	    if (getMaster() != null)
 	    {
 	    	PlayerEntity player = getMaster();
@@ -111,12 +120,11 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
 						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
 					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
-						  if (this.world instanceof ServerWorld) {
-							  try {
-							  	this.getMaster().changeDimension(DimensionType.THE_NETHER);
-							  } catch (IllegalStateException e) {
-								  e.printStackTrace();
-							  }
+						  if (this.dimensionTick == 0)
+						  {
+							  dimensionTick=1;
+							  //this.getMaster().changeDimension(DimensionType.THE_NETHER);
+							  player.sendMessage(new TranslationTextComponent("String", new Object[0]));
 						  }
 					  }
 					  /*case -1:

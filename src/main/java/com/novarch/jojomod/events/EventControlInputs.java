@@ -9,6 +9,7 @@ import com.novarch.jojomod.util.handlers.KeyHandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,7 +35,16 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbilityButton()); //TODO Toggle for ability
+				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbilityButton());
+			 }
+		 }
+
+		 if(KeyHandler.keys[2].isPressed())
+		 {
+			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
+			 if (entityPlayerSP != null)
+			 {
+				 entityPlayerSP.changeDimension(DimensionType.THE_NETHER);
 			 }
 		 }
 	    
