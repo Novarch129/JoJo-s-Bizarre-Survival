@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
@@ -10,45 +10,26 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.helpers.DimensionHopHelper;
-import net.minecraft.command.CommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Bootstrap;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
-import net.minecraftforge.server.command.CommandSetDimension;
 
 import java.util.Collection;
-import java.util.function.Function;
 
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 {
-	  @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
+	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
 	
 	  private int oratick = 0;
 	  
@@ -128,13 +109,12 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					  if (this.getMaster() != null && world != null) {
 						  /*player.getFoodStats().addStats(-2, 0.0F);
 						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));*/
-					  /*DimensionHopHelper.teleportToDimension(player, DimensionType.THE_NETHER, player.getPosX(), player.getPosY(), player.getPosZ());
+						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
 					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
 						  if (this.world instanceof ServerWorld) {
 							  try {
-								  DimensionHopHelper.execute(this.getMaster().getCommandSource(), entities , DimensionType.THE_NETHER, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()));
-							  } catch (CommandSyntaxException e) {
+							  	this.getMaster().changeDimension(DimensionType.THE_NETHER);
+							  } catch (IllegalStateException e) {
 								  e.printStackTrace();
 							  }
 						  }

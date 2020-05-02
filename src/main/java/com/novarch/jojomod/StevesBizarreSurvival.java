@@ -1,26 +1,19 @@
 package com.novarch.jojomod;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.StandPunchEffects;
-import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
+import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.util.helpers.DimensionHopHelper;
-import net.minecraft.command.CommandSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.GameType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.util.Loader;
@@ -38,9 +31,7 @@ import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -51,14 +42,17 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+/**
+ * @author Novarch
+ */
 @SuppressWarnings("unused")
 @Mod("jojomod")
-public class JojoBlockyAdventure
+public class StevesBizarreSurvival
 {
     public static final boolean debug = true;
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
-    public static JojoBlockyAdventure instance;
+    public static StevesBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
@@ -67,7 +61,7 @@ public class JojoBlockyAdventure
         PROTOCOL_VERSION::equals
     );
 
-    public JojoBlockyAdventure()
+    public StevesBizarreSurvival()
     {
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
@@ -169,5 +163,17 @@ public class JojoBlockyAdventure
         LazyOptional<IStand> power = event.getPlayer().getCapability(JojoProvider.STAND, null);
         IStand props = power.orElse(new IStandCapability());
         props.cloneSaveFunction(props);
+    }
+
+    @SubscribeEvent
+    public void onStandRemoved(EntityEvent event)
+    {
+        if(event.getEntity() instanceof EntityStandBase)
+        {
+            if(!event.getEntity().isAlive())
+            {
+                ((EntityStandBase) event.getEntity()).getMaster().clearActivePotions();
+            }
+        }
     }
 }

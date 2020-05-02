@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
@@ -8,7 +8,6 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,13 +25,12 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityKingCrimson extends EntityStandBase
 {
-	  @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
+	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
 	
 	  private int oratick = 0;
 	  

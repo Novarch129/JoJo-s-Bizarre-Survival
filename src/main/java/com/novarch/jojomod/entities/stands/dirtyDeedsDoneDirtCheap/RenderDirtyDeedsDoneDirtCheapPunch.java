@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public class RenderDirtyDeedsDoneDirtCheapPunch extends EntityRenderer<EntityStandPunch.dirtyDeedsDoneDirtCheap>
 {
 	protected ModelDirtyDeedsDoneDirtCheapPunch punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBlockyAdventure.MOD_ID, "textures/stands/d4c_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(StevesBizarreSurvival.MOD_ID, "textures/stands/d4c_punch.png");
 
 	public RenderDirtyDeedsDoneDirtCheapPunch(EntityRendererManager renderManagerIn) 
 	{

@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderKingCrimson extends MobRenderer<EntityKingCrimson, ModelKingCrimson<EntityKingCrimson>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBlockyAdventure.MOD_ID, "textures/stands/kc.png");
+	protected static final ResourceLocation texture = new ResourceLocation(StevesBizarreSurvival.MOD_ID, "textures/stands/kc.png");
 
 	public RenderKingCrimson(EntityRendererManager renderManagerIn) 
 	{

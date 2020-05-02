@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.madeInHeaven;
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
@@ -10,35 +10,25 @@ import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
-
-import javax.annotation.Nullable;
-import java.util.Random;
 
 public class EntityMadeInHeaven extends EntityStandBase
 {
-	  @ObjectHolder(JojoBlockyAdventure.MOD_ID + ":made_in_heaven") public static EntityType<EntityMadeInHeaven> TYPE;
+	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":made_in_heaven") public static EntityType<EntityMadeInHeaven> TYPE;
 
 	  private int oratick = 0;
 
@@ -94,7 +84,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 	    this.spawnSound = SoundInit.SPAWN_MIH.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;
-	    counter.render();
 	}
 	
 	public void tick()
@@ -110,7 +99,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
 
-			if(this.getMaster().isCrouching()&&JojoBlockyAdventure.debug)
+			if(this.getMaster().isCrouching()&& StevesBizarreSurvival.debug)
 			{
 				heaventickr-=100;
 				player.sendMessage(new TranslationTextComponent(String.valueOf(heaventickr), new Object[0]));
@@ -217,18 +206,12 @@ public class EntityMadeInHeaven extends EntityStandBase
 							player.setSprinting(false);
 							EntityStandPunch.madeInHeaven madeInHeaven1 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 							madeInHeaven1.setRandomPositions();
-							madeInHeaven1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							madeInHeaven1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
 							this.world.addEntity((Entity) madeInHeaven1);
 							EntityStandPunch.madeInHeaven madeInHeaven2 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 							madeInHeaven2.setRandomPositions();
-							madeInHeaven2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							madeInHeaven2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
 							this.world.addEntity((Entity) madeInHeaven2);
-							/*for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-1000.0, -1000.0 , 1000.0)), EntityPredicates.NOT_SPECTATING))
-							{
-								if(entity instanceof EntityStandPunch.madeInHeaven)
-									if(((EntityStandPunch.madeInHeaven) entity).standMaster == this.getMaster())
-										((EntityStandPunch.madeInHeaven) entity).setPositionAndRotation(entity.getPosX(), entity.getPosY(), entity.getPosZ(), this.getMaster().rotationYaw, this.getMaster().rotationPitch);
-							}*/
 						}
 					if (this.oratickr >= 80) {
 						this.orarush = false;

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.events;
 
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
 import com.novarch.jojomod.network.message.SyncStandSummonButton;
@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID, bus = Bus.FORGE)
+@Mod.EventBusSubscriber(modid = StevesBizarreSurvival.MOD_ID, bus = Bus.FORGE)
 public class EventControlInputs
 {
 	 @SubscribeEvent
@@ -25,7 +25,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncStandSummonButton());
+				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncStandSummonButton());
 			 }
 		 }
 
@@ -34,7 +34,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncAbilityButton()); //TODO Toggle for ability
+				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbilityButton()); //TODO Toggle for ability
 			 }
 		 }
 	    
@@ -43,7 +43,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 JojoBlockyAdventure.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
+				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
 			 }
 		 }
 	 }

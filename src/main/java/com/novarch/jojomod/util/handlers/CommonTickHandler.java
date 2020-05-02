@@ -1,6 +1,6 @@
 package com.novarch.jojomod.util.handlers;
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.IStand;
 
@@ -12,7 +12,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = JojoBlockyAdventure.MOD_ID)
+@Mod.EventBusSubscriber(modid = StevesBizarreSurvival.MOD_ID)
 public class CommonTickHandler 
 {
 	  private int tickSlow = 0;

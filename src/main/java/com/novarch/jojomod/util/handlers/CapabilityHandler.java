@@ -1,6 +1,6 @@
 package com.novarch.jojomod.util.handlers;
 
-import com.novarch.jojomod.JojoBlockyAdventure;
+import com.novarch.jojomod.StevesBizarreSurvival;
 
 import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraft.entity.Entity;
@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class CapabilityHandler
 {
-    public final ResourceLocation JOJO_CAP = new ResourceLocation(JojoBlockyAdventure.MOD_ID, "player-capabilities");
+    public final ResourceLocation JOJO_CAP = new ResourceLocation(StevesBizarreSurvival.MOD_ID, "player-capabilities");
     
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) 

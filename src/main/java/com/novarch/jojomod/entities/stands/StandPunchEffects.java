@@ -261,9 +261,10 @@ public class StandPunchEffects
      * Made in Heaven's punch
      */
     
-    public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock) {
+    public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
+	{
 		if (entityBlock) {
-			if (punch.shootingStand.heaven || punch.shootingStand.heaven == false) {
+			if (punch.shootingStand.heaven) {
 				if (punch.shootingStand.orarush) {
 					LivingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 140, 1));
 				} else {
@@ -289,31 +290,33 @@ public class StandPunchEffects
 					}
 					LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
 					punch.remove();
-					if (LivingEntity instanceof EnderDragonEntity) {
-						LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 50.0f);
-						LivingEntity.hurtResistantTime = 0;
-						LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-						if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-							LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
-						} else {
-							LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
-						}
-						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-						punch.remove();
-					} else {
-						LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 2.0f);
-						LivingEntity.hurtResistantTime = 0;
-						LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-						if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-							LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
-						} else {
-							LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
-						}
-						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-						punch.remove();
-					}
 				}
-				if (!entityBlock) {
+				if (LivingEntity instanceof EnderDragonEntity) {
+					LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 50.0f);
+					LivingEntity.hurtResistantTime = 0;
+					LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
+					if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
+					} else {
+						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
+					}
+					LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
+					punch.remove();
+				} else {
+					LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 2.0f);
+					LivingEntity.hurtResistantTime = 0;
+					LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
+					if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
+					} else {
+						LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
+					}
+					LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
+					punch.remove();
+				}
+			}
+		}
+				else if (!entityBlock) {
 					final Block blockB = punch.getinTile();
 					final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 					final BlockState BlockState = punch.world.getBlockState(blockpos);
@@ -326,9 +329,7 @@ public class StandPunchEffects
 						punch.remove();
 					}
 				}
-			}
 		}
-	}
 
 		/**
 		 * Weather Report's punch
@@ -608,6 +609,7 @@ public class StandPunchEffects
 							if (!punch.standMaster.isCreative()) {
 								punch.standMaster.getFoodStats().addStats(-2, 0.0f);
 								props.setCooldown(220);
+								punch.remove();
 							}
 						}
 					}
