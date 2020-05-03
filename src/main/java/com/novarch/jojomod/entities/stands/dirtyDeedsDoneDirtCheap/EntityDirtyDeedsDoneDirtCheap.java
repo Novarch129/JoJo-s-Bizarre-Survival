@@ -120,11 +120,9 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
 						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
 					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
-						  if (this.dimensionTick == 0)
+						  if (this.world.getPlayers().contains(this.getMaster()))
 						  {
-							  dimensionTick=1;
-							  //this.getMaster().changeDimension(DimensionType.THE_NETHER);
-							  player.sendMessage(new TranslationTextComponent("String", new Object[0]));
+							  this.getMaster().changeDimension(DimensionType.THE_NETHER);
 						  }
 					  }
 					  /*case -1:

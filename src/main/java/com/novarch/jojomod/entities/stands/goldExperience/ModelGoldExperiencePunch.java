@@ -45,4 +45,10 @@ public class ModelGoldExperiencePunch <T extends EntityStandPunch.goldExperience
 		 modelRenderer.rotateAngleY = y;
 		 modelRenderer.rotateAngleZ = z;
 	 }
+
+	@Override
+	public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick)
+	{
+		super.setLivingAnimations(entityIn, limbSwing, limbSwingAmount, partialTick);
+	}
 }

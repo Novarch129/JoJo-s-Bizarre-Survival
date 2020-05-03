@@ -87,7 +87,7 @@ public class EntityGoldExperience extends EntityStandBase
 			this.life = props.getAbility();
 
 			//Cooldown handler
-			if (props.getTransformed() == 1) {
+			if (props.getTransformed() > 0) {
 				props.subtractCooldown(1);
 			}
 			if (props.getCooldown() <= 0) {
@@ -114,7 +114,7 @@ public class EntityGoldExperience extends EntityStandBase
 							this.oratick++;
 							if (this.oratick == 1) {
 								if (!this.world.isRemote)
-									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.MUDAGIORNO.get(), getSoundCategory(), 6.0F, 1.0F);
+									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.MUDAGIORNO.get(), getSoundCategory(), 1.0F, 1.0F);
 
 
 								if (!player.isCreative())
@@ -131,8 +131,8 @@ public class EntityGoldExperience extends EntityStandBase
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.goldExperience goldExperience = new EntityStandPunch.goldExperience(this.world, this, player);
-							goldExperience.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-							this.world.addEntity((Entity) goldExperience);
+							goldExperience.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity(goldExperience);
 						}
 					}
 				}
@@ -146,20 +146,14 @@ public class EntityGoldExperience extends EntityStandBase
 							player.setSprinting(false);
 							EntityStandPunch.goldExperience goldExperience1 = new EntityStandPunch.goldExperience(this.world, this, player);
 							goldExperience1.setRandomPositions();
-							goldExperience1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-							this.world.addEntity((Entity) goldExperience1);
+							goldExperience1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity(goldExperience1);
 							EntityStandPunch.goldExperience goldExperience2 = new EntityStandPunch.goldExperience(this.world, this, player);
 							goldExperience2.setRandomPositions();
-							goldExperience2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-							this.world.addEntity((Entity) goldExperience2);
-							/*for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-1000.0, -1000.0 , 1000.0)), EntityPredicates.NOT_SPECTATING))
-							{
-								if(entity instanceof EntityStandPunch.goldExperience)
-									if(((EntityStandPunch.goldExperience) entity).standMaster == this.getMaster())
-										((EntityStandPunch.goldExperience) entity).setPositionAndRotation(entity.getPosX(), entity.getPosY(), entity.getPosZ(), this.getMaster().rotationYaw, this.getMaster().rotationPitch);
-							}*/
+							goldExperience2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity(goldExperience2);
 						}
-					if (this.oratickr >= 80) {
+					if (this.oratickr >= 110) {
 						this.orarush = false;
 						this.oratickr = 0;
 					}
@@ -167,7 +161,6 @@ public class EntityGoldExperience extends EntityStandBase
 			}
 		}
 	    }
-
 
 	  public boolean isEntityInsideOpaqueBlock()
 	  {
@@ -177,6 +170,6 @@ public class EntityGoldExperience extends EntityStandBase
 	@Override
 	public boolean canBeCollidedWith()
 	{
-		return super.canBeCollidedWith();
+		return false;
 	}
 }

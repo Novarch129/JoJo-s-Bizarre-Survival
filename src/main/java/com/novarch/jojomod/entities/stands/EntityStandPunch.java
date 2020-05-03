@@ -627,6 +627,18 @@ public enum PickupStatus
         }
 
         @Override
+        public void tick()
+        {
+          super.tick();
+          if(this.ticksExisted > 5)
+            this.remove();
+          if(this.getMotion().getX() == 0 || this.getMotion().getY() == 0 || this.getMotion().getZ() == 0)
+          {
+            this.remove();
+          }
+        }
+
+        @Override
         public IPacket<?> createSpawnPacket()
         {
           return NetworkHooks.getEntitySpawningPacket(this);

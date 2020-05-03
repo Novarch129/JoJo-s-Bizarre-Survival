@@ -30,14 +30,10 @@ import net.minecraftforge.common.util.LazyOptional;
 @SuppressWarnings("unused")
 public class ItemStandArrow extends Item
 { // TODO add method to obtain GER
-	private boolean hasStand;
-	private int standID;
-		
+
 	public ItemStandArrow(Properties properties) 
     {
 		super(properties);
-		this.hasStand = true;
-		this.standID = 0;
 	}
 	
 	@Override
@@ -77,54 +73,48 @@ public class ItemStandArrow extends Item
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft)
 	{
-		if (!world.isRemote && entity instanceof PlayerEntity) 
-        {
-            final PlayerEntity player = (PlayerEntity)entity;
-            LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new IStandCapability());
-            this.hasStand = true;													 
-            if (props != null && props.getStandID() != 0) 
-            {
-                this.hasStand = false;
-            }
-            if (this.hasStand) 
-            {
-                int randomstand = 0;
-                if (this.standID == 0)
-                {
-                    while (randomstand == 0) 
-                    {
-                        randomstand = ItemStandArrow.random.nextInt(JojoLibs.numberOfStands);
-                    }
-                }
-                else 
-                {
-                    randomstand = this.standID;
-                }
-                if (randomstand != 0) 
-                {
-                    if (!player.isCreative()) 
-                    {
-                        stack.shrink(1);
-                    }
-                    props.setStandID(randomstand);
-                    props.setStandOn(true);
-                    final EntityStandBase theStand = JojoLibs.getStand(randomstand, world);
-                    if (theStand != null) {
-                        theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                        theStand.setMaster(player.getCommandSource().getName());
-                        theStand.setMastername(player.getDisplayName().toString());
-                        world.addEntity((Entity)theStand);
-                        theStand.spawnSound();
-                        theStand.setGiveItems();
-                    }
-                }
-            }
-            else 
-            {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
-            }
-	}
+		PlayerEntity player = (PlayerEntity)entity;
+		LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
+		IStand props = stand.orElse(new IStandCapability());
+			if (props.getStandID() == 0)
+			{
+				if (!player.isCreative())
+				{
+					stack.shrink(1);
+				}
+				props.setStandID(world.rand.nextInt(JojoLibs.numberOfStands));
+				props.setStandOn(true);
+				final EntityStandBase theStand = JojoLibs.getStand(world.rand.nextInt(JojoLibs.numberOfStands), world);
+				if (theStand != null) {
+					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+					theStand.setMaster(player);
+					//theStand.setMaster(player.getCommandSource().getName());
+					theStand.setMastername(player.getDisplayName().toString());
+					world.addEntity((Entity)theStand);
+					theStand.spawnSound();
+					theStand.setGiveItems();
+				}
+			}
+			else if(props.getStandID() == JojoLibs.StandID.goldExperience) {
+				props.setStandRemoved();
+				props.setStandID(JojoLibs.StandID.madeInHeaven);
+				props.setStandOn(true);
+				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.madeInHeaven, world);
+				if (theStand != null) {
+					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+					theStand.setMaster(player);
+					//theStand.setMaster(player.getCommandSource().getName());
+					theStand.setMastername(player.getDisplayName().toString());
+					world.addEntity((Entity) theStand);
+					theStand.spawnSound();
+					theStand.setGiveItems();
+				}
+			}
+			else
+			{
+				player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
+			}
+
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
