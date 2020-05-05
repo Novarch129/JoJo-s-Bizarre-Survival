@@ -3,6 +3,7 @@ package com.novarch.jojomod.objects.items;
 import java.util.List;
 
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.capabilities.IStand;
@@ -19,7 +20,9 @@ import net.minecraft.item.Rarity;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -29,7 +32,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 @SuppressWarnings("unused")
 public class ItemStandArrow extends Item
-{ // TODO add method to obtain GER
+{ // TODO add animation when obtaining GER
 
 	public ItemStandArrow(Properties properties) 
     {
@@ -95,15 +98,55 @@ public class ItemStandArrow extends Item
 					theStand.setGiveItems();
 				}
 			}
-			else if(props.getStandID() == JojoLibs.StandID.goldExperience) {
+			if(props.getStandID() == JojoLibs.StandID.goldExperience)
+			{
 				props.setStandRemoved();
-				props.setStandID(JojoLibs.StandID.madeInHeaven);
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							entity1.remove();
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							entity1.remove();
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							entity1.remove();
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							entity1.remove();
+						}
+					}
+				}
+				props.setStandID(JojoLibs.StandID.GER);
 				props.setStandOn(true);
-				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.madeInHeaven, world);
+				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.GER, world);
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
-					//theStand.setMaster(player.getCommandSource().getName());
 					theStand.setMastername(player.getDisplayName().toString());
 					world.addEntity((Entity) theStand);
 					theStand.spawnSound();
@@ -113,6 +156,7 @@ public class ItemStandArrow extends Item
 			else
 			{
 				player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
+				player.sendMessage(new TranslationTextComponent(String.valueOf(props.getStandID()), new Object[0]));
 			}
 
 	}
@@ -129,16 +173,15 @@ public class ItemStandArrow extends Item
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, (Object)stack);
         }
-        if (props.getStandID() == 0) 
+        if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience)
         {
-        	playerIn.sendMessage((ITextComponent)new TranslationTextComponent("Success " + String.valueOf(props.getStandID()), new Object[0]));
             playerIn.setActiveHand(handIn);
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, (Object)stack);
         }
         playerIn.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
 		} catch (ClassCastException cce) {playerIn.sendMessage((ITextComponent)new TranslationTextComponent("Exception!" + playerIn.getCapability(JojoProvider.STAND, null), new Object[0]));}
         return (ActionResult<ItemStack>) new ActionResult(ActionResultType.PASS, (Object)stack);
-	}	
+	}
 	
 	public enum ModRarity implements IExtensibleEnum
 	{

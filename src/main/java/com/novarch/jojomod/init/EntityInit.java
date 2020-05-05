@@ -4,6 +4,7 @@ import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
+import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
@@ -67,4 +68,15 @@ public class EntityInit
 			.register("made_in_heaven_punch", () -> EntityType.Builder.<EntityStandPunch.madeInHeaven>create(EntityStandPunch.madeInHeaven::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(StevesBizarreSurvival.MOD_ID, "made_in_heaven_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityGoldExperienceRequiem>> GOLD_EXPERIENCE_REQUIEM = ENTITY_TYPES
+			.register("gold_experience_requiem",
+					() -> EntityType.Builder.<EntityGoldExperienceRequiem>create(EntityGoldExperienceRequiem::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(StevesBizarreSurvival.MOD_ID, "gold_experience_requiem").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.goldExperienceRequiem>> GOLD_EXPERIENCE_REQUIEM_PUNCH = ENTITY_TYPES
+			.register("gold_experience_requiem_punch", () -> EntityType.Builder.<EntityStandPunch.goldExperienceRequiem>create(EntityStandPunch.goldExperienceRequiem::new, EntityClassification.MISC)
+					.size(0.2f, 0.2f)
+					.build(new ResourceLocation(StevesBizarreSurvival.MOD_ID, "gold_experience_requiem_punch").toString()));
 }

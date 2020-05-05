@@ -393,7 +393,6 @@ public class StandPunchEffects
 
 		public static void goldExperience (RayTraceResult result,final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
 		{
-			//TODO fix punches not despawning
 			if (entityBlock) {
 				if (punch.shootingStand.life) {
 					if (punch.shootingStand.orarush) {
@@ -441,7 +440,7 @@ public class StandPunchEffects
 						if (props.getTransformed() == 0) {
 							if (blockB == Blocks.GRASS || blockB == Blocks.NETHERRACK)
 							{
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
 								bat.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(bat);
@@ -449,7 +448,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.JUNGLE_LEAVES) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
 								parrot.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(parrot);
@@ -457,7 +456,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.TNT) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
 								creeper.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(creeper);
@@ -465,7 +464,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.SLIME_BLOCK) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
 								slime.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(slime);
@@ -473,7 +472,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.STONE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
 								silverfish.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(silverfish);
@@ -481,7 +480,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.POTATOES || blockB == Blocks.OAK_LOG) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
 								pig.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(pig);
@@ -489,7 +488,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.HAY_BLOCK) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
 								horse.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(horse);
@@ -497,7 +496,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.MYCELIUM) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
 								mooshroom.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(mooshroom);
@@ -505,7 +504,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.EMERALD_BLOCK || blockB == Blocks.EMERALD_ORE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
 								villager.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(villager);
@@ -513,7 +512,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.MOSSY_COBBLESTONE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
 								zombie.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(zombie);
@@ -521,7 +520,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.BONE_BLOCK || blockB == Blocks.BOOKSHELF) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
 								skeleton.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(skeleton);
@@ -529,7 +528,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.VINE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
 								spider.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(spider);
@@ -537,7 +536,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.WHITE_WOOL || blockB == Blocks.WHEAT) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
 								sheep.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(sheep);
@@ -545,7 +544,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.BEETROOTS) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								CowEntity cow = new CowEntity(EntityType.COW, punch.world);
 								cow.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(cow);
@@ -553,7 +552,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.CARROTS) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
 								rabbit.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(rabbit);
@@ -561,7 +560,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.FIRE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
 								blaze.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(blaze);
@@ -569,7 +568,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.MAGMA_BLOCK) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
 								magma.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(magma);
@@ -577,7 +576,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.NETHER_BRICKS || blockB == Blocks.NETHER_WART || blockB == Blocks.NETHER_WART_BLOCK) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
 								zombiepig.setPosition(punch.getxTile() + 0.5f, (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(zombiepig);
@@ -585,7 +584,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.BLACK_SHULKER_BOX || blockB == Blocks.BLUE_SHULKER_BOX || blockB == Blocks.BROWN_SHULKER_BOX || blockB == Blocks.CYAN_SHULKER_BOX || blockB == Blocks.GRAY_SHULKER_BOX || blockB == Blocks.GREEN_SHULKER_BOX || blockB == Blocks.LIGHT_BLUE_SHULKER_BOX || blockB == Blocks.LIME_SHULKER_BOX || blockB == Blocks.MAGENTA_SHULKER_BOX || blockB == Blocks.ORANGE_SHULKER_BOX || blockB == Blocks.PINK_SHULKER_BOX || blockB == Blocks.PURPLE_SHULKER_BOX || blockB == Blocks.RED_SHULKER_BOX || blockB == Blocks.WHITE_SHULKER_BOX || blockB == Blocks.YELLOW_SHULKER_BOX) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
 								shulker.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(shulker);
@@ -593,7 +592,7 @@ public class StandPunchEffects
 								punch.remove();
 							}
 							if (blockB == Blocks.SAND || blockB == Blocks.SANDSTONE) {
-								props.setTransformed(1);
+								props.setTransformed(props.getTransformed()+1);
 								HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
 								husk.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 								punch.world.addEntity(husk);
@@ -611,7 +610,6 @@ public class StandPunchEffects
 							punch.world.playSound(punch.standMaster, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
 							if(punch.ticksExisted > 60)
 							{
-								punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Removed1", new Object[0]));
 								punch.remove();
 							}
 							if (!punch.standMaster.isCreative())
@@ -630,11 +628,9 @@ public class StandPunchEffects
 						punch.remove();
 					}
 				} else {
-					punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Removed2", new Object[0]));
 					punch.remove();
 				}
 			} else {
-				punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Removed3", new Object[0]));
 				punch.remove();
 			}
 		}
@@ -643,271 +639,265 @@ public class StandPunchEffects
      * GER's punch
      */
     
-    /*public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock) 
-    {   	
-        if (entityBlock) 
-        {
-            if (punch.shootingStand.ger) 
-            {
-                if (punch.shootingStand.orarush) 
-                {
-                    LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 2));
-                }
-                else 
-                {
-                    LivingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 3));
-                }
-                LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 0.3f);
-                LivingEntity.hurtResistantTime = 0;
-                LivingEntity.setMotion(0, 0, 0);
-                punch.remove();
-                if(LivingEntity instanceof PlayerEntity)
-                {
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 250, 3));
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 250, 4));
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.NAUSEA, 250, 3));
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 250, 5));
-                	((PlayerEntity) LivingEntity).jump();
-                }
-            }
-            else 
-            {
-                final float p = 0.2f;
-                final float p2 = 0.4f;
-                LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
-                LivingEntity.hurtResistantTime = 0;
-                LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-                if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0)
-                {
-                	LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
-                }
-                else
-                {
-                	LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
-                }
-                LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-                punch.remove();
-            }
-        }
-        if (!entityBlock) 
-        {
-            final Block blockB = punch.getinTile();
-            final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
-            final BlockState BlockState = punch.world.getBlockState(blockpos);
-            final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-                if (punch.shootingStand.ger) 
-                {
-                	if(gerTransformed<2)
-                	{
-                	if(blockB == Blocks.GRASS || blockB == Blocks.NETHERRACK || blockB == Blocks.BEDROCK)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityBat bat = new EntityBat(punch.world);
-                		bat.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(bat);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.OAK_LEAVES || blockB == Blocks.ACACIA_LEAVES || blockB == Blocks.SPRUCE_LEAVES || blockB == Blocks.BIRCH_LEAVES || blockB == Blocks.JUNGLE_LEAVES)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityParrot parrot = new EntityParrot(punch.world);
-                		parrot.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(parrot);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.TNT)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityCreeper creeper = new EntityCreeper(punch.world);
-                		creeper.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(creeper);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.SLIME_BLOCK)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntitySlime slime = new EntitySlime(punch.world);
-                		slime.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(slime);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.STONE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntitySilverfish silverfish = new EntitySilverfish(punch.world);
-                		silverfish.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(silverfish);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.POTATOES || blockB == Blocks.LOG)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityPig pig = new EntityPig(punch.world);
-                		pig.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(pig);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.HAY_BLOCK)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityHorse horse = new EntityHorse(punch.world);
-                		horse.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(horse);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.MYCELIUM)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityMooshroom mooshroom = new EntityMooshroom(punch.world);
-                		mooshroom.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(mooshroom);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.EMERALD_BLOCK || blockB == Blocks.EMERALD_ORE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityVillager villager = new EntityVillager(punch.world);
-                		villager.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(villager);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.MOSSY_COBBLESTONE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityZombie zombie = new EntityZombie(punch.world);
-                		zombie.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(zombie);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.BONE_BLOCK || blockB == Blocks.BOOKSHELF)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntitySkeleton skeleton = new EntitySkeleton(punch.world);
-                		skeleton.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(skeleton);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.VINE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntitySpider spider = new EntitySpider(punch.world);
-                		spider.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(spider);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.WHITE_WOOL || blockB == Blocks.WHEAT)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntitySheep sheep = new EntitySheep(punch.world);
-                		sheep.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(sheep);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.BEETROOTS)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityCow cow = new EntityCow(punch.world);
-                		cow.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(cow);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.CARROTS)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityRabbit rabbit = new EntityRabbit(punch.world);
-                		rabbit.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(rabbit);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.FIRE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityBlaze blaze = new EntityBlaze(punch.world);
-                		blaze.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(blaze);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.MAGMA_BLOCK)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		EntityMagmaCube magma = new EntityMagmaCube(punch.world);
-                		magma.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(magma);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.NETHER_BRICKS || blockB == Blocks.NETHER_WART || blockB == Blocks.NETHER_WART_BLOCK)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(punch.world);
-                		zombiepig.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(zombiepig);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.BLACK_SHULKER_BOX || blockB == Blocks.BLUE_SHULKER_BOX || blockB == Blocks.BROWN_SHULKER_BOX || blockB == Blocks.CYAN_SHULKER_BOX || blockB == Blocks.GRAY_SHULKER_BOX || blockB == Blocks.GREEN_SHULKER_BOX || blockB == Blocks.LIGHT_BLUE_SHULKER_BOX || blockB == Blocks.LIME_SHULKER_BOX || blockB == Blocks.MAGENTA_SHULKER_BOX || blockB == Blocks.ORANGE_SHULKER_BOX || blockB == Blocks.PINK_SHULKER_BOX || blockB == Blocks.PURPLE_SHULKER_BOX || blockB == Blocks.RED_SHULKER_BOX || blockB == Blocks.SILVER_SHULKER_BOX || blockB == Blocks.WHITE_SHULKER_BOX || blockB == Blocks.YELLOW_SHULKER_BOX)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
-                		shulker.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(shulker);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.SAND || blockB == Blocks.SANDSTONE)
-                	{
-                		gerTransformed = gerTransformed + 1;
-                		HuskEntity husk = new HuskEntity(punch.world);
-                		husk.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(husk);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.BEACON)
-                	{
-                		gerTransformed = gerTransformed + 2;
-                		WitherEntity wither = new WitherEntity(punch.world);
-                		wither.setPosition((double)(punch.getxTile() + 0.5f), (double)(punch.getyTile() + 0.5f), (double)(punch.getzTile() + 0.5f));
-                		punch.world.addEntity(wither);
-                		punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                		punch.remove();
-                	}
-                	if(blockB == Blocks.FARMLAND)
-                	{
-                		Minecraft.getInstance().player.getFoodStats().addStats(2, 0.1f);
-                		punch.remove();
-                	}
-                	punch.world.playSound((PlayerEntity)Minecraft.getInstance().player, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE, SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                	}
-                }
-                	if(!punch.shootingStand.ger)
-                	{
-                    punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
-                    punch.remove();
-                	}
-                else
-                {
-                	punch.remove();
-                }
-        }
-    }*/
+    public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock)
+    {
+		if (entityBlock) {
+			if (punch.shootingStand.ger) {
+				if (punch.shootingStand.orarush) {
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
+				} else {
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 1));
+				}
+				LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 0.3f);
+				LivingEntity.hurtResistantTime = 0;
+				LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
+				LivingEntity.setMotion(LivingEntity.getMotion().getX(), 0, LivingEntity.getMotion().getZ());
+				LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
+				punch.remove();
+				if (LivingEntity instanceof PlayerEntity) {
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 250, 0));
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 250, 2));
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.NAUSEA, 250, 1));
+					LivingEntity.addPotionEffect(new EffectInstance(Effects.WEAKNESS, 250, 1));
+					((PlayerEntity) LivingEntity).jump();
+				}
+			} else {
+				final float p = 0.2f;
+				final float p2 = 0.4f;
+				LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity) punch.shootingStand.getMaster()), 2.0f);
+				LivingEntity.hurtResistantTime = 0;
+				LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
+				if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+					LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
+				} else {
+					LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
+				}
+				LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
+				punch.remove();
+			}
+		}
+		if (!entityBlock) {
+			final Block blockB = punch.getinTile();
+			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState BlockState = punch.world.getBlockState(blockpos);
+			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
+			LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
+			IStand props = power.orElse(new IStandCapability());
+			if (punch.shootingStand.ger) {
+					if (props.getTransformed() < 2) {
+						if (blockB == Blocks.GRASS || blockB == Blocks.NETHERRACK)
+						{
+							props.setTransformed(props.getTransformed()+1);
+							BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
+							bat.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(bat);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.JUNGLE_LEAVES) {
+							props.setTransformed(props.getTransformed()+1);
+							ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
+							parrot.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(parrot);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.TNT) {
+							props.setTransformed(props.getTransformed()+1);
+							CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
+							creeper.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(creeper);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.SLIME_BLOCK) {
+							props.setTransformed(props.getTransformed()+1);
+							SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
+							slime.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(slime);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.STONE) {
+							props.setTransformed(props.getTransformed()+1);
+							SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
+							silverfish.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(silverfish);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.POTATOES || blockB == Blocks.OAK_LOG) {
+							props.setTransformed(props.getTransformed()+1);
+							PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
+							pig.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(pig);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.HAY_BLOCK) {
+							props.setTransformed(props.getTransformed()+1);
+							HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
+							horse.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(horse);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.MYCELIUM) {
+							props.setTransformed(props.getTransformed()+1);
+							MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
+							mooshroom.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(mooshroom);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.EMERALD_BLOCK || blockB == Blocks.EMERALD_ORE) {
+							props.setTransformed(props.getTransformed()+1);
+							VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
+							villager.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(villager);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.MOSSY_COBBLESTONE) {
+							props.setTransformed(props.getTransformed()+1);
+							ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
+							zombie.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(zombie);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.BONE_BLOCK || blockB == Blocks.BOOKSHELF) {
+							props.setTransformed(props.getTransformed()+1);
+							SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
+							skeleton.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(skeleton);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.VINE) {
+							props.setTransformed(props.getTransformed()+1);
+							SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
+							spider.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(spider);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.WHITE_WOOL || blockB == Blocks.WHEAT) {
+							props.setTransformed(props.getTransformed()+1);
+							SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
+							sheep.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(sheep);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.BEETROOTS) {
+							props.setTransformed(props.getTransformed()+1);
+							CowEntity cow = new CowEntity(EntityType.COW, punch.world);
+							cow.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(cow);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.CARROTS) {
+							props.setTransformed(props.getTransformed()+1);
+							RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
+							rabbit.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(rabbit);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.FIRE) {
+							props.setTransformed(props.getTransformed()+1);
+							BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
+							blaze.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(blaze);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.MAGMA_BLOCK) {
+							props.setTransformed(props.getTransformed()+1);
+							MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
+							magma.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(magma);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.NETHER_BRICKS || blockB == Blocks.NETHER_WART || blockB == Blocks.NETHER_WART_BLOCK) {
+							props.setTransformed(props.getTransformed()+1);
+							ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
+							zombiepig.setPosition(punch.getxTile() + 0.5f, (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(zombiepig);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.BLACK_SHULKER_BOX || blockB == Blocks.BLUE_SHULKER_BOX || blockB == Blocks.BROWN_SHULKER_BOX || blockB == Blocks.CYAN_SHULKER_BOX || blockB == Blocks.GRAY_SHULKER_BOX || blockB == Blocks.GREEN_SHULKER_BOX || blockB == Blocks.LIGHT_BLUE_SHULKER_BOX || blockB == Blocks.LIME_SHULKER_BOX || blockB == Blocks.MAGENTA_SHULKER_BOX || blockB == Blocks.ORANGE_SHULKER_BOX || blockB == Blocks.PINK_SHULKER_BOX || blockB == Blocks.PURPLE_SHULKER_BOX || blockB == Blocks.RED_SHULKER_BOX || blockB == Blocks.WHITE_SHULKER_BOX || blockB == Blocks.YELLOW_SHULKER_BOX) {
+							props.setTransformed(props.getTransformed()+1);
+							ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
+							shulker.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(shulker);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.SAND || blockB == Blocks.SANDSTONE) {
+							props.setTransformed(props.getTransformed()+1);
+							HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
+							husk.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(husk);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if(blockB == Blocks.BEACON)
+						{
+							props.setTransformed(props.getTransformed()+2);
+							WitherEntity wither = new WitherEntity(EntityType.WITHER, punch.world);
+							wither.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(wither);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if(blockB == Blocks.WITHER_SKELETON_SKULL || blockB == Blocks.WITHER_SKELETON_WALL_SKULL)
+						{
+							props.setTransformed(props.getTransformed()+1);
+							WitherSkeletonEntity witherSkeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, punch.world);
+							witherSkeleton.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(witherSkeleton);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.FARMLAND) {
+							punch.standMaster.getFoodStats().addStats(2, 0.1f);
+							punch.remove();
+						}
+						if (blockB == Blocks.AIR)
+						{
+							//punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Air", new Object[0]));
+						}
+						punch.world.playSound(punch.standMaster, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+						if(punch.ticksExisted > 60)
+						{
+							punch.remove();
+						}
+						if (!punch.standMaster.isCreative())
+						{
+							punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+							punch.remove();
+						}
+						props.setCooldown(220);
+					}
+			}
+			if (hardness != -1.0f && hardness <= 3.0f) {
+				if (!punch.shootingStand.life) {
+					punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+					blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+					punch.remove();
+				}
+			} else {
+				punch.remove();
+			}
+		} else {
+			punch.remove();
+		}
+    }
     
     /**
      * The World's punch

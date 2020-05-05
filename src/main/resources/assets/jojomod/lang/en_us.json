@@ -11,6 +11,8 @@
   "entity.jojomod.d4c": "Dirty Deeds Done Dirt Cheap",
   "entity.jojomod.d4c_punch": "Dirty Deeds Done Dirt Cheap's punch",
 
+  "msg.jojomod.standalready.txt": "You already have a Stand!",
+
   "key.categories.Steve's Bizarre Survival": "Steve's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Stand Ability",

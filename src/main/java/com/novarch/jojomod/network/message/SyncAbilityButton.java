@@ -71,6 +71,14 @@ public class SyncAbilityButton
                 player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Lifegiver", new Object[0]));
             }
 
+            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
+                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Normal", new Object[0]));
+            }
+
+            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
+                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Gold Experience Requiem", new Object[0]));
+            }
+
             if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.kingCrimson) {
                 player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
             }
@@ -84,6 +92,15 @@ public class SyncAbilityButton
             }
 
             if (props.getAbility() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
+                player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
+
+            }
+
+            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap) {
+                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
+            }
+
+            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
 
             }

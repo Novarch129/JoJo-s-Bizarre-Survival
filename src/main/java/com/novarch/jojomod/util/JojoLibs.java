@@ -4,6 +4,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
+import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
@@ -51,12 +52,10 @@ public class JojoLibs
 
         public static int madeInHeaven = 4;
 
-        public static int weatherReport = 5;
-
-        public static int GER = 6;
+        public static int GER = 5;
     }
 
-    public static int numberOfStands = 4;
+    public static int numberOfStands = 5;
 
     public static EntityStandBase getStand(int standID, World world)
     {
@@ -72,6 +71,8 @@ public class JojoLibs
                 return (EntityStandBase)new EntityGoldExperience(world);
             case 4:
                 return (EntityStandBase)new EntityMadeInHeaven(world);
+            case 5:
+                return (EntityStandBase)new EntityGoldExperienceRequiem(world);
         }
         return null;
     }

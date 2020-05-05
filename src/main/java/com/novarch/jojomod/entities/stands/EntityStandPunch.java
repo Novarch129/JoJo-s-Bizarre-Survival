@@ -49,6 +49,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":d4c_punch") public static EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap> D4C;
     @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":gold_experience_punch") public static EntityType<EntityStandPunch.goldExperience> GOLD_EXPERIENCE;
     @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
+    @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":gold_experience_requiem_punch") public static EntityType<EntityStandPunch.goldExperienceRequiem> GOLD_EXPERIENCE_REQUIEM;
 
 
   /*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
@@ -644,19 +645,42 @@ public enum PickupStatus
           return NetworkHooks.getEntitySpawningPacket(this);
         }
   }
-      /*public static class goldExperienceRequiem extends EntityStandPunch
+      public static class goldExperienceRequiem extends EntityStandPunch
       {
-          public goldExperienceRequiem(World worldIn)
+        public goldExperienceRequiem(World worldIn)
+        {
+          super(GOLD_EXPERIENCE_REQUIEM, worldIn);
+        }
+
+        public goldExperienceRequiem(EntityType<? extends EntityStandPunch> type, World worldIn)
+        {
+          super(type, worldIn);
+        }
+
+        public goldExperienceRequiem(World worldIn, EntityStandBase shooter, PlayerEntity player)
+        {
+          super(GOLD_EXPERIENCE_REQUIEM, worldIn, shooter, player);
+        }
+
+        @Override
+        public void tick()
+        {
+          super.tick();
+          if(this.ticksExisted > 5)
+            this.remove();
+          if(this.getMotion().getX() == 0 || this.getMotion().getY() == 0 || this.getMotion().getZ() == 0)
           {
-            super(worldIn);
+            this.remove();
           }
-          
-          public goldExperienceRequiem(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
+        }
+
+        @Override
+        public IPacket<?> createSpawnPacket()
+        {
+          return NetworkHooks.getEntitySpawningPacket(this);
+        }
   }
-      public static class theWorld extends EntityStandPunch 
+      /*public static class theWorld extends EntityStandPunch
       {
           public theWorld(World worldIn)
           {

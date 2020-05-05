@@ -5,6 +5,8 @@ import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDe
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
 import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperiencePunch;
+import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExperienceRequiem;
+import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExperienceRequiemPunch;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
@@ -35,5 +37,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MADE_IN_HEAVEN.get(), RenderMadeInHeaven::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), RenderMadeInHeavenPunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), RenderGoldExperienceRequiem::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), RenderGoldExperienceRequiemPunch::new);
 	}
 }
