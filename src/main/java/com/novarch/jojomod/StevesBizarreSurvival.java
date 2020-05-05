@@ -61,6 +61,8 @@ public class StevesBizarreSurvival
         PROTOCOL_VERSION::equals
     );
     public static final ResourceLocation D4C_DIMENSION_TYPE = new ResourceLocation(MOD_ID, "d4c_dimension_overworld");
+    public static final ResourceLocation D4C_DIMENSION_TYPE_NETHER = new ResourceLocation(MOD_ID, "d4c_dimension_nether");
+    public static final ResourceLocation D4C_DIMENSION_TYPE_END = new ResourceLocation(MOD_ID, "d4c_dimension_end");
 
     public StevesBizarreSurvival()
     {
@@ -74,9 +76,6 @@ public class StevesBizarreSurvival
 		EntityInit.ENTITY_TYPES.register(modEventBus);
 		SoundInit.SOUNDS.register(modEventBus);
         DimensionInit.DIMENSIONS.register(modEventBus);
-		
-	    if (Loader.isClassAvailable("endercore"))
-			   JojoLibs.setEnderCore(true); 
 		
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);

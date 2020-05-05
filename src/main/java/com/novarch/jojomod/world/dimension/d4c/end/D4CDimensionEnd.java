@@ -1,66 +1,59 @@
-package com.novarch.jojomod.world.dimension.d4c.overworld;
+package com.novarch.jojomod.world.dimension.d4c.end;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.provider.OverworldBiomeProvider;
-import net.minecraft.world.biome.provider.OverworldBiomeProviderSettings;
-import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.EndDimension;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.OverworldChunkGenerator;
-import net.minecraft.world.gen.OverworldGenSettings;
 
 import javax.annotation.Nullable;
 
-public class D4CDimension extends Dimension
+public class D4CDimensionEnd extends EndDimension
 {
-    public D4CDimension(World worldIn, DimensionType type_)
+    public D4CDimensionEnd(World worldIn, DimensionType typeIn)
     {
-        super(worldIn, type_, 0.0f);
+        super(worldIn, typeIn);
     }
 
     @Override
     public ChunkGenerator<?> createChunkGenerator()
     {
-        return new OverworldChunkGenerator(world, new OverworldBiomeProvider(new OverworldBiomeProviderSettings(world.getWorldInfo())), new OverworldGenSettings());
+        return super.createChunkGenerator();
     }
 
     @Nullable
     @Override
     public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid)
     {
-        return null;
+        return super.findSpawn(chunkPosIn, checkValid);
     }
 
     @Nullable
     @Override
     public BlockPos findSpawn(int posX, int posZ, boolean checkValid)
     {
-        return null;
+        return super.findSpawn(posX, posZ, checkValid);
     }
 
     @Override
     public float calculateCelestialAngle(long worldTime, float partialTicks)
     {
-        double d0 = MathHelper.frac((double)worldTime / 24000.0D - 0.25D);
-        double d1 = 0.5D - Math.cos(d0 * Math.PI) / 2.0D;
-        return (float)(d0 * 2.0D + d1) / 3.0F;
+        return super.calculateCelestialAngle(worldTime, partialTicks);
     }
 
     @Override
     public boolean isSurfaceWorld()
     {
-        return true;
+        return super.isSurfaceWorld();
     }
 
     @Override
     public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
-        return Vec3d.ZERO;
+        return super.getFogColor(celestialAngle, partialTicks);
     }
 
     @Override
@@ -72,18 +65,12 @@ public class D4CDimension extends Dimension
     @Override
     public boolean doesXZShowFog(int x, int z)
     {
-        return false;
-    }
-
-    @Override
-    public int getActualHeight()
-    {
-        return 256;
+        return super.doesXZShowFog(x, z);
     }
 
     @Override
     public SleepResult canSleepAt(PlayerEntity player, BlockPos pos)
     {
-        return SleepResult.ALLOW;
+        return SleepResult.BED_EXPLODES;
     }
 }

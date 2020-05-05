@@ -92,17 +92,11 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	{
 		super.tick();
 		this.fallDistance = 0.0F;
-		if(KeyHandler.keys[2].isPressed())
-		{
-			this.getMaster().changeDimension(DimensionType.THE_NETHER);
-		}
-
 	    if (getMaster() != null)
 	    {
 	    	PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	      IStand props = power.orElse(new IStandCapability());
-	      this.d4c = props.getCooldown() <= 0;
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching() || player.isAirBorne)
@@ -114,7 +108,10 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE))
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
 				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
+				player.getFoodStats().addStats(-2, 0.0f);
 				this.remove();
 			}
 	      }
@@ -139,7 +136,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 							this.oratick++;
 							if (this.oratick == 1) {
 								if (!player.isCreative())
-									player.getFoodStats().addStats(0, 0.0F);
+									player.getFoodStats().addStats(-1, 0.0F);
 								if (!this.world.isRemote)
 									this.orarush = true;
 							}

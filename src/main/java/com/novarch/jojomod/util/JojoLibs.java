@@ -26,8 +26,8 @@ public class JojoLibs
     public static void removeHeldItem(PlayerEntity player)
     {
         ItemStack heldStack = player.getActiveItemStack();
-        if (heldStack != null && !player.isCreative());
-        destroyItemInSlot((IInventory)player.inventory, heldStack, player.inventory.currentItem);
+        if (heldStack != null && !player.isCreative())
+            destroyItemInSlot((IInventory)player.inventory, heldStack, player.inventory.currentItem);
     }
 
     public static void destroyItemInSlot(IInventory iInventory, ItemStack stack, int slot)
@@ -75,16 +75,6 @@ public class JojoLibs
                 return (EntityStandBase)new EntityGoldExperienceRequiem(world);
         }
         return null;
-    }
-
-    public static boolean enderCore = false;
-
-    public static void setEnderCore(boolean value) {
-        enderCore = value;
-    }
-
-        public static boolean getEnderCore() {
-            return enderCore;
     }
 
     public static Vec3d getPlayerPosition(PlayerEntity player, float par2Float)

@@ -19,5 +19,15 @@ public class ForgeEventBusSubscriber
         {
             DimensionManager.registerDimension(StevesBizarreSurvival.D4C_DIMENSION_TYPE, DimensionInit.D4C_DIMENSION.get(), null, true);
         }
+
+        if(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER) == null)
+        {
+            DimensionManager.registerDimension(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER, DimensionInit.D4C_DIMENSION_NETHER.get(), null, false);
+        }
+
+        if(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END) == null)
+        {
+            DimensionManager.registerDimension(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END, DimensionInit.D4C_DIMENSION_END.get(), null, false);
+        }
     }
 }

@@ -1,37 +1,38 @@
-package com.novarch.jojomod.world.dimension.d4c.overworld;
+package com.novarch.jojomod.world.dimension.d4c.nether;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.provider.OverworldBiomeProvider;
-import net.minecraft.world.biome.provider.OverworldBiomeProviderSettings;
+import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.biome.provider.BiomeProviderType;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.NetherDimension;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.OverworldChunkGenerator;
-import net.minecraft.world.gen.OverworldGenSettings;
+import net.minecraft.world.gen.ChunkGeneratorType;
+import net.minecraft.world.gen.NetherGenSettings;
 
 import javax.annotation.Nullable;
 
-public class D4CDimension extends Dimension
+public class D4CDimensionNether extends NetherDimension
 {
-    public D4CDimension(World worldIn, DimensionType type_)
+    private static final Vec3d fogColor = new Vec3d((double)0.2F, (double)0.03F, (double)0.03F);
+    public D4CDimensionNether(World worldIn, DimensionType type)
     {
-        super(worldIn, type_, 0.0f);
+        super(worldIn, type);
     }
 
     @Override
     public ChunkGenerator<?> createChunkGenerator()
     {
-        return new OverworldChunkGenerator(world, new OverworldBiomeProvider(new OverworldBiomeProviderSettings(world.getWorldInfo())), new OverworldGenSettings());
+        return super.createChunkGenerator();
     }
 
     @Nullable
-    @Override
-    public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid)
+    @Override public BlockPos findSpawn(ChunkPos chunkPosIn, boolean checkValid)
     {
         return null;
     }
@@ -46,21 +47,19 @@ public class D4CDimension extends Dimension
     @Override
     public float calculateCelestialAngle(long worldTime, float partialTicks)
     {
-        double d0 = MathHelper.frac((double)worldTime / 24000.0D - 0.25D);
-        double d1 = 0.5D - Math.cos(d0 * Math.PI) / 2.0D;
-        return (float)(d0 * 2.0D + d1) / 3.0F;
+        return 0.5f;
     }
 
     @Override
     public boolean isSurfaceWorld()
     {
-        return true;
+        return false;
     }
 
     @Override
     public Vec3d getFogColor(float celestialAngle, float partialTicks)
     {
-        return Vec3d.ZERO;
+        return fogColor;
     }
 
     @Override
@@ -72,18 +71,12 @@ public class D4CDimension extends Dimension
     @Override
     public boolean doesXZShowFog(int x, int z)
     {
-        return false;
-    }
-
-    @Override
-    public int getActualHeight()
-    {
-        return 256;
+        return true;
     }
 
     @Override
     public SleepResult canSleepAt(PlayerEntity player, BlockPos pos)
     {
-        return SleepResult.ALLOW;
+        return SleepResult.BED_EXPLODES;
     }
 }
