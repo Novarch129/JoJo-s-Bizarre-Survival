@@ -18,10 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Rarity;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -33,7 +30,7 @@ import net.minecraftforge.common.util.LazyOptional;
 @SuppressWarnings("unused")
 public class ItemStandArrow extends Item
 { // TODO add animation when obtaining GER
-
+	//TODO fix getting GER instead of Gold Experience
 	public ItemStandArrow(Properties properties) 
     {
 		super(properties);
@@ -43,6 +40,7 @@ public class ItemStandArrow extends Item
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
 		super.addInformation(stack, worldIn, tooltip, flagIn);
+		tooltip.add(new TranslationTextComponent("On use, grants the user the power of a STAND.", new Object[0]));
 	}
 	
 	@Override
@@ -79,15 +77,16 @@ public class ItemStandArrow extends Item
 		PlayerEntity player = (PlayerEntity)entity;
 		LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
 		IStand props = stand.orElse(new IStandCapability());
+		final int random = world.rand.nextInt(JojoLibs.numberOfStands);
 			if (props.getStandID() == 0)
 			{
 				if (!player.isCreative())
 				{
 					stack.shrink(1);
 				}
-				props.setStandID(world.rand.nextInt(JojoLibs.numberOfStands));
+				props.setStandID(random);
 				props.setStandOn(true);
-				final EntityStandBase theStand = JojoLibs.getStand(world.rand.nextInt(JojoLibs.numberOfStands), world);
+				final EntityStandBase theStand = JojoLibs.getStand(random, world);
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
@@ -176,6 +175,8 @@ public class ItemStandArrow extends Item
         if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience)
         {
             playerIn.setActiveHand(handIn);
+            if(!playerIn.isCreative())
+				playerIn.attackEntityFrom(DamageSource.MAGIC, 5.0f);
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, (Object)stack);
         }
         playerIn.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
