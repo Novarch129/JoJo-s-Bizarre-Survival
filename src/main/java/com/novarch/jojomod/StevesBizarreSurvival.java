@@ -20,6 +20,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -197,6 +198,19 @@ public class StevesBizarreSurvival
             LazyOptional<IStand> power = playerEntity.getCapability(JojoProvider.STAND);
             IStand props = power.orElse(new IStandCapability());
             GUICounter.render();
+        }
+    }
+
+    //TODO Remove methodn below when D4C GUI is added
+    @SubscribeEvent
+    public void d4cDimensionHelper(PlayerEvent.PlayerChangedDimensionEvent event)
+    {
+        if(event.getFrom() == DimensionType.byName(D4C_DIMENSION_TYPE))
+        {
+            if(event.getTo() == DimensionType.THE_NETHER)
+            {
+                INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(D4C_DIMENSION_TYPE_NETHER).getId()));
+            }
         }
     }
 }

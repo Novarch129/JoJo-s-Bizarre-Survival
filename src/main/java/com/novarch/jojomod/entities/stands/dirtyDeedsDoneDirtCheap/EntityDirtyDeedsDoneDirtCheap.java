@@ -6,11 +6,9 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,14 +16,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
-
-import java.util.Collection;
 
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 {
@@ -34,16 +29,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	  private int oratick = 0;
 	  
 	  private int oratickr = 0;
-	  
-	  private int changetick = 0;
-
-	  private int dimensionTick = 0;
-	  
-	  private boolean d4c = true;
-	  
-	  PlayerEntity player = getMaster();
-
-	  Collection<Entity> entities = this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().expand(300d, 200d, 300d), EntityPredicates.NOT_SPECTATING);
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }

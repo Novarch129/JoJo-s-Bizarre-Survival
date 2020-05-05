@@ -1,7 +1,5 @@
 package com.novarch.jojomod.capabilities;
 
-import net.minecraft.entity.player.PlayerEntity;
-
 @SuppressWarnings("unused")
 public interface IStand
 {

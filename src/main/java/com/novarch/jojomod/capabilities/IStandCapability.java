@@ -1,7 +1,5 @@
 package com.novarch.jojomod.capabilities;
 
-import net.minecraft.entity.player.PlayerEntity;
-
 public class IStandCapability implements IStand
 {
 	private int playerStandID = 0;

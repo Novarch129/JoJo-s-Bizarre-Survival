@@ -39,8 +39,6 @@ public class EntityKingCrimson extends EntityStandBase
 	  private int changetick = 0;
 	  
 	  private boolean timeSkipped = true;
-	  
-	  PlayerEntity player = getMaster();
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
