@@ -30,7 +30,6 @@ import net.minecraftforge.common.util.LazyOptional;
 @SuppressWarnings("unused")
 public class ItemStandArrow extends Item
 { // TODO add animation when obtaining GER
-	//TODO fix getting GER instead of Gold Experience
 	public ItemStandArrow(Properties properties) 
     {
 		super(properties);
@@ -97,7 +96,7 @@ public class ItemStandArrow extends Item
 					theStand.setGiveItems();
 				}
 			}
-			if(props.getStandID() == JojoLibs.StandID.goldExperience)
+			else if(props.getStandID() == JojoLibs.StandID.goldExperience)
 			{
 				props.setStandRemoved();
 				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))

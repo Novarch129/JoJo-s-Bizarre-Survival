@@ -49,9 +49,9 @@ public interface IStand
 
     void subtractTimeLeft(int subtraction);
 
-    PlayerEntity getDiavolo();
+    String getDiavolo();
 
-    void setDiavolo(PlayerEntity truth);
+    void setDiavolo(String truth);
 
     boolean getAbility();
 
@@ -60,4 +60,8 @@ public interface IStand
     int getTransformed();
 
     void setTransformed(int value);
+
+    void subtractTransformed(int subtraction);
+
+    void addTransformed(int addition);
 }

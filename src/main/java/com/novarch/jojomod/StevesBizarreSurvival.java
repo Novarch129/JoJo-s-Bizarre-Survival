@@ -4,10 +4,8 @@ import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.gui.GUICounter;
-import com.novarch.jojomod.network.message.SyncAbilityButton;
-import com.novarch.jojomod.util.helpers.DimensionHopHelper;
+import com.novarch.jojomod.network.message.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.GameType;
@@ -25,8 +23,6 @@ import org.apache.logging.log4j.core.util.Loader;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
-import com.novarch.jojomod.network.message.SyncStandSummonButton;
 import com.novarch.jojomod.proxy.CommonProxy;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.util.JojoLibs;
@@ -99,6 +95,16 @@ public class StevesBizarreSurvival
                 SyncAbilityButton::encode,
                 SyncAbilityButton::decode,
                 SyncAbilityButton::handle);
+        INSTANCE.registerMessage(networkId++,
+                SyncAbility2Button.class,
+                SyncAbility2Button::encode,
+                SyncAbility2Button::decode,
+                SyncAbility2Button::handle);
+        INSTANCE.registerMessage(networkId++,
+                SyncDimensionHop.class,
+                SyncDimensionHop::encode,
+                SyncDimensionHop::decode,
+                SyncDimensionHop::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -114,7 +120,7 @@ public class StevesBizarreSurvival
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event)
     {
-        DimensionHopHelper.register();
+
     }
     
     public static class JojoItemGroup extends ItemGroup 

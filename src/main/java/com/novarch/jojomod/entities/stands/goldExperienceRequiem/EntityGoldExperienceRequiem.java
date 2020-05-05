@@ -8,13 +8,21 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
@@ -94,7 +102,202 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				props.setCooldown(220);
 			}
 
+			player.setInvulnerable(true);
+			player.setHealth(20.0f);
+			player.getFoodStats().addStats(20, 20.0f);
 			player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
+
+			//Gold Experience Requiem's ability
+			if(this.ger)
+			{
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity instanceof MobEntity)
+						{
+							if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+							{
+								((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
+					IStand prs = pwr.orElse(new IStandCapability());
+					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+					{
+						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
+						{
+							if(entity instanceof MobEntity)
+							{
+								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
+								{
+									((MobEntity) entity).setAttackTarget((LivingEntity) entity);
+								}
+							}
+						}
+					}
+				}
+				for(PlayerEntity playerEntity : this.world.getPlayers())
+				{
+					if(playerEntity != null)
+					{
+						if(playerEntity != this.getMaster())
+						{
+							if(playerEntity.getLastAttackedEntity() == this.getMaster())
+							{
+								props.setDiavolo(playerEntity.getDisplayName().toString());
+								if(playerEntity.isAlive())
+								{
+									CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
+									truth.setCustomName(new TranslationTextComponent("You will never reach the truth.", new Object[0]));
+									truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), player.getPosZ());
+									truth.setAttackTarget(playerEntity);
+									playerEntity.world.addEntity(truth);
+								}
+							}
+						}
+					}
+				}
+
+				if(props.getDiavolo() != null && props.getDiavolo() != "")
+				{
+					for(PlayerEntity playerEntity : this.world.getPlayers())
+					{
+						if(playerEntity != null)
+						{
+							if(playerEntity != this.getMaster())
+							{
+								if(playerEntity.getDisplayName().equals(props.getDiavolo()))
+								{
+									if(playerEntity.isAlive())
+									{
+										CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
+										truth.setCustomName(new TranslationTextComponent("You will never reach the truth.", new Object[0]));
+										truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), player.getPosZ());
+										truth.setAttackTarget(playerEntity);
+										playerEntity.world.addEntity(truth);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 			try {
 				setHealth(1000.0F);
 			} catch (ClassCastException classCastException) {

@@ -20,7 +20,7 @@ public class IStandCapability implements IStand
 
 	private int timeleft = 0;
 
-	private PlayerEntity diavolo = null;
+	private String diavolo = "";
 	  
 	private String playerStandName = "";
 
@@ -138,13 +138,13 @@ public class IStandCapability implements IStand
 	}
 
 	@Override
-	public void setDiavolo(PlayerEntity truth)
+	public void setDiavolo(String truth)
 	{
 		this.diavolo = truth;
 	}
 
 	@Override
-	public PlayerEntity getDiavolo()
+	public String getDiavolo()
 	{
 		return this.diavolo;
 	}
@@ -169,6 +169,18 @@ public class IStandCapability implements IStand
 	@Override
 	public void setTransformed(int value) {
 		this.transformed = value;
+	}
+
+	@Override
+	public void subtractTransformed(int subtraction)
+	{
+		this.transformed -= subtraction;
+	}
+
+	@Override
+	public void addTransformed(int addition)
+	{
+		this.transformed += addition;
 	}
 
 	public void cloneSaveFunction(IStand props)

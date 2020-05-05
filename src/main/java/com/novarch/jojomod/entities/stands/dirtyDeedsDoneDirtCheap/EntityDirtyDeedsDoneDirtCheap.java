@@ -1,6 +1,5 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
@@ -8,9 +7,9 @@ import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import com.novarch.jojomod.util.helpers.DimensionHopHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,10 +19,8 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -107,66 +104,16 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      this.d4c = props.getCooldown() <= 0;
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-	      if (player.isCrouching()) 
+	      if (player.isCrouching() || player.isAirBorne)
 	      {
-	        if (playerJump(player) || player.isAirBorne && props.getAbility())
-	        {
-	          this.changetick++;
-	          if (this.changetick == 1) {
-				  this.d4c = !this.d4c;
-				  if (props.getAbility()) {
-					  if (this.getMaster() != null && world != null) {
-						  /*player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-					  player.sendMessage((ITextComponent) new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));*/
-						  if (this.world.getPlayers().contains(this.getMaster()))
-						  {
-							  this.getMaster().changeDimension(DimensionType.THE_NETHER);
-						  }
-					  }
-					  /*case -1:
-						  player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-						  DimensionHopHelper.teleportToDimension(player, 3, player.getPosX(), this.world.getHeight((int) player.getPosX(), (int) player.getPosZ()), player.getPosZ());
-						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.d4c.txt", new Object[0]));
-						  break;
-					  case 2:
-						  player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-						  DimensionHopHelper.teleportToDimension(player, 0, player.posX, this.world.getHeight((int)player.posX, (int)player.posZ) + 20, player.posZ);
-						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.overworld.txt", new Object[0]));
-						  break;
-					  case 3:
-						  player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-						  DimensionHopHelper.teleportToDimension(player, -1, player.posX, player.posY, player.posZ);
-						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.overworld.txt", new Object[0]));
-						  break;
-					  case 1:
-						  player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-						  DimensionHopHelper.teleportToDimension(player, 4, player.posX, player.posY + 60, player.posZ);
-						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.overworld.txt", new Object[0]));
-						  break;
-					  case 4:
-						  player.getFoodStats().addStats(-2, 0.0F);
-						  player.addPotionEffect(new EffectInstance(Effects.BLINDNESS, 50, 200));
-						  player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 200));
-						  DimensionHopHelper.teleportToDimension(player, 1, player.posX, player.posY + 60, player.posZ);
-						  player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.overworld.txt", new Object[0]));
-						  break;*/
-				  }
-			  }
-	        } 
-	      } else 
-	      {
-	        this.changetick = 0;
-	      } 
+	      	if(props.getAbility())
+			{
+				if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
+				if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+			}
+	      }
 	      if (this.standOn) 
 	      {
 	        try 

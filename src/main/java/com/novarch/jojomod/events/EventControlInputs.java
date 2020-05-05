@@ -2,6 +2,7 @@ package com.novarch.jojomod.events;
 
 
 import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.network.message.SyncAbility2Button;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
 import com.novarch.jojomod.network.message.SyncStandSummonButton;
@@ -44,7 +45,7 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 entityPlayerSP.changeDimension(DimensionType.THE_NETHER);
+				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbility2Button());
 			 }
 		 }
 	    
