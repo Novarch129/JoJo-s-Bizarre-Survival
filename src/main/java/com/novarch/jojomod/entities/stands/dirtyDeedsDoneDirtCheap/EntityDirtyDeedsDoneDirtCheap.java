@@ -6,6 +6,7 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
@@ -109,8 +110,10 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      	if(props.getAbility())
 			{
 				if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
-				if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE))
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
 				this.remove();
 			}

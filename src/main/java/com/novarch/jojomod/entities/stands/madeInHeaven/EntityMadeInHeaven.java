@@ -9,6 +9,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
@@ -148,10 +150,10 @@ public class EntityMadeInHeaven extends EntityStandBase
 						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
 						{
 							((PlayerEntity) entity).inventory.clear();
-							//TODO teleport player to custom dimension
+							StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
 							((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 							((PlayerEntity) entity).fallDistance = 0;
-							//TODO set player spawn dimension to new dimension
+							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE));
 							prps.setStandRemoved();
 							((PlayerEntity) entity).setInvulnerable(false);
 						}
