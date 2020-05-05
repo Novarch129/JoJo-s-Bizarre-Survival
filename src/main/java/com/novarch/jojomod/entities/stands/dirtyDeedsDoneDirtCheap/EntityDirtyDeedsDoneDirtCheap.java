@@ -112,6 +112,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
 				if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+				this.remove();
 			}
 	      }
 	      if (this.standOn) 
