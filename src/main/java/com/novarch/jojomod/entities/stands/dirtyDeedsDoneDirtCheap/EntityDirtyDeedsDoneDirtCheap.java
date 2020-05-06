@@ -27,7 +27,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
 	
 	  private int oratick = 0;
-	  
+
 	  private int oratickr = 0;
 
 	  @Override
@@ -171,6 +171,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	  }
 	  
 
+	  @Override
 	  public boolean isEntityInsideOpaqueBlock()
 	  {
 	  	return false;

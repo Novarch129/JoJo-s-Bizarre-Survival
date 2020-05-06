@@ -1,32 +1,25 @@
 package com.novarch.jojomod;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.IStandStorage;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.events.EventControlInputs;
-import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.*;
-import com.novarch.jojomod.proxy.CommonProxy;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -42,7 +35,6 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.util.Loader;
 
 /**
  * @author Novarch
@@ -111,7 +103,8 @@ public class StevesBizarreSurvival
 
     private void setup(final FMLCommonSetupEvent event)
     {
-    	CommonProxy.registerCapabilities();
+        CapabilityManager.INSTANCE.register(IStand.class, new IStandStorage(), IStandCapability::new);
+        MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
     private void doClientStuff(final FMLClientSetupEvent event)
