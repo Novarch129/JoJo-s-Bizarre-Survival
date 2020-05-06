@@ -6,20 +6,20 @@
 ### List of planned Stands:
 - [ ] Soft & Wet
 - [ ] Tusk
-- [ ] Dirty Deeds Done Dirt Cheap
+- [x] Dirty Deeds Done Dirt Cheap
 - [ ] 20th Century Boy
 - [ ] Whitesnake
 - [ ] C-Moon
-- [ ] Made in Heaven
+- [x] Made in Heaven
 - [ ] Weather Report
 - [x] King Crimson
 - [ ] Gold Experience
-- [ ] Gold Experience Requiem
+- [x] Gold Experience Requiem
 - [ ] Aerosmith
 - [ ] Sticky Fingers
 - [ ] Purple Haze
 - [ ] Green Day
-- [ ] The Greatfull Dead
+- [ ] The Grateful Dead
 - [ ] Crazy Diamond
 - [ ] Killer Queen
 - [ ] The Hand
