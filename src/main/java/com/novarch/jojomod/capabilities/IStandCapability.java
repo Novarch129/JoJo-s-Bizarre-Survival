@@ -202,7 +202,7 @@ public class IStandCapability implements IStand
 	    setStandID(0);
 	    setPlayerStandName("");
 	    setCooldown(0);
-	    setDiavolo(null);
+	    setDiavolo("");
 	    setAbility(true);
 	  }
 }

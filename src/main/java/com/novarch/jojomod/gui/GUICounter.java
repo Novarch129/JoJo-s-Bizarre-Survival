@@ -15,17 +15,22 @@ public class GUICounter
     public static void render()
     {
         Minecraft mc = Minecraft.getInstance();
-        if(mc != null) {
+        if(mc != null)
+        {
             if (mc.player != null)
             {
                 LazyOptional<IStand> power = mc.player.getCapability(JojoProvider.STAND);
                 IStand props = power.orElse(new IStandCapability());
                 EntityStandBase stand = JojoLibs.getStand(props.getStandID(), mc.world);
-                if(stand != null && stand.standID == JojoLibs.StandID.madeInHeaven)
+                if(stand != null)
                 {
-                    RenderSystem.pushMatrix();
-                    mc.fontRenderer.drawStringWithShadow(String.valueOf(((EntityMadeInHeaven) stand).getHeaventickr()), 4.0f, 4.0f, 1);
-                    RenderSystem.popMatrix();
+                    if(stand instanceof EntityMadeInHeaven)
+                    {
+                        RenderSystem.pushMatrix();
+                        mc.fontRenderer.drawString(String.valueOf(((EntityMadeInHeaven) stand).getHeaventickr()), 4.0f, 4.0f, 1);
+                        mc.fontRenderer.drawString("String", 4.0f, 4.0f, 1);
+                        RenderSystem.popMatrix();
+                    }
                 }
             }
         }

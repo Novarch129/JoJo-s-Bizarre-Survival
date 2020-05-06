@@ -56,16 +56,11 @@ public class StandPunchEffects
             	madeInHeaven(result, entityIn, punch, entityBlock);
             	break;
             }
-            /*case 5: {
-            	weatherReport(result, entityIn, punch, entityBlock);
-            	break;
-            }
-
-            case 7: {
+            case 5: {
             	goldExperienceRequiem(result, entityIn, punch, entityBlock);
             	break;
             }
-            case 8: {
+            /*case 8: {
             	theWorld(result, entityIn, punch, entityBlock);
             	break;
             }
@@ -438,7 +433,7 @@ public class StandPunchEffects
 				if (punch.shootingStand.life) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
-							if (blockB == Blocks.GRASS || blockB == Blocks.NETHERRACK)
+							if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
 							{
 								props.addTransformed(1);
 								BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
@@ -603,11 +598,7 @@ public class StandPunchEffects
 								punch.standMaster.getFoodStats().addStats(2, 0.1f);
 								punch.remove();
 							}
-							if (blockB == Blocks.AIR)
-							{
-								//punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Air", new Object[0]));
-							}
-							punch.world.playSound(punch.standMaster, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+							punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
 							if(punch.ticksExisted > 60)
 							{
 								punch.remove();
@@ -685,7 +676,7 @@ public class StandPunchEffects
 			IStand props = power.orElse(new IStandCapability());
 			if (punch.shootingStand.ger) {
 					if (props.getTransformed() < 2) {
-						if (blockB == Blocks.GRASS || blockB == Blocks.NETHERRACK)
+						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)
 						{
 							props.addTransformed(1);
 							BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
@@ -868,11 +859,7 @@ public class StandPunchEffects
 							punch.standMaster.getFoodStats().addStats(2, 0.1f);
 							punch.remove();
 						}
-						if (blockB == Blocks.AIR)
-						{
-							//punch.shootingStand.getMaster().sendMessage(new TranslationTextComponent("Air", new Object[0]));
-						}
-						punch.world.playSound(punch.standMaster, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+						punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
 						if(punch.ticksExisted > 60)
 						{
 							punch.remove();

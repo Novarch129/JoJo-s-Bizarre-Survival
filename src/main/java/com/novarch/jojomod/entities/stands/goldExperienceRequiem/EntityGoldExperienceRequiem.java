@@ -15,6 +15,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
@@ -37,7 +38,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	  
 	  private int changetick = 0;
 
-	  PlayerEntity player = getMaster();
+	  private String truthname = "You will never reach the truth.";
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -69,7 +70,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_GE.get();
+	    this.spawnSound = SoundInit.SPAWN_GER.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.GER;
 	}
@@ -110,6 +111,13 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 			//Gold Experience Requiem's ability
 			if(this.ger)
 			{
+				if(player.getLastAttackedEntity() != null)
+				{
+					if(player.getLastAttackedEntity() instanceof PlayerEntity)
+					{
+						props.setDiavolo(player.getLastAttackedEntity().getDisplayName().toString());
+					}
+				}
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
@@ -260,20 +268,20 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 							if(playerEntity.getLastAttackedEntity() == this.getMaster())
 							{
 								props.setDiavolo(playerEntity.getDisplayName().toString());
-								if(playerEntity.isAlive())
+								/*if(playerEntity.isAlive())
 								{
 									CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
 									truth.setCustomName(new TranslationTextComponent("You will never reach the truth.", new Object[0]));
 									truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), player.getPosZ());
 									truth.setAttackTarget(playerEntity);
 									playerEntity.world.addEntity(truth);
-								}
+								}*/
 							}
 						}
 					}
 				}
 
-				if(props.getDiavolo() != null && props.getDiavolo() != "")
+				if(props.getDiavolo() != null && !props.getDiavolo().equals(""))
 				{
 					for(PlayerEntity playerEntity : this.world.getPlayers())
 					{
@@ -281,15 +289,17 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 						{
 							if(playerEntity != this.getMaster())
 							{
-								if(playerEntity.getDisplayName().equals(props.getDiavolo()))
+								if(playerEntity.getDisplayName().toString().equals(props.getDiavolo()))
 								{
 									if(playerEntity.isAlive())
 									{
 										CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
-										truth.setCustomName(new TranslationTextComponent("You will never reach the truth.", new Object[0]));
-										truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), player.getPosZ());
+										truth.setCustomName(new TranslationTextComponent(truthname, new Object[0]));
+										truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), playerEntity.getPosZ());
 										truth.setAttackTarget(playerEntity);
+										truth.setDropChance(EquipmentSlotType.MAINHAND, 0.0f);
 										playerEntity.world.addEntity(truth);
+										truth.setAttackTarget(playerEntity);
 									}
 								}
 							}

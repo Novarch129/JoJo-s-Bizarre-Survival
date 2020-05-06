@@ -1,9 +1,11 @@
 package com.novarch.jojomod;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.DimensionInit;
@@ -54,7 +56,6 @@ public class StevesBizarreSurvival
     public static final String MOD_ID = "jojomod";
     public static StevesBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
-    public PlayerEntity playerEntity = Minecraft.getInstance().player;
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
         () -> PROTOCOL_VERSION,
@@ -189,19 +190,26 @@ public class StevesBizarreSurvival
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
+   /* @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void render(RenderGameOverlayEvent event)
+    public void render(RenderGameOverlayEvent.Post event)
     {
-        if(playerEntity != null)
+        if(Minecraft.getInstance().player != null)
         {
-            LazyOptional<IStand> power = playerEntity.getCapability(JojoProvider.STAND);
+            LazyOptional<IStand> power = Minecraft.getInstance().player.getCapability(JojoProvider.STAND);
             IStand props = power.orElse(new IStandCapability());
-            GUICounter.render();
+            EntityStandBase stand = JojoLibs.getStand(props.getStandID(), Minecraft.getInstance().world);
+            if(stand != null)
+            {
+                RenderSystem.pushMatrix();
+                Minecraft.getInstance().fontRenderer.drawString(String.valueOf(((EntityMadeInHeaven) stand).getHeaventickr()), 4.0f, 4.0f, 1);
+                RenderSystem.popMatrix();
+            }
         }
-    }
+        Minecraft.getInstance().fontRenderer.drawString("String", 4.0f, 4.0f, 1);
+    }*/
 
-    //TODO Remove methodn below when D4C GUI is added
+    //TODO Remove method below when D4C GUI is added
     @SubscribeEvent
     public void d4cDimensionHelper(PlayerEvent.PlayerChangedDimensionEvent event)
     {

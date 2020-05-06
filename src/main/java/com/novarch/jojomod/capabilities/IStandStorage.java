@@ -19,6 +19,7 @@ public class IStandStorage implements IStorage<IStand>
         props.putInt("Cooldown", instance.getCooldown());
         props.putInt("Timeleft", instance.getTimeLeft());
         props.putBoolean("Ability", instance.getAbility());
+        props.putString("Diavolo", instance.getDiavolo());
         return (INBT)props;
       }
 
@@ -33,5 +34,6 @@ public class IStandStorage implements IStorage<IStand>
         propertyData.getInt("Cooldown");
         propertyData.getInt("Timeleft");
         propertyData.getBoolean("Ability");
+        instance.setDiavolo(propertyData.getString("Diavolo"));
       }
 }
