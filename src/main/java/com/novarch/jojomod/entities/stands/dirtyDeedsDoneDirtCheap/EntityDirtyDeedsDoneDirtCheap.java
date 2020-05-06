@@ -96,6 +96,10 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId()));
 				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
 					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
+				else if(player.world.getDimension().getType() == DimensionType.THE_END)
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END))
+					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId()));
 				player.getFoodStats().addStats(-2, 0.0f);
 				this.remove();
 			}
