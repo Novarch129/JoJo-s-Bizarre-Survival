@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.IStandStorage;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.DimensionInit;
@@ -14,9 +15,12 @@ import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.*;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -189,8 +193,16 @@ public class StevesBizarreSurvival
     @SubscribeEvent
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
-        LOGGER.log(Level.ALL, "Running");
-        final GUICounter guiCounter = new GUICounter();
+        LazyOptional<IStand> power = Minecraft.getInstance().player.getCapability(JojoProvider.STAND, null);
+        IStand props = power.orElse(new IStandCapability());
+        int value = 1;
+        GUICounter guiCounter = new GUICounter();
+        guiCounter.render();
+        for(Entity entity : Minecraft.getInstance().world.getAllEntities())
+        {
+            if(entity instanceof EntityMadeInHeaven)
+                value = ((EntityMadeInHeaven) entity).heaventickr;
+        }
         guiCounter.render();
     }
 

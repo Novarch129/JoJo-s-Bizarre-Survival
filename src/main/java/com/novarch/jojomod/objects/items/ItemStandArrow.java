@@ -21,6 +21,7 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -34,12 +35,12 @@ public class ItemStandArrow extends Item
     {
 		super(properties);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TranslationTextComponent("On use, grants the user the power of a STAND.", new Object[0]));
+		tooltip.add(new StringTextComponent("On use, grants the user the power of a STAND."));
 	}
 	
 	@Override

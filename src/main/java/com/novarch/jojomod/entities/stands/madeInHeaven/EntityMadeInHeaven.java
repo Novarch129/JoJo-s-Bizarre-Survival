@@ -6,6 +6,7 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
@@ -23,6 +24,9 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -34,12 +38,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 
 	  private int oratickr = 0;
 
-	  private int heaventickr = 3600;
-
-	  public int getHeaventickr()
-	  {
-	  	return this.heaventickr;
-	  }
+	  public int heaventickr = 3600;
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -93,6 +92,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 			PlayerEntity player = getMaster();
 			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 			IStand props = power.orElse(new IStandCapability());
+			props.setTimeLeft(this.heaventickr);
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
@@ -100,7 +100,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 			if(this.getMaster().isCrouching()&& StevesBizarreSurvival.debug)
 			{
 				heaventickr-=100;
-				player.sendMessage(new TranslationTextComponent(String.valueOf(heaventickr), new Object[0]));
+				player.sendMessage(new TranslationTextComponent(String.valueOf(props.getTimeLeft()), new Object[0]));
 			}
 
 			//Made In Heaven's Ability
@@ -220,14 +220,14 @@ public class EntityMadeInHeaven extends EntityStandBase
 		}
 	    }
 
-
-	  public boolean isEntityInsideOpaqueBlock()
+	    @Override
+	 	 public boolean isEntityInsideOpaqueBlock()
 	  {
 	  	return false;
 	  }
 
-	@Override
-	public boolean canBeCollidedWith()
+		@Override
+		public boolean canBeCollidedWith()
 	{
 		return super.canBeCollidedWith();
 	}
