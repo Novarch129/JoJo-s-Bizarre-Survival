@@ -6,6 +6,7 @@ import com.novarch.jojomod.capabilities.IStandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
@@ -151,7 +152,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 					if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
-						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 						{
 							if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 							{
@@ -177,7 +178,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -203,7 +204,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -229,7 +230,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -255,7 +256,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -281,7 +282,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -307,7 +308,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -333,7 +334,7 @@ public class EntityKingCrimson extends EntityStandBase
 						IStand prs = pwr.orElse(new IStandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity))
+							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{

@@ -35,8 +35,6 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
-	  
-	  private int changetick = 0;
 
 	  private String truthname = "You will never reach the truth.";
 

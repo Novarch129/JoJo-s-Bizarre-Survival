@@ -6,6 +6,7 @@ import com.novarch.jojomod.capabilities.IStandStorage;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.events.EventControlInputs;
+import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
@@ -33,6 +35,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -183,24 +186,13 @@ public class StevesBizarreSurvival
         }
     }
 
-   /* @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
-    public void render(RenderGameOverlayEvent.Post event)
+    public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
-        if(Minecraft.getInstance().player != null)
-        {
-            LazyOptional<IStand> power = Minecraft.getInstance().player.getCapability(JojoProvider.STAND);
-            IStand props = power.orElse(new IStandCapability());
-            EntityStandBase stand = JojoLibs.getStand(props.getStandID(), Minecraft.getInstance().world);
-            if(stand != null)
-            {
-                RenderSystem.pushMatrix();
-                Minecraft.getInstance().fontRenderer.drawString(String.valueOf(((EntityMadeInHeaven) stand).getHeaventickr()), 4.0f, 4.0f, 1);
-                RenderSystem.popMatrix();
-            }
-        }
-        Minecraft.getInstance().fontRenderer.drawString("String", 4.0f, 4.0f, 1);
-    }*/
+        LOGGER.log(Level.ALL, "Running");
+        final GUICounter guiCounter = new GUICounter();
+        guiCounter.render();
+    }
 
     //TODO Remove method below when D4C GUI is added
     @SubscribeEvent

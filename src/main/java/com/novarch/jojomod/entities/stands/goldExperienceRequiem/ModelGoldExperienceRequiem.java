@@ -10,73 +10,73 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> extends EntityModel<T> {
-	private final ModelRenderer HeadBase;
-	private final ModelRenderer Head;
-	private final ModelRenderer Spikes;
-	private final ModelRenderer SpikeMiddle;
-	private final ModelRenderer SpikeMiddleDiagonals;
-	private final ModelRenderer SpikeMiddleDiagonal1;
-	private final ModelRenderer SpikeMiddleDiagonal2;
-	private final ModelRenderer Top;
-	private final ModelRenderer SpikeMiddle2;
-	private final ModelRenderer SpikeMiddleDiagonals2;
-	private final ModelRenderer SpikeMiddleDiagonal3;
-	private final ModelRenderer SpikeMiddleDiagonal4;
-	private final ModelRenderer Top2;
-	private final ModelRenderer SpikeMiddle3;
-	private final ModelRenderer SpikeMiddleDiagonals3;
-	private final ModelRenderer SpikeMiddleDiagonal5;
-	private final ModelRenderer SpikeMiddleDiagonal6;
-	private final ModelRenderer Top3;
-	private final ModelRenderer Spike1;
-	private final ModelRenderer Spike2;
-	private final ModelRenderer Arrow;
-	private final ModelRenderer ArrowDiagonals;
-	private final ModelRenderer ArrowDiagonal1;
-	private final ModelRenderer ArrowDiagonal2;
-	private final ModelRenderer Dots;
-	private final ModelRenderer Dot1;
-	private final ModelRenderer Dot3;
-	private final ModelRenderer BodyBase;
-	private final ModelRenderer Torso;
-	private final ModelRenderer Ring;
-	private final ModelRenderer RingGroup1;
-	private final ModelRenderer Ring1;
-	private final ModelRenderer Ring2;
-	private final ModelRenderer Ring3;
-	private final ModelRenderer Ring5;
-	private final ModelRenderer Ring4;
-	private final ModelRenderer RingGroup2;
-	private final ModelRenderer Ring6;
-	private final ModelRenderer Ring7;
-	private final ModelRenderer Ring8;
-	private final ModelRenderer Ring9;
-	private final ModelRenderer Ring10;
-	private final ModelRenderer RingTop;
-	private final ModelRenderer Chest;
-	private final ModelRenderer Heart;
-	private final ModelRenderer Abs;
-	private final ModelRenderer Arms;
-	private final ModelRenderer RightArm;
-	private final ModelRenderer RightHand;
-	private final ModelRenderer Beetle1;
-	private final ModelRenderer Beetle5;
-	private final ModelRenderer LeftArm;
-	private final ModelRenderer LeftHand;
-	private final ModelRenderer Beetle2;
-	private final ModelRenderer Beetle6;
-	private final ModelRenderer Bone;
-	private final ModelRenderer Crotch;
-	private final ModelRenderer Circle;
-	private final ModelRenderer Legs;
-	private final ModelRenderer RightLeg;
-	private final ModelRenderer Heart1;
-	private final ModelRenderer RightFoot;
-	private final ModelRenderer Beetle3;
-	private final ModelRenderer LeftLeg;
-	private final ModelRenderer Heart2;
-	private final ModelRenderer LeftFoot;
-	private final ModelRenderer Beetle4;
+	public final ModelRenderer HeadBase;
+	public final ModelRenderer Head;
+	public final ModelRenderer Spikes;
+	public final ModelRenderer SpikeMiddle;
+	public final ModelRenderer SpikeMiddleDiagonals;
+	public final ModelRenderer SpikeMiddleDiagonal1;
+	public final ModelRenderer SpikeMiddleDiagonal2;
+	public final ModelRenderer Top;
+	public final ModelRenderer SpikeMiddle2;
+	public final ModelRenderer SpikeMiddleDiagonals2;
+	public final ModelRenderer SpikeMiddleDiagonal3;
+	public final ModelRenderer SpikeMiddleDiagonal4;
+	public final ModelRenderer Top2;
+	public final ModelRenderer SpikeMiddle3;
+	public final ModelRenderer SpikeMiddleDiagonals3;
+	public final ModelRenderer SpikeMiddleDiagonal5;
+	public final ModelRenderer SpikeMiddleDiagonal6;
+	public final ModelRenderer Top3;
+	public final ModelRenderer Spike1;
+	public final ModelRenderer Spike2;
+	public final ModelRenderer Arrow;
+	public final ModelRenderer ArrowDiagonals;
+	public final ModelRenderer ArrowDiagonal1;
+	public final ModelRenderer ArrowDiagonal2;
+	public final ModelRenderer Dots;
+	public final ModelRenderer Dot1;
+	public final ModelRenderer Dot3;
+	public final ModelRenderer BodyBase;
+	public final ModelRenderer Torso;
+	public final ModelRenderer Ring;
+	public final ModelRenderer RingGroup1;
+	public final ModelRenderer Ring1;
+	public final ModelRenderer Ring2;
+	public final ModelRenderer Ring3;
+	public final ModelRenderer Ring5;
+	public final ModelRenderer Ring4;
+	public final ModelRenderer RingGroup2;
+	public final ModelRenderer Ring6;
+	public final ModelRenderer Ring7;
+	public final ModelRenderer Ring8;
+	public final ModelRenderer Ring9;
+	public final ModelRenderer Ring10;
+	public final ModelRenderer RingTop;
+	public final ModelRenderer Chest;
+	public final ModelRenderer Heart;
+	public final ModelRenderer Abs;
+	public final ModelRenderer Arms;
+	public final ModelRenderer RightArm;
+	public final ModelRenderer RightHand;
+	public final ModelRenderer Beetle1;
+	public final ModelRenderer Beetle5;
+	public final ModelRenderer LeftArm;
+	public final ModelRenderer LeftHand;
+	public final ModelRenderer Beetle2;
+	public final ModelRenderer Beetle6;
+	public final ModelRenderer Bone;
+	public final ModelRenderer Crotch;
+	public final ModelRenderer Circle;
+	public final ModelRenderer Legs;
+	public final ModelRenderer RightLeg;
+	public final ModelRenderer Heart1;
+	public final ModelRenderer RightFoot;
+	public final ModelRenderer Beetle3;
+	public final ModelRenderer LeftLeg;
+	public final ModelRenderer Heart2;
+	public final ModelRenderer LeftFoot;
+	public final ModelRenderer Beetle4;
 
 	public ModelGoldExperienceRequiem() {
 		textureWidth = 128;
@@ -84,7 +84,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 
 		HeadBase = new ModelRenderer(this);
 		HeadBase.setRotationPoint(0.0F, 24.0F, 0.0F);
-		
 
 		Head = new ModelRenderer(this);
 		Head.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -95,7 +94,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		Spikes = new ModelRenderer(this);
 		Spikes.setRotationPoint(0.0F, 0.0F, 0.0F);
 		Head.addChild(Spikes);
-		
 
 		SpikeMiddle = new ModelRenderer(this);
 		SpikeMiddle.setRotationPoint(0.0F, -38.15F, -2.9F);
@@ -108,7 +106,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		SpikeMiddleDiagonals = new ModelRenderer(this);
 		SpikeMiddleDiagonals.setRotationPoint(0.0F, 0.0F, 0.0F);
 		SpikeMiddle.addChild(SpikeMiddleDiagonals);
-		
 
 		SpikeMiddleDiagonal1 = new ModelRenderer(this);
 		SpikeMiddleDiagonal1.setRotationPoint(-0.4923F, -3.2275F, 0.9218F);
@@ -138,7 +135,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		SpikeMiddleDiagonals2 = new ModelRenderer(this);
 		SpikeMiddleDiagonals2.setRotationPoint(0.0F, 0.0F, 0.0F);
 		SpikeMiddle2.addChild(SpikeMiddleDiagonals2);
-		
 
 		SpikeMiddleDiagonal3 = new ModelRenderer(this);
 		SpikeMiddleDiagonal3.setRotationPoint(-0.4923F, -3.2275F, 0.9218F);
@@ -211,7 +207,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		ArrowDiagonals = new ModelRenderer(this);
 		ArrowDiagonals.setRotationPoint(0.0F, 0.0F, 0.0F);
 		Arrow.addChild(ArrowDiagonals);
-		
 
 		ArrowDiagonal1 = new ModelRenderer(this);
 		ArrowDiagonal1.setRotationPoint(0.8F, -34.4F, -3.9F);
@@ -228,7 +223,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		Dots = new ModelRenderer(this);
 		Dots.setRotationPoint(0.5F, -34.65F, -4.4F);
 		Head.addChild(Dots);
-		
 
 		Dot1 = new ModelRenderer(this);
 		Dot1.setRotationPoint(2.0F, 0.4F, 0.675F);
@@ -244,7 +238,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 
 		BodyBase = new ModelRenderer(this);
 		BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
-		
 
 		Torso = new ModelRenderer(this);
 		Torso.setRotationPoint(0.0F, -25.5F, -1.0F);
@@ -256,13 +249,11 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		Ring.setRotationPoint(0.0F, 0.2419F, -0.9703F);
 		Torso.addChild(Ring);
 		setRotationAngle(Ring, -0.24F, 0.0F, 0.0742F);
-		
 
 		RingGroup1 = new ModelRenderer(this);
 		RingGroup1.setRotationPoint(0.0413F, 0.5353F, 0.2059F);
 		Ring.addChild(RingGroup1);
 		setRotationAngle(RingGroup1, 0.0F, 0.0F, -0.0524F);
-		
 
 		Ring1 = new ModelRenderer(this);
 		Ring1.setRotationPoint(5.875F, -3.8045F, -0.0746F);
@@ -298,7 +289,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		RingGroup2.setRotationPoint(-0.7946F, 0.7053F, 0.6298F);
 		Ring.addChild(RingGroup2);
 		setRotationAngle(RingGroup2, 0.0175F, 0.0F, 0.0524F);
-		
 
 		Ring6 = new ModelRenderer(this);
 		Ring6.setRotationPoint(-5.875F, -3.8045F, -0.0746F);
@@ -360,7 +350,6 @@ public class ModelGoldExperienceRequiem <T extends EntityGoldExperienceRequiem> 
 		Arms = new ModelRenderer(this);
 		Arms.setRotationPoint(0.0F, 0.0F, 0.0F);
 		BodyBase.addChild(Arms);
-		
 
 		RightArm = new ModelRenderer(this);
 		RightArm.setRotationPoint(-8.5F, -20.8015F, -1.3061F);
