@@ -103,13 +103,9 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				props.setCooldown(220);
 			}
 
-			player.setInvulnerable(true);
-			player.setHealth(20.0f);
+			//player.setInvulnerable(true);
+			//player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
-			player.abilities.allowFlying = true;
-			player.abilities.setFlySpeed(player.abilities.getFlySpeed() * 1.5f);
-			player.abilities.isFlying = true;
-			player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
 
 			//Gold Experience Requiem's ability
 			if(this.ger)
@@ -121,7 +117,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 						props.setDiavolo(player.getLastAttackedEntity().getDisplayName().toString());
 					}
 				}
-				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
+				/*for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
 					IStand prs = pwr.orElse(new StandCapability());
@@ -261,7 +257,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 							}
 						}
 					}
-				}
+				}*/
 				for(PlayerEntity playerEntity : this.world.getPlayers())
 				{
 					if(playerEntity != null)

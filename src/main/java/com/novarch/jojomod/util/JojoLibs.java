@@ -42,17 +42,17 @@ public class JojoLibs
 
     public static class StandID
     {
-        public static int nullStand = 0;
+        public static final int nullStand = 0;
 
-        public static int kingCrimson = 1;
+        public static final int kingCrimson = 1;
 
-        public static int dirtyDeedsDoneDirtCheap = 2;
+        public static final int dirtyDeedsDoneDirtCheap = 2;
 
-        public static int goldExperience = 3;
+        public static final int goldExperience = 3;
 
-        public static int madeInHeaven = 4;
+        public static final int madeInHeaven = 4;
 
-        public static int GER = 5;
+        public static final int GER = 5;
     }
 
     public static int numberOfStands = 5;

@@ -1,5 +1,12 @@
 package com.novarch.jojomod.capabilities;
 
+import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.network.message.SyncStandCapability;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraftforge.fml.network.PacketDistributor;
+
 public class StandCapability implements IStand
 {
 	private int playerStandID = 0;
@@ -105,17 +112,20 @@ public class StandCapability implements IStand
 	}
 
 	@Override
-	public void setTimeLeft(int timeleft) {
+	public void setTimeLeft(int timeleft)
+	{
 		this.timeleft = timeleft;
 	}
 
 	@Override
-	public int getTimeLeft() {
+	public int getTimeLeft()
+	{
 		return this.timeleft;
 	}
 
 	@Override
-	public void addTimeLeft(int addition) {
+	public void addTimeLeft(int addition)
+	{
 		this.timeleft += addition;
 	}
 
@@ -149,12 +159,14 @@ public class StandCapability implements IStand
 	}
 
 	@Override
-	public int getTransformed() {
+	public int getTransformed()
+	{
 		return this.transformed;
 	}
 
 	@Override
-	public void setTransformed(int value) {
+	public void setTransformed(int value)
+	{
 		this.transformed = value;
 	}
 
@@ -174,11 +186,13 @@ public class StandCapability implements IStand
 	{
 	    setStandID(props.getStandID());
 	    setStandAct(props.getStandAct());
-	    setStandOn(props.getStandOn());
+	    setStandOn(false);
 	    setJojoPower(props.getJojoPower());
-	    setPowerSpawned(props.getPowerSpawned());
+	    setPowerSpawned(false);
 	    setPlayerStandName(props.getPlayerStandName());
 	    setCooldown(props.getCooldown());
+	    setTimeLeft(props.getTimeLeft());
+	    setTransformed(props.getTransformed());
 	    setDiavolo(props.getDiavolo());
 	    setAbility(props.getAbility());
 	  }

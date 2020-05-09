@@ -155,7 +155,6 @@ public class ItemStandArrow extends Item
 			else
 			{
 				player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
-				player.sendMessage(new TranslationTextComponent(String.valueOf(props.getStandID()), new Object[0]));
 			}
 
 	}

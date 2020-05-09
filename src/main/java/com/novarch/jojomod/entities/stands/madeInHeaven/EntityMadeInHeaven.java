@@ -20,9 +20,13 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.stats.Stat;
+import net.minecraft.stats.StatType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -92,7 +96,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 	    {
 			PlayerEntity player = getMaster();
 			IStand props = JojoProvider.get(player);
-			props.setTimeLeft(this.heaventickr);
+			props.setTimeLeft(this.heaventickr - 1200);
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
@@ -100,7 +104,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 			if(this.getMaster().isCrouching()&& StevesBizarreSurvival.debug)
 			{
 				heaventickr-=100;
-				player.sendMessage(new TranslationTextComponent(String.valueOf(props.getTimeLeft()), new Object[0]));
 			}
 
 			//Made In Heaven's Ability
@@ -109,6 +112,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 				if(heaventickr > 0)
 					heaventickr--;
 
+				if(heaventickr == 1200) { player.sendMessage(new StringTextComponent("\"Heaven\" has begun!")); }
 				if(heaventickr < 1200)
 				{
 					this.world.setDayTime(this.world.getDayTime() + 50);
@@ -118,7 +122,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 					if(!this.world.isRemote)
 						((ServerWorld)this.world).addLightningBolt(lightning);
 					this.world.addEntity(lightning);
-					this.world.getGameRules().write().putInt("randomTickSpeed", 100);
+					this.world.getGameRules().write().putInt(GameRules.RANDOM_TICK_SPEED.getName(), this.world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED) + 5);
 				}
 
 				if(heaventickr < 800)

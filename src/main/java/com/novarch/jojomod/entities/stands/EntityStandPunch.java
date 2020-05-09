@@ -226,7 +226,7 @@ public void tick() {
   baseTick();
   BlockPos blockpos = new BlockPos(this.xTile, this.yTile, this.zTile);
   BlockState BlockState = this.world.getBlockState(blockpos);
-  if (BlockState.getMaterial() != Material.AIR) {
+  if (BlockState.getMaterial() != Material.AIR && !BlockState.getCollisionShape(this.world, blockpos).isEmpty()) {
     AxisAlignedBB axisalignedbb = BlockState.getCollisionShape(((IBlockReader)this.world), blockpos).getBoundingBox();
     if (axisalignedbb != null && axisalignedbb.offset(blockpos).contains(new Vec3d(this.getPosX(), this.getPosY(), this.getPosZ())))
       this.inGround = true; 

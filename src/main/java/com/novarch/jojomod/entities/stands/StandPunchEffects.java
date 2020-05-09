@@ -4,6 +4,7 @@ import com.novarch.jojomod.capabilities.IStand;
 import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,23 +36,23 @@ public class StandPunchEffects
                 basicDefault(result, entityIn, entityBlock);
                 break;
             }
-            case 1: {
+            case JojoLibs.StandID.kingCrimson: {
                 kingCrimson(result, entityIn, punch, entityBlock);
                 break;
             }
-            case 2: {
+            case JojoLibs.StandID.dirtyDeedsDoneDirtCheap: {
                 dirtyDeedsDoneDirtCheap(result, entityIn, punch, entityBlock);
                 break;
             }
-            case 3: {
+            case JojoLibs.StandID.goldExperience: {
 				goldExperience(result, entityIn, punch, entityBlock);
 				break;
 			}
-            case 4: {
+            case JojoLibs.StandID.madeInHeaven: {
             	madeInHeaven(result, entityIn, punch, entityBlock);
             	break;
             }
-            case 5: {
+            case JojoLibs.StandID.GER: {
             	goldExperienceRequiem(result, entityIn, punch, entityBlock);
             	break;
             }
