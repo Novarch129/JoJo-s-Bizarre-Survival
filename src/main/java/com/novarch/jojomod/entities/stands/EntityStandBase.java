@@ -3,7 +3,7 @@ package com.novarch.jojomod.entities.stands;
 import java.util.UUID;
 
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 
 import net.minecraft.entity.Entity;
@@ -22,9 +22,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 @SuppressWarnings("unused")
@@ -243,7 +241,7 @@ public abstract class EntityStandBase extends MobEntity
                     this.setAir(60);
                 }
                 LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-                IStand props = power.orElse(new IStandCapability());
+                IStand props = power.orElse(new StandCapability());
                 if (!props.getStandOn())
                 {
                     this.setDead();

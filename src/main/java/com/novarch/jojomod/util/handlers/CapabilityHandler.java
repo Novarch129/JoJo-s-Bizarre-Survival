@@ -17,8 +17,8 @@ public class CapabilityHandler
     @SubscribeEvent
     public void attachCapability(AttachCapabilitiesEvent<Entity> event) 
     {
-      if (!((Entity)event.getObject() instanceof PlayerEntity))
+      if (!(event.getObject() instanceof PlayerEntity))
         return; 
-      event.addCapability(this.JOJO_CAP, (ICapabilityProvider)new JojoProvider());
+      event.addCapability(this.JOJO_CAP, new JojoProvider());
     }
 }

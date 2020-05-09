@@ -45,7 +45,8 @@ public class EventControlInputs
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbility2Button());
+				 //StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbility2Button());
+				 entityPlayerSP.setMotion(entityPlayerSP.getMotion().getX() * 5.0f, entityPlayerSP.getMotion().getY() * 5.0f, entityPlayerSP.getMotion().getZ() * 5.0f);
 			 }
 		 }
 	    

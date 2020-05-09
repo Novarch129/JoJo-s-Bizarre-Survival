@@ -1,7 +1,7 @@
 package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.util.JojoLibs;
@@ -79,7 +79,7 @@ public class ItemSummonMadeInHeaven extends Item
         {
             PlayerEntity player = (PlayerEntity)entity;
             LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new IStandCapability());
+            IStand props = stand.orElse(new StandCapability());
             this.hasStand = true;													 
             if (props != null && props.getStandID() != 0) 
             {
@@ -121,7 +121,7 @@ public class ItemSummonMadeInHeaven extends Item
 		final ItemStack stack = playerIn.getHeldItem(handIn);
 		try {
 			LazyOptional<IStand> stand = playerIn.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new IStandCapability());
+            IStand props = stand.orElse(new StandCapability());
         if (stack == null) 
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, (Object)stack);

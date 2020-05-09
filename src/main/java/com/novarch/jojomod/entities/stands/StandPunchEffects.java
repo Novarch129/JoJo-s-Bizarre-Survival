@@ -1,19 +1,17 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.init.SoundInit;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -22,12 +20,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class StandPunchEffects
@@ -429,7 +424,7 @@ public class StandPunchEffects
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 				LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
-				IStand props = power.orElse(new IStandCapability());
+				IStand props = power.orElse(new StandCapability());
 				if (punch.shootingStand.life) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
@@ -673,7 +668,7 @@ public class StandPunchEffects
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 			LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new IStandCapability());
+			IStand props = power.orElse(new StandCapability());
 			if (punch.shootingStand.ger) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)

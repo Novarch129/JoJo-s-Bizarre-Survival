@@ -2,7 +2,7 @@ package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -81,7 +81,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	    {
 	    	PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-	      IStand props = power.orElse(new IStandCapability());
+	      IStand props = power.orElse(new StandCapability());
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching() || player.isAirBorne)

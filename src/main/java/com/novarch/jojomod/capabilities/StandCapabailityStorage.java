@@ -6,7 +6,7 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
-public class IStandStorage implements IStorage<IStand>
+public class StandCapabailityStorage implements IStorage<IStand>
 {
 	public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
 	{

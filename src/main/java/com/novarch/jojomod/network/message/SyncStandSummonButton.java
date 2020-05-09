@@ -5,7 +5,7 @@ import java.util.List;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 
 import java.util.function.Supplier;
@@ -15,8 +15,6 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
@@ -64,7 +62,7 @@ public class SyncStandSummonButton
 		      if (!world.isRemote)
 		        if (player != null) {
 		          LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-		          IStand props = power.orElse(new IStandCapability());
+		          IStand props = power.orElse(new StandCapability());
 		          if (props != null) {
 		            int tickDelay = 0;
 		            for (int k = 0; k < 20; k++) {
@@ -102,7 +100,7 @@ public class SyncStandSummonButton
 		  public static void summonStand(PlayerEntity player)
 		  {
 			  LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-			  IStand props = power.orElse(new IStandCapability());
+			  IStand props = power.orElse(new StandCapability());
 			  int standID = props.getStandID();
 			  EntityStandBase theStand = JojoLibs.getStand(standID, player.world);
 			  

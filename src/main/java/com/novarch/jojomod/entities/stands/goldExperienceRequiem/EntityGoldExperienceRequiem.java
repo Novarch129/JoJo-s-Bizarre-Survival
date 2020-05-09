@@ -2,7 +2,7 @@ package com.novarch.jojomod.entities.stands.goldExperienceRequiem;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -86,14 +86,16 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 		super.tick();
 		this.fallDistance = 0.0F;
 
-	    if (getMaster() != null) {
+	    if (getMaster() != null)
+	    {
 			PlayerEntity player = getMaster();
 			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new IStandCapability());
+			IStand props = power.orElse(new StandCapability());
 			this.ger = props.getAbility();
 
 			//Cooldown handler
-			if (props.getTransformed() > 1) {
+			if (props.getTransformed() > 1)
+			{
 				props.subtractCooldown(1);
 			}
 			if (props.getCooldown() <= 0) {
@@ -104,6 +106,9 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 			player.setInvulnerable(true);
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
+			player.abilities.allowFlying = true;
+			player.abilities.setFlySpeed(player.abilities.getFlySpeed() * 1.5f);
+			player.abilities.isFlying = true;
 			player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
 
 			//Gold Experience Requiem's ability
@@ -119,7 +124,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity instanceof MobEntity)
@@ -134,7 +139,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -152,7 +157,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -170,7 +175,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -188,7 +193,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -206,7 +211,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -224,7 +229,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
@@ -242,7 +247,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 				{
 					LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-					IStand prs = pwr.orElse(new IStandCapability());
+					IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity != null && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof ItemEntity) && entity.isAlive())

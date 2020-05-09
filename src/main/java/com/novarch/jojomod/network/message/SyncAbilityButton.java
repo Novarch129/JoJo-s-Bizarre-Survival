@@ -1,7 +1,7 @@
 package com.novarch.jojomod.network.message;
 
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,7 +52,7 @@ public class SyncAbilityButton
     {
         if(player != null) {
             LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-            IStand props = power.orElse(new IStandCapability());
+            IStand props = power.orElse(new StandCapability());
 
             if (props != null)
             {

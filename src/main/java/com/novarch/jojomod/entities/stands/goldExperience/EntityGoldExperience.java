@@ -2,7 +2,7 @@ package com.novarch.jojomod.entities.stands.goldExperience;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -82,7 +82,7 @@ public class EntityGoldExperience extends EntityStandBase
 	    if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new IStandCapability());
+			IStand props = power.orElse(new StandCapability());
 			this.life = props.getAbility();
 
 			//Cooldown handler

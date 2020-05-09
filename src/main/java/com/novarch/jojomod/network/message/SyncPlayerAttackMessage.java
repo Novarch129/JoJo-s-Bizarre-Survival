@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 
 import net.minecraft.entity.Entity;
@@ -34,7 +34,7 @@ public class SyncPlayerAttackMessage
 	      if (!world.isRemote)
 	        if (player != null) {
 	          LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-	          IStand props = power.orElse(new IStandCapability());
+	          IStand props = power.orElse(new StandCapability());
 	          if (props != null)
 	            if (props.getStandOn()) {
 	              List<Entity> entityList = world.getEntitiesWithinAABBExcludingEntity((Entity)player, new AxisAlignedBB(player.getPosX() - 5.0D, player.getPosY() - 5.0D, player.getPosZ() - 5.0D, player.getPosX() + 5.0D, player.getPosY() + 5.0D, player.getPosZ() + 5.0D));

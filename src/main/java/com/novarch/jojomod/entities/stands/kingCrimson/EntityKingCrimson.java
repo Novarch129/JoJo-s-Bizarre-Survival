@@ -2,7 +2,7 @@ package com.novarch.jojomod.entities.stands.kingCrimson;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -92,7 +92,7 @@ public class EntityKingCrimson extends EntityStandBase
 	    {
 	    	PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-	      IStand props = power.orElse(new IStandCapability());
+	      IStand props = power.orElse(new StandCapability());
 	      this.timeSkipped = props.getCooldown() <= 0;
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
@@ -149,7 +149,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 					if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 					{
 						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -175,7 +175,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -201,7 +201,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -227,7 +227,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -253,7 +253,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -279,7 +279,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -305,7 +305,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
@@ -331,7 +331,7 @@ public class EntityKingCrimson extends EntityStandBase
 					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new IStandCapability());
+						IStand prs = pwr.orElse(new StandCapability());
 						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
 							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))

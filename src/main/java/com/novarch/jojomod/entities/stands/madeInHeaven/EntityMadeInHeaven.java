@@ -2,11 +2,10 @@ package com.novarch.jojomod.entities.stands.madeInHeaven;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
+import com.novarch.jojomod.capabilities.StandCapability;
 import com.novarch.jojomod.capabilities.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.RequestSyncStandCapability;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
@@ -27,9 +26,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ObjectHolder;
@@ -95,9 +91,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 	    if (getMaster() != null)
 	    {
 			PlayerEntity player = getMaster();
-			StevesBizarreSurvival.INSTANCE.sendToServer(new RequestSyncStandCapability());
-			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new IStandCapability());
+			IStand props = JojoProvider.get(player);
 			props.setTimeLeft(this.heaventickr);
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
 			player.setHealth(20.0f);
@@ -148,7 +142,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 					for(PlayerEntity entity : this.world.getPlayers())
 					{
 						LazyOptional<IStand> pwr = ((PlayerEntity) entity).getCapability(JojoProvider.STAND);
-						IStand prps = pwr.orElse(new IStandCapability());
+						IStand prps = pwr.orElse(new StandCapability());
 						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
 						{
 							((PlayerEntity) entity).inventory.clear();

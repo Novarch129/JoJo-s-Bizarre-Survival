@@ -1,14 +1,12 @@
 package com.novarch.jojomod.capabilities;
 
-public class IStandCapability implements IStand
+public class StandCapability implements IStand
 {
 	private int playerStandID = 0;
 	  
 	private int playerStandAct = 0;
 	  
 	private boolean playerStandOn = false;
-	  
-	private int playerStandExp = 0;
 	  
 	private boolean playerPowerSpawned = false;
 	  
@@ -25,20 +23,10 @@ public class IStandCapability implements IStand
 	private boolean ability = true;
 
 	private int transformed = 0;
-	  
-	public void addStandExp(int value)
-	{
-	    this.playerStandExp += value;
-	}
 
 	public void setStandID(int value)
 	{
 	    this.playerStandID = value;
-	}
-	  
-	public void setStandExp(int value)
-	{
-	    this.playerStandExp = value;
 	}
 	  
 	public void setStandAct(int value)
@@ -51,27 +39,28 @@ public class IStandCapability implements IStand
 	    this.playerStandOn = value;
 	}
 	  
-	  public void setJojoPower(int value) {
+	  public void setJojoPower(int value)
+	  {
 	    this.playerJojoPower = value;
 	  }
 	  
-	  public void setPowerSpawned(boolean value) {
+	  public void setPowerSpawned(boolean value)
+	  {
 	    this.playerPowerSpawned = value;
 	  }
 	  
-	  public void setPlayerStandName(String value) {
-	    this.playerStandName = value;
+	  public void setPlayerStandName(String value)
+	  {
+	  	this.playerStandName = value;
 	  }
 	  
-	  public int getStandID() {
-	    return this.playerStandID;
+	  public int getStandID()
+	  {
+	  	return this.playerStandID;
 	  }
 	  
-	  public int getStandExp() {
-	    return this.playerStandExp;
-	  }
-	  
-	  public int getStandAct() {
+	  public int getStandAct()
+	  {
 	    return this.playerStandAct;
 	  }
 	  
@@ -116,8 +105,8 @@ public class IStandCapability implements IStand
 	}
 
 	@Override
-	public void setTimeLeft(int new_time_left) {
-		this.timeleft = new_time_left;
+	public void setTimeLeft(int timeleft) {
+		this.timeleft = timeleft;
 	}
 
 	@Override
@@ -198,7 +187,6 @@ public class IStandCapability implements IStand
 	  {
 	    setStandOn(false);
 	    setStandAct(0);
-	    setStandExp(0);
 	    setStandID(0);
 	    setPlayerStandName("");
 	    setCooldown(0);

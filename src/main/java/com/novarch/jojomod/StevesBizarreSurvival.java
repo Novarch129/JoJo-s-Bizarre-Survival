@@ -1,10 +1,9 @@
 package com.novarch.jojomod;
 
 import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.IStandCapability;
-import com.novarch.jojomod.capabilities.IStandStorage;
+import com.novarch.jojomod.capabilities.StandCapability;
+import com.novarch.jojomod.capabilities.StandCapabailityStorage;
 import com.novarch.jojomod.capabilities.JojoProvider;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.DimensionInit;
@@ -18,11 +17,13 @@ import com.novarch.jojomod.proxy.ServerProxy;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -30,7 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -71,10 +72,10 @@ public class StevesBizarreSurvival
 
     public StevesBizarreSurvival()
     {
-    	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-           
+    	modEventBus.addListener(this::setup);
+        modEventBus.addListener(this::doClientStuff);
+
         KeyHandler.addKeys();
         MinecraftForge.EVENT_BUS.register(EventControlInputs.class);
         ItemInit.ITEMS.register(modEventBus);
@@ -124,7 +125,7 @@ public class StevesBizarreSurvival
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        CapabilityManager.INSTANCE.register(IStand.class, new IStandStorage(), IStandCapability::new);
+        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), StandCapability::new);
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
@@ -158,8 +159,8 @@ public class StevesBizarreSurvival
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
-        IStand props = event.player.getCapability(JojoProvider.STAND, null).orElseThrow(() -> new IllegalArgumentException("Capability cannot be empty!"));
-        INSTANCE.sendToServer(new RequestSyncStandCapability());
+        PlayerEntity player = event.player;
+        IStand props = JojoProvider.get(player);
         if(!props.getStandOn() && props.getCooldown() >= 0)
         {
             props.subtractCooldown(1);
@@ -177,9 +178,9 @@ public class StevesBizarreSurvival
 
         if(!props.getStandOn())
         {
-            event.player.setInvulnerable(false);
-            if(!event.player.isCreative() && !event.player.isSpectator())
-                event.player.setGameType(GameType.SURVIVAL);
+            player.setInvulnerable(false);
+            if(!player.isCreative() && !player.isSpectator())
+                player.setGameType(GameType.SURVIVAL);
         }
     }
 
@@ -187,29 +188,31 @@ public class StevesBizarreSurvival
     public void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event)
     {
         LazyOptional<IStand> power = event.getPlayer().getCapability(JojoProvider.STAND, null);
-        IStand props = power.orElseThrow(() -> new RuntimeException("Capability not present."));
+        IStand props = power.orElse(new StandCapability());
         props.cloneSaveFunction(props);
-    }
-
-    @SubscribeEvent
-    public void onStandRemoved(EntityEvent event)
-    {
-        if(event.getEntity() instanceof EntityStandBase)
-        {
-            if(!event.getEntity().isAlive())
-            {
-                ((EntityStandBase) event.getEntity()).getMaster().clearActivePotions();
-            }
-        }
     }
 
     @SubscribeEvent
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
-        IStand props = PROXY.getPlayer().getCapability(JojoProvider.STAND, null).orElseThrow(() -> new RuntimeException("No capability was found."));
-        PROXY.getPlayer().sendMessage(new StringTextComponent(String.valueOf(props.getTimeLeft())));
+        IStand props = JojoProvider.get(Minecraft.getInstance().player);
         GUICounter guiCounter = new GUICounter();
+        //guiCounter.render(props.getTimeLeft());
         guiCounter.render(props.getTimeLeft());
+    }
+
+    @SubscribeEvent
+    public void playerJoinWorld(EntityJoinWorldEvent event)
+    {
+        if(event.getEntity() instanceof PlayerEntity)
+        {
+            PlayerEntity player = (PlayerEntity) event.getEntity();
+            IStand props = JojoProvider.get(player);
+            if(!player.world.isRemote)
+            {
+                INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
+            }
+        }
     }
 
     //TODO Remove method below when D4C GUI is added
