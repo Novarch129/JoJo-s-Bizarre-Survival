@@ -8,12 +8,15 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.gui.GUICounter;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.RequestSyncStandCapability;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
+import com.novarch.jojomod.network.message.SyncStandCapability;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
@@ -28,6 +31,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityMadeInHeaven extends EntityStandBase
@@ -88,8 +92,10 @@ public class EntityMadeInHeaven extends EntityStandBase
 		super.tick();
 		this.fallDistance = 0.0F;
 
-	    if (getMaster() != null) {
+	    if (getMaster() != null)
+	    {
 			PlayerEntity player = getMaster();
+			StevesBizarreSurvival.INSTANCE.sendToServer(new RequestSyncStandCapability());
 			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 			IStand props = power.orElse(new IStandCapability());
 			props.setTimeLeft(this.heaventickr);
