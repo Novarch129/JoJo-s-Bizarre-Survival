@@ -19,6 +19,8 @@ import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.advancements.criterion.DamagePredicate;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,6 +32,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
@@ -296,7 +299,7 @@ public class StevesBizarreSurvival
     }
 
     @SubscribeEvent
-    public void cancelDamage(LivingDamageEvent event)
+    public void cancelDamage(LivingHurtEvent event)
     {
         if(event.getEntity() instanceof PlayerEntity)
         {
@@ -309,24 +312,17 @@ public class StevesBizarreSurvival
                     event.getSource().getTrueSource().playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
                 else if(event.getSource().getTrueSource() instanceof MobEntity)
                     player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void cancelDamage2(LivingHurtEvent event)
-    {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            IStand props = JojoProvider.get(player);
-            if(props.getStandID() == JojoLibs.StandID.GER)
-            {
-                event.setCanceled(true);
-                if(event.getSource().getTrueSource() instanceof PlayerEntity)
-                    event.getSource().getTrueSource().playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
-                else if(event.getSource().getTrueSource() instanceof MobEntity)
+                else if(event.getSource() == DamageSource.OUT_OF_WORLD) {
                     player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
+                    for(int height = 256; height > 0; height--)
+                    {
+                        if(player.world.getBlockState(new BlockPos(player.getPosX(), height, player.getPosZ())).getMaterial() != Material.AIR)
+                        {
+                            player.setPositionAndUpdate(player.getPosX(), height + 1, player.getPosZ());
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
