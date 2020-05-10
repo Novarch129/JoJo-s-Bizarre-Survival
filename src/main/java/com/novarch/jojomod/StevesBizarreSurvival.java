@@ -313,15 +313,8 @@ public class StevesBizarreSurvival
                 else if(event.getSource().getTrueSource() instanceof MobEntity)
                     player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
                 else if(event.getSource() == DamageSource.OUT_OF_WORLD) {
+                    player.setPositionAndUpdate(player.getPosX(), JojoLibs.getHighestBlock(player.world, player.getPosition()) + 1, player.getPosZ());
                     player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
-                    for(int height = 256; height > 0; height--)
-                    {
-                        if(player.world.getBlockState(new BlockPos(player.getPosX(), height, player.getPosZ())).getMaterial() != Material.AIR)
-                        {
-                            player.setPositionAndUpdate(player.getPosX(), height + 1, player.getPosZ());
-                            break;
-                        }
-                    }
                 }
             }
         }

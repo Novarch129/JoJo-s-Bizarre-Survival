@@ -8,12 +8,14 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -38,6 +40,18 @@ public class JojoLibs
             playerInventory.deleteStack(stack);
             MinecraftForge.EVENT_BUS.post((Event)new PlayerDestroyItemEvent(playerInventory.player, stack, Hand.MAIN_HAND));
         }
+    }
+
+    public static int getHighestBlock(World world, BlockPos pos)
+    {
+        for(int height = 256; height > 0; height--)
+        {
+            if(world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
+            {
+                return height;
+            }
+        }
+        return -1;
     }
 
     public static class StandID
