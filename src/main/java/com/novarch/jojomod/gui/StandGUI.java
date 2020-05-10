@@ -36,4 +36,9 @@ public class StandGUI extends AbstractGui
             drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
         } else { drawString(mc.fontRenderer, "\"Heaven\" has begun!", 4, 4, 0xFFFFFF); }
     }
+
+    public void renderText(String text)
+    {
+        drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
+    }
 }

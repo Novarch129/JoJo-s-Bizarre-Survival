@@ -11,6 +11,7 @@ public class StandCapabailityStorage implements IStorage<IStand>
 	public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
 	{
         CompoundNBT props = new CompoundNBT();
+        props.putString("Player", instance.getPlayername());
         props.putInt("standID", instance.getStandID());
         props.putInt("StandAct", instance.getStandAct());
         props.putBoolean("StandOn", instance.getStandOn());
@@ -26,6 +27,7 @@ public class StandCapabailityStorage implements IStorage<IStand>
       public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
       {
         CompoundNBT propertyData = (CompoundNBT)nbt;
+        instance.setPlayername(propertyData.getString("Player"));
         instance.setStandID(propertyData.getInt("standID"));
         instance.setStandAct(propertyData.getInt("StandAct"));
         instance.setStandOn(propertyData.getBoolean("StandOn"));

@@ -3,6 +3,10 @@ package com.novarch.jojomod.capabilities;
 @SuppressWarnings("unused")
 public interface IStand
 {
+    String getPlayername();
+
+    void setPlayername(String playername);
+
     void setStandID(final int p0);
 
     void setStandAct(final int p0);

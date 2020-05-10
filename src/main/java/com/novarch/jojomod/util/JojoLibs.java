@@ -61,18 +61,18 @@ public class JojoLibs
     {
         switch (standID)
         {
-            case 0:
+            case StandID.nullStand:
                 return null;
-            case 1:
-                return (EntityStandBase)new EntityKingCrimson(world);
-            case 2:
-                return (EntityStandBase)new EntityDirtyDeedsDoneDirtCheap(world);
-            case 3:
-                return (EntityStandBase)new EntityGoldExperience(world);
-            case 4:
-                return (EntityStandBase)new EntityMadeInHeaven(world);
-            case 5:
-                return (EntityStandBase)new EntityGoldExperienceRequiem(world);
+            case StandID.kingCrimson:
+                return new EntityKingCrimson(world);
+            case StandID.dirtyDeedsDoneDirtCheap:
+                return new EntityDirtyDeedsDoneDirtCheap(world);
+            case StandID.goldExperience:
+                return new EntityGoldExperience(world);
+            case StandID.madeInHeaven:
+                return new EntityMadeInHeaven(world);
+            case StandID.GER:
+                return new EntityGoldExperienceRequiem(world);
         }
         return null;
     }

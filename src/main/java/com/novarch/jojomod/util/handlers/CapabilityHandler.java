@@ -1,12 +1,10 @@
 package com.novarch.jojomod.util.handlers;
 
 import com.novarch.jojomod.StevesBizarreSurvival;
-
 import com.novarch.jojomod.capabilities.JojoProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 

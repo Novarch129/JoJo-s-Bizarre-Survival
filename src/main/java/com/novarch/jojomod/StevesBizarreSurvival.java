@@ -19,12 +19,16 @@ import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.advancements.criterion.DamagePredicate;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
@@ -32,6 +36,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
@@ -55,6 +60,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
 
 /**
  * @author Novarch
@@ -135,7 +142,7 @@ public class StevesBizarreSurvival
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), StandCapability::new);
+        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), () -> null);
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
@@ -176,6 +183,8 @@ public class StevesBizarreSurvival
         {
             INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
             this.ability = props;
+            if(player.isCrouching())
+                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent(props.getPlayername()));
         }
 
         if(!props.getStandOn() && props.getCooldown() >= 0)
@@ -226,11 +235,22 @@ public class StevesBizarreSurvival
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
         assert PROXY.getPlayer() != null;
-        IStand props = JojoProvider.get(PROXY.getPlayer());
+        IStand props = JojoProvider.get(PROXY.getPlayer()); // TODO Fix
         StandGUI standGui = new StandGUI();
-        if(props != null)
-            if(props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven)
-                standGui.renderMadeInHeaven(props.getTimeLeft());
+        if(!Minecraft.getInstance().isSingleplayer()) {
+            if (props != null)
+                if (props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
+                    standGui.renderText("Made in Heaven's counter currently doesn't work in multiplayer.");
+                }
+        }
+        else
+        {
+            if(this.ability!=null)
+            {
+                if(ability.getStandOn() && ability.getStandID() == JojoLibs.StandID.madeInHeaven)
+                    standGui.renderMadeInHeaven(this.ability.getTimeLeft());
+            }
+        }
     }
 
     @SubscribeEvent
@@ -281,11 +301,27 @@ public class StevesBizarreSurvival
         if(event.getEntity() instanceof PlayerEntity)
         {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            IStand props = player.getCapability(JojoProvider.STAND).orElse(new StandCapability());
-            player.sendMessage(new StringTextComponent("Running!"));
+            IStand props = JojoProvider.get(player);
             if(props.getStandID() == JojoLibs.StandID.GER)
             {
-                player.sendMessage(new StringTextComponent("GER"));
+                event.setCanceled(true);
+                if(event.getSource().getTrueSource() instanceof PlayerEntity)
+                    event.getSource().getTrueSource().playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
+                else if(event.getSource().getTrueSource() instanceof MobEntity)
+                    player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void cancelDamage2(LivingHurtEvent event)
+    {
+        if(event.getEntity() instanceof PlayerEntity)
+        {
+            PlayerEntity player = (PlayerEntity) event.getEntity();
+            IStand props = JojoProvider.get(player);
+            if(props.getStandID() == JojoLibs.StandID.GER)
+            {
                 event.setCanceled(true);
                 if(event.getSource().getTrueSource() instanceof PlayerEntity)
                     event.getSource().getTrueSource().playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);

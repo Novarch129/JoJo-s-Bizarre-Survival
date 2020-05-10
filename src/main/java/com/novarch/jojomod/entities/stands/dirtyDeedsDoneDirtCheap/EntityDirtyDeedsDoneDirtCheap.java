@@ -80,8 +80,8 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	    if (getMaster() != null)
 	    {
 	    	PlayerEntity player = getMaster();
-	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-	      IStand props = power.orElse(new StandCapability());
+	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
+	      	IStand props = power.orElse(new StandCapability());
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching() || player.isAirBorne)

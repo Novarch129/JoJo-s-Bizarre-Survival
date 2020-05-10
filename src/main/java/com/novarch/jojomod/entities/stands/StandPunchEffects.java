@@ -16,6 +16,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.fish.SalmonEntity;
 import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -426,7 +427,7 @@ public class StandPunchEffects
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 				LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
 				IStand props = power.orElse(new StandCapability());
-				if (punch.shootingStand.life) {
+				if (punch.shootingStand.life && blockB != Blocks.AIR&& blockB != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
 							if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
@@ -590,6 +591,38 @@ public class StandPunchEffects
 								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 								punch.remove();
 							}
+							if (blockB == Blocks.SEA_PICKLE) {
+								props.addTransformed(1);
+								SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
+								salmon.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+								punch.world.addEntity(salmon);
+								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+								punch.remove();
+							}
+							if (blockB == Blocks.SEA_LANTERN || blockB == Blocks.PRISMARINE) {
+								props.addTransformed(1);
+								GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
+								guardian.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+								punch.world.addEntity(guardian);
+								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+								punch.remove();
+							}
+							if (blockB == Blocks.DIAMOND_BLOCK) {
+								props.addTransformed(1);
+								DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
+								dolphin.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+								punch.world.addEntity(dolphin);
+								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+								punch.remove();
+							}
+							if (blockB == Blocks.TURTLE_EGG) {
+								props.addTransformed(1);
+								TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
+								turtle.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+								punch.world.addEntity(turtle);
+								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+								punch.remove();
+							}
 							if (blockB == Blocks.FARMLAND) {
 								punch.standMaster.getFoodStats().addStats(2, 0.1f);
 								punch.remove();
@@ -608,7 +641,7 @@ public class StandPunchEffects
 						}
 					}
 				}
-				if (hardness != -1.0f && hardness <= 3.0f) {
+				if (hardness != -1.0f && hardness <= 3.0f && blockB != Blocks.AIR) {
 					if (!punch.shootingStand.life) {
 						punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 						blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
@@ -670,7 +703,7 @@ public class StandPunchEffects
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 			LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
 			IStand props = power.orElse(new StandCapability());
-			if (punch.shootingStand.ger) {
+			if (punch.shootingStand.ger && blockB != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)
 						{
@@ -842,12 +875,53 @@ public class StandPunchEffects
 							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 							punch.remove();
 						}
+						if(blockB == Blocks.SPONGE || blockB == Blocks.WET_SPONGE)
+						{
+							props.addTransformed(2);
+							ElderGuardianEntity elderGuardian = new ElderGuardianEntity(EntityType.ELDER_GUARDIAN, punch.world);
+							elderGuardian.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(elderGuardian);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
 						if(blockB == Blocks.WITHER_SKELETON_SKULL || blockB == Blocks.WITHER_SKELETON_WALL_SKULL)
 						{
 							props.addTransformed(1);
 							WitherSkeletonEntity witherSkeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, punch.world);
 							witherSkeleton.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
 							punch.world.addEntity(witherSkeleton);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.SEA_PICKLE) {
+							props.addTransformed(1);
+							SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
+							salmon.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(salmon);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.SEA_LANTERN || blockB == Blocks.PRISMARINE) {
+							props.addTransformed(1);
+							GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
+							guardian.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(guardian);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.DIAMOND_BLOCK) {
+							props.addTransformed(1);
+							DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
+							dolphin.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(dolphin);
+							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+							punch.remove();
+						}
+						if (blockB == Blocks.TURTLE_EGG) {
+							props.addTransformed(1);
+							TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
+							turtle.setPosition((double) (punch.getxTile() + 0.5f), (double) (punch.getyTile() + 0.5f), (double) (punch.getzTile() + 0.5f));
+							punch.world.addEntity(turtle);
 							punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 							punch.remove();
 						}
@@ -868,8 +942,8 @@ public class StandPunchEffects
 						props.setCooldown(220);
 					}
 			}
-			if (hardness != -1.0f && hardness <= 3.0f) {
-				if (!punch.shootingStand.life) {
+			if (blockB != Blocks.AIR) {
+				if (!punch.shootingStand.ger) {
 					punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 					blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
 					punch.remove();

@@ -84,6 +84,7 @@ public class ItemStandArrow extends Item
 				{
 					stack.shrink(1);
 				}
+				props.setPlayername(player.getName().toString());
 				props.setStandID(random);
 				props.setStandOn(true);
 				final EntityStandBase theStand = JojoLibs.getStand(random, world);

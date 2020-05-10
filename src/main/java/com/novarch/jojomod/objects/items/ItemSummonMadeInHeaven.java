@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -93,6 +94,7 @@ public class ItemSummonMadeInHeaven extends Item
                     {
                         stack.shrink(1);
                     }
+                    props.setPlayername(player.getName().toString());
                     props.setStandID(JojoLibs.StandID.madeInHeaven);
                     props.setStandOn(true);
                     final EntityStandBase theStand = JojoLibs.getStand(standID, world);
@@ -109,7 +111,7 @@ public class ItemSummonMadeInHeaven extends Item
             }
             else 
             {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
+                player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt" + props.getPlayername(), new Object[0]));
             }
 	}
 	}

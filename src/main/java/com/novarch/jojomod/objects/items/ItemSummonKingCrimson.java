@@ -94,6 +94,7 @@ public class ItemSummonKingCrimson extends Item
                     {
                         stack.shrink(1);
                     }
+                    props.setPlayername(player.getName().toString());
                     props.setStandID(JojoLibs.StandID.kingCrimson);
                     props.setStandOn(true);
                     final EntityStandBase theStand = JojoLibs.getStand(standID, world);
