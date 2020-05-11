@@ -1,9 +1,9 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
@@ -24,7 +24,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 {
-	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
+	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
 	
 	  private int oratick = 0;
 
@@ -81,7 +81,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	    {
 	    	PlayerEntity player = getMaster();
 	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-	      	IStand props = power.orElse(new StandCapability());
+	      	IStand props = power.orElse(new StandCapability(player));
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching() || player.isAirBorne)
@@ -89,17 +89,17 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      	if(props.getAbility())
 			{
 				if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
-				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE))
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
 				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId()));
-				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
 				else if(player.world.getDimension().getType() == DimensionType.THE_END)
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END).getId()));
-				else if(player.world.getDimension().getType() == DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE_END))
-					StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END).getId()));
+				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId()));
 				player.getFoodStats().addStats(-2, 0.0f);
 				this.remove();
 			}

@@ -1,9 +1,8 @@
 package com.novarch.jojomod.entities.stands.goldExperienceRequiem;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.ModelGoldExperienceRequiemPunch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -17,7 +16,7 @@ import javax.annotation.Nonnull;
 public class RenderGoldExperienceRequiemPunch extends EntityRenderer<EntityStandPunch.goldExperienceRequiem>
 {
 	protected ModelGoldExperienceRequiemPunch punch;
-	protected static final ResourceLocation texture = new ResourceLocation(StevesBizarreSurvival.MOD_ID, "textures/stands/ger_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger_punch.png");
 
 	public RenderGoldExperienceRequiemPunch(EntityRendererManager renderManagerIn) 
 	{

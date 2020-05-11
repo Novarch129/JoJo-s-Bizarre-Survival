@@ -1,10 +1,9 @@
 package com.novarch.jojomod;
 
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.JojoProvider;
-import com.novarch.jojomod.capabilities.StandCapabailityStorage;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.StandCapabailityStorage;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.gui.StandGUI;
 import com.novarch.jojomod.init.DimensionInit;
@@ -18,9 +17,6 @@ import com.novarch.jojomod.proxy.ServerProxy;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.advancements.criterion.DamagePredicate;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,24 +29,18 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
-import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -72,13 +62,13 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("unused")
 @Mod("jojomod")
-public class StevesBizarreSurvival
+public class JojoBizarreSurvival
 {
     public static final boolean debug = true;
     public static final IProxy PROXY = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
-    public static StevesBizarreSurvival instance;
+    public static JojoBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
     private IStand ability = null;
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
@@ -91,7 +81,7 @@ public class StevesBizarreSurvival
     public static final ResourceLocation D4C_DIMENSION_TYPE_NETHER = new ResourceLocation(MOD_ID, "d4c_dimension_nether");
     public static final ResourceLocation D4C_DIMENSION_TYPE_END = new ResourceLocation(MOD_ID, "d4c_dimension_end");
 
-    public StevesBizarreSurvival()
+    public JojoBizarreSurvival()
     {
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	modEventBus.addListener(this::setup);
@@ -146,7 +136,7 @@ public class StevesBizarreSurvival
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), () -> null);
+        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), () -> new StandCapability(null));
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
@@ -181,37 +171,36 @@ public class StevesBizarreSurvival
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         PlayerEntity player = event.player;
-        IStand props = JojoProvider.get(player);
+        JojoProvider.getLazy(player).ifPresent(props -> {
+            if(player instanceof ServerPlayerEntity && !player.world.isRemote && player.isAlive())
+            {
+                INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
+                player.sendMessage(new StringTextComponent(String.valueOf(props.getTimeLeft())));
+                this.ability = props;
+            }
 
-        if(player instanceof ServerPlayerEntity && !player.world.isRemote && player.isAlive())
-        {
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-            this.ability = props;
-            if(player.isCrouching())
-                ((ServerPlayerEntity) player).sendMessage(new StringTextComponent(props.getPlayername()));
-        }
+            if(!props.getStandOn() && props.getCooldown() >= 0)
+            {
+                props.subtractCooldown(1);
+            }
 
-        if(!props.getStandOn() && props.getCooldown() >= 0)
-        {
-            props.subtractCooldown(1);
-        }
+            if(props.getCooldown() <= 0)
+            {
 
-        if(props.getCooldown() <= 0)
-        {
+            }
 
-        }
+            if(!props.getStandOn() && props.getTimeLeft() > 0)
+            {
+                props.subtractTimeLeft(1);
+            }
 
-        if(!props.getStandOn() && props.getTimeLeft() > 0)
-        {
-            props.subtractTimeLeft(1);
-        }
-
-        if(!props.getStandOn())
-        {
-            player.setInvulnerable(false);
-            if(!player.isCreative() && !player.isSpectator())
-                player.setGameType(GameType.SURVIVAL);
-        }
+            if(!props.getStandOn())
+            {
+                player.setInvulnerable(false);
+                if(!player.isCreative() && !player.isSpectator())
+                    player.setGameType(GameType.SURVIVAL);
+            }
+        });
     }
 
     /*@SubscribeEvent
@@ -238,10 +227,13 @@ public class StevesBizarreSurvival
     @SubscribeEvent
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
-        assert PROXY.getPlayer() != null;
-        IStand props = JojoProvider.get(PROXY.getPlayer()); // TODO Fix
         StandGUI standGui = new StandGUI();
-        if(!Minecraft.getInstance().isSingleplayer()) {
+        assert Minecraft.getInstance().player != null;
+        IStand props = JojoProvider.get(Minecraft.getInstance().player); // TODO Fix
+        if(props!=null)
+            if(props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven)
+                standGui.renderMadeInHeaven(props.getTimeLeft());
+       /* if(!Minecraft.getInstance().isSingleplayer()) {
             if (props != null)
                 if (props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
                     standGui.renderText("Made in Heaven's counter currently doesn't work in multiplayer.");
@@ -254,7 +246,7 @@ public class StevesBizarreSurvival
                 if(ability.getStandOn() && ability.getStandID() == JojoLibs.StandID.madeInHeaven)
                     standGui.renderMadeInHeaven(this.ability.getTimeLeft());
             }
-        }
+        }*/
     }
 
     @SubscribeEvent

@@ -1,5 +1,6 @@
-package com.novarch.jojomod.capabilities;
+package com.novarch.jojomod.capabilities.stand;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -12,7 +13,7 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 {
     @CapabilityInject(IStand.class)
     public static final Capability<IStand> STAND = null;
-    private LazyOptional<IStand> holder = LazyOptional.of(StandCapability::new);
+    private LazyOptional<IStand> holder = LazyOptional.of(() -> new StandCapability(Minecraft.getInstance().player));
 
     public boolean hasCapability(Capability<?> capability, Direction side)
 	{
@@ -39,6 +40,11 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 
 	public static IStand get(PlayerEntity player)
 	{
-		return player.getCapability(STAND, null).orElse(new StandCapability());
+		return player.getCapability(STAND, null).orElse(new StandCapability(player));
+	}
+
+	public static LazyOptional<IStand> getLazy(PlayerEntity player)
+	{
+		return player.getCapability(STAND, null);
 	}
 }

@@ -1,8 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
@@ -25,7 +24,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class StandPunchEffects
 {
@@ -425,8 +423,7 @@ public class StandPunchEffects
 				final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-				LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
-				IStand props = power.orElse(new StandCapability());
+				IStand props = JojoProvider.get(punch.shootingStand.getMaster());
 				if (punch.shootingStand.life && blockB != Blocks.AIR&& blockB != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
@@ -701,8 +698,7 @@ public class StandPunchEffects
 			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-			LazyOptional<IStand> power = punch.standMaster.getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new StandCapability());
+			IStand props = JojoProvider.get(punch.shootingStand.getMaster());
 			if (punch.shootingStand.ger && blockB != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)

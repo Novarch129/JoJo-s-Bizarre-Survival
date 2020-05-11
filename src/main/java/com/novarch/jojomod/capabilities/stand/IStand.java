@@ -1,11 +1,11 @@
-package com.novarch.jojomod.capabilities;
+package com.novarch.jojomod.capabilities.stand;
+
+import net.minecraft.entity.player.PlayerEntity;
 
 @SuppressWarnings("unused")
 public interface IStand
 {
-    String getPlayername();
-
-    void setPlayername(String playername);
+    PlayerEntity getPlayer();
 
     void setStandID(final int p0);
 

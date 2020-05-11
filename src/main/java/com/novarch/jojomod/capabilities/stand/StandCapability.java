@@ -1,17 +1,15 @@
-package com.novarch.jojomod.capabilities;
+package com.novarch.jojomod.capabilities.stand;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.network.message.RequestSyncStandCapability;
 import com.novarch.jojomod.network.message.SyncStandCapability;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
-import org.lwjgl.system.CallbackI;
 
 public class StandCapability implements IStand
 {
-	private String playername = "";
+	private final PlayerEntity player;
 
 	private int playerStandID = 0;
 	  
@@ -35,15 +33,13 @@ public class StandCapability implements IStand
 
 	private int transformed = 0;
 
-	@Override
-	public String getPlayername() {
-		return this.playername;
+	public StandCapability(PlayerEntity player) {
+		this.player = player;
 	}
 
 	@Override
-	public void setPlayername(String playername) {
-		this.playername = playername;
-		onDataUpdated();
+	public PlayerEntity getPlayer() {
+		return this.player;
 	}
 
 	public void setStandID(int value)
@@ -216,20 +212,16 @@ public class StandCapability implements IStand
 
 	protected void onDataUpdated()
 	{
-		if(StevesBizarreSurvival.PROXY.getWorld()==null)
+		if(player == null)
 			return;
-		if(StevesBizarreSurvival.PROXY.getWorld().isRemote)
+
+		final PlayerEntity player = getPlayer();
+
+		if(player.world.isRemote)
 			return;
-		for(PlayerEntity playerEntity : StevesBizarreSurvival.PROXY.getWorld().getPlayers())
-		{
-			if(playerEntity==null)
-				return;
-			if(playerEntity.getDisplayName().toString().equals(this.getPlayername()))
-				if(!(playerEntity instanceof ClientPlayerEntity)) {
-					StevesBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) playerEntity), new SyncStandCapability(this));
-					playerEntity.sendMessage(new StringTextComponent("Run"));
-				}
-		}
+
+		JojoBizarreSurvival.INSTANCE.sendToServer(new RequestSyncStandCapability(this));
+		JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
 	public void cloneSaveFunction(IStand props)
@@ -246,7 +238,7 @@ public class StandCapability implements IStand
 	    setDiavolo(props.getDiavolo());
 	    setAbility(props.getAbility());
 	  }
-	  
+
 	  public void setStandRemoved()
 	  {
 	    setStandOn(false);
@@ -254,6 +246,7 @@ public class StandCapability implements IStand
 	    setStandID(0);
 	    setPlayerStandName("");
 	    setCooldown(0);
+	    setTimeLeft(0);
 	    setDiavolo("");
 	    setAbility(true);
 	  }

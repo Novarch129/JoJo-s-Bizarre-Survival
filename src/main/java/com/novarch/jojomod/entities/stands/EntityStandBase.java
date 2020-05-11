@@ -2,9 +2,8 @@ package com.novarch.jojomod.entities.stands;
 
 import java.util.UUID;
 
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,7 +21,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 @SuppressWarnings("unused")
@@ -175,12 +173,7 @@ public abstract class EntityStandBase extends MobEntity
         final ITextComponent name = this.getMaster().getDisplayName();
         return name;
     }
-	
-	protected void entityInit()
-	{
-		this.entityInit();
-	}
-	
+
 	public void setGiveItems()
 	{
         this.giveItem = true;
@@ -240,8 +233,7 @@ public abstract class EntityStandBase extends MobEntity
                 if (this.getAir() < 20) {
                     this.setAir(60);
                 }
-                LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-                IStand props = power.orElse(new StandCapability());
+                IStand props = JojoProvider.get(this.getMaster());
                 if (!props.getStandOn())
                 {
                     this.setDead();

@@ -1,8 +1,7 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -14,19 +13,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnchantmentNameParts;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.eventbus.api.Event;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class JojoLibs
 {
@@ -66,7 +58,7 @@ public class JojoLibs
             if(pos.getX() > 0) {
                 for (int x = pos.getX(); x > 0; x--) {
                     if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
-                        StevesBizarreSurvival.LOGGER.debug(x);
+                        JojoBizarreSurvival.LOGGER.debug(x);
                         return new BlockPos(x, height, pos.getZ());
                     }
                 }
@@ -75,7 +67,7 @@ public class JojoLibs
             else if(pos.getX() < 0) {
                 for (int x = pos.getX(); x < 0; x++) {
                     if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
-                        StevesBizarreSurvival.LOGGER.debug(x);
+                        JojoBizarreSurvival.LOGGER.debug(x);
                         return new BlockPos(x, height, pos.getZ());
                     }
                 }

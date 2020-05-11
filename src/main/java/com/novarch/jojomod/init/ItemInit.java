@@ -1,18 +1,17 @@
 package com.novarch.jojomod.init;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
-import com.novarch.jojomod.StevesBizarreSurvival.JojoItemGroup;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival.JojoItemGroup;
 import com.novarch.jojomod.objects.items.*;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemInit
 {
-	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, StevesBizarreSurvival.MOD_ID);
+	public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, JojoBizarreSurvival.MOD_ID);
 
 	public static final RegistryObject<Item> stand_arrow = ITEMS.register("stand_arrow", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> summon_kc = ITEMS.register("summon_kc", () -> new ItemSummonKingCrimson(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));

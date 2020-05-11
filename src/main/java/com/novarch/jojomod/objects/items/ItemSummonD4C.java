@@ -1,8 +1,8 @@
 package com.novarch.jojomod.objects.items;
 
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.util.ITooltipFlag;
@@ -79,7 +79,7 @@ public class ItemSummonD4C extends Item
         {
             PlayerEntity player = (PlayerEntity)entity;
             LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new StandCapability());
+            IStand props = stand.orElse(new StandCapability(player));
             this.hasStand = true;													 
             if (props != null && props.getStandID() != 0) 
             {
@@ -93,7 +93,6 @@ public class ItemSummonD4C extends Item
                     {
                         stack.shrink(1);
                     }
-                    props.setPlayername(player.getName().toString());
                     props.setStandID(JojoLibs.StandID.dirtyDeedsDoneDirtCheap);
                     props.setStandOn(true);
                     final EntityStandBase theStand = JojoLibs.getStand(standID, world);
@@ -121,8 +120,7 @@ public class ItemSummonD4C extends Item
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
 		try {
-			LazyOptional<IStand> stand = playerIn.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new StandCapability());
+            IStand props = JojoProvider.get(playerIn);
         if (stack == null) 
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, (Object)stack);
