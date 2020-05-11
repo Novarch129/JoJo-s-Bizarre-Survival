@@ -1,7 +1,6 @@
 package com.novarch.jojomod.util.handlers;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.SerializableCapabilityProvider;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.capabilities.stand.StandCapability;
 import net.minecraft.entity.Entity;
