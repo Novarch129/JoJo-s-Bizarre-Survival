@@ -32,6 +32,7 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
@@ -309,12 +310,17 @@ public class StevesBizarreSurvival
             {
                 event.setCanceled(true);
                 if(event.getSource().getTrueSource() instanceof PlayerEntity)
-                    event.getSource().getTrueSource().playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
+                    event.getSource().getTrueSource().world.playSound(null, event.getSource().getTrueSource().getPosX(), event.getSource().getTrueSource().getPosY(), event.getSource().getTrueSource().getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 else if(event.getSource().getTrueSource() instanceof MobEntity)
-                    player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
-                else if(event.getSource() == DamageSource.OUT_OF_WORLD) {
+                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension != DimensionType.THE_END) {
                     player.setPositionAndUpdate(player.getPosX(), JojoLibs.getHighestBlock(player.world, player.getPosition()) + 1, player.getPosZ());
-                    player.playSound(SoundInit.SPAWN_GER.get(), 1.0f, 1.0f);
+                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                }
+                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension == DimensionType.THE_END) {
+                    if(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()) != null)
+                        player.setPositionAndUpdate(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getX(), JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getY() + 1, JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getZ());
+                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 }
             }
         }

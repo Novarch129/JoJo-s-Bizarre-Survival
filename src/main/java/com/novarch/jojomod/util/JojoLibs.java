@@ -1,5 +1,6 @@
 package com.novarch.jojomod.util;
 
+import com.novarch.jojomod.StevesBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
@@ -23,6 +24,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.eventbus.api.Event;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class JojoLibs
 {
     public static void removeHeldItem(PlayerEntity player)
@@ -44,7 +49,7 @@ public class JojoLibs
 
     public static int getHighestBlock(World world, BlockPos pos)
     {
-        for(int height = 256; height > 0; height--)
+        for(int height = world.getActualHeight(); height > 0; height--)
         {
             if(world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
             {
@@ -52,6 +57,31 @@ public class JojoLibs
             }
         }
         return -1;
+    }
+
+    public static BlockPos getNearestBlockEnd(World world, BlockPos pos)
+    {
+        for(int height = world.getActualHeight(); height > 0; height--)
+        {
+            if(pos.getX() > 0) {
+                for (int x = pos.getX(); x > 0; x--) {
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                        StevesBizarreSurvival.LOGGER.debug(x);
+                        return new BlockPos(x, height, pos.getZ());
+                    }
+                }
+            }
+
+            else if(pos.getX() < 0) {
+                for (int x = pos.getX(); x < 0; x++) {
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                        StevesBizarreSurvival.LOGGER.debug(x);
+                        return new BlockPos(x, height, pos.getZ());
+                    }
+                }
+            }
+        }
+        return new BlockPos(0, 65, 0);
     }
 
     public static class StandID
@@ -67,9 +97,11 @@ public class JojoLibs
         public static final int madeInHeaven = 4;
 
         public static final int GER = 5;
+
+        static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, madeInHeaven, GER};
     }
 
-    public static int numberOfStands = 5;
+    public static int numberOfStands = StandID.stands.length;
 
     public static EntityStandBase getStand(int standID, World world)
     {
