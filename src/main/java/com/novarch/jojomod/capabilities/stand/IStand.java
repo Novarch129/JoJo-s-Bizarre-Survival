@@ -66,4 +66,18 @@ public interface IStand
     void subtractTransformed(int subtraction);
 
     void addTransformed(int addition);
+
+    void putStandID(final int standID);
+
+    void putStandAct(final int standAct);
+
+    void putStandOn(final boolean standOn);
+
+    void putTimeLeft(final int timeleft);
+
+    void putCooldown(final int cooldown);
+
+    void putAbility(final boolean ability);
+
+    void putDiavolo(final String truth);
 }

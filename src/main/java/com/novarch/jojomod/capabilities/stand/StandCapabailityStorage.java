@@ -6,8 +6,11 @@ import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 
+import javax.annotation.Nullable;
+
 public class StandCapabailityStorage implements IStorage<IStand>
 {
+    @Nullable
     @Override
 	public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
 	{
@@ -15,8 +18,6 @@ public class StandCapabailityStorage implements IStorage<IStand>
         props.putInt("standID", instance.getStandID());
         props.putInt("StandAct", instance.getStandAct());
         props.putBoolean("StandOn", instance.getStandOn());
-        props.putBoolean("PowerOn", instance.getPowerSpawned());
-        props.putInt("PowerID", instance.getJojoPower());
         props.putInt("Cooldown", instance.getCooldown());
         props.putInt("Timeleft", instance.getTimeLeft());
         props.putBoolean("Ability", instance.getAbility());
@@ -28,14 +29,12 @@ public class StandCapabailityStorage implements IStorage<IStand>
       public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
       {
         CompoundNBT propertyData = (CompoundNBT)nbt;
-        instance.setStandID(propertyData.getInt("standID"));
-        instance.setStandAct(propertyData.getInt("StandAct"));
-        instance.setStandOn(propertyData.getBoolean("StandOn"));
-        instance.setPowerSpawned(propertyData.getBoolean("PowerOn"));
-        instance.setJojoPower(propertyData.getInt("PowerID"));
+        instance.putStandID(propertyData.getInt("standID"));
+        instance.putStandAct(propertyData.getInt("StandAct"));
+        instance.putStandOn(propertyData.getBoolean("StandOn"));
         propertyData.getInt("Cooldown");
         propertyData.getInt("Timeleft");
         propertyData.getBoolean("Ability");
-        instance.setDiavolo(propertyData.getString("Diavolo"));
+        instance.putDiavolo(propertyData.getString("Diavolo"));
       }
 }

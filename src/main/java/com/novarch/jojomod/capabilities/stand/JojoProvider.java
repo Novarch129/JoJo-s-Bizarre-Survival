@@ -1,6 +1,5 @@
 package com.novarch.jojomod.capabilities.stand;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -13,7 +12,7 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 {
     @CapabilityInject(IStand.class)
     public static final Capability<IStand> STAND = null;
-    private LazyOptional<IStand> holder = LazyOptional.of(() -> new StandCapability(Minecraft.getInstance().player));
+    IStand instance = STAND.getDefaultInstance();
 
     public boolean hasCapability(Capability<?> capability, Direction side)
 	{
@@ -23,19 +22,19 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 	@Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side)
 	{
-		return capability == STAND ? holder.cast() : LazyOptional.empty();
+		return STAND.orEmpty(capability, LazyOptional.of(() -> instance));
     }
 
 	@Override
 	public INBT serializeNBT()
 	{
-		return STAND.getStorage().writeNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")),null);
+		return STAND.getStorage().writeNBT(STAND, instance, null);
 	}
 
 	@Override
 	public void deserializeNBT(INBT nbt)
 	{
-		STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")),null, nbt);
+		STAND.getStorage().readNBT(STAND, instance,null, nbt);
 	}
 
 	public static IStand get(PlayerEntity player)

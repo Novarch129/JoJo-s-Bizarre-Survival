@@ -23,13 +23,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -49,6 +53,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nullable;
 
 /**
  * @author Novarch
@@ -129,7 +135,35 @@ public class JojoBizarreSurvival
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        CapabilityManager.INSTANCE.register(IStand.class, new StandCapabailityStorage(), () -> new StandCapability(null));
+        CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
+            @Nullable
+            @Override
+            public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
+            {
+                CompoundNBT props = new CompoundNBT();
+                props.putInt("standID", instance.getStandID());
+                props.putInt("StandAct", instance.getStandAct());
+                props.putBoolean("StandOn", instance.getStandOn());
+                props.putInt("Cooldown", instance.getCooldown());
+                props.putInt("Timeleft", instance.getTimeLeft());
+                props.putBoolean("Ability", instance.getAbility());
+                props.putString("Diavolo", instance.getDiavolo());
+                return (INBT)props;
+            }
+
+            @Override
+            public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
+            {
+                CompoundNBT propertyData = (CompoundNBT)nbt;
+                instance.putStandID(propertyData.getInt("standID"));
+                instance.putStandAct(propertyData.getInt("StandAct"));
+                instance.putStandOn(propertyData.getBoolean("StandOn"));
+                propertyData.getInt("Cooldown");
+                propertyData.getInt("Timeleft");
+                propertyData.getBoolean("Ability");
+                instance.putDiavolo(propertyData.getString("Diavolo"));
+            }
+        }, () -> new StandCapability(null));
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
@@ -220,11 +254,7 @@ public class JojoBizarreSurvival
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
         StandGUI standGui = new StandGUI();
-        assert Minecraft.getInstance().player != null;
-        IStand props = JojoProvider.get(Minecraft.getInstance().player); // TODO Fix
-        if(props!=null)
-            if(props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven)
-                standGui.renderMadeInHeaven(props.getTimeLeft());
+        standGui.renderMadeInHeaven();
        /* if(!Minecraft.getInstance().isSingleplayer()) {
             if (props != null)
                 if (props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {

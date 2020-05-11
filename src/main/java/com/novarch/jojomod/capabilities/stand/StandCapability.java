@@ -1,7 +1,6 @@
 package com.novarch.jojomod.capabilities.stand;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.network.message.RequestSyncStandCapability;
 import com.novarch.jojomod.network.message.SyncStandCapability;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,21 +11,21 @@ public class StandCapability implements IStand
 	private final PlayerEntity player;
 
 	private int playerStandID = 0;
-	  
+
 	private int playerStandAct = 0;
-	  
+
 	private boolean playerStandOn = false;
-	  
+
 	private boolean playerPowerSpawned = false;
-	  
+
 	private int playerJojoPower = 0;
-	  
+
 	private int cooldown = 0;
 
 	private int timeleft = 0;
 
 	private String diavolo = "";
-	  
+
 	private String playerStandName = "";
 
 	private boolean ability = true;
@@ -210,6 +209,41 @@ public class StandCapability implements IStand
 		onDataUpdated();
 	}
 
+	@Override
+	public void putStandID(int standID) {
+		this.playerStandID=standID;
+	}
+
+	@Override
+	public void putStandAct(int standAct) {
+		this.playerStandAct = standAct;
+	}
+
+	@Override
+	public void putStandOn(boolean standOn) {
+		this.playerStandOn=standOn;
+	}
+
+	@Override
+	public void putTimeLeft(int timeleft) {
+		this.timeleft=timeleft;
+	}
+
+	@Override
+	public void putCooldown(int cooldown) {
+		this.cooldown=cooldown;
+	}
+
+	@Override
+	public void putAbility(boolean ability) {
+		this.ability=ability;
+	}
+
+	@Override
+	public void putDiavolo(String truth) {
+		this.diavolo=truth;
+	}
+
 	protected void onDataUpdated()
 	{
 		if(player == null)
@@ -220,7 +254,6 @@ public class StandCapability implements IStand
 		if(player.world.isRemote)
 			return;
 
-		JojoBizarreSurvival.INSTANCE.sendToServer(new RequestSyncStandCapability(this));
 		JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
