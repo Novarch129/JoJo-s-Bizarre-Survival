@@ -201,7 +201,7 @@ public class JojoBizarreSurvival
         JojoProvider.getLazy(player).ifPresent(props -> {
             if(player instanceof ServerPlayerEntity && !player.world.isRemote && player.isAlive())
             {
-                INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
+                //INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
                 this.ability = props;
             }
 
