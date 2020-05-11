@@ -175,7 +175,6 @@ public class JojoBizarreSurvival
             if(player instanceof ServerPlayerEntity && !player.world.isRemote && player.isAlive())
             {
                 INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-                player.sendMessage(new StringTextComponent(String.valueOf(props.getTimeLeft())));
                 this.ability = props;
             }
 
