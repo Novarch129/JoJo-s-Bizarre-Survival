@@ -2,11 +2,18 @@ package com.novarch.jojomod.capabilities.stand;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.network.message.SyncStandCapability;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class StandCapability implements IStand
 {
@@ -285,5 +292,38 @@ public class StandCapability implements IStand
 	    setDiavolo("");
 	    setAbility(true);
 	    setTransformed(0);
+	  }
+
+	  public static void register()
+	  {
+		  CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
+			  @Nullable
+			  @Override
+			  public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
+			  {
+				  CompoundNBT props = new CompoundNBT();
+				  props.putInt("standID", instance.getStandID());
+				  props.putInt("StandAct", instance.getStandAct());
+				  props.putBoolean("StandOn", instance.getStandOn());
+				  props.putInt("Cooldown", instance.getCooldown());
+				  props.putInt("Timeleft", instance.getTimeLeft());
+				  props.putBoolean("Ability", instance.getAbility());
+				  props.putString("Diavolo", instance.getDiavolo());
+				  return (INBT)props;
+			  }
+
+			  @Override
+			  public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
+			  {
+				  CompoundNBT propertyData = (CompoundNBT)nbt;
+				  instance.putStandID(propertyData.getInt("standID"));
+				  instance.putStandAct(propertyData.getInt("StandAct"));
+				  instance.putStandOn(propertyData.getBoolean("StandOn"));
+				  instance.putCooldown(propertyData.getInt("Cooldown"));
+				  instance.putTimeLeft(propertyData.getInt("Timeleft"));
+				  instance.putAbility(propertyData.getBoolean("Ability"));
+				  instance.putDiavolo(propertyData.getString("Diavolo"));
+			  }
+		  }, () -> new StandCapability(Minecraft.getInstance().player));
 	  }
 }
