@@ -6,6 +6,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.network.PacketDistributor;
 
+import javax.annotation.Nonnull;
+
 public class StandCapability implements IStand
 {
 	private final PlayerEntity player;
@@ -32,7 +34,7 @@ public class StandCapability implements IStand
 
 	private int transformed = 0;
 
-	public StandCapability(PlayerEntity player) {
+	public StandCapability(@Nonnull PlayerEntity player) {
 		this.player = player;
 	}
 
