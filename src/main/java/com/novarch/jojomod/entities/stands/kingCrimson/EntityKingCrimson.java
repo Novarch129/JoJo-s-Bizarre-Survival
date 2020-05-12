@@ -39,7 +39,7 @@ public class EntityKingCrimson extends EntityStandBase
 	  
 	  private int changetick = 0;
 	  
-	  private boolean timeSkipped = true;
+	  private boolean timeSkipped;
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -93,7 +93,7 @@ public class EntityKingCrimson extends EntityStandBase
 	    	PlayerEntity player = getMaster();
 	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	      IStand props = power.orElse(new StandCapability(player));
-	      this.timeSkipped = props.getCooldown() <= 0;
+	      this.timeSkipped = !(props.getCooldown() > 0);
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching()) 
@@ -135,7 +135,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        if(this.timeSkipped && props.getAbility() && props.getStandOn())
 				{
 	        	if(props.getTimeLeft()==0) {player.sendMessage(new TranslationTextComponent("Time Skip : ON", new Object[0]));}
-	        	if(props.getTimeLeft() <= 200)
+	        	if(props.getTimeLeft() > 800)
 	        	{
 	        		this.getMaster().setInvulnerable(true);
 	        		player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 150, 255));
@@ -145,7 +145,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        		player.setSprinting(true);
 	        		if(!player.isCreative() && !player.isSpectator())
 						player.setGameType(GameType.ADVENTURE);
-	        		props.addTimeLeft(1);
+	        		props.subtractTimeLeft(1);
 	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
 					{
 						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
@@ -369,7 +369,6 @@ public class EntityKingCrimson extends EntityStandBase
 	        if(!timeSkipped)
 			{
 				if(props.getCooldown()==200) { player.sendMessage(new TranslationTextComponent("Time Skip : OFF", new Object[0])); }
-				if(props.getCooldown()==199) { player.clearActivePotions(); }
 				if(props.getCooldown() > 0)
 				{
 					props.subtractCooldown(1);
@@ -377,7 +376,7 @@ public class EntityKingCrimson extends EntityStandBase
 
 				if(props.getCooldown() <= 0)
 				{
-					props.setTimeLeft(0);
+					props.setTimeLeft(1000);
 					this.timeSkipped = true;
 				}
 			}

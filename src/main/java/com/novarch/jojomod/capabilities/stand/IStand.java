@@ -35,21 +35,21 @@ public interface IStand
 
     void clone(final IStand p0);
     
-    void setCooldown(int new_cooldown);
+    void setCooldown(double new_cooldown);
 
-    void addCooldown(int addition);
+    void addCooldown(double addition);
 
-    void subtractCooldown(int subtraction);
+    void subtractCooldown(double subtraction);
     
-    int getCooldown();
+    double getCooldown();
 
-    void setTimeLeft(int new_time_left);
+    void setTimeLeft(double new_time_left);
 
-    int getTimeLeft();
+    double getTimeLeft();
 
-    void addTimeLeft(int addition);
+    void addTimeLeft(double addition);
 
-    void subtractTimeLeft(int subtraction);
+    void subtractTimeLeft(double subtraction);
 
     String getDiavolo();
 
@@ -73,9 +73,9 @@ public interface IStand
 
     void putStandOn(final boolean standOn);
 
-    void putTimeLeft(final int timeleft);
+    void putTimeLeft(final double timeleft);
 
-    void putCooldown(final int cooldown);
+    void putCooldown(final double cooldown);
 
     void putAbility(final boolean ability);
 

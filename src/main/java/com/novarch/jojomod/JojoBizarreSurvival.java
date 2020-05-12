@@ -50,6 +50,7 @@ import org.apache.logging.log4j.Logger;
 public class JojoBizarreSurvival
 {
     public static final boolean debug = true;
+    public static boolean shouldRun = false;
     public static final IProxy PROXY = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
@@ -150,20 +151,17 @@ public class JojoBizarreSurvival
     {
         PlayerEntity player = event.player;
         JojoProvider.getLazy(player).ifPresent(props -> {
-            if(!props.getStandOn() && props.getCooldown() >= 0)
-            {
-                props.subtractCooldown(1);
-            }
+            if(!props.getStandOn() && props.getCooldown() > 0)
+                props.subtractCooldown(0.5);
 
-            if(props.getCooldown() <= 0)
-            {
+            if(props.getCooldown() == 0.5)
+                props.setTimeLeft(1000);
 
-            }
+            if(!props.getStandOn() && props.getTimeLeft() < 1000)
+                props.addTimeLeft(0.5);
 
-            if(!props.getStandOn() && props.getTimeLeft() > 0)
-            {
-                props.subtractTimeLeft(1);
-            }
+            else if(props.getStandOn() && !props.getAbility() && props.getTimeLeft() < 1000)
+                props.addTimeLeft(0.5);
 
             if(!props.getStandOn())
             {
@@ -174,25 +172,26 @@ public class JojoBizarreSurvival
         });
     }
 
-    /*@SubscribeEvent
-    public void onPlayerDeath(PlayerEvent.PlayerRespawnEvent event)
-    {
-        IStand props = event.getPlayer().getCapability(JojoProvider.STAND).orElse(new StandCapability());
-        props = this.ability;
-        if(!event.getPlayer().world.isRemote)
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SyncStandCapability(props));
-    }*/
-
     @SubscribeEvent
     public void saveStand(PlayerEvent.Clone event)
     {
-        if(event.isWasDeath())
-        {
-            IStand oldProps = JojoProvider.get(event.getOriginal());
-            IStand newProps = JojoProvider.get(event.getPlayer());
-            oldProps.clone(newProps);
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SyncStandCapability(newProps));
+        if(!event.isWasDeath()) {
+            JojoProvider.getLazy(event.getOriginal()).ifPresent(originalProps -> {
+                ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+                JojoProvider.getLazy(player).ifPresent(newProps -> {
+                    newProps.clone(originalProps);
+                });
+            });
         }
+    }
+
+    @SubscribeEvent
+    public void playerRespawn(PlayerEvent.PlayerRespawnEvent event)
+    {
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        JojoProvider.getLazy(player).ifPresent(props -> {
+            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
+        });
     }
 
     @SubscribeEvent
@@ -200,21 +199,14 @@ public class JojoBizarreSurvival
     {
         StandGUI standGui = new StandGUI();
         standGui.render();
-
     }
 
     @SubscribeEvent
-    public void playerJoinWorld(EntityJoinWorldEvent event)
-    {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            IStand props = JojoProvider.get(player);
-            if(!player.world.isRemote)
-            {
-                INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-            }
-        }
+    public void playerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        JojoProvider.getLazy(player).ifPresent(props -> {
+            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
+        });
     }
 
     @SubscribeEvent
@@ -222,27 +214,21 @@ public class JojoBizarreSurvival
     {
         if(event.getEntity() instanceof PlayerEntity)
         {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
+            PlayerEntity player = event.getPlayer();
             IStand props = JojoProvider.get(player);
             props.putStandOn(false);
             if(!player.world.isRemote)
-            {
                 INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-            }
         }
     }
 
-    //TODO Remove method below when D4C GUI is added
     @SubscribeEvent
-    public void d4cDimensionHelper(PlayerEvent.PlayerChangedDimensionEvent event)
+    public void playerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        if(event.getFrom() == DimensionType.byName(D4C_DIMENSION_TYPE))
-        {
-            if(event.getTo() == DimensionType.THE_NETHER)
-            {
-                INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(D4C_DIMENSION_TYPE_NETHER).getId()));
-            }
-        }
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        JojoProvider.getLazy(player).ifPresent(props -> {
+            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
+        });
     }
 
     @SubscribeEvent

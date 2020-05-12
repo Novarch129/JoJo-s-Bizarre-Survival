@@ -29,9 +29,9 @@ public class StandCapability implements IStand
 
 	private int playerJojoPower = 0;
 
-	private int cooldown = 0;
+	private double cooldown = 0;
 
-	private int timeleft = 0;
+	private double timeleft = 1000;
 
 	private String diavolo = "";
 
@@ -113,54 +113,54 @@ public class StandCapability implements IStand
 	  }
 	  
 	  @Override
-	  public void setCooldown(int new_cooldown)
+	  public void setCooldown(double new_cooldown)
 	  {
 		  this.cooldown = new_cooldown;
 		  onDataUpdated();
 	  }
 	  
 	  @Override
-	  public int getCooldown()
+	  public double getCooldown()
 	  {
 		  return this.cooldown;
 	  }
 
 	@Override
-	public void addCooldown(int addition)
+	public void addCooldown(double addition)
 	{
 		this.cooldown += addition;
 		onDataUpdated();
 	}
 
 	@Override
-	public void subtractCooldown(int subtraction)
+	public void subtractCooldown(double subtraction)
 	{
 		this.cooldown -= subtraction;
 		onDataUpdated();
 	}
 
 	@Override
-	public void setTimeLeft(int timeleft)
+	public void setTimeLeft(double timeleft)
 	{
 		this.timeleft = timeleft;
 		onDataUpdated();
 	}
 
 	@Override
-	public int getTimeLeft()
+	public double getTimeLeft()
 	{
 		return this.timeleft;
 	}
 
 	@Override
-	public void addTimeLeft(int addition)
+	public void addTimeLeft(double addition)
 	{
 		this.timeleft += addition;
 		onDataUpdated();
 	}
 
 	@Override
-	public void subtractTimeLeft(int subtraction) {
+	public void subtractTimeLeft(double subtraction) {
 		this.timeleft -= subtraction;
 		onDataUpdated();
 	}
@@ -234,12 +234,12 @@ public class StandCapability implements IStand
 	}
 
 	@Override
-	public void putTimeLeft(int timeleft) {
+	public void putTimeLeft(double timeleft) {
 		this.timeleft=timeleft;
 	}
 
 	@Override
-	public void putCooldown(int cooldown) {
+	public void putCooldown(double cooldown) {
 		this.cooldown=cooldown;
 	}
 
@@ -305,8 +305,8 @@ public class StandCapability implements IStand
 				  props.putInt("standID", instance.getStandID());
 				  props.putInt("StandAct", instance.getStandAct());
 				  props.putBoolean("StandOn", instance.getStandOn());
-				  props.putInt("Cooldown", instance.getCooldown());
-				  props.putInt("Timeleft", instance.getTimeLeft());
+				  props.putDouble("Cooldown", instance.getCooldown());
+				  props.putDouble("Timeleft", instance.getTimeLeft());
 				  props.putBoolean("Ability", instance.getAbility());
 				  props.putString("Diavolo", instance.getDiavolo());
 				  return (INBT)props;
@@ -319,8 +319,8 @@ public class StandCapability implements IStand
 				  instance.putStandID(propertyData.getInt("standID"));
 				  instance.putStandAct(propertyData.getInt("StandAct"));
 				  instance.putStandOn(propertyData.getBoolean("StandOn"));
-				  instance.putCooldown(propertyData.getInt("Cooldown"));
-				  instance.putTimeLeft(propertyData.getInt("Timeleft"));
+				  instance.putCooldown(propertyData.getDouble("Cooldown"));
+				  instance.putTimeLeft(propertyData.getDouble("Timeleft"));
 				  instance.putAbility(propertyData.getBoolean("Ability"));
 				  instance.putDiavolo(propertyData.getString("Diavolo"));
 			  }

@@ -14,6 +14,7 @@
   "entity.jojomod.d4c_punch": "Dirty Deeds Done Dirt Cheap's punch",
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
+  "msg.standdeath.config": "Keep Stand on death",
 
   "key.categories.Steve's Bizarre Survival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
