@@ -91,7 +91,7 @@ public class EntityGoldExperience extends EntityStandBase
 			}
 			if (props.getCooldown() <= 0) {
 				props.setTransformed(0);
-				props.setCooldown(200);
+				props.setCooldown(80);
 			}
 
 			player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));

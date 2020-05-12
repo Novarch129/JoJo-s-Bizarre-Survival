@@ -93,7 +93,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 			}
 			if (props.getCooldown() <= 0) {
 				props.setTransformed(0);
-				props.setCooldown(220);
+				props.setCooldown(60);
 			}
 
 			//player.setInvulnerable(true);

@@ -424,7 +424,7 @@ public class StandPunchEffects
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 				IStand props = JojoProvider.get(punch.shootingStand.getMaster());
-				if (punch.shootingStand.life && blockB != Blocks.AIR&& blockB != Blocks.AIR) {
+				if (punch.shootingStand.life && blockB != Blocks.AIR && blockB != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
 							if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
@@ -634,7 +634,7 @@ public class StandPunchEffects
 								punch.standMaster.getFoodStats().addStats(-2, 0.0f);
 								punch.remove();
 							}
-							props.setCooldown(220);
+							props.setCooldown(80);
 						}
 					}
 				}
@@ -935,7 +935,7 @@ public class StandPunchEffects
 							punch.standMaster.getFoodStats().addStats(-2, 0.0f);
 							punch.remove();
 						}
-						props.setCooldown(220);
+						props.setCooldown(60);
 					}
 			}
 			if (blockB != Blocks.AIR) {

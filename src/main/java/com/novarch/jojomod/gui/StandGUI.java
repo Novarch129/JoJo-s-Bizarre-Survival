@@ -45,6 +45,7 @@ public class StandGUI extends AbstractGui
         JojoProvider.getLazy(Minecraft.getInstance().player).ifPresent(props -> {
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
+            int transformed = props.getTransformed();
             if (props.getStandOn())
             {
                 if (props.getStandID() == JojoLibs.StandID.madeInHeaven)
@@ -61,6 +62,12 @@ public class StandGUI extends AbstractGui
                     if(cooldown > 0)
                         renderCooldown(cooldown);
                 }
+
+                else if(props.getStandID() == JojoLibs.StandID.goldExperience) //TODO Fix this
+                {
+                    if(cooldown > 0 && transformed > 0)
+                        renderCooldown(cooldown);
+                }
             }
 
             else
@@ -68,6 +75,12 @@ public class StandGUI extends AbstractGui
                 if(props.getStandID() == JojoLibs.StandID.kingCrimson)
                 {
                     if(cooldown > 0)
+                        renderCooldown(cooldown);
+                }
+
+                else if(props.getStandID() == JojoLibs.StandID.goldExperience)
+                {
+                    if(cooldown > 0 && transformed > 0)
                         renderCooldown(cooldown);
                 }
             }
