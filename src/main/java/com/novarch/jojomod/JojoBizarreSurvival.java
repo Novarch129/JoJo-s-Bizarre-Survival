@@ -2,39 +2,27 @@ package com.novarch.jojomod;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.capabilities.stand.StandCapabailityStorage;
-import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.events.EventControlInputs;
 import com.novarch.jojomod.gui.StandGUI;
-import com.novarch.jojomod.init.DimensionInit;
-import com.novarch.jojomod.init.EntityInit;
-import com.novarch.jojomod.init.ItemInit;
-import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.init.*;
 import com.novarch.jojomod.network.message.*;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.CapabilityHandler;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -54,8 +42,6 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
-
 /**
  * @author Novarch
  */
@@ -69,7 +55,6 @@ public class JojoBizarreSurvival
     public static final String MOD_ID = "jojomod";
     public static JojoBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
-    private IStand ability = null;
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
         () -> PROTOCOL_VERSION,
@@ -126,45 +111,11 @@ public class JojoBizarreSurvival
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
-        INSTANCE.registerMessage(networkId++,
-                RequestSyncStandCapability.class,
-                RequestSyncStandCapability::encode,
-                RequestSyncStandCapability::decode,
-                RequestSyncStandCapability::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
-            @Nullable
-            @Override
-            public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
-            {
-                CompoundNBT props = new CompoundNBT();
-                props.putInt("standID", instance.getStandID());
-                props.putInt("StandAct", instance.getStandAct());
-                props.putBoolean("StandOn", instance.getStandOn());
-                props.putInt("Cooldown", instance.getCooldown());
-                props.putInt("Timeleft", instance.getTimeLeft());
-                props.putBoolean("Ability", instance.getAbility());
-                props.putString("Diavolo", instance.getDiavolo());
-                return (INBT)props;
-            }
-
-            @Override
-            public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
-            {
-                CompoundNBT propertyData = (CompoundNBT)nbt;
-                instance.putStandID(propertyData.getInt("standID"));
-                instance.putStandAct(propertyData.getInt("StandAct"));
-                instance.putStandOn(propertyData.getBoolean("StandOn"));
-                instance.putCooldown(propertyData.getInt("Cooldown"));
-                instance.putTimeLeft(propertyData.getInt("Timeleft"));
-                instance.putAbility(propertyData.getBoolean("Ability"));
-                instance.putDiavolo(propertyData.getString("Diavolo"));
-            }
-        }, () -> new StandCapability(Minecraft.getInstance().player));
-        MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
+        CapabilityInit.register();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event)
@@ -199,12 +150,6 @@ public class JojoBizarreSurvival
     {
         PlayerEntity player = event.player;
         JojoProvider.getLazy(player).ifPresent(props -> {
-            if(player instanceof ServerPlayerEntity && !player.world.isRemote && player.isAlive())
-            {
-                //INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-                this.ability = props;
-            }
-
             if(!props.getStandOn() && props.getCooldown() >= 0)
             {
                 props.subtractCooldown(1);
@@ -254,21 +199,8 @@ public class JojoBizarreSurvival
     public void renderGameOverlay(RenderGameOverlayEvent.Post event)
     {
         StandGUI standGui = new StandGUI();
-        standGui.renderMadeInHeaven();
-       /* if(!Minecraft.getInstance().isSingleplayer()) {
-            if (props != null)
-                if (props.getStandOn() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
-                    standGui.renderText("Made in Heaven's counter currently doesn't work in multiplayer.");
-                }
-        }
-        else
-        {
-            if(this.ability!=null)
-            {
-                if(ability.getStandOn() && ability.getStandID() == JojoLibs.StandID.madeInHeaven)
-                    standGui.renderMadeInHeaven(this.ability.getTimeLeft());
-            }
-        }*/
+        standGui.render();
+
     }
 
     @SubscribeEvent
