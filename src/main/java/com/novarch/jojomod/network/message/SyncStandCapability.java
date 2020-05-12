@@ -45,7 +45,6 @@ public class SyncStandCapability
             {
                 PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 assert player != null;
-                player.sendMessage(new StringTextComponent("Run"));
                 IStand props = JojoProvider.get(player);
                 assert props != null;
                 JojoProvider.STAND.getStorage().readNBT(JojoProvider.STAND, props, null, message.data);

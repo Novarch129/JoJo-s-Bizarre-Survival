@@ -10,11 +10,17 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class JojoProvider implements ICapabilitySerializable<INBT>
 {
+	private PlayerEntity player = null;
+
+	public JojoProvider(PlayerEntity player) {
+		this.player = player;
+	}
+
     @CapabilityInject(IStand.class)
     public static final Capability<IStand> STAND = null;
-    private LazyOptional<IStand> holder = LazyOptional.of(() -> new StandCapability(null));
+    private LazyOptional<IStand> holder = LazyOptional.of(() -> new StandCapability(player));
 
-    public boolean hasCapability(Capability<?> capability, Direction side)
+	public boolean hasCapability(Capability<?> capability, Direction side)
 	{
 		return capability == STAND;
 	}
