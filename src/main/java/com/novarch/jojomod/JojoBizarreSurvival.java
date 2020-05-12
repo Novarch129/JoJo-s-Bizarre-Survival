@@ -158,12 +158,12 @@ public class JojoBizarreSurvival
                 instance.putStandID(propertyData.getInt("standID"));
                 instance.putStandAct(propertyData.getInt("StandAct"));
                 instance.putStandOn(propertyData.getBoolean("StandOn"));
-                propertyData.getInt("Cooldown");
-                propertyData.getInt("Timeleft");
-                propertyData.getBoolean("Ability");
+                instance.putCooldown(propertyData.getInt("Cooldown"));
+                instance.putTimeLeft(propertyData.getInt("Timeleft"));
+                instance.putAbility(propertyData.getBoolean("Ability"));
                 instance.putDiavolo(propertyData.getString("Diavolo"));
             }
-        }, () -> new StandCapability(null));
+        }, () -> new StandCapability(Minecraft.getInstance().player));
         MinecraftForge.EVENT_BUS.register(new CapabilityHandler());
     }
 
@@ -245,7 +245,7 @@ public class JojoBizarreSurvival
         {
             IStand oldProps = JojoProvider.get(event.getOriginal());
             IStand newProps = JojoProvider.get(event.getPlayer());
-            oldProps.cloneSaveFunction(newProps);
+            oldProps.clone(newProps);
             INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) event.getPlayer()), new SyncStandCapability(newProps));
         }
     }
@@ -292,7 +292,7 @@ public class JojoBizarreSurvival
         {
             PlayerEntity player = (PlayerEntity) event.getEntity();
             IStand props = JojoProvider.get(player);
-            props.setStandOn(false);
+            props.putStandOn(false);
             if(!player.world.isRemote)
             {
                 INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));

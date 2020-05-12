@@ -33,7 +33,7 @@ public interface IStand
 
     void setStandRemoved();
 
-    void cloneSaveFunction(final IStand p0);
+    void clone(final IStand p0);
     
     void setCooldown(int new_cooldown);
 

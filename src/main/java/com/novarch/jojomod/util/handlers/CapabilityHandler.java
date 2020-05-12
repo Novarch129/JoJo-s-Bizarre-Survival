@@ -19,6 +19,7 @@ public class CapabilityHandler
       if (!(event.getObject() instanceof PlayerEntity))
         return;
       final StandCapability stand = new StandCapability((PlayerEntity) event.getObject());
-      event.addCapability(this.JOJO_CAP, new JojoProvider());//new SerializableCapabilityProvider<>(JojoProvider.STAND, null, stand));
+      if(!event.getObject().world.isRemote)
+          event.addCapability(this.JOJO_CAP, new JojoProvider());//new SerializableCapabilityProvider<>(JojoProvider.STAND, null, stand));
     }
 }

@@ -12,7 +12,7 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 {
     @CapabilityInject(IStand.class)
     public static final Capability<IStand> STAND = null;
-    IStand instance = STAND.getDefaultInstance();
+    private LazyOptional<IStand> holder = LazyOptional.of(() -> new StandCapability(null));
 
     public boolean hasCapability(Capability<?> capability, Direction side)
 	{
@@ -22,19 +22,19 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 	@Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side)
 	{
-		return STAND.orEmpty(capability, LazyOptional.of(() -> instance));
+		return capability == STAND ? holder.cast() : LazyOptional.empty();
     }
 
 	@Override
 	public INBT serializeNBT()
 	{
-		return STAND.getStorage().writeNBT(STAND, instance, null);
+		return STAND.getStorage().writeNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")),null);
 	}
 
 	@Override
 	public void deserializeNBT(INBT nbt)
 	{
-		STAND.getStorage().readNBT(STAND, instance,null, nbt);
+		STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")),null, nbt);
 	}
 
 	public static IStand get(PlayerEntity player)

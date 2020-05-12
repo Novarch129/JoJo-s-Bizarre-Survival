@@ -257,7 +257,7 @@ public class StandCapability implements IStand
 		JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
-	public void cloneSaveFunction(IStand props)
+	public void clone(IStand props)
 	{
 	    setStandID(props.getStandID());
 	    setStandAct(props.getStandAct());
@@ -282,5 +282,6 @@ public class StandCapability implements IStand
 	    setTimeLeft(0);
 	    setDiavolo("");
 	    setAbility(true);
+	    setTransformed(0);
 	  }
 }
