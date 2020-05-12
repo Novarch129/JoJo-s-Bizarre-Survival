@@ -1,6 +1,6 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
 import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperience;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = StevesBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber
 {
 	@SubscribeEvent

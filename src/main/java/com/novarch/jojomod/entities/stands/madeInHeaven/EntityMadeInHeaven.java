@@ -1,42 +1,35 @@
 package com.novarch.jojomod.entities.stands.madeInHeaven;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.RequestSyncStandCapability;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
-import com.novarch.jojomod.network.message.SyncStandCapability;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.stats.Stat;
-import net.minecraft.stats.StatType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityMadeInHeaven extends EntityStandBase
 {
-	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":made_in_heaven") public static EntityType<EntityMadeInHeaven> TYPE;
+	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven") public static EntityType<EntityMadeInHeaven> TYPE;
 
 	  private int oratick = 0;
 
@@ -101,7 +94,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
 
-			if(this.getMaster().isCrouching()&& StevesBizarreSurvival.debug)
+			if(this.getMaster().isCrouching()&& JojoBizarreSurvival.debug)
 			{
 				heaventickr-=100;
 			}
@@ -146,14 +139,14 @@ public class EntityMadeInHeaven extends EntityStandBase
 					for(PlayerEntity entity : this.world.getPlayers())
 					{
 						LazyOptional<IStand> pwr = ((PlayerEntity) entity).getCapability(JojoProvider.STAND);
-						IStand prps = pwr.orElse(new StandCapability());
+						IStand prps = pwr.orElse(new StandCapability(player));
 						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
 						{
 							((PlayerEntity) entity).inventory.clear();
-							StevesBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
 							((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 							((PlayerEntity) entity).fallDistance = 0;
-							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(StevesBizarreSurvival.D4C_DIMENSION_TYPE));
+							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
 							prps.setStandRemoved();
 							((PlayerEntity) entity).setInvulnerable(false);
 						}

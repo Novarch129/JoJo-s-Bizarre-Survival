@@ -1,8 +1,7 @@
 package com.novarch.jojomod.objects.items;
 
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.JojoProvider;
-import com.novarch.jojomod.capabilities.StandCapability;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -45,7 +44,7 @@ public class ItemRemoveStand extends Item
         ItemStack stack = playerIn.getHeldItem(handIn);
         if(worldIn.isRemote)
             return new ActionResult(ActionResultType.FAIL, stack);
-        final IStand props = playerIn.getCapability(JojoProvider.STAND).orElse(new StandCapability());
+        final IStand props = JojoProvider.get(playerIn);
         if(props != null)
             props.setStandRemoved();
         return new ActionResult(ActionResultType.PASS, stack);

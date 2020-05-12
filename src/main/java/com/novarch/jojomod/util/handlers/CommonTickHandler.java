@@ -1,10 +1,10 @@
 package com.novarch.jojomod.util.handlers;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.capabilities.IStand;
+import com.novarch.jojomod.capabilities.stand.IStand;
 
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -12,7 +12,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = StevesBizarreSurvival.MOD_ID)
+@Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID)
 public class CommonTickHandler 
 {
 	  private int tickSlow = 0;

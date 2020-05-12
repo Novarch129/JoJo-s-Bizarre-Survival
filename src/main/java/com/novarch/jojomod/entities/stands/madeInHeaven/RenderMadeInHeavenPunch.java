@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.madeInHeaven;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.novarch.jojomod.StevesBizarreSurvival;
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 public class RenderMadeInHeavenPunch extends EntityRenderer<EntityStandPunch.madeInHeaven>
 {
 	protected ModelMadeInHeavenPunch punch;
-	protected static final ResourceLocation texture = new ResourceLocation(StevesBizarreSurvival.MOD_ID, "textures/stands/mih_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/mih_punch.png");
 
 	public RenderMadeInHeavenPunch(EntityRendererManager renderManagerIn) 
 	{

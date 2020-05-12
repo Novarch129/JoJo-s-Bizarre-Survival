@@ -1,9 +1,9 @@
 package com.novarch.jojomod.entities.stands.goldExperience;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityGoldExperience extends EntityStandBase
 {
-	  @ObjectHolder(StevesBizarreSurvival.MOD_ID + ":gold_experience") public static EntityType<EntityGoldExperience> TYPE;
+	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience") public static EntityType<EntityGoldExperience> TYPE;
 
 	  private int oratick = 0;
 
@@ -82,7 +82,7 @@ public class EntityGoldExperience extends EntityStandBase
 	    if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new StandCapability());
+			IStand props = power.orElse(new StandCapability(player));
 			this.life = props.getAbility();
 
 			//Cooldown handler

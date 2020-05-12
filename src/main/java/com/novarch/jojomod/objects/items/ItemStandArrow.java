@@ -5,9 +5,9 @@ import java.util.List;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.capabilities.JojoProvider;
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.StandCapability;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -76,7 +76,7 @@ public class ItemStandArrow extends Item
 	{
 		PlayerEntity player = (PlayerEntity)entity;
 		LazyOptional<IStand> stand = player.getCapability(JojoProvider.STAND, null);
-		IStand props = stand.orElse(new StandCapability());
+		IStand props = stand.orElse(new StandCapability(player));
 		final int random = world.rand.nextInt(JojoLibs.numberOfStands);
 			if (props.getStandID() == 0)
 			{
@@ -84,7 +84,6 @@ public class ItemStandArrow extends Item
 				{
 					stack.shrink(1);
 				}
-				props.setPlayername(player.getName().toString());
 				props.setStandID(random);
 				props.setStandOn(true);
 				final EntityStandBase theStand = JojoLibs.getStand(random, world);
@@ -166,8 +165,7 @@ public class ItemStandArrow extends Item
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
 		try {
-			LazyOptional<IStand> stand = playerIn.getCapability(JojoProvider.STAND, null);
-            IStand props = stand.orElse(new StandCapability());
+            IStand props = JojoProvider.get(playerIn);
         if (stack == null) 
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, (Object)stack);

@@ -1,12 +1,13 @@
 package com.novarch.jojomod.network.message;
 
-import com.novarch.jojomod.StevesBizarreSurvival;
-import com.novarch.jojomod.capabilities.IStand;
-import com.novarch.jojomod.capabilities.JojoProvider;
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -42,7 +43,7 @@ public class SyncStandCapability
         {
             ctx.get().enqueueWork(() ->
             {
-                PlayerEntity player = StevesBizarreSurvival.PROXY.getPlayer();
+                PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 assert player != null;
                 IStand props = JojoProvider.get(player);
                 assert props != null;
