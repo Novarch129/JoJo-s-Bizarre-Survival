@@ -19,11 +19,11 @@ public class StandCapability implements IStand
 {
 	private final PlayerEntity player;
 
-	private int playerStandID = 0;
+	private int standID = 0;
 
 	private int playerStandAct = 0;
 
-	private boolean playerStandOn = false;
+	private boolean standOn = false;
 
 	private boolean playerPowerSpawned = false;
 
@@ -52,7 +52,7 @@ public class StandCapability implements IStand
 
 	public void setStandID(int value)
 	{
-	    this.playerStandID = value;
+	    this.standID = value;
 		onDataUpdated();
 	}
 	  
@@ -64,7 +64,7 @@ public class StandCapability implements IStand
 	  
 	public void setStandOn(boolean value)
 	{
-	    this.playerStandOn = value;
+	    this.standOn = value;
 		onDataUpdated();
 	}
 	  
@@ -88,7 +88,7 @@ public class StandCapability implements IStand
 	  
 	  public int getStandID()
 	  {
-	  	return this.playerStandID;
+	  	return this.standID;
 	  }
 	  
 	  public int getStandAct()
@@ -97,7 +97,7 @@ public class StandCapability implements IStand
 	  }
 	  
 	  public boolean getStandOn() {
-	    return this.playerStandOn;
+	    return this.standOn;
 	  }
 	  
 	  public int getJojoPower() {
@@ -220,7 +220,7 @@ public class StandCapability implements IStand
 
 	@Override
 	public void putStandID(int standID) {
-		this.playerStandID=standID;
+		this.standID=standID;
 	}
 
 	@Override
@@ -230,7 +230,7 @@ public class StandCapability implements IStand
 
 	@Override
 	public void putStandOn(boolean standOn) {
-		this.playerStandOn=standOn;
+		this.standOn=standOn;
 	}
 
 	@Override
@@ -246,6 +246,11 @@ public class StandCapability implements IStand
 	@Override
 	public void putAbility(boolean ability) {
 		this.ability=ability;
+	}
+
+	@Override
+	public void putTransformed(int transformed) {
+		this.transformed=transformed;
 	}
 
 	@Override
@@ -289,9 +294,9 @@ public class StandCapability implements IStand
 	    setPlayerStandName("");
 	    setCooldown(0);
 	    setTimeLeft(0);
+	    setTransformed(0);
 	    setDiavolo("");
 	    setAbility(true);
-	    setTransformed(0);
 	  }
 
 	  public static void register()
@@ -308,6 +313,7 @@ public class StandCapability implements IStand
 				  props.putDouble("Cooldown", instance.getCooldown());
 				  props.putDouble("Timeleft", instance.getTimeLeft());
 				  props.putBoolean("Ability", instance.getAbility());
+				  props.putInt("Transformed", instance.getTransformed());
 				  props.putString("Diavolo", instance.getDiavolo());
 				  return (INBT)props;
 			  }
@@ -322,6 +328,7 @@ public class StandCapability implements IStand
 				  instance.putCooldown(propertyData.getDouble("Cooldown"));
 				  instance.putTimeLeft(propertyData.getDouble("Timeleft"));
 				  instance.putAbility(propertyData.getBoolean("Ability"));
+				  instance.putTransformed(propertyData.getInt("Transformed"));
 				  instance.putDiavolo(propertyData.getString("Diavolo"));
 			  }
 		  }, () -> new StandCapability(Minecraft.getInstance().player));

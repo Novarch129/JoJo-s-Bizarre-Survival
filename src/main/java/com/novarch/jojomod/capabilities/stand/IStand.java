@@ -79,5 +79,7 @@ public interface IStand
 
     void putAbility(final boolean ability);
 
+    void putTransformed(final int transformed);
+
     void putDiavolo(final String truth);
 }

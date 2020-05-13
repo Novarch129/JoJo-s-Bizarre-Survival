@@ -8,7 +8,10 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
+import com.novarch.jojomod.network.message.SyncDimensionHopOther;
+import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.advancements.criterion.DistancePredicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +19,11 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -83,10 +88,14 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	      	IStand props = power.orElse(new StandCapability(player));
 
+			//Cooldown handler
+			if (props.getCooldown() > 0)
+				props.subtractCooldown(1);
+
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (player.isCrouching() || player.isAirBorne)
 	      {
-	      	if(props.getAbility())
+	      	if(props.getAbility() && props.getCooldown() <= 0)
 			{
 				if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
 					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
@@ -100,7 +109,76 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END).getId()));
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
 					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId()));
-				player.getFoodStats().addStats(-2, 0.0f);
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				/////////Negative y coords///////////
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity instanceof PlayerEntity)
+						transportPlayer((PlayerEntity) entity);
+					else
+						transportEntity(entity);
+				}
+
+				player.getFoodStats().addStats(-3, 0.0f);
+				props.setStandOn(false);
+				props.setCooldown(200);
 				this.remove();
 			}
 	      }
@@ -169,7 +247,59 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      }
 	    } 
 	  }
-	  
+
+	  private void changeDimension(DimensionType type, Entity entity)
+	  {
+		  entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ()));
+	  }
+
+	  private void changeDimension(DimensionType type, PlayerEntity player)
+	  {
+		  JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHopOther(type.getId(), player.getUniqueID()));
+	  }
+
+	  private void transportEntity(Entity entity)
+	  {
+	  	  PlayerEntity player = this.getMaster();
+		  if(!(entity instanceof EntityStandBase) && !(entity instanceof PlayerEntity))
+		  {
+			  if(entity.getDistance(this) < 2.0f)
+			  {
+				  if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
+					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), entity);
+				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+					  changeDimension(DimensionType.OVERWORLD, entity);
+				  else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
+					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), entity);
+				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+					  changeDimension(DimensionType.THE_NETHER, entity);
+				  else if(player.world.getDimension().getType() == DimensionType.THE_END)
+					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), entity);
+				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+					  changeDimension(DimensionType.THE_END, entity);
+			  }
+		  }
+	  }
+
+	private void transportPlayer(PlayerEntity entity)
+	{
+		PlayerEntity player = this.getMaster();
+		if(entity.getDistance(this) < 2.5f && entity != player)
+		{
+			if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
+				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), entity);
+			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+				changeDimension(DimensionType.OVERWORLD, entity);
+			else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
+				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), entity);
+			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+				changeDimension(DimensionType.THE_NETHER, entity);
+			else if (player.world.getDimension().getType() == DimensionType.THE_END)
+				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), entity);
+			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+				changeDimension(DimensionType.THE_END, entity);
+		}
+	}
 
 	  @Override
 	  public boolean isEntityInsideOpaqueBlock()

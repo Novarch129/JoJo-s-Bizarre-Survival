@@ -15,6 +15,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
@@ -81,8 +82,7 @@ public class EntityGoldExperience extends EntityStandBase
 
 	    if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-			IStand props = power.orElse(new StandCapability(player));
+			IStand props = JojoProvider.get(player);
 			this.life = props.getAbility();
 
 			//Cooldown handler

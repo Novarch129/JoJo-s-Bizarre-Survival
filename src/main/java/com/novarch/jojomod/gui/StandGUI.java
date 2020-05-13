@@ -48,6 +48,7 @@ public class StandGUI extends AbstractGui
             int transformed = props.getTransformed();
             if (props.getStandOn())
             {
+                //Made in Heaven
                 if (props.getStandID() == JojoLibs.StandID.madeInHeaven)
                 {
                     if (timeLeft > 0 && cooldown <= 0)
@@ -55,34 +56,34 @@ public class StandGUI extends AbstractGui
                     else
                         drawString(mc.fontRenderer, "\"Heaven\" has begun!", 4, 4, 0xFFFFFF);
                 }
-                else if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-                {
-                    if(timeLeft > 800)
-                        renderTimeLeft(timeLeft - 800);
-                    if(cooldown > 0)
-                        renderCooldown(cooldown);
-                }
-
-                else if(props.getStandID() == JojoLibs.StandID.goldExperience) //TODO Fix this
-                {
-                    if(cooldown > 0 && transformed > 0)
-                        renderCooldown(cooldown);
-                }
             }
 
-            else
+            //King Crimson
+            if(props.getStandID() == JojoLibs.StandID.kingCrimson)
             {
-                if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-                {
-                    if(cooldown > 0)
-                        renderCooldown(cooldown);
-                }
+                if(cooldown > 0)
+                    renderCooldown(cooldown);
+            }
 
-                else if(props.getStandID() == JojoLibs.StandID.goldExperience)
-                {
-                    if(cooldown > 0 && transformed > 0)
-                        renderCooldown(cooldown);
-                }
+            //Gold Experience
+            else if(props.getStandID() == JojoLibs.StandID.goldExperience)
+            {
+                if(cooldown > 0 && transformed > 0)
+                    renderCooldown(cooldown);
+            }
+
+            //Gold Experience Requiem
+            else if(props.getStandID() == JojoLibs.StandID.GER)
+            {
+                if(cooldown > 0 && transformed > 1)
+                    renderCooldown(cooldown);
+            }
+
+            //Dirty Deeds Done Dirt Cheap
+            else if(props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap)
+            {
+                if(cooldown > 0)
+                    renderCooldown(cooldown);
             }
         });
     }

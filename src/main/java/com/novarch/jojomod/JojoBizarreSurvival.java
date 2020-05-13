@@ -112,6 +112,11 @@ public class JojoBizarreSurvival
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
+        INSTANCE.registerMessage(networkId++,
+                SyncDimensionHopOther.class,
+                SyncDimensionHopOther::encode,
+                SyncDimensionHopOther::decode,
+                SyncDimensionHopOther::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -154,6 +159,9 @@ public class JojoBizarreSurvival
             if(!props.getStandOn() && props.getCooldown() > 0)
                 props.subtractCooldown(0.5);
 
+            else if(props.getStandOn() && !props.getAbility() && props.getCooldown() > 0)
+                props.subtractCooldown(0.5);
+
             if(props.getCooldown() == 0.5)
                 props.setTimeLeft(1000);
 
@@ -162,6 +170,7 @@ public class JojoBizarreSurvival
 
             else if(props.getStandOn() && !props.getAbility() && props.getTimeLeft() < 1000)
                 props.addTimeLeft(0.5);
+
 
             if(!props.getStandOn())
             {

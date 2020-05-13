@@ -10,17 +10,18 @@ import net.minecraft.world.biome.provider.OverworldBiomeProvider;
 import net.minecraft.world.biome.provider.OverworldBiomeProviderSettings;
 import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.OverworldDimension;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.OverworldChunkGenerator;
 import net.minecraft.world.gen.OverworldGenSettings;
 
 import javax.annotation.Nullable;
 
-public class D4CDimension extends Dimension
+public class D4CDimension extends OverworldDimension
 {
     public D4CDimension(World worldIn, DimensionType type_)
     {
-        super(worldIn, type_, 0.0f);
+        super(worldIn, type_);
     }
 
     @Override
