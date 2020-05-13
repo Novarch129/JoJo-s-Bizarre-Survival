@@ -143,7 +143,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
 						{
 							((PlayerEntity) entity).inventory.clear();
-							JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId(), entity.getUniqueID()));
 							((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 							((PlayerEntity) entity).fallDistance = 0;
 							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));

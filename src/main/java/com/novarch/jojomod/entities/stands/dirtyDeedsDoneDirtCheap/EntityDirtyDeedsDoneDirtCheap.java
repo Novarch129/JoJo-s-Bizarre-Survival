@@ -8,10 +8,8 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.SyncDimensionHop;
-import com.novarch.jojomod.network.message.SyncDimensionHopOther;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.advancements.criterion.DistancePredicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -98,82 +96,65 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      	if(props.getAbility() && props.getCooldown() <= 0)
 			{
 				if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId(), player.getUniqueID()));
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.OVERWORLD.getId(), player.getUniqueID()));
 				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER).getId(), player.getUniqueID()));
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_NETHER.getId(), player.getUniqueID()));
 				else if(player.world.getDimension().getType() == DimensionType.THE_END)
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END).getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END).getId(), player.getUniqueID()));
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
-					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId()));
+					JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.THE_END.getId(), player.getUniqueID()));
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				/////////Negative y coords///////////
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
 				{
-					if(entity instanceof PlayerEntity)
-						transportPlayer((PlayerEntity) entity);
-					else
-						transportEntity(entity);
+					transportEntity(entity);
+				}
+
+				for(PlayerEntity playerEntity : this.world.getPlayers())
+				{
+					if(playerEntity != player)
+						if(playerEntity.getDistance(player) < 2.5f)
+							transportPlayer(playerEntity);
 				}
 
 				player.getFoodStats().addStats(-3, 0.0f);
@@ -253,9 +234,9 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 		  entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ()));
 	  }
 
-	  private void changeDimension(DimensionType type, PlayerEntity player)
+	  private void changeDimensionPlayer(DimensionType type, PlayerEntity player)
 	  {
-		  JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHopOther(type.getId(), player.getUniqueID()));
+		  JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(type.getId(), player.getUniqueID()));
 	  }
 
 	  private void transportEntity(Entity entity)
@@ -265,39 +246,39 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 		  {
 			  if(entity.getDistance(this) < 2.0f)
 			  {
-				  if(player.world.getDimension().getType() == DimensionType.OVERWORLD)
+				  if(entity.world.getDimension().getType() == DimensionType.OVERWORLD)
 					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), entity);
-				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+				  else if(entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
 					  changeDimension(DimensionType.OVERWORLD, entity);
-				  else if(player.world.getDimension().getType() == DimensionType.THE_NETHER)
+				  else if(entity.world.getDimension().getType() == DimensionType.THE_NETHER)
 					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), entity);
-				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+				  else if(entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
 					  changeDimension(DimensionType.THE_NETHER, entity);
-				  else if(player.world.getDimension().getType() == DimensionType.THE_END)
+				  else if(entity.world.getDimension().getType() == DimensionType.THE_END)
 					  changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), entity);
-				  else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+				  else if(entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
 					  changeDimension(DimensionType.THE_END, entity);
 			  }
 		  }
 	  }
 
-	private void transportPlayer(PlayerEntity entity)
+	private void transportPlayer(PlayerEntity playerEntity)
 	{
 		PlayerEntity player = this.getMaster();
-		if(entity.getDistance(this) < 2.5f && entity != player)
+		if(playerEntity != player)
 		{
 			if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
-				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), entity);
+				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), playerEntity);
 			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
-				changeDimension(DimensionType.OVERWORLD, entity);
+				changeDimensionPlayer(DimensionType.OVERWORLD, playerEntity);
 			else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
-				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), entity);
+				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), playerEntity);
 			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
-				changeDimension(DimensionType.THE_NETHER, entity);
+				changeDimensionPlayer(DimensionType.THE_NETHER, playerEntity);
 			else if (player.world.getDimension().getType() == DimensionType.THE_END)
-				changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), entity);
+				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), playerEntity);
 			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
-				changeDimension(DimensionType.THE_END, entity);
+				changeDimensionPlayer(DimensionType.THE_END, playerEntity);
 		}
 	}
 

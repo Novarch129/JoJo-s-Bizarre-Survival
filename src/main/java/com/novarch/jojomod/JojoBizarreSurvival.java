@@ -24,7 +24,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
@@ -113,10 +112,10 @@ public class JojoBizarreSurvival
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
         INSTANCE.registerMessage(networkId++,
-                SyncDimensionHopOther.class,
-                SyncDimensionHopOther::encode,
-                SyncDimensionHopOther::decode,
-                SyncDimensionHopOther::handle);
+                SyncDimensionHop.class,
+                SyncDimensionHop::encode,
+                SyncDimensionHop::decode,
+                SyncDimensionHop::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)
