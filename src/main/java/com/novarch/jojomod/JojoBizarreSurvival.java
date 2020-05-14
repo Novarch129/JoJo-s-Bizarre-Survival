@@ -83,6 +83,7 @@ public class JojoBizarreSurvival
 		EntityInit.ENTITY_TYPES.register(modEventBus);
 		SoundInit.SOUNDS.register(modEventBus);
         DimensionInit.DIMENSIONS.register(modEventBus);
+        EffectInit.EFFECTS.register(modEventBus);
 		
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
