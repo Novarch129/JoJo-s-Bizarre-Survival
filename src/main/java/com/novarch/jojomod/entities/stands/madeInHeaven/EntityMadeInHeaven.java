@@ -6,8 +6,8 @@ import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -143,7 +143,8 @@ public class EntityMadeInHeaven extends EntityStandBase
 						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
 						{
 							((PlayerEntity) entity).inventory.clear();
-							JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE).getId(), entity.getUniqueID()));
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
 							((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 							((PlayerEntity) entity).fallDistance = 0;
 							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));

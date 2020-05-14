@@ -3,6 +3,7 @@ package com.novarch.jojomod;
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.events.EventControlInputs;
+import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.gui.StandGUI;
 import com.novarch.jojomod.init.*;
 import com.novarch.jojomod.network.message.*;
@@ -45,7 +46,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * @author Novarch
@@ -55,8 +55,6 @@ import java.util.ListIterator;
 public class JojoBizarreSurvival
 {
     public static final boolean debug = true;
-    public static List<PlayerEntity> d4cPassengerList = new ArrayList<PlayerEntity>();
-    public static List<DimensionType> d4cDestinationList = new ArrayList<DimensionType>();
     public static final IProxy PROXY = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
@@ -79,7 +77,8 @@ public class JojoBizarreSurvival
         modEventBus.addListener(this::doClientStuff);
 
         KeyHandler.addKeys();
-        MinecraftForge.EVENT_BUS.register(EventControlInputs.class);
+        EventInit.register(MinecraftForge.EVENT_BUS);
+
         ItemInit.ITEMS.register(modEventBus);
 		EntityInit.ENTITY_TYPES.register(modEventBus);
 		SoundInit.SOUNDS.register(modEventBus);
@@ -109,20 +108,10 @@ public class JojoBizarreSurvival
                 SyncAbility2Button::decode,
                 SyncAbility2Button::handle);
         INSTANCE.registerMessage(networkId++,
-                SyncDimensionHop.class,
-                SyncDimensionHop::encode,
-                SyncDimensionHop::decode,
-                SyncDimensionHop::handle);
-        INSTANCE.registerMessage(networkId++,
                 SyncStandCapability.class,
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
-        INSTANCE.registerMessage(networkId++,
-                SyncDimensionHop.class,
-                SyncDimensionHop::encode,
-                SyncDimensionHop::decode,
-                SyncDimensionHop::handle);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -155,155 +144,5 @@ public class JojoBizarreSurvival
 		{
 			return new ItemStack(ItemInit.stand_arrow.get());
 		}
-    }
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event)
-    {
-        PlayerEntity player = event.player;
-        JojoProvider.getLazy(player).ifPresent(props -> {
-            if(!props.getStandOn() && props.getCooldown() > 0)
-                props.subtractCooldown(0.5);
-
-            else if(props.getStandOn() && !props.getAbility() && props.getCooldown() > 0)
-                props.subtractCooldown(0.5);
-
-            if(props.getCooldown() == 0.5)
-                props.setTimeLeft(1000);
-
-            if(!props.getStandOn() && props.getTimeLeft() < 1000)
-                props.addTimeLeft(0.5);
-
-            else if(props.getStandOn() && !props.getAbility() && props.getTimeLeft() < 1000)
-                props.addTimeLeft(0.5);
-
-
-            if(!props.getStandOn())
-            {
-                player.setInvulnerable(false);
-                if(!player.isCreative() && !player.isSpectator())
-                    player.setGameType(GameType.SURVIVAL);
-            }
-        });
-    }
-
-    @SubscribeEvent
-    public void saveStand(PlayerEvent.Clone event)
-    {
-        if(!event.isWasDeath()) {
-            JojoProvider.getLazy(event.getOriginal()).ifPresent(originalProps -> {
-                ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-                JojoProvider.getLazy(player).ifPresent(newProps -> {
-                    newProps.clone(originalProps);
-                });
-            });
-        }
-    }
-
-    @SubscribeEvent
-    public void playerRespawn(PlayerEvent.PlayerRespawnEvent event)
-    {
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
-        });
-    }
-
-    @SubscribeEvent
-    public void renderGameOverlay(RenderGameOverlayEvent.Post event)
-    {
-        StandGUI standGui = new StandGUI();
-        standGui.render();
-    }
-
-    @SubscribeEvent
-    public void playerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
-        });
-    }
-
-    @SubscribeEvent
-    public void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event)
-    {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            PlayerEntity player = event.getPlayer();
-            IStand props = JojoProvider.get(player);
-            props.putStandOn(false);
-            if(!player.world.isRemote)
-                INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-        }
-    }
-
-    @SubscribeEvent
-    public void playerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
-    {
-        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
-            INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
-        });
-    }
-
-    @SubscribeEvent
-    public void cancelDamage(LivingHurtEvent event)
-    {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            IStand props = JojoProvider.get(player);
-            if(props.getStandID() == JojoLibs.StandID.GER)
-            {
-                event.setCanceled(true);
-                if(event.getSource().getTrueSource() instanceof PlayerEntity)
-                    event.getSource().getTrueSource().world.playSound(null, event.getSource().getTrueSource().getPosX(), event.getSource().getTrueSource().getPosY(), event.getSource().getTrueSource().getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                else if(event.getSource().getTrueSource() instanceof MobEntity)
-                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension != DimensionType.THE_END) {
-                    player.setPositionAndUpdate(player.getPosX(), JojoLibs.getHighestBlock(player.world, player.getPosition()) + 1, player.getPosZ());
-                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                }
-                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension == DimensionType.THE_END) {
-                    if(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()) != null)
-                        player.setPositionAndUpdate(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getX(), JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getY() + 1, JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getZ());
-                    player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void stopExplosion(ExplosionEvent.Start event)
-    {
-        PlayerEntity player = PROXY.getPlayer();
-        if(player != null) {
-            IStand props = JojoProvider.get(player);
-            if (event.getExplosion().getPosition().distanceTo(player.getPositionVec()) < 10.0f) {
-                if (props.getStandID() == JojoLibs.StandID.GER)
-                    event.setCanceled(true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void serverTick(TickEvent.ServerTickEvent event)
-    {
-        if(event.phase == TickEvent.Phase.END)
-        {
-            if(d4cPassengerList.size() > 0 && d4cDestinationList.size() > 0)
-            {
-                for (ListIterator<PlayerEntity> it = d4cPassengerList.listIterator(); it.hasNext(); ) {
-                    PlayerEntity passenger = it.next();
-                    for(ListIterator<DimensionType> destinations = d4cDestinationList.listIterator(); destinations.hasNext();)
-                    {
-                        DimensionType type = destinations.next();
-                        passenger.changeDimension(type, new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
-                        d4cPassengerList.remove(passenger);
-                        d4cDestinationList.remove(type);
-                    }
-                }
-            }
-        }
     }
 }

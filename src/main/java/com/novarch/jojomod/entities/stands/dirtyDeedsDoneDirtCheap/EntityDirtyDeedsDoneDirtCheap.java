@@ -6,8 +6,8 @@ import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.SyncDimensionHop;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
@@ -96,28 +96,28 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      	if(props.getAbility() && props.getCooldown() <= 0)
 			{
 				if(player.world.getDimension().getType() == DimensionType.OVERWORLD) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
 				}
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE)) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.OVERWORLD);
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.OVERWORLD);
 				}
 				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
 				}
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER)) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.THE_NETHER);
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_NETHER);
 				}
 				else if(player.world.getDimension().getType() == DimensionType.THE_END) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
 				}
 				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END)) {
-					JojoBizarreSurvival.d4cPassengerList.add(player);
-					JojoBizarreSurvival.d4cDestinationList.add(DimensionType.THE_END);
+					EventD4CTeleportProcessor.d4cPassengerList.add(player);
+					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
 				}
 
 				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
@@ -164,7 +164,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 
 				for(PlayerEntity playerEntity : this.world.getPlayers())
 				{
-					if(playerEntity.getDistance(player) < 20.0f)
+					if(playerEntity.getDistance(player) < 2.0f)
 						transportPlayer(playerEntity);
 				}
 
@@ -265,28 +265,28 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	private void transportPlayer(PlayerEntity playerEntity)
 	{
 		if(playerEntity.world.getDimension().getType() == DimensionType.OVERWORLD) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
 		}
 		else if(playerEntity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE)) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.OVERWORLD);
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.OVERWORLD);
 		}
 		else if(playerEntity.world.getDimension().getType() == DimensionType.THE_NETHER) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
 		}
 		else if(playerEntity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER)) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.THE_NETHER);
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_NETHER);
 		}
 		else if(playerEntity.world.getDimension().getType() == DimensionType.THE_END) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
 		}
 		else if(playerEntity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END)) {
-			JojoBizarreSurvival.d4cPassengerList.add(playerEntity);
-			JojoBizarreSurvival.d4cDestinationList.add(DimensionType.THE_END);
+			EventD4CTeleportProcessor.d4cPassengerList.add(playerEntity);
+			EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
 		}
 	}
 
