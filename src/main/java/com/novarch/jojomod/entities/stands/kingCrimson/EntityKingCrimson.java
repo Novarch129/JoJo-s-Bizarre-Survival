@@ -91,36 +91,12 @@ public class EntityKingCrimson extends EntityStandBase
 	    if (getMaster() != null)
 	    {
 	    	PlayerEntity player = getMaster();
-	      LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
-	      IStand props = power.orElse(new StandCapability(player));
-	      this.timeSkipped = !(props.getCooldown() > 0);
+	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
+	    	IStand props = power.orElse(new StandCapability(player));
+	    	this.timeSkipped = !(props.getCooldown() > 0);
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-	      if (player.isCrouching()) 
-	      {
-	        if (playerJump(player) || player.isAirBorne) 
-	        {
-	          this.changetick++;
-	          if (this.changetick == 1) 
-	          {
-	            this.timeSkipped = !this.timeSkipped;
-	            if(this.timeSkipped)
-	            {   
-	            	player.setInvisible(true);
-	            	player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : ON", new Object[0]));
-	            }
-	            else
-	            {
-	            	player.setInvisible(false);
-	            	player.sendMessage((ITextComponent)new TranslationTextComponent("Time Skip : OFF", new Object[0]));
-	            }
-	          } 
-	        } 
-	      } else 
-	      {
-	        this.changetick = 0;
-	      } 
-	      if (this.standOn) 
+	      if (this.standOn)
 	      {
 	        try 
 	        {

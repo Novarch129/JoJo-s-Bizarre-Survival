@@ -56,6 +56,13 @@ public class StandGUI extends AbstractGui
                     else
                         drawString(mc.fontRenderer, "\"Heaven\" has begun!", 4, 4, 0xFFFFFF);
                 }
+
+                //King Crimson
+                else if(props.getStandID() == JojoLibs.StandID.kingCrimson)
+                {
+                    if(timeLeft > 800)
+                        renderTimeLeft(timeLeft - 800);
+                }
             }
 
             //King Crimson
