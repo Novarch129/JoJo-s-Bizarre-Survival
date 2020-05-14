@@ -2,6 +2,9 @@ package com.novarch.jojomod.capabilities.stand;
 
 import net.minecraft.entity.player.PlayerEntity;
 
+import java.util.List;
+import java.util.UUID;
+
 @SuppressWarnings("unused")
 public interface IStand
 {

@@ -9,6 +9,7 @@ import com.novarch.jojomod.network.message.*;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
+import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.entity.MobEntity;
@@ -21,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.GameType;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -41,6 +43,10 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * @author Novarch
  */
@@ -49,7 +55,8 @@ import org.apache.logging.log4j.Logger;
 public class JojoBizarreSurvival
 {
     public static final boolean debug = true;
-    public static boolean shouldRun = false;
+    public static List<PlayerEntity> d4cPassengerList = new ArrayList<PlayerEntity>();
+    public static List<DimensionType> d4cDestinationList = new ArrayList<DimensionType>();
     public static final IProxy PROXY = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
@@ -275,6 +282,27 @@ public class JojoBizarreSurvival
             if (event.getExplosion().getPosition().distanceTo(player.getPositionVec()) < 10.0f) {
                 if (props.getStandID() == JojoLibs.StandID.GER)
                     event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void serverTick(TickEvent.ServerTickEvent event)
+    {
+        if(event.phase == TickEvent.Phase.END)
+        {
+            if(d4cPassengerList.size() > 0 && d4cDestinationList.size() > 0)
+            {
+                for (ListIterator<PlayerEntity> it = d4cPassengerList.listIterator(); it.hasNext(); ) {
+                    PlayerEntity passenger = it.next();
+                    for(ListIterator<DimensionType> destinations = d4cDestinationList.listIterator(); destinations.hasNext();)
+                    {
+                        DimensionType type = destinations.next();
+                        passenger.changeDimension(type, new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
+                        d4cPassengerList.remove(passenger);
+                        d4cDestinationList.remove(type);
+                    }
+                }
             }
         }
     }
