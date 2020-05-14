@@ -165,11 +165,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	      }
 	      if (this.standOn) 
 	      {
-	        try 
-	        {
-	          setHealth(1000.0F);
-	        } 
-	        catch (ClassCastException classCastException) {}
 	        followMaster();
 	        setRotationYawHead(player.rotationYaw);
 	        setRotation(player.rotationYaw, player.rotationPitch);
@@ -265,21 +260,20 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	private void transportPlayer(PlayerEntity playerEntity)
 	{
 		PlayerEntity player = this.getMaster();
-		if(playerEntity != player)
-		{
-			if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
-				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), playerEntity);
-			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
-				changeDimensionPlayer(DimensionType.OVERWORLD, playerEntity);
-			else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
-				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), playerEntity);
-			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
-				changeDimensionPlayer(DimensionType.THE_NETHER, playerEntity);
-			else if (player.world.getDimension().getType() == DimensionType.THE_END)
-				changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), playerEntity);
-			else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
-				changeDimensionPlayer(DimensionType.THE_END, playerEntity);
-		}
+			if (playerEntity != player) {
+				if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
+					changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), playerEntity);
+				else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+					changeDimensionPlayer(DimensionType.OVERWORLD, playerEntity);
+				else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
+					changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), playerEntity);
+				else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+					changeDimensionPlayer(DimensionType.THE_NETHER, playerEntity);
+				else if (player.world.getDimension().getType() == DimensionType.THE_END)
+					changeDimensionPlayer(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), playerEntity);
+				else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+					changeDimensionPlayer(DimensionType.THE_END, playerEntity);
+			}
 	}
 
 	  @Override

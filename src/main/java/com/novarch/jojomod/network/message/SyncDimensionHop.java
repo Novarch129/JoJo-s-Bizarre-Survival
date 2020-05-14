@@ -56,10 +56,11 @@ public class SyncDimensionHop
 
     protected static void dimensionHop(PlayerEntity player, UUID uuid, int type)
     {
-        if(uuid != null)
-        {
-            PlayerEntity passenger = player.world.getPlayerByUuid(uuid);
-            passenger.changeDimension(DimensionType.getById(type), new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
+        if(!player.world.isRemote) {
+            if (uuid != null) {
+                PlayerEntity passenger = player.world.getPlayerByUuid(uuid);
+                passenger.changeDimension(DimensionType.getById(type), new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
+            }
         }
     }
 }
