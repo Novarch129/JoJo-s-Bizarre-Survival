@@ -231,7 +231,9 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 
 	  private void changeDimensionPlayer(DimensionType type, PlayerEntity player)
 	  {
-		  JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(type.getId(), player.getUniqueID()));
+	  	if(!world.isRemote)
+	  		player.changeDimension(type, new DimensionHopTeleporter((ServerWorld) player.getEntityWorld(), player.getPosX(), player.getPosY(), player.getPosZ()));
+		  //JojoBizarreSurvival.INSTANCE.sendToServer(new SyncDimensionHop(type.getId(), player.getUniqueID()));
 	  }
 
 	  private void transportEntity(Entity entity)
