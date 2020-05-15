@@ -120,47 +120,10 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
 				}
 
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, 1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, 1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				/////////Negative y coords///////////
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(-1000.0f, -1000.0f, 1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
-
-				for(Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getBoundingBox().expand(1000.0f, -1000.0f, -1000.0f), EntityPredicates.NOT_SPECTATING))
-				{
-					transportEntity(entity);
-				}
+				this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
+					if(!(entity instanceof PlayerEntity))
+						transportEntity(entity);
+				});
 
 				for(PlayerEntity playerEntity : this.world.getPlayers())
 				{

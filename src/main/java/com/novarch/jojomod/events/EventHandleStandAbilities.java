@@ -3,11 +3,7 @@ package com.novarch.jojomod.events;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.init.EffectInit;
-import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
@@ -32,73 +28,10 @@ public class EventHandleStandAbilities
                 player.setInvulnerable(false);
                 if(!player.isCreative() && !player.isSpectator())
                     player.setGameType(GameType.SURVIVAL);
+
                 if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                     player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-                
-                if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-                {
-                    /*for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
 
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for(PlayerEntity entity : player.world.getPlayers())
-                    {
-                        if(entity.isPotionActive(EffectInit.CRIMSON.get()))
-                            entity.removePotionEffect(EffectInit.CRIMSON.get());
-                    }*/
-                }
                 if(props.getCooldown() > 0)
                     props.subtractCooldown(0.5);
 
@@ -108,70 +41,6 @@ public class EventHandleStandAbilities
 
             else if(props.getStandOn() && !props.getAbility())
             {
-                if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-                {
-                    /*for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-
-                    for (Entity entity : player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-                    {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    }*/
-
-                    for(PlayerEntity entity : player.world.getPlayers())
-                    {
-                        if(entity.isPotionActive(EffectInit.CRIMSON.get()))
-                            entity.removePotionEffect(EffectInit.CRIMSON.get());
-                    }
-                }
                 if(props.getCooldown() > 0)
                     props.subtractCooldown(0.5);
 
@@ -206,29 +75,10 @@ public class EventHandleStandAbilities
             return;
 
         PlayerEntity player = Minecraft.getInstance().player;
-        ClientWorld world = Minecraft.getInstance().world;
 
         JojoProvider.getLazy(player).ifPresent(props -> {
             if(!props.getStandOn()) {
                 Minecraft.getInstance().setRenderViewEntity(player);
-                if(props.getStandID() == JojoLibs.StandID.kingCrimson) {
-                    world.getAllEntities().forEach(entity -> {
-                        if(entity instanceof MobEntity)
-                            if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                    });
-                }
-            }
-            else {
-                if(props.getStandID() == JojoLibs.StandID.kingCrimson) {
-                    if(!props.getAbility()) {
-                        world.getAllEntities().forEach(entity -> {
-                            if(entity instanceof MobEntity)
-                                if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-                                    ((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-                        });
-                    }
-                }
             }
         });
     }

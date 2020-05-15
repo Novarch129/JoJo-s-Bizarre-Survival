@@ -121,39 +121,11 @@ public class EntityKingCrimson extends EntityStandBase
 	        		if(!player.isCreative() && !player.isSpectator())
 						player.setGameType(GameType.ADVENTURE);
 	        		props.subtractTimeLeft(1);
-	        		for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-					if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-					{
-						if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
+	        		this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
+	        			IStand prs = entity.getCapability(JojoProvider.STAND).orElse(new StandCapability(player));
+						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
 						{
-							if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-							{
-								((MobEntity) entity).setAttackTarget(null);
-								((MobEntity) entity).setRevengeTarget(null);
-							}
-							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 100, 1));
-							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 2));
-							((MobEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 100, 0));
-						}
-
-						if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-						{
-							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 40, 2));
-							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.GLOWING, 40, 255));
-							((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.BLINDNESS, 40, 255));
-						}
-					}
-				}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
+							if(entity instanceof MobEntity && !(entity instanceof PlayerEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
 							{
 								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
 								{
@@ -165,142 +137,12 @@ public class EntityKingCrimson extends EntityStandBase
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
+								if(prs.getStandID() == JojoLibs.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
+									return;
 								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, 2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, 2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-4000.0, -2000.0 , 4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson)&& !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(4000.0, -2000.0 , -4000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						LazyOptional<IStand> pwr = entity.getCapability(JojoProvider.STAND);
-						IStand prs = pwr.orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson) && !(entity instanceof PlayerEntity) && !(entity instanceof ItemEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity) entity).setAttackTarget(null);
-									((MobEntity) entity).setRevengeTarget(null);
-								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-							}
-						}
-					}
+					});
 				}
 
 	        	else
@@ -310,66 +152,6 @@ public class EntityKingCrimson extends EntityStandBase
 	        		this.getMaster().setInvulnerable(false);
 	        		this.timeSkipped = false;
 	        		player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-7000.0, 3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , 7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
-
-					for (Entity entity : this.world.getEntitiesInAABBexcluding(this.getMaster(), this.getMaster().getBoundingBox().expand(new Vec3d(-7000.0, -3000.0 , -7000.0)), EntityPredicates.NOT_SPECTATING))
-					{
-						if(entity instanceof PlayerEntity)
-							if(((PlayerEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((PlayerEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-
-						else if(entity instanceof MobEntity)
-							if(((MobEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
-								((MobEntity) entity).removePotionEffect(EffectInit.CRIMSON.get());
-					}
 					props.setCooldown(200);
 	        	}
 	        }
@@ -389,9 +171,12 @@ public class EntityKingCrimson extends EntityStandBase
 				}
 			}
 
-	        if(!props.getAbility())
-	        	if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
-	        		player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+	        if(!props.getAbility()) {
+				if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+					player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+				if(props.getTimeLeft() < 1000)
+					props.addTimeLeft(1);
+			}
 
 	        //Orarush food check       
 	        if (!player.isAlive())
