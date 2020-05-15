@@ -11,7 +11,7 @@ public class EventInit
         bus.register(EventD4CTeleportProcessor.class);
         bus.register(EventSyncCapability.class);
         bus.register(EventAbilityGER.class);
-        bus.register(EventHandleCooldown.class);
-        bus.register(EventHandleCooldown.class);
+        bus.register(EventHandleStandAbilities.class);
+        bus.register(EventHandleStandAbilities.class);
     }
 }

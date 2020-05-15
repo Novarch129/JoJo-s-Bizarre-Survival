@@ -1,6 +1,5 @@
 package com.novarch.jojomod.events;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.gui.StandGUI;
@@ -8,13 +7,10 @@ import com.novarch.jojomod.init.EffectInit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
@@ -22,9 +18,8 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,88 +35,17 @@ public class EventRenderStandOverlay
         standGui.render();
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void renderCrimsonEffect(EntityViewRenderEvent.FogDensity fogEvent)
     {
-        if(fogEvent.isCancelable())
-            fogEvent.setCanceled(true);
+        fogEvent.setDensity(0.3f);
 
-        ActiveRenderInfo activeRenderInfoIn = fogEvent.getInfo();
-        FogRenderer.FogType fogTypeIn = fogEvent.getType();
-        float farPlaneDistance = Minecraft.getInstance().gameRenderer.getFarPlaneDistance();
-        Vec3d vec3d = activeRenderInfoIn.getProjectedView();
-        double d0 = vec3d.getX();
-        double d1 = vec3d.getY();
-        double d2 = vec3d.getZ();
-        boolean nearFog = Minecraft.getInstance().world.dimension.doesXZShowFog(MathHelper.floor(d0), MathHelper.floor(d1)) || Minecraft.getInstance().ingameGUI.getBossOverlay().shouldCreateFog();
-        float partialTicks = 0;
-        IFluidState ifluidstate = activeRenderInfoIn.getFluidState();
-        Entity entity = activeRenderInfoIn.getRenderViewEntity();
-        boolean flag = ifluidstate.getFluid() != Fluids.EMPTY;
-        float hook = ForgeHooksClient.getFogDensity(fogTypeIn, activeRenderInfoIn, partialTicks, 0.1F);
-        if (hook >= 0) RenderSystem.fogDensity(hook);
-        else
-        if (flag) {
-            float f = 1.0F;
-            if (ifluidstate.isTagged(FluidTags.WATER)) {
-                f = 0.05F;
-                if (entity instanceof ClientPlayerEntity) {
-                    ClientPlayerEntity clientplayerentity = (ClientPlayerEntity)entity;
-                    f -= clientplayerentity.getWaterBrightness() * clientplayerentity.getWaterBrightness() * 0.03F;
-                    Biome biome = clientplayerentity.world.getBiome(new BlockPos(clientplayerentity));
-                    if (biome == Biomes.SWAMP || biome == Biomes.SWAMP_HILLS) {
-                        f += 0.005F;
-                    }
-                }
-            } else if (ifluidstate.isTagged(FluidTags.LAVA)) {
-                f = 2.0F;
-            }
-
-            RenderSystem.fogDensity(f);
-            RenderSystem.fogMode(GlStateManager.FogMode.EXP2);
-        } else {
-            float f2 = 0;
-            float f3 = 0;
-            if (entity instanceof LivingEntity)
-            {
-                if(((LivingEntity) entity).isPotionActive(Effects.BLINDNESS)) {
-                    int i = ((LivingEntity) entity).getActivePotionEffect(Effects.BLINDNESS).getDuration();
-                    float f1 = MathHelper.lerp(Math.min(1.0F, (float) i / 20.0F), farPlaneDistance, 5.0F);
-                    if (fogTypeIn == FogRenderer.FogType.FOG_SKY) {
-                        f2 = 0.0F;
-                        f3 = f1 * 0.8F;
-                    } else {
-                        f2 = f1 * 0.25F;
-                        f3 = f1;
-                    }
-                }
-                if(((LivingEntity) entity).isPotionActive(EffectInit.CRIMSON.get())) {
-                    int i = ((LivingEntity) entity).getActivePotionEffect(EffectInit.CRIMSON.get()).getDuration();
-                    float f1 = MathHelper.lerp(Math.min(1.0F, (float) i / 20.0F), farPlaneDistance, 5.0F);
-                    if (fogTypeIn == FogRenderer.FogType.FOG_SKY) {
-                        f2 = 0.0F;
-                        f3 = f1 * 0.8F;
-                    } else {
-                        f2 = f1 * 0.25F;
-                        f3 = f1;
-                    }
-                }} else if (nearFog) {
-                f2 = farPlaneDistance * 0.05F;
-                f3 = Math.min(farPlaneDistance, 192.0F) * 0.5F;
-            } else if (fogTypeIn == FogRenderer.FogType.FOG_SKY) {
-                f2 = 0.0F;
-                f3 = farPlaneDistance;
-            } else {
-                f2 = farPlaneDistance * 0.75F;
-                f3 = farPlaneDistance;
-            }
-
-            RenderSystem.fogStart(f2);
-            RenderSystem.fogEnd(f3);
-            RenderSystem.fogMode(GlStateManager.FogMode.LINEAR);
-            RenderSystem.setupNvFogDistance();
-            net.minecraftforge.client.ForgeHooksClient.onFogRender(fogTypeIn, activeRenderInfoIn, partialTicks, f3);
-        }
+        if(fogEvent.getInfo().getRenderViewEntity() instanceof LivingEntity)
+            if(((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()))
+                if(fogEvent.isCancelable())
+                    fogEvent.setCanceled(true);
+                fogEvent.setDensity(5f);
     }
 
     @SubscribeEvent
@@ -235,6 +159,15 @@ public class EventRenderStandOverlay
             }
         }
 
+        if (activeRenderInfoIn.getRenderViewEntity() instanceof LivingEntity && ((LivingEntity)activeRenderInfoIn.getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get())) {
+            int i2 = ((LivingEntity)activeRenderInfoIn.getRenderViewEntity()).getActivePotionEffect(EffectInit.CRIMSON_USER.get()).getDuration();
+            if (i2 < 20) {
+                d0 *= (double)(1.0F - (float)i2 / 20.0F);
+            } else {
+                d0 = 0.0D;
+            }
+        }
+
         if (activeRenderInfoIn.getRenderViewEntity() instanceof LivingEntity && ((LivingEntity)activeRenderInfoIn.getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get())) {
             int i2 = ((LivingEntity)activeRenderInfoIn.getRenderViewEntity()).getActivePotionEffect(EffectInit.CRIMSON.get()).getDuration();
             if (i2 < 20) {
@@ -292,7 +225,5 @@ public class EventRenderStandOverlay
         blue = event.getBlue();
 
         RenderSystem.clearColor(red, green, blue, 0.0F);
-
     }
-
 }
