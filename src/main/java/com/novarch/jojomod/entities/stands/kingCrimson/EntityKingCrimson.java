@@ -10,6 +10,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -91,6 +92,7 @@ public class EntityKingCrimson extends EntityStandBase
 		this.fallDistance = 0.0F; 
 	    if (getMaster() != null)
 	    {
+	    	//Minecraft.getInstance().setRenderViewEntity(this); //TODO Remember this!
 	    	PlayerEntity player = getMaster();
 	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	    	IStand props = power.orElse(new StandCapability(player));
@@ -158,12 +160,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -180,12 +182,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -202,12 +204,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -224,12 +226,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -246,12 +248,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -268,12 +270,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -290,12 +292,12 @@ public class EntityKingCrimson extends EntityStandBase
 									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
 							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
 							{
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 9999, 255));
+								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					}
@@ -386,6 +388,10 @@ public class EntityKingCrimson extends EntityStandBase
 					this.timeSkipped = true;
 				}
 			}
+
+	        if(!props.getAbility())
+	        	if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+	        		player.removePotionEffect(EffectInit.CRIMSON_USER.get());
 
 	        //Orarush food check       
 	        if (!player.isAlive())

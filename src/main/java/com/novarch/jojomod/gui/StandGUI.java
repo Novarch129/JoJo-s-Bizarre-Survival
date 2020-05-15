@@ -60,7 +60,7 @@ public class StandGUI extends AbstractGui
                 //King Crimson
                 else if(props.getStandID() == JojoLibs.StandID.kingCrimson)
                 {
-                    if(timeLeft > 800)
+                    if(timeLeft > 800 && cooldown == 0)
                         renderTimeLeft(timeLeft - 800);
                 }
             }
