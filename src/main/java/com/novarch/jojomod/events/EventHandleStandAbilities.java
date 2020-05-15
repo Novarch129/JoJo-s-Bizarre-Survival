@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
 {
@@ -69,8 +70,6 @@ public class EventHandleStandAbilities
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event)
     {
-        if(Minecraft.getInstance()==null)
-            return;
         if(Minecraft.getInstance().player==null)
             return;
 

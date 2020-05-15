@@ -1,19 +1,10 @@
 package com.novarch.jojomod.entities.stands;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.novarch.jojomod.JojoBizarreSurvival;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MoverType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,16 +16,9 @@ import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +26,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public abstract class EntityStandPunch extends Entity implements IProjectile
 {
@@ -51,15 +38,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_requiem_punch") public static EntityType<EntityStandPunch.goldExperienceRequiem> GOLD_EXPERIENCE_REQUIEM;
 
-
-  /*private static final Predicate<Entity> PUNCH_TARGETS = Predicates.and(new Predicate[] { (Predicate) EntityPredicates.NOT_SPECTATING, (Predicate )EntityPredicates.IS_ALIVE, new Predicate<Entity>() {
-		@Override
-		public boolean apply(Entity input)
-		{
-			return input.canBeCollidedWith();
-		}
-	}   });*/
-	private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityStandPunch.class, DataSerializers.BYTE);
+  private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityStandPunch.class, DataSerializers.BYTE);
 
 private int xTile;
 

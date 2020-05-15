@@ -159,7 +159,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        if(!timeSkipped)
 			{
 				if(props.getCooldown()==200) { player.sendMessage(new TranslationTextComponent("Time Skip : OFF", new Object[0])); }
-				if(props.getCooldown() > 0)
+				if(props.getCooldown() > 0 && props.getAbility())
 				{
 					props.subtractCooldown(1);
 				}

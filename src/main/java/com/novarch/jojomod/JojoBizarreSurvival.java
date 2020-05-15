@@ -1,35 +1,15 @@
 package com.novarch.jojomod;
 
-import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.events.EventControlInputs;
-import com.novarch.jojomod.events.EventD4CTeleportProcessor;
-import com.novarch.jojomod.gui.StandGUI;
 import com.novarch.jojomod.init.*;
 import com.novarch.jojomod.network.message.*;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
-import com.novarch.jojomod.util.DimensionHopTeleporter;
-import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.world.GameType;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -39,13 +19,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Novarch
@@ -55,7 +31,7 @@ import java.util.List;
 public class JojoBizarreSurvival
 {
     public static final boolean debug = true;
-    public static final IProxy PROXY = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
+    public static final IProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
     public static JojoBizarreSurvival instance;
