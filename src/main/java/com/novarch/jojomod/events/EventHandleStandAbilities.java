@@ -77,7 +77,8 @@ public class EventHandleStandAbilities
 
         JojoProvider.getLazy(player).ifPresent(props -> {
             if(!props.getStandOn()) {
-                Minecraft.getInstance().setRenderViewEntity(player);
+                if(!player.isSpectator())
+                    Minecraft.getInstance().setRenderViewEntity(player);
             }
         });
     }

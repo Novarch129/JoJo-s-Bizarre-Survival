@@ -90,7 +90,7 @@ public class JojoLibs
 
         public static final int GER = 5;
 
-        static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, madeInHeaven, GER};
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, madeInHeaven};
     }
 
     public static int numberOfStands = StandID.stands.length;

@@ -25,11 +25,15 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.FakePlayerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 public class StandPunchEffects
 {
-	public static Entity bomb = null;
-	
 	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean entityBlock, final int entityId) {
         switch (entityId) {
             case JojoLibs.StandID.nullStand: {
@@ -161,37 +165,21 @@ public class StandPunchEffects
      * King Crimson's punch
      */
     
-    public static void kingCrimson(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock) {
+    public static void kingCrimson(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean entityBlock){
         if (entityBlock) {
-            if (punch.shootingStand.timeSkipped) {
-                if (punch.shootingStand.orarush) {
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.WITHER, 40, 0));
-                }
-                else {
-                	LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_DAMAGE, 40, 1));
-                }
-                LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
-                LivingEntity.hurtResistantTime = 0;
-                LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-                LivingEntity.setMotion(LivingEntity.getMotion().getX(), 0, LivingEntity.getMotion().getZ());
-                LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-                punch.remove();
-            }
-            else {
-                final float p = 0.2f;
-                final float p2 = 0.4f;
-                    LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
-                    LivingEntity.hurtResistantTime = 0;
-                    LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
-                    if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-                        LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
-                    }
-                    else {
-                        LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
-                    }
-                    LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
-                    punch.remove();
-            }
+        	final float p = 0.2f;
+        	final float p2 = 0.4f;
+        	LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
+        	LivingEntity.hurtResistantTime = 0;
+        	LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
+        	if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+        		LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p2, LivingEntity.getMotion().getZ());
+        	}
+        	else {
+        		LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY() - p, LivingEntity.getMotion().getZ());
+        	}
+        	LivingEntity.setMotion(LivingEntity.getMotion().getX(), LivingEntity.getMotion().getY(), 0);
+        	punch.remove();
         }
         else if (!entityBlock) {
             final Block blockB = punch.getinTile();
@@ -200,6 +188,11 @@ public class StandPunchEffects
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+                    /*Class clazz = blockB.getClass();
+                    Field slipperiness = clazz.getDeclaredField("slipperiness");
+                    slipperiness.setAccessible(true);
+                    slipperiness.setInt(slipperiness, slipperiness.getModifiers() & ~Modifier.FINAL);
+                    slipperiness.set(null, 100.0f);*/
                     blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
             }

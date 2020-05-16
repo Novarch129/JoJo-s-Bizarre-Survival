@@ -1,50 +1,39 @@
-package com.novarch.jojomod.entities.stands.kingCrimson;
+package com.novarch.jojomod.entities.stands.kingCrimson;// Made with Blockbench 3.5.2
+// Exported for Minecraft version 1.15
+// Paste this class into your mod and generate all required imports
+
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class ModelKingCrimsonPunch <T extends EntityStandPunch.kingCrimson> extends EntityModel<T>
-{
-	 private final ModelRenderer Punch;
+public class ModelKingCrimsonPunch<T extends EntityStandPunch.kingCrimson> extends EntityModel<T> {
+	private final ModelRenderer Punch;
 
-	 public ModelKingCrimsonPunch()
-	 {
-		this.textureWidth = 64;
-	   	this.textureHeight = 32;
-	   	
-	    this.Punch = new ModelRenderer(this, 0, 0);
-	    this.Punch.addBox(-2.0F, -2.0F, 0.0F, 4, 4, 12);
-	    this.Punch.setRotationPoint(0.0f, 0.0f, 0.0f);
-	    this.Punch.setTextureSize(64, 32);
-	    setRotationAngle(this.Punch, 0.0f, 0.0f, 0.0f);
-	 }
-	  
-	 @Override
-	 public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha)
-	 {
-		 this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
-	 }
+	public ModelKingCrimsonPunch() {
+		textureWidth = 64;
+		textureHeight = 32;
 
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn)
-	{
-		this.Punch.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn);
+		Punch = new ModelRenderer(this);
+		Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
+		Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
 	}
 
-	 @Override
-	 public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadBaseYaw, float headPitch) 
-	 {
+	@Override
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+		//previously the render function, render code was moved to a method below
+	}
 
-	 }
+	@Override
+	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
+	}
 
-	 public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
-	 {
-		 modelRenderer.rotateAngleX = x;
-		 modelRenderer.rotateAngleY = y;
-		 modelRenderer.rotateAngleZ = z;
-	 }
+	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+		modelRenderer.rotateAngleX = x;
+		modelRenderer.rotateAngleY = y;
+		modelRenderer.rotateAngleZ = z;
+	}
 }
