@@ -37,6 +37,8 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_punch") public static EntityType<EntityStandPunch.goldExperience> GOLD_EXPERIENCE;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_requiem_punch") public static EntityType<EntityStandPunch.goldExperienceRequiem> GOLD_EXPERIENCE_REQUIEM;
+    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":aerosmith_bullet") public static EntityType<EntityStandPunch.aerosmith> AEROSMITH;
+
 
   private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityStandPunch.class, DataSerializers.BYTE);
 
@@ -707,6 +709,25 @@ public enum PickupStatus
             super(worldIn, shooter, player);
           }
   }*/
+
+      public static class aerosmith extends EntityStandPunch
+      {
+
+        public aerosmith(World worldIn)
+        {
+          super(AEROSMITH, worldIn);
+        }
+
+        public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player)
+        {
+          super(AEROSMITH, worldIn, shooter, player);
+        }
+
+        public aerosmith(EntityType<aerosmith> aerosmithEntityType, World world)
+        {
+          super(aerosmithEntityType, world);
+        }
+      }
 	@Override
 	protected void registerData()
 	{

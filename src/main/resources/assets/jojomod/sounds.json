@@ -147,5 +147,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_sf", "stream": false}]
+    },
+
+    "spawn_a":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_a", "stream": false}]
     }
 }

@@ -100,11 +100,46 @@ public class ItemStandArrow extends Item
 			else if(props.getStandID() == JojoLibs.StandID.goldExperience)
 			{
 				props.setStandRemoved();
-				world.getServer().getWorld(world.getDimension().getType()).getEntities().forEach(goldExperience -> {
-					if(goldExperience instanceof EntityGoldExperience)
-						if(((EntityGoldExperience) goldExperience).getMaster() == player)
-							goldExperience.remove();
-				});
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							((EntityGoldExperience) entity1).setTransforming(true);
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							((EntityGoldExperience) entity1).setTransforming(true);
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							((EntityGoldExperience) entity1).setTransforming(true);
+						}
+					}
+				}
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				{
+					if(entity1 instanceof EntityGoldExperience)
+					{
+						if(((EntityGoldExperience) entity1).getMaster() == player)
+						{
+							((EntityGoldExperience) entity1).setTransforming(true);
+						}
+					}
+				}
 				props.setStandID(JojoLibs.StandID.GER);
 				props.setStandOn(true);
 				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.GER, world);

@@ -1,6 +1,8 @@
 package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmith;
+import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmithBullet;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
 import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperience;
@@ -40,5 +42,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), RenderGoldExperienceRequiem::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), RenderGoldExperienceRequiemPunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.AEROSMITH.get(), RenderAerosmith::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.AEROSMITH_BULLET.get(), RenderAerosmithBullet::new);
 	}
 }

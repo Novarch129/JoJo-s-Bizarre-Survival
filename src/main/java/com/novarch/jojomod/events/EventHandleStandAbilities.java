@@ -2,7 +2,9 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
@@ -79,6 +81,13 @@ public class EventHandleStandAbilities
             if(!props.getStandOn()) {
                 if(!player.isSpectator())
                     Minecraft.getInstance().setRenderViewEntity(player);
+            } else {
+                if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                    Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
+                        if(entity instanceof EntityAerosmith)
+                            if(((EntityAerosmith) entity).getMaster() == player)
+                                Minecraft.getInstance().setRenderViewEntity(entity);
+                    });
             }
         });
     }

@@ -2,6 +2,7 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -79,4 +80,15 @@ public class EntityInit
 			.register("gold_experience_requiem_punch", () -> EntityType.Builder.<EntityStandPunch.goldExperienceRequiem>create(EntityStandPunch.goldExperienceRequiem::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience_requiem_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityAerosmith>> AEROSMITH = ENTITY_TYPES
+			.register("aerosmith",
+					() -> EntityType.Builder.<EntityAerosmith>create(EntityAerosmith::new, EntityClassification.CREATURE)
+							.size(0.8f, 0.8f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.aerosmith>> AEROSMITH_BULLET = ENTITY_TYPES
+			.register("aerosmith_bullet", () -> EntityType.Builder.<EntityStandPunch.aerosmith>create(EntityStandPunch.aerosmith::new, EntityClassification.MISC)
+					.size(0.1f, 0.1f)
+					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith_bullet").toString()));
 }

@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.goldExperience;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -15,9 +14,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityGoldExperience extends EntityStandBase
@@ -27,12 +24,30 @@ public class EntityGoldExperience extends EntityStandBase
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
-	  
-	  private int changetick = 0;
+
+	  private boolean transforming = false;
+
+	  private int transformTick = 0;
 
 	  PlayerEntity player = getMaster();
 
-	  @Override
+	public boolean isTransforming() {
+		return transforming;
+	}
+
+	public void setTransforming(boolean transforming) {
+		this.transforming = transforming;
+	}
+
+	public int getTransformTick() {
+		return transformTick;
+	}
+
+	public void setTransformTick(int transformTick) {
+		this.transformTick = transformTick;
+	}
+
+	@Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
 
 	  @Override
@@ -62,7 +77,7 @@ public class EntityGoldExperience extends EntityStandBase
 	public EntityGoldExperience(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_GE.get();
+	    this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.goldExperience;
 	}
@@ -70,7 +85,7 @@ public class EntityGoldExperience extends EntityStandBase
 	public EntityGoldExperience(World world)
 	{
 		super(TYPE, world);
-	    this.spawnSound = SoundInit.SPAWN_GE.get();
+	    this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.goldExperience;
 	}

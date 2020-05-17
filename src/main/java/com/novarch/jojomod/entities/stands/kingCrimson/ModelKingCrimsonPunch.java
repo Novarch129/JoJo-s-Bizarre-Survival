@@ -31,6 +31,10 @@ public class ModelKingCrimsonPunch<T extends EntityStandPunch.kingCrimson> exten
 		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
+	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay){
+		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
+	}
+
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;

@@ -48,6 +48,7 @@ public abstract class EntityStandBase extends MobEntity
 	public boolean d4c;
 	public boolean heaven;
 	public boolean ability;
+	public boolean aerosmith;
     
 	public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn)
 	{
@@ -67,6 +68,7 @@ public abstract class EntityStandBase extends MobEntity
         this.tick = 0;
         this.hungerTimer = 0;
         this.ability = true;
+        this.aerosmith = true;
 	}
 	
 	public SoundEvent getSpawnSound()

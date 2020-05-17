@@ -2,6 +2,7 @@ package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -90,7 +91,9 @@ public class JojoLibs
 
         public static final int GER = 5;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, madeInHeaven};
+        public static final int aerosmith = 6;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith};
     }
 
     public static int numberOfStands = StandID.stands.length;
@@ -111,6 +114,8 @@ public class JojoLibs
                 return new EntityMadeInHeaven(world);
             case StandID.GER:
                 return new EntityGoldExperienceRequiem(world);
+            case StandID.aerosmith:
+                return new EntityAerosmith(world);
         }
         return null;
     }

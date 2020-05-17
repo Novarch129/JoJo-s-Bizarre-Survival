@@ -1,10 +1,11 @@
 {
   "item.jojomod.canzoni_preferite": "Canzoni Preferite",
   "item.jojomod.stand_arrow": "Stand Arrow",
-  "item.jojomod.summon_kc": "King Crimson",
+  "item.jojomod.summon_king_crimson": "King Crimson",
   "item.jojomod.summon_d4c": "Dirty Deeds Done Dirt Cheap",
-  "item.jojomod.summon_ge": "Gold Experience",
-  "item.jojomod.summon_mih": "Made In Heaven",
+  "item.jojomod.summon_gold_experience": "Gold Experience",
+  "item.jojomod.summon_made_in_heaven": "Made In Heaven",
+  "item.jojomod.summon_aerosmith": "Aerosmith",
 
   "item.jojomod.remove_stand": "Remove Stand",
 

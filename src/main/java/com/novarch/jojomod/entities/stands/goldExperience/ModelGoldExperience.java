@@ -5,6 +5,7 @@ package com.novarch.jojomod.entities.stands.goldExperience;// Made with Blockben
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
@@ -37,6 +38,10 @@ public class ModelGoldExperience<T extends EntityGoldExperience> extends EntityM
 	private final ModelRenderer RightHand;
 	private final ModelRenderer Beetle1;
 	private final ModelRenderer Beetle5;
+	private final ModelRenderer StandArrow2;
+	private final ModelRenderer Right5;
+	private final ModelRenderer Left6;
+	private final ModelRenderer Left7;
 	private final ModelRenderer RightArm2;
 	private final ModelRenderer RightHand2;
 	private final ModelRenderer Beetle2;
@@ -257,6 +262,47 @@ public class ModelGoldExperience<T extends EntityGoldExperience> extends EntityM
 		RightHand.addChild(Beetle5);
 		Beetle5.setTextureOffset(25, 44).addBox(-3.1834F, 2.1219F, -1.5596F, 1.0F, 3.0F, 2.0F, 0.0F, false);
 
+		StandArrow2 = new ModelRenderer(this);
+		StandArrow2.setRotationPoint(-23.0938F, 2.9179F, 4.4602F);
+		RightHand.addChild(StandArrow2);
+		setRotationAngle(StandArrow2, 1.4835F, 0.0F, -1.5708F);
+		StandArrow2.setTextureOffset(0, 79).addBox(-2.6356F, -6.1437F, -23.3087F, 1.0F, 2.0F, 1.0F, 0.0F, false);
+		StandArrow2.setTextureOffset(0, 97).addBox(-2.6356F, -7.1437F, -23.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		StandArrow2.setTextureOffset(52, 22).addBox(-2.6356F, -9.1437F, -23.3087F, 1.0F, 2.0F, 1.0F, 0.0F, false);
+		StandArrow2.setTextureOffset(52, 22).addBox(-3.1356F, -10.0437F, -23.3087F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		StandArrow2.showModel=false;
+
+		Right5 = new ModelRenderer(this);
+		Right5.setRotationPoint(-2.0F, -11.0F, 7.0F);
+		StandArrow2.addChild(Right5);
+		Right5.setTextureOffset(52, 22).addBox(0.8644F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-2.6856F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(1.4144F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(0.8644F, -0.9187F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(0.3144F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-1.5856F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-1.2606F, -0.8687F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-0.0106F, -0.8687F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-0.6356F, 0.8563F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-0.6106F, -2.5187F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-1.1356F, -1.6937F, -30.3087F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-2.9356F, 0.9063F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(1.6644F, 0.9063F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-2.1356F, -0.9187F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Right5.setTextureOffset(52, 22).addBox(-2.1356F, 0.0813F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+		Left6 = new ModelRenderer(this);
+		Left6.setRotationPoint(0.0F, 0.0F, 0.0F);
+		Right5.addChild(Left6);
+		setRotationAngle(Left6, 0.0F, 0.0F, 0.4363F);
+		Left6.setTextureOffset(52, 22).addBox(2.2204F, 0.6016F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+		Left7 = new ModelRenderer(this);
+		Left7.setRotationPoint(-6.0F, 0.0F, 0.0F);
+		Right5.addChild(Left7);
+		setRotationAngle(Left7, 0.0F, 0.0F, -0.4363F);
+		Left7.setTextureOffset(52, 22).addBox(1.9717F, 3.0228F, -30.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
 		RightArm2 = new ModelRenderer(this);
 		RightArm2.setRotationPoint(8.5F, -20.8015F, -1.3061F);
 		Arms.addChild(RightArm2);
@@ -431,8 +477,10 @@ public class ModelGoldExperience<T extends EntityGoldExperience> extends EntityM
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+	{
+		if(entity.isTransforming())
+			return;
 	}
 
 	@Override

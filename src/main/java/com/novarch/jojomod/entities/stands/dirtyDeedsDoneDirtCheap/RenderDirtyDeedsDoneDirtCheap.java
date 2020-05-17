@@ -14,6 +14,7 @@ public class RenderDirtyDeedsDoneDirtCheap extends MobRenderer<EntityDirtyDeedsD
 		super(renderManagerIn, new ModelDirtyDeedsDoneDirtCheap<EntityDirtyDeedsDoneDirtCheap>(), 0.5f);
 	}
 
+	@Override
 	public ResourceLocation getEntityTexture(final EntityDirtyDeedsDoneDirtCheap entity)
 	{
 		return RenderDirtyDeedsDoneDirtCheap.texture;

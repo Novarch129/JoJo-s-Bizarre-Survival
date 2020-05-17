@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderGoldExperience extends MobRenderer<EntityGoldExperience, ModelGoldExperience<EntityGoldExperience>>
 {
+	private float partialTick = 0.0f;
+	private boolean animating = false;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ge.png");
 
 	public RenderGoldExperience(EntityRendererManager renderManagerIn) 
