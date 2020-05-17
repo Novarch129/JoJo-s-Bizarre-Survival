@@ -1,15 +1,13 @@
 package com.novarch.jojomod.network.message;
 
-import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -51,9 +49,7 @@ public class SyncAbilityButton
     protected static void abilityToggle(PlayerEntity player)
     {
         if(player != null) {
-            LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-            IStand props = power.orElse(new StandCapability(player));
-
+            JojoProvider.getLazy(player).ifPresent(props -> {
             if (props != null)
             {
                 props.setAbility(!props.getAbility());
@@ -75,31 +71,16 @@ public class SyncAbilityButton
                 player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Gold Experience Requiem", new Object[0]));
             }
 
-            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.kingCrimson) {
+            if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
+                if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                    Minecraft.getInstance().gameSettings.thirdPersonView = 0;
             }
 
-            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.kingCrimson) {
+            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
             }
-
-            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
-                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
-            }
-
-            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.madeInHeaven) {
-                player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
-
-            }
-
-            if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap) {
-                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
-            }
-
-            if (props.getAbility() && props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap) {
-                player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
-
-            }
+            });
         }
     }
 }

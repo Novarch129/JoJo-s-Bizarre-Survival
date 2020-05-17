@@ -36,4 +36,6 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> LOOK_HERE = SOUNDS.register("look_here", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "look_here")));
 	public static final RegistryObject<SoundEvent> SPAWN_SF = SOUNDS.register("spawn_sf", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sf")));
 	public static final RegistryObject<SoundEvent> SPAWN_AEROSMITH = SOUNDS.register("spawn_a", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_a")));
+	public static final RegistryObject<SoundEvent> VOLARUSH = SOUNDS.register("volarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "volarush")));
+
 }

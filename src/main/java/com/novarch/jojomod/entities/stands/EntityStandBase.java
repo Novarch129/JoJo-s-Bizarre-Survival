@@ -242,7 +242,7 @@ public abstract class EntityStandBase extends MobEntity
                     //this.getMaster().sendMessage(new TranslationTextComponent("stand off", new Object[0]));
                 }
                 else {
-                    this.followMaster();
+                    //this.followMaster();
                     if (this.hungerTimer < 80) {
                         ++this.hungerTimer;
                     }

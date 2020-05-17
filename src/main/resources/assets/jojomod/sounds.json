@@ -153,5 +153,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_a", "stream": false}]
+    },
+
+    "volarush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:volarush", "stream": false}]
     }
 }

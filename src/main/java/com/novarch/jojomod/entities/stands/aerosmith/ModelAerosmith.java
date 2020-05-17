@@ -5,12 +5,14 @@ package com.novarch.jojomod.entities.stands.aerosmith;// Made with Blockbench 3.
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 	private final ModelRenderer Aerosmith;
+	private final ModelRenderer WingLeft4;
+	private final ModelRenderer WingLeft5;
+	private final ModelRenderer WingLeft6;
 	private final ModelRenderer Cockpit;
 	private final ModelRenderer Guns;
 	private final ModelRenderer Gun1;
@@ -22,6 +24,7 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 	private final ModelRenderer CockpitCurve2;
 	private final ModelRenderer Body;
 	private final ModelRenderer Nose;
+	private final ModelRenderer Propeller;
 	private final ModelRenderer Blades;
 	private final ModelRenderer Blade1;
 	private final ModelRenderer Blade2;
@@ -31,9 +34,6 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 	private final ModelRenderer Wing4;
 	private final ModelRenderer Wing3;
 	private final ModelRenderer Wing2;
-	private final ModelRenderer WingLeft4;
-	private final ModelRenderer WingLeft5;
-	private final ModelRenderer WingLeft6;
 
 	public ModelAerosmith() {
 		textureWidth = 64;
@@ -42,6 +42,27 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 		Aerosmith = new ModelRenderer(this);
 		Aerosmith.setRotationPoint(0.0F, 23.0F, 0.0F);
 		
+
+		WingLeft4 = new ModelRenderer(this);
+		WingLeft4.setRotationPoint(-3.5F, -2.5F, -1.75F);
+		Aerosmith.addChild(WingLeft4);
+		setRotationAngle(WingLeft4, 0.0F, 0.0F, -0.4189F);
+		WingLeft4.setTextureOffset(23, 5).addBox(-0.9643F, -0.2553F, -0.775F, 3.0F, 1.0F, 2.0F, 0.0F, false);
+		WingLeft4.setTextureOffset(23, 5).addBox(-1.2143F, -0.2803F, 0.775F, 3.0F, 1.0F, 1.0F, 0.0F, false);
+
+		WingLeft5 = new ModelRenderer(this);
+		WingLeft5.setRotationPoint(0.0F, 0.0F, 0.0F);
+		WingLeft4.addChild(WingLeft5);
+		setRotationAngle(WingLeft5, 0.0F, 0.0F, 0.5541F);
+		WingLeft5.setTextureOffset(26, 0).addBox(-4.4099F, 0.4104F, -0.775F, 2.0F, 1.0F, 2.0F, 0.0F, true);
+		WingLeft5.setTextureOffset(26, 0).addBox(-4.4099F, 0.4104F, 0.775F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+
+		WingLeft6 = new ModelRenderer(this);
+		WingLeft6.setRotationPoint(-1.6993F, -0.7924F, 0.0F);
+		WingLeft4.addChild(WingLeft6);
+		setRotationAngle(WingLeft6, 0.0F, 0.0F, 0.7854F);
+		WingLeft6.setTextureOffset(0, 11).addBox(-4.2073F, 0.7423F, -0.775F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+		WingLeft6.setTextureOffset(0, 15).addBox(-4.2073F, 0.7423F, 0.775F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
 		Cockpit = new ModelRenderer(this);
 		Cockpit.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -126,16 +147,20 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 		Nose = new ModelRenderer(this);
 		Nose.setRotationPoint(0.0F, -1.0F, -1.0F);
 		Body.addChild(Nose);
-		Nose.setTextureOffset(0, 18).addBox(-1.5F, -2.5F, -4.8F, 2.0F, 2.0F, 1.0F, 0.0F, false);
 		Nose.setTextureOffset(29, 25).addBox(-1.0F, 0.5F, -1.8F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 		Nose.setTextureOffset(0, 0).addBox(-0.5F, -0.5F, -1.8F, 0.0F, 1.0F, 2.0F, 0.0F, false);
 		Nose.setTextureOffset(17, 28).addBox(-0.5F, 0.9F, -1.1F, 0.0F, 1.0F, 1.0F, 0.0F, false);
 		Nose.setTextureOffset(0, 0).addBox(-0.575F, 0.975F, -1.05F, 1.0F, 0.0F, 1.0F, 0.0F, false);
 		Nose.setTextureOffset(0, 0).addBox(-1.425F, 0.975F, -1.05F, 1.0F, 0.0F, 1.0F, 0.0F, false);
 
+		Propeller = new ModelRenderer(this);
+		Propeller.setRotationPoint(-0.55F, -1.45F, -4.65F);
+		Nose.addChild(Propeller);
+		Propeller.setTextureOffset(0, 18).addBox(-0.95F, -1.05F, -0.15F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+
 		Blades = new ModelRenderer(this);
-		Blades.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Nose.addChild(Blades);
+		Blades.setRotationPoint(0.55F, 1.45F, 4.65F);
+		Propeller.addChild(Blades);
 		
 
 		Blade1 = new ModelRenderer(this);
@@ -185,39 +210,15 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 		Body.addChild(Wing2);
 		setRotationAngle(Wing2, 0.0F, 0.0F, -0.0524F);
 		Wing2.setTextureOffset(0, 29).addBox(-0.75F, -5.0F, -0.5F, 0.0F, 5.0F, 1.0F, 0.0F, true);
-
-		WingLeft4 = new ModelRenderer(this);
-		WingLeft4.setRotationPoint(-3.5F, 20.5F, -1.75F);
-		setRotationAngle(WingLeft4, 0.0F, 0.0F, -0.4189F);
-		WingLeft4.setTextureOffset(23, 5).addBox(-0.9643F, -0.2553F, -0.775F, 3.0F, 1.0F, 2.0F, 0.0F, false);
-		WingLeft4.setTextureOffset(23, 5).addBox(-1.2143F, -0.2803F, 0.775F, 3.0F, 1.0F, 1.0F, 0.0F, false);
-
-		WingLeft5 = new ModelRenderer(this);
-		WingLeft5.setRotationPoint(0.0F, 0.0F, 0.0F);
-		WingLeft4.addChild(WingLeft5);
-		setRotationAngle(WingLeft5, 0.0F, 0.0F, 0.5541F);
-		WingLeft5.setTextureOffset(26, 0).addBox(-4.4099F, 0.4104F, -0.775F, 2.0F, 1.0F, 2.0F, 0.0F, true);
-		WingLeft5.setTextureOffset(26, 0).addBox(-4.4099F, 0.4104F, 0.775F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-
-		WingLeft6 = new ModelRenderer(this);
-		WingLeft6.setRotationPoint(-1.6993F, -0.7924F, 0.0F);
-		WingLeft4.addChild(WingLeft6);
-		setRotationAngle(WingLeft6, 0.0F, 0.0F, 0.7854F);
-		WingLeft6.setTextureOffset(0, 11).addBox(-4.2073F, 0.7423F, -0.775F, 2.0F, 1.0F, 2.0F, 0.0F, false);
-		WingLeft6.setTextureOffset(0, 15).addBox(-4.2073F, 0.7423F, 0.775F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
-	{
-
-	}
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { }
 
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
 	{
 		Aerosmith.render(matrixStack, buffer, packedLight, packedOverlay);
-		WingLeft4.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
@@ -225,5 +226,14 @@ public class ModelAerosmith<T extends EntityAerosmith> extends EntityModel<T> {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
+	}
+
+	@Override
+	public void setLivingAnimations(T p_212843_1_, float p_212843_2_, float p_212843_3_, float p_212843_4_)
+	{
+		this.Propeller.rotateAngleZ += 0.35;
+
+		if(this.Propeller.rotateAngleZ >= 100)
+			this.Propeller.rotateAngleZ = 0;
 	}
 }

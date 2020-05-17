@@ -1490,10 +1490,8 @@ public class StandPunchEffects
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, 0, 0);
 			bullet.remove();
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(bullet.shootingStand.getMaster()), 2.0f);
-			livingEntity.hurtResistantTime = 0;
-			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
-			if (livingEntity.getPosY() > bullet.shootingStand.getPosY() + 3.0) {
+			if (livingEntity.getPosY() > bullet.shootingStand.getPosY() + 3.0)
+			{
 				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			}
 			else {

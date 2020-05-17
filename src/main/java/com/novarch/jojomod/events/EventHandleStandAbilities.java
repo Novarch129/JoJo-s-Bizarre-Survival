@@ -6,10 +6,12 @@ import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +20,8 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
 {
+    public static Entity renderViewEntity = null;
+
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
@@ -50,6 +54,13 @@ public class EventHandleStandAbilities
                 if(props.getTimeLeft() < 100)
                     props.addTimeLeft(0.5);
             }
+
+            if(!player.world.isRemote)
+                player.world.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
+                    if(entity instanceof EntityAerosmith)
+                        if(((EntityAerosmith) entity).getMaster() == player)
+                            renderViewEntity = entity;
+                });
         });
     }
 
@@ -82,13 +93,34 @@ public class EventHandleStandAbilities
                 if(!player.isSpectator())
                     Minecraft.getInstance().setRenderViewEntity(player);
             } else {
-                if(props.getStandID() == JojoLibs.StandID.aerosmith)
-                    Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-                        if(entity instanceof EntityAerosmith)
-                            if(((EntityAerosmith) entity).getMaster() == player)
-                                Minecraft.getInstance().setRenderViewEntity(entity);
-                    });
+                if(renderViewEntity != null)
+                    if(renderViewEntity.isAlive())
+                        if(props.getAbility()) {
+                            Minecraft.getInstance().setRenderViewEntity(renderViewEntity);
+                            if(Minecraft.getInstance().gameSettings.thirdPersonView != 1)
+                                Minecraft.getInstance().gameSettings.thirdPersonView=1;
+                        }
+                    else
+                        Minecraft.getInstance().setRenderViewEntity(player);
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void aerosmithFlyEvent(LivingFallEvent event)
+    {
+        if(event.getEntityLiving() instanceof PlayerEntity)
+        {
+            PlayerEntity player = (PlayerEntity) event.getEntity();
+            JojoProvider.getLazy(player).ifPresent(props -> {
+                if(props.getStandID() == JojoLibs.StandID.GER)
+                    if(props.getAbility())
+                        if(event.isCancelable())
+                            event.setCanceled(true);
+            });
+        }
+
+        if(event.getEntityLiving() instanceof EntityAerosmith)
+            event.setCanceled(true);
     }
 }
