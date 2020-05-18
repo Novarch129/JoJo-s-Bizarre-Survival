@@ -16,7 +16,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -159,16 +158,15 @@ public class EntityAerosmith extends EntityStandBase
                     this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
 
                 this.aeroTick++;
-                if(this.aeroTick == 1)
+                /*if(this.aeroTick == 1)
                 {
                     fakePlayerEntity.setPosition(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ());
                     this.world.addEntity(fakePlayerEntity);
-                }
-            } else {
+                }*/
+            } /*else {
                 this.aeroTick = 0;
-                if(fakePlayerEntity.isAlive())
-                    fakePlayerEntity.remove();
-            }
+                fakePlayerEntity.remove();
+            }*/
 
             if(!player.isSprinting())
             {

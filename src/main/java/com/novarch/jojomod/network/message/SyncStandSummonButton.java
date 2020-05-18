@@ -2,6 +2,7 @@ package com.novarch.jojomod.network.message;
 
 import java.util.List;
 
+import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.stand.IStand;
@@ -17,6 +18,7 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -58,6 +60,8 @@ public class SyncStandSummonButton
 		public static void work(SyncStandSummonButton message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity serverPlayer)
 		{
 			ServerPlayerEntity player = serverPlayer;
+			FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
+			fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
 		      World world = player.world;
 		      if (!world.isRemote)
 		        if (player != null) {
@@ -72,10 +76,12 @@ public class SyncStandSummonButton
 		                if (!player.isCrouching()) {
 		                  boolean standCheck = props.getStandOn();
 		                  if (standCheck) {
+		                  	if(fakePlayer.isAlive())
+		                  		fakePlayer.remove();
 		                    props.setStandOn(false);
 		                    return;
 		                  } 
-		                  SyncStandSummonButton.summonStand((PlayerEntity)player);
+		                  SyncStandSummonButton.summonStand((PlayerEntity)player, fakePlayer);
 		                  return;
 		                } 
 		                List<Entity> entityList = world.getEntitiesWithinAABBExcludingEntity((Entity)player, new AxisAlignedBB(player.getPosX() - 1.0D, player.getPosY() - 1.0D, player.getPosZ() - 1.0D, player.getPosX() + 1.0D, player.getPosY() + 1.0D, player.getPosZ() + 1.0D));
@@ -97,7 +103,7 @@ public class SyncStandSummonButton
 		      return;
 		}
 		
-		  public static void summonStand(PlayerEntity player)
+		  public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer)
 		  {
 			  LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
 			  IStand props = power.orElse(new StandCapability(player));
@@ -109,6 +115,8 @@ public class SyncStandSummonButton
 			  	if(!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), EntityPredicates.NOT_SPECTATING).contains(theStand))
 			  	{
 					int standAct = props.getStandAct();
+					if(props.getStandID() == JojoLibs.StandID.aerosmith)
+						player.world.addEntity(fakePlayer);
 					props.setStandOn(true);
 					theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
