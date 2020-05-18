@@ -2,25 +2,28 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
-import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
 {
     public static Entity renderViewEntity = null;
+    public static List<Entity> removalQueue = new ArrayList<Entity>();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
@@ -44,6 +47,13 @@ public class EventHandleStandAbilities
 
                 if(props.getTimeLeft() < 1000)
                     props.addTimeLeft(0.5);
+
+                if(!player.world.isRemote)
+                    player.world.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
+                        if(entity instanceof FakePlayerEntity)
+                            if(((FakePlayerEntity) entity).getParent() == player)
+                                removalQueue.add(entity);
+                });
             }
 
             else if(props.getStandOn() && !props.getAbility())
@@ -107,20 +117,27 @@ public class EventHandleStandAbilities
     }
 
     @SubscribeEvent
-    public static void aerosmithFlyEvent(LivingFallEvent event)
+    public static void serverTick(TickEvent.ServerTickEvent event)
     {
-        if(event.getEntityLiving() instanceof PlayerEntity)
+        List<Entity> removed = new ArrayList<Entity>();
+        if(event.phase == TickEvent.Phase.END)
         {
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            JojoProvider.getLazy(player).ifPresent(props -> {
-                if(props.getStandID() == JojoLibs.StandID.GER)
-                    if(props.getAbility())
-                        if(event.isCancelable())
-                            event.setCanceled(true);
-            });
-        }
+            if(removalQueue.size() > 0)
+            {
+                for (Entity entity : removalQueue)
+                {
+                    entity.remove();
+                }
+            }
 
-        if(event.getEntityLiving() instanceof EntityAerosmith)
-            event.setCanceled(true);
+            if(removed.size() > 0)
+            {
+                for (Entity removedEntity : removed) {
+                    if (removalQueue.contains(removedEntity))
+                        removalQueue.remove(removedEntity);
+                }
+                removed.removeAll(removed);
+            }
+        }
     }
 }

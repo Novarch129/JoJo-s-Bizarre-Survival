@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands.aerosmith;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
@@ -15,6 +16,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityAerosmith extends EntityStandBase
@@ -26,6 +29,12 @@ public class EntityAerosmith extends EntityStandBase
     private int oratickr = 0;
 
     boolean shouldFall = false;
+
+    int aeroTick = 0;
+
+    private FakePlayerEntity fakePlayerEntity = new FakePlayerEntity(this.world, this.getMaster());
+
+    FakePlayer fakePlayer = null;
 
     @Override
     public boolean canDespawn(double p_213397_1_) {
@@ -84,6 +93,25 @@ public class EntityAerosmith extends EntityStandBase
         super.tick();
         this.fallDistance = 0.0f;
 
+        float yaw1 = (float) Minecraft.getInstance().mouseHelper.getMouseX();
+        float pitch1 = (float) Minecraft.getInstance().mouseHelper.getMouseY();
+
+        if(pitch1 > 89.0f)
+            pitch1 = 89.0f;
+
+        else if(pitch1 < -89.0f)
+            pitch1 = -89.0f;
+
+        this.setRotation(yaw1, pitch1);
+
+        /*if(!world.isRemote) {
+            fakePlayer = new FakePlayer((ServerWorld) this.world, Minecraft.getInstance().player.getGameProfile());
+            fakePlayer.setPositionAndRotation(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationYaw);
+        }
+
+        if(fakePlayer != null)
+            Minecraft.getInstance().setRenderViewEntity(fakePlayer);*/
+
         if(!this.shouldFall)
             this.setMotion(this.getMotion().getX(), 0, this.getMotion().getZ());
 
@@ -129,6 +157,17 @@ public class EntityAerosmith extends EntityStandBase
 
                 else if(Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown() && this.getMotion().getZ() > -0.6)
                     this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
+
+                this.aeroTick++;
+                if(this.aeroTick == 1)
+                {
+                    fakePlayerEntity.setPosition(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ());
+                    this.world.addEntity(fakePlayerEntity);
+                }
+            } else {
+                this.aeroTick = 0;
+                if(fakePlayerEntity.isAlive())
+                    fakePlayerEntity.remove();
             }
 
             if(!player.isSprinting())

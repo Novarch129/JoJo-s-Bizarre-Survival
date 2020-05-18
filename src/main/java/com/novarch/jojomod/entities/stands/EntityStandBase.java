@@ -28,7 +28,6 @@ public abstract class EntityStandBase extends MobEntity
 {
 	private PlayerEntity master;
     protected boolean standOn;
-    private UUID masterUUID;
     protected int tick;
     public boolean orarush;
     protected SoundEvent spawnSound;
@@ -75,30 +74,12 @@ public abstract class EntityStandBase extends MobEntity
 	{
 		return this.spawnSound;
 	}
-	
-	public void setMaster(final String name)
-	{
-        if (!this.world.isRemote)
-        {
-            for(PlayerEntity player : this.world.getPlayers())
-            {
-            	if(player.getName().equals(name));
-            	{
-            		this.master = player;
-            	}
-            }
-        }
-    }
 
     public void setMaster(PlayerEntity playerEntity)
     {
         this.master = playerEntity;
     }
-	
-	public int getStandByID()
-	{
-        return this.standID;
-    }
+
     public int getStandID()
     {
     	return this.standID;
@@ -140,16 +121,6 @@ public abstract class EntityStandBase extends MobEntity
 	public PlayerEntity getMaster()
 	{
 		return this.master;
-	}
-	
-	public void setMasterUUID(final UUID masterUUID)
-	{
-		this.masterUUID = masterUUID;
-	}
-	
-	public UUID getMasterUUID()
-	{
-		return this.masterUUID;
 	}
 
     @Override
@@ -314,7 +285,8 @@ public abstract class EntityStandBase extends MobEntity
             this.moveStrafing += speed;
         }
     }
-	
+
+    @Override
 	public boolean attackEntityFrom(final DamageSource damageSource, final float damage) {
         if (this.getMaster() == null || !this.standOn)
         {

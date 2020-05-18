@@ -1,6 +1,7 @@
 package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
@@ -91,4 +92,10 @@ public class EntityInit
 			.register("aerosmith_bullet", () -> EntityType.Builder.<EntityStandPunch.aerosmith>create(EntityStandPunch.aerosmith::new, EntityClassification.MISC)
 					.size(0.1f, 0.1f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith_bullet").toString()));
+
+	public static final RegistryObject<EntityType<FakePlayerEntity>> FAKE_PLAYER = ENTITY_TYPES
+			.register("fake_player_jojo",
+					() -> EntityType.Builder.<FakePlayerEntity>create(FakePlayerEntity::new, EntityClassification.CREATURE)
+							.size(1.0f, 2.0f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "fake_player_jojo").toString()));
 }

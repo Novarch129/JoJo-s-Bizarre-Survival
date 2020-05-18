@@ -1,6 +1,7 @@
 package com.novarch.jojomod.network.message;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,6 +51,10 @@ public class SyncAbilityButton
     {
         if(player != null) {
             JojoProvider.getLazy(player).ifPresent(props -> {
+
+                FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
+                fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
+
             if (props != null)
             {
                 props.setAbility(!props.getAbility());
@@ -79,6 +84,8 @@ public class SyncAbilityButton
 
             if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
+                if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                    player.world.addEntity(fakePlayer);
             }
             });
         }
