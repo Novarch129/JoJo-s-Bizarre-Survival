@@ -7,6 +7,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -156,17 +157,46 @@ public class EntityAerosmith extends EntityStandBase
 
                 else if(Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown() && this.getMotion().getZ() > -0.6)
                     this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
+            } else {
+                if(!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
+                    this.shouldFall = false;
 
-                this.aeroTick++;
-                /*if(this.aeroTick == 1)
-                {
-                    fakePlayerEntity.setPosition(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ());
-                    this.world.addEntity(fakePlayerEntity);
-                }*/
-            } /*else {
-                this.aeroTick = 0;
-                fakePlayerEntity.remove();
-            }*/
+                if(KeyHandler.keys[9].isKeyDown())
+                    this.setRotation(player.rotationYaw, player.rotationPitch);
+
+                float yaw = this.rotationYaw;
+                float pitch = this.rotationPitch;
+                float f = 1.0f;
+                double motionX = (-MathHelper.sin(yaw / 180.0F * (float)Math.PI) * MathHelper.cos(pitch / 180.0F * (float)Math.PI) * f);
+                double motionZ = (MathHelper.cos(yaw / 180.0F * (float)Math.PI) * MathHelper.cos(pitch / 180.0F * (float)Math.PI) * f);
+                double motionY = (-MathHelper.sin((pitch) / 180.0F * (float)Math.PI) * f);
+
+                //Motion X
+                if(KeyHandler.keys[4].isKeyDown() && this.getMotion().getX() < 0.6)
+                    this.setVelocity(-motionZ * 0.5, this.getMotion().getY(), motionX * 0.5);
+
+                else if(KeyHandler.keys[5].isKeyDown() && this.getMotion().getX() > -0.6)
+                    this.setVelocity(motionZ * 0.5, this.getMotion().getY(), -motionX * 0.5);
+
+                //Motion Y
+                if(KeyHandler.keys[7].isKeyDown() && this.getMotion().getY() < 0.6)
+                    this.addVelocity(0, 0.35, 0);
+
+                else if(KeyHandler.keys[8].isKeyDown() && this.getMotion().getY() > -0.6) {
+                    this.shouldFall = true;
+                    this.addVelocity(0, -0.2, 0);
+                }
+
+                //Motion Z
+                if(KeyHandler.keys[3].isKeyDown() && this.getMotion().getZ() < 0.6)
+                    if(Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown())
+                        this.setVelocity(motionX, motionY, motionZ);
+                    else
+                        this.setVelocity(motionX * 0.5, this.getMotion().getY(), motionZ * 0.5);
+
+                else if(KeyHandler.keys[6].isKeyDown() && this.getMotion().getZ() > -0.6)
+                    this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
+            }
 
             if(!player.isSprinting())
             {
