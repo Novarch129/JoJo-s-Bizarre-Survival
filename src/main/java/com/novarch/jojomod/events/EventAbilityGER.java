@@ -21,28 +21,27 @@ public class EventAbilityGER
     @SubscribeEvent
     public static void cancelDamage(LivingHurtEvent event)
     {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
+        if(event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            IStand props = JojoProvider.get(player);
-            if(props.getStandID() == JojoLibs.StandID.GER)
-            {
+            JojoProvider.getLazy(player).ifPresent(props -> {
+                if (props.getStandID() == JojoLibs.StandID.GER) {
                 event.setCanceled(true);
-                if(event.getSource().getTrueSource() instanceof PlayerEntity)
+                if (event.getSource().getTrueSource() instanceof PlayerEntity) {
                     event.getSource().getTrueSource().world.playSound(null, event.getSource().getTrueSource().getPosX(), event.getSource().getTrueSource().getPosY(), event.getSource().getTrueSource().getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                else if(event.getSource().getTrueSource() instanceof MobEntity)
+                    props.setDiavolo(event.getSource().getTrueSource().getDisplayName().toString());
+                }
+                else if (event.getSource().getTrueSource() instanceof MobEntity)
                     player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension != DimensionType.THE_END) {
+                else if (event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension != DimensionType.THE_END) {
                     player.setPositionAndUpdate(player.getPosX(), JojoLibs.getHighestBlock(player.world, player.getPosition()) + 1, player.getPosZ());
                     player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                }
-                else if(event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension == DimensionType.THE_END)
-                {
-                    if(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()) != null)
+                } else if (event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension == DimensionType.THE_END) {
+                    if (JojoLibs.getNearestBlockEnd(player.world, player.getPosition()) != null)
                         player.setPositionAndUpdate(JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getX(), JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getY() + 1, JojoLibs.getNearestBlockEnd(player.world, player.getPosition()).getZ());
                     player.world.playSound(null, player.getPosX(), player.getPosY(), player.getPosZ(), SoundInit.SPAWN_GER.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 }
             }
+        });
         }
     }
 
