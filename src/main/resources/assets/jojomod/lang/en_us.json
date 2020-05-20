@@ -1,5 +1,5 @@
 {
-  "item.jojomod.canzoni_preferite": "Canzoni Preferite",
+  "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.stand_arrow": "Stand Arrow",
   "item.jojomod.summon_king_crimson": "King Crimson",
   "item.jojomod.summon_d4c": "Dirty Deeds Done Dirt Cheap",
@@ -8,6 +8,8 @@
   "item.jojomod.summon_aerosmith": "Aerosmith",
 
   "item.jojomod.remove_stand": "Remove Stand",
+
+  "item.jojomod.canzoni_preferite.desc": "Yugo Kanno, Daisuke Hasegawa - canzoni preferite",
 
   "effect.jojomod.crimson_effect_user": "The Results",
   "effect.jojomod.crimson_effect": "Crimson",

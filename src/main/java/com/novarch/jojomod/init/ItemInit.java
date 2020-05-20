@@ -5,6 +5,7 @@ import com.novarch.jojomod.JojoBizarreSurvival.JojoItemGroup;
 import com.novarch.jojomod.objects.items.*;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,5 +22,5 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_aerosmith = ITEMS.register("summon_aerosmith", () -> new ItemSummonAerosmith(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 
 	public static final RegistryObject<Item> remove_stand = ITEMS.register("remove_stand", () -> new ItemRemoveStand(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
-	//public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new ItemCanzoniPreferite(1, SoundInit.CANZONI_PREFERITE.get(), new Item.Properties().group(JojoItemGroup.instance)));
+	public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new ItemCanzoniPreferite(1, SoundInit.CANZONI_PREFERITE::get, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.instance)));
 }
