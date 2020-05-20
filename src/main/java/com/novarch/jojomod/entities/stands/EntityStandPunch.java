@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -15,7 +16,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.util.math.RayTraceContext.FluidMode;
@@ -378,7 +378,7 @@ protected void arrowHit(LivingEntity living) {}
 @Nullable
 protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
   Entity entity = null;
-  List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0D), EntityPredicates.NOT_SPECTATING.and(EntityPredicates.IS_ALIVE));
+  List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0D), JojoLibs.Predicates.STAND_PUNCH_TARGET);
   double d0 = 0.0D;
   for (int i = 0; i < list.size(); i++) {
     Entity entity1 = list.get(i);

@@ -7,39 +7,20 @@ import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDe
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
-
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
+import net.minecraft.entity.passive.horse.ZombieHorseEntity;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import net.minecraftforge.eventbus.api.Event;
+
+import java.util.function.Predicate;
 
 public class JojoLibs
 {
-    public static void removeHeldItem(PlayerEntity player)
-    {
-        ItemStack heldStack = player.getActiveItemStack();
-        if (heldStack != null && !player.isCreative())
-            destroyItemInSlot((IInventory)player.inventory, heldStack, player.inventory.currentItem);
-    }
-
-    public static void destroyItemInSlot(IInventory iInventory, ItemStack stack, int slot)
-    {
-        if (iInventory instanceof PlayerInventory)
-        {
-            PlayerInventory playerInventory = (PlayerInventory)iInventory;
-            playerInventory.deleteStack(stack);
-            MinecraftForge.EVENT_BUS.post((Event)new PlayerDestroyItemEvent(playerInventory.player, stack, Hand.MAIN_HAND));
-        }
-    }
-
     public static int getHighestBlock(World world, BlockPos pos)
     {
         for(int height = world.getActualHeight(); height > 0; height--)
@@ -75,6 +56,30 @@ public class JojoLibs
             }
         }
         return new BlockPos(0, 65, 0);
+    }
+
+    public static class Predicates
+    {
+        public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof EntityStandBase);
+        public static final Predicate<Entity> IS_STAND = entity -> entity instanceof EntityStandBase;
+
+        public static final Predicate<Entity> STAND_PUNCH_TARGET =
+                EntityPredicates.NOT_SPECTATING
+                    .and(EntityPredicates.IS_ALIVE)
+                        .and(Entity::canBeCollidedWith);
+
+        public static final Predicate<Entity> BREATHS =
+                ((Predicate<Entity>) entity -> !(entity instanceof ZombieEntity))
+                        .and(((Predicate<Entity>) entity -> !(entity instanceof HuskEntity))
+                                .and(((Predicate<Entity>) entity -> !(entity instanceof DrownedEntity))
+                                        .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieHorseEntity))
+                                                .and(((Predicate<Entity>) entity -> !(entity instanceof SkeletonEntity))
+                                                        .and(((Predicate<Entity>) entity -> !(entity instanceof WitherSkeletonEntity))
+                                                                .and(((Predicate<Entity>) entity -> !(entity instanceof SkeletonHorseEntity))
+                                                                        .and(((Predicate<Entity>) entity -> !(entity instanceof GiantEntity))
+                                                                                .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
+                                                                                        .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
+                                                                                                .and(entity -> !(entity instanceof ZombiePigmanEntity)))))))))));
     }
 
     public static class StandID

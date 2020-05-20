@@ -3,13 +3,10 @@ package com.novarch.jojomod.entities.stands.aerosmith;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
@@ -27,10 +24,11 @@ public class RenderAerosmithBullet extends EntityRenderer<EntityStandPunch.aeros
 	@Override
 	public void render(@Nonnull EntityStandPunch.aerosmith entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		renderEntityModel(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+		//renderEntityModel(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.aerosmith entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	/*public void renderEntityModel(@Nonnull EntityStandPunch.aerosmith entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -47,7 +45,7 @@ public class RenderAerosmithBullet extends EntityRenderer<EntityStandPunch.aeros
 		this.punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityNoOutline(getEntityTexture(entityIn))), packedLightIn, 0);
 		GL11.glDisable(32826);
 		GL11.glPopMatrix();
-	}
+	}*/
 
 	@Nonnull
 	@Override

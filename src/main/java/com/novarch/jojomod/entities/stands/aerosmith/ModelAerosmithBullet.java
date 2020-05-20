@@ -19,7 +19,7 @@ public class ModelAerosmithBullet<T extends EntityStandPunch.aerosmith> extends 
 
 		Bullet = new ModelRenderer(this);
 		Bullet.setRotationPoint(0.5F, 34.0F, -1.0F);
-		Bullet.setTextureOffset(0, 0).addBox(-1.0F, -1.0F, 0.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+		Bullet.setTextureOffset(0, 0).addBox(-1.0F, 3.0F, 0.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 	}
 
 	@Override
