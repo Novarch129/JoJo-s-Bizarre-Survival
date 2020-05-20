@@ -10,6 +10,7 @@ import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +20,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -90,53 +92,94 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 			if (props.getCooldown() > 0)
 				props.subtractCooldown(1);
 
-	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-	      if (player.isCrouching() || player.isAirBorne)
-	      {
-	      	if(props.getAbility() && props.getCooldown() <= 0)
+	      	player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
+
+			if(player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() - 1)).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() + 1)).getMaterial() != Material.AIR)
 			{
-				if(player.world.getDimension().getType() == DimensionType.OVERWORLD) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
-				}
-				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE)) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.OVERWORLD);
-				}
-				else if(player.world.getDimension().getType() == DimensionType.THE_NETHER) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
-				}
-				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER)) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_NETHER);
-				}
-				else if(player.world.getDimension().getType() == DimensionType.THE_END) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
-				}
-				else if(player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END)) {
-					EventD4CTeleportProcessor.d4cPassengerList.add(player);
-					EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
-				}
-
-				this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
-					if(!(entity instanceof PlayerEntity))
-						transportEntity(entity);
-				});
-
-				for(PlayerEntity playerEntity : this.world.getPlayers())
+				if (player.isCrouching() || player.isAirBorne)
 				{
-					if(playerEntity.getDistance(player) < 2.0f)
-						transportPlayer(playerEntity);
-				}
+					if (props.getAbility() && props.getCooldown() <= 0)
+					{
+						if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
+						{
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.OVERWORLD);
+						} else if (player.world.getDimension().getType() == DimensionType.THE_NETHER) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_NETHER);
+						} else if (player.world.getDimension().getType() == DimensionType.THE_END) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
+						}
 
-				player.getFoodStats().addStats(-3, 0.0f);
-				props.setStandOn(false);
-				props.setCooldown(200);
-				this.remove();
+						this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
+							if (!(entity instanceof PlayerEntity))
+								transportEntity(entity);
+						});
+
+						for (PlayerEntity playerEntity : this.world.getPlayers()) {
+							if (playerEntity.getDistance(player) < 2.0f)
+								transportPlayer(playerEntity);
+						}
+
+						player.getFoodStats().addStats(-3, 0.0f);
+						props.setStandOn(false);
+						props.setCooldown(200);
+						this.remove();
+					}
+				}
+			} else if(player.world.getBlockState(new BlockPos(player.getPosition().getX() - 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX() + 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR) {
+				if (player.isCrouching() || player.isAirBorne)
+				{
+					if (props.getAbility() && props.getCooldown() <= 0)
+					{
+						if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
+						{
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.OVERWORLD);
+						} else if (player.world.getDimension().getType() == DimensionType.THE_NETHER) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_NETHER);
+						} else if (player.world.getDimension().getType() == DimensionType.THE_END) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
+						} else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END)) {
+							EventD4CTeleportProcessor.d4cPassengerList.add(player);
+							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
+						}
+
+						this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
+							if (!(entity instanceof PlayerEntity))
+								transportEntity(entity);
+						});
+
+						for (PlayerEntity playerEntity : this.world.getPlayers()) {
+							if (playerEntity.getDistance(player) < 2.0f)
+								transportPlayer(playerEntity);
+						}
+
+						player.getFoodStats().addStats(-3, 0.0f);
+						props.setStandOn(false);
+						props.setCooldown(200);
+						this.remove();
+					}
+				}
 			}
-	      }
 	      if (this.standOn)
 	      {
 	        followMaster();

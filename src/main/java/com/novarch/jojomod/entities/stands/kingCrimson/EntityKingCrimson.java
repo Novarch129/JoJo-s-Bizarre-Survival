@@ -20,6 +20,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
@@ -98,6 +99,13 @@ public class EntityKingCrimson extends EntityStandBase
 	        followMaster();
 	        setRotationYawHead(player.rotationYaw);
 	        setRotation(player.rotationYaw, player.rotationPitch);
+
+	        if(!props.getAbility())
+			{
+				if(!player.isCreative() && !player.isSpectator())
+					player.setGameType(GameType.SURVIVAL);
+				player.setInvulnerable(false);
+			}
 
 	        //King Crimson's Ability
 	        if(this.timeSkipped && props.getAbility() && props.getStandOn())

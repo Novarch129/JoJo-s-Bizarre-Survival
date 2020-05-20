@@ -6,10 +6,12 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +31,10 @@ public class EventHandleStandAbilities
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         PlayerEntity player = event.player;
+
+        if(!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
+            player.setGlowing(false);
+
         JojoProvider.getLazy(player).ifPresent(props -> {
             if(props.getCooldown() == 0.5)
                 props.setTimeLeft(1000);
@@ -139,5 +145,12 @@ public class EventHandleStandAbilities
                 removed.removeAll(removed);
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void lastRender(RenderWorldLastEvent event)
+    {
+        //PlayerModel model = new PlayerModel(1.0f, true);
+        //model.render(event.getMatrixStack(), null, 1, 1, 1, 1, 1, 1);
     }
 }
