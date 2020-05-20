@@ -14,6 +14,9 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
+import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.potion.Effects;
@@ -55,7 +58,7 @@ public class EventRenderStandOverlay
 
         if(!playerEntity.world.isRemote)
             if(playerStand!=null)
-                entityList = playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities().filter(entity -> entity!=playerEntity).filter(entity -> entity.getDistance(playerStand) < 20).collect(Collectors.toList());
+                entityList = playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities().filter(entity -> entity!=playerEntity).filter(entity -> !(entity instanceof ZombieEntity)).filter(entity -> !(entity instanceof HuskEntity)).filter(entity -> !(entity instanceof DrownedEntity)).filter(entity -> !(entity instanceof SkeletonEntity)).filter(entity -> !(entity instanceof SkeletonHorseEntity)).filter(entity -> !(entity instanceof ZombieHorseEntity)).filter(entity -> !(entity instanceof GiantEntity)).filter(entity -> entity.getDistance(playerStand) < 16).collect(Collectors.toList());
     }
 
     @SubscribeEvent

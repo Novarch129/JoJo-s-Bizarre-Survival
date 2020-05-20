@@ -104,14 +104,6 @@ public class EntityAerosmith extends EntityStandBase
 
         this.setRotation(yaw1, pitch1);
 
-        /*if(!world.isRemote) {
-            fakePlayer = new FakePlayer((ServerWorld) this.world, Minecraft.getInstance().player.getGameProfile());
-            fakePlayer.setPositionAndRotation(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationYaw);
-        }
-
-        if(fakePlayer != null)
-            Minecraft.getInstance().setRenderViewEntity(fakePlayer);*/
-
         if(!this.shouldFall)
             this.setMotion(this.getMotion().getX(), 0, this.getMotion().getZ());
 

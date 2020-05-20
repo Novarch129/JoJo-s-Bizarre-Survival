@@ -3,11 +3,16 @@ package com.novarch.jojomod.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.HuskEntity;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.monster.ZombiePigmanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.gui.GuiUtils;
@@ -40,37 +45,29 @@ public class CarbonDioxideRadarGUI extends AbstractGui
                 Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/gui/aerosmith_radar.png"));
                 GuiUtils.drawTexturedModalRect(0, 0, 0, 0, 256, 256, 0);
 
-                for(Entity entity : entities)
-                {
-                    if(entity==stand)
-                        return;
+               for(Entity entity : entities) {
+                   int x = (int) entity.getPosX(), y = (int) entity.getPosY(), z = (int) entity.getPosZ();
 
-                    if(entity.getDistance(stand) < 20)
-                    {
-                        int x = (int) entity.getPosX(), y = (int) entity.getPosY(), z = (int) entity.getPosZ();
+                   GlStateManager.pushMatrix();
+                   int xDistance = (stand.getPosition().getX() - x) * 5;
+                   double yDistance = stand.getPosition().getY() - y;
+                   int zDistance = (stand.getPosition().getZ() - z) * 5;
 
-                        GlStateManager.pushMatrix();
-                        int xDiff = (player.getPosition().getX() - x) * 5;
-                        double yDiff = player.getPosition().getY() - y;
-                        int zDiff = (player.getPosition().getZ() - z) * 5;
+                   double size = 0.05;
+                   if (yDistance >= 5)
+                       size = 0.025;
+                   else if ((yDistance > 0 && yDistance < 5) || (yDistance < 0 && yDistance > -5))
+                       size = 0.05;
+                   else if (yDistance <= -5)
+                       size = 0.075;
 
-                        double size = 0.05;
-                        if (yDiff >= 5)
-                            size = 0.025;
-                        else if ((yDiff > 0 && yDiff < 5) || (yDiff < 0 && yDiff > -5))
-                            size = 0.05;
-                        else if (yDiff <= -5)
-                            size = 0.075;
+                   GlStateManager.translated(115 + xDistance, 115 + zDistance, 100);
+                   GlStateManager.scaled(size, size, 0);
+                   Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/gui/aerosmith_target.png"));
+                   GuiUtils.drawTexturedModalRect(0, 0, 0, 0, 256, 256, 0);
 
-                        GlStateManager.translated(115 + xDiff, 115 + zDiff, 100);
-                        GlStateManager.scaled(size, size, 0);
-
-                        Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/gui/aerosmith_target.png"));
-                        GuiUtils.drawTexturedModalRect(0, 0, 0, 0, 256, 256, 0);
-
-                        GlStateManager.popMatrix();
-                    }
-                }
+                   GlStateManager.popMatrix();
+               }
                 GlStateManager.popMatrix();
             }
         });

@@ -378,7 +378,7 @@ protected void arrowHit(LivingEntity living) {}
 @Nullable
 protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
   Entity entity = null;
-  List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0D), EntityPredicates.NOT_SPECTATING);
+  List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0D), EntityPredicates.NOT_SPECTATING.and(EntityPredicates.IS_ALIVE));
   double d0 = 0.0D;
   for (int i = 0; i < list.size(); i++) {
     Entity entity1 = list.get(i);
