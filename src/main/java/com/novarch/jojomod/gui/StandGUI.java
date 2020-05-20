@@ -42,7 +42,7 @@ public class StandGUI extends AbstractGui
 
     public void render()
     {
-        JojoProvider.getLazy(Minecraft.getInstance().player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
             int transformed = props.getTransformed();

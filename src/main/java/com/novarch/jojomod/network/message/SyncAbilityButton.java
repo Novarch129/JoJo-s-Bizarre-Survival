@@ -50,7 +50,7 @@ public class SyncAbilityButton
     protected static void abilityToggle(PlayerEntity player)
     {
         if(player != null) {
-            JojoProvider.getLazy(player).ifPresent(props -> {
+            JojoProvider.getLazyOptional(player).ifPresent(props -> {
 
                 FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
                 fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
@@ -84,7 +84,7 @@ public class SyncAbilityButton
 
             if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
-                if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
                     player.world.addEntity(fakePlayer);
             }
             });

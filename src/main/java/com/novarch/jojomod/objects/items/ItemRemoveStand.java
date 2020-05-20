@@ -44,7 +44,7 @@ public class ItemRemoveStand extends Item
         ItemStack stack = playerIn.getHeldItem(handIn);
         if(worldIn.isRemote)
             return new ActionResult(ActionResultType.FAIL, stack);
-        final IStand props = JojoProvider.get(playerIn);
+        final IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
         if(props != null)
             props.setStandRemoved();
         return new ActionResult(ActionResultType.PASS, stack);

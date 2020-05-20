@@ -118,7 +118,7 @@ public class EntityAerosmith extends EntityStandBase
         if(getMaster() != null)
         {
             PlayerEntity player = getMaster();
-            JojoProvider.getLazy(player).ifPresent(props -> this.aerosmith = props.getAbility());
+            JojoProvider.getLazyOptional(player).ifPresent(props -> this.aerosmith = props.getAbility());
 
             if(this.aerosmith)
             {

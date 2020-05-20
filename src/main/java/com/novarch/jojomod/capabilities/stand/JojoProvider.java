@@ -43,12 +43,12 @@ public class JojoProvider implements ICapabilitySerializable<INBT>
 		STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")),null, nbt);
 	}
 
-	public static IStand get(PlayerEntity player)
+	public static IStand getCapabilityFromPlayer(PlayerEntity player)
 	{
 		return player.getCapability(STAND, null).orElse(new StandCapability(player));
 	}
 
-	public static LazyOptional<IStand> getLazy(PlayerEntity player)
+	public static LazyOptional<IStand> getLazyOptional(PlayerEntity player)
 	{
 		return player.getCapability(STAND, null);
 	}

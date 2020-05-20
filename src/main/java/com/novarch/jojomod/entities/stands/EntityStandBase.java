@@ -1,7 +1,5 @@
 package com.novarch.jojomod.entities.stands;
 
-import java.util.UUID;
-
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 
@@ -206,7 +204,7 @@ public abstract class EntityStandBase extends MobEntity
                 if (this.getAir() < 20) {
                     this.setAir(60);
                 }
-                IStand props = JojoProvider.get(this.getMaster());
+                IStand props = JojoProvider.getCapabilityFromPlayer(this.getMaster());
                 if (!props.getStandOn())
                 {
                     this.setDead();

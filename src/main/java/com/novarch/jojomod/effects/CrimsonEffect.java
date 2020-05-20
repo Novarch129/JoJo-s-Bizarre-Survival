@@ -25,7 +25,7 @@ public class CrimsonEffect extends Effect
     {
         if(Minecraft.getInstance().player==null)
             return;
-        JojoProvider.getLazy(Minecraft.getInstance().player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             if(!props.getStandOn()) {
                 if(props.getStandID() == JojoLibs.StandID.kingCrimson)
                     entityLivingBaseIn.removePotionEffect(this);

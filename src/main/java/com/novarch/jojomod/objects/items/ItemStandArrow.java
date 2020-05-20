@@ -165,7 +165,7 @@ public class ItemStandArrow extends Item
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
 		try {
-            IStand props = JojoProvider.get(playerIn);
+            IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
         if (stack == null) 
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, (Object)stack);

@@ -7,13 +7,10 @@ import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.TNTBlock;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
-import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -28,12 +25,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.common.util.FakePlayerFactory;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 public class StandPunchEffects
 {
@@ -421,7 +412,7 @@ public class StandPunchEffects
 				final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-				IStand props = JojoProvider.get(punch.shootingStand.getMaster());
+				IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
 				if (punch.shootingStand.life && blockB != Blocks.AIR && blockB != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
@@ -831,7 +822,7 @@ public class StandPunchEffects
 			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-			IStand props = JojoProvider.get(punch.shootingStand.getMaster());
+			IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
 			if (punch.shootingStand.ger && blockB != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)

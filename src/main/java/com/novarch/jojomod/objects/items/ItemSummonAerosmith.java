@@ -62,7 +62,7 @@ public class ItemSummonAerosmith extends Item
 		if (!world.isRemote && entity instanceof PlayerEntity)
 		{
 			PlayerEntity player = (PlayerEntity) entity;
-			JojoProvider.getLazy(player).ifPresent(props -> {
+			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				if (props.getStandID() == 0)
 				{
 					if (!player.isCreative()) { stack.shrink(1); }
@@ -92,7 +92,7 @@ public class ItemSummonAerosmith extends Item
 
 		try
 		{
-            IStand props = JojoProvider.get(playerIn);
+            IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
         if (stack == null) 
         {        	
             return (ActionResult<ItemStack>)new ActionResult(ActionResultType.FAIL, stack);

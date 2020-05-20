@@ -88,7 +88,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 	    if (getMaster() != null)
 	    {
 			PlayerEntity player = getMaster();
-			IStand props = JojoProvider.get(player);
+			IStand props = JojoProvider.getCapabilityFromPlayer(player);
 			props.setTimeLeft(this.heaventickr - 1200);
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
 			player.setHealth(20.0f);

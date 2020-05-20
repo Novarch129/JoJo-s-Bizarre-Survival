@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.goldExperienceRequiem;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -17,9 +16,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityGoldExperienceRequiem extends EntityStandBase
@@ -83,7 +80,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	    if (getMaster() != null)
 	    {
 			PlayerEntity player = getMaster();
-			IStand props = JojoProvider.get(player);
+			IStand props = JojoProvider.getCapabilityFromPlayer(player);
 			this.ger = props.getAbility();
 
 			//Cooldown handler

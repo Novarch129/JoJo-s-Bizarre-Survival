@@ -6,7 +6,6 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
@@ -35,7 +34,7 @@ public class EventHandleStandAbilities
         if(!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
             player.setGlowing(false);
 
-        JojoProvider.getLazy(player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             if(props.getCooldown() == 0.5)
                 props.setTimeLeft(1000);
 
@@ -104,7 +103,7 @@ public class EventHandleStandAbilities
 
         PlayerEntity player = Minecraft.getInstance().player;
 
-        JojoProvider.getLazy(player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             if(!props.getStandOn()) {
                 if(!player.isSpectator())
                     Minecraft.getInstance().setRenderViewEntity(player);

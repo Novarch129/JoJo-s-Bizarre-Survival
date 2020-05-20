@@ -19,9 +19,9 @@ public class EventSyncCapability
     {
         if(!event.isWasDeath())
         {
-            JojoProvider.getLazy(event.getOriginal()).ifPresent(originalProps -> {
+            JojoProvider.getLazyOptional(event.getOriginal()).ifPresent(originalProps -> {
                 ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-                JojoProvider.getLazy(player).ifPresent(newProps -> {
+                JojoProvider.getLazyOptional(player).ifPresent(newProps -> {
                     newProps.clone(originalProps);
                 });
             });
@@ -32,7 +32,7 @@ public class EventSyncCapability
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
         });
     }
@@ -41,7 +41,7 @@ public class EventSyncCapability
     public static void playerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
         });
     }
@@ -50,7 +50,7 @@ public class EventSyncCapability
     public static void playerJoinWorld(PlayerEvent.PlayerLoggedInEvent event)
     {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
-        JojoProvider.getLazy(player).ifPresent(props -> {
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
         });
     }
@@ -61,7 +61,7 @@ public class EventSyncCapability
         if(event.getEntity() instanceof PlayerEntity)
         {
             PlayerEntity player = event.getPlayer();
-            IStand props = JojoProvider.get(player);
+            IStand props = JojoProvider.getCapabilityFromPlayer(player);
             props.putStandOn(false);
             if(!player.world.isRemote)
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));

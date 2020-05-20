@@ -115,7 +115,7 @@ public class SyncStandSummonButton
 			  	if(!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), EntityPredicates.NOT_SPECTATING).contains(theStand))
 			  	{
 					int standAct = props.getStandAct();
-					if(props.getStandID() == JojoLibs.StandID.aerosmith)
+					if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getAbility())
 						player.world.addEntity(fakePlayer);
 					props.setStandOn(true);
 					theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);

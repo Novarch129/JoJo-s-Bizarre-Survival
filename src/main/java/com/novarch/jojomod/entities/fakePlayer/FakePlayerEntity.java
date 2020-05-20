@@ -95,7 +95,7 @@ public class FakePlayerEntity extends MobEntity
            // if(!this.parent.isAlive())
              //   EventHandleStandAbilities.removalQueue.add(this);
 
-            JojoProvider.getLazy(this.parent).ifPresent(props -> {
+            JojoProvider.getLazyOptional(this.parent).ifPresent(props -> {
                 if (!props.getAbility())
                     EventHandleStandAbilities.removalQueue.add(this);
                 if(!props.getStandOn())

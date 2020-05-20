@@ -23,7 +23,7 @@ public class EventAbilityGER
     {
         if(event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            JojoProvider.getLazy(player).ifPresent(props -> {
+            JojoProvider.getLazyOptional(player).ifPresent(props -> {
                 if (props.getStandID() == JojoLibs.StandID.GER) {
                 event.setCanceled(true);
                 if (event.getSource().getTrueSource() instanceof PlayerEntity) {
@@ -51,7 +51,7 @@ public class EventAbilityGER
         PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
         if(player != null)
         {
-            IStand props = JojoProvider.get(player);
+            IStand props = JojoProvider.getCapabilityFromPlayer(player);
             if (event.getExplosion().getPosition().distanceTo(player.getPositionVec()) < 10.0f)
             {
                 if (props.getStandID() == JojoLibs.StandID.GER)

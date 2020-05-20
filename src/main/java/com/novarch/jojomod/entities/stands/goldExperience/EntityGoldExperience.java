@@ -97,7 +97,7 @@ public class EntityGoldExperience extends EntityStandBase
 
 	    if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			IStand props = JojoProvider.get(player);
+			IStand props = JojoProvider.getCapabilityFromPlayer(player);
 			this.life = props.getAbility();
 
 			//Cooldown handler
