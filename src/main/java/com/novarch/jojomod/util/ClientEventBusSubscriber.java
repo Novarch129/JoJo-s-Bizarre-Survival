@@ -14,6 +14,8 @@ import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
+import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReport;
+import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunch;
 import com.novarch.jojomod.init.EntityInit;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -48,5 +50,8 @@ public class ClientEventBusSubscriber
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.AEROSMITH_BULLET.get(), RenderAerosmithBullet::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.FAKE_PLAYER.get(), RenderFakePlayerEntity::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WEATHER_REPORT.get(), RenderWeatherReport::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WEATHER_REPORT_PUNCH.get(), RenderWeatherReportPunch::new);
 	}
 }

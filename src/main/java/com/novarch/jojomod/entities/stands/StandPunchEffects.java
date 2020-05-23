@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
@@ -58,22 +59,9 @@ public class StandPunchEffects
             	aerosmith(result, entityIn, punch, entityBlock);
             	break;
 			}
-            /*case 8: {
-            	theWorld(result, entityIn, punch, entityBlock);
-            	break;
-            }
-            case 9: {
-            	killerQueen(result, entityIn, punch, entityBlock);
-            	break;
-            }
-            case 10: {
-            	killerQueen8(result, entityIn, punch, entityBlock);
-            	break;
-            }
-            case 11: {
-            	stickyFingers(result, entityIn, punch, entityBlock);
-            	break;
-            }*/
+			case JojoLibs.StandID.weatherReport: {
+				weatherReport(result, entityIn, punch, entityBlock);
+			}
             default: {}
         }
     }
@@ -1509,6 +1497,43 @@ public class StandPunchEffects
 			else
 			{
 				bullet.remove();
+			}
+		}
+	}
+
+	public static void weatherReport(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean entityBlock)
+	{
+		if(entityBlock)
+		{
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+			if(punch.shootingStand.heavyWeather)
+				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 300, 10));
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, 0, 0);
+			punch.remove();
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0)
+			{
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
+			}
+			else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		}
+		else
+		{
+			final Block block = punch.getinTile();
+			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 3.0f)
+			{
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				punch.remove();
+			}
+			else
+			{
+				punch.remove();
 			}
 		}
 	}

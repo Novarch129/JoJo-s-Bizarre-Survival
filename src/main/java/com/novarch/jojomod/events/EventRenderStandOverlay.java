@@ -80,7 +80,7 @@ public class EventRenderStandOverlay
         fogEvent.setDensity(0.3f);
 
         if(fogEvent.getInfo().getRenderViewEntity() instanceof LivingEntity)
-            if(((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()))
+            if(((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISIONING.get()))
                 if(fogEvent.isCancelable())
                     fogEvent.setCanceled(true);
                 fogEvent.setDensity(5f);

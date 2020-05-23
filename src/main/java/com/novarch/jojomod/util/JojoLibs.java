@@ -2,12 +2,14 @@ package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.*;
@@ -79,7 +81,9 @@ public class JojoLibs
                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof GiantEntity))
                                                                                 .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
-                                                                                                .and(entity -> !(entity instanceof ZombiePigmanEntity)))))))))));
+                                                                                                .and(entity -> !(entity instanceof ZombiePigmanEntity))
+                                                                                                    .and(entity -> !(entity instanceof EntityStandPunch))
+                                                                                                        .and(entity -> !(entity instanceof EntityStandBase)))))))))));
     }
 
     public static class StandID
@@ -98,7 +102,9 @@ public class JojoLibs
 
         public static final int aerosmith = 6;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith};
+        public static final int weatherReport = 7;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport};
     }
 
     public static int numberOfStands = StandID.stands.length;
@@ -121,6 +127,8 @@ public class JojoLibs
                 return new EntityGoldExperienceRequiem(world);
             case StandID.aerosmith:
                 return new EntityAerosmith(world);
+            case StandID.weatherReport:
+                return new EntityWeatherReport(world);
         }
         return null;
     }

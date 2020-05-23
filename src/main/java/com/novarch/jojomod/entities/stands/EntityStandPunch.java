@@ -38,6 +38,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_requiem_punch") public static EntityType<EntityStandPunch.goldExperienceRequiem> GOLD_EXPERIENCE_REQUIEM;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":aerosmith_bullet") public static EntityType<EntityStandPunch.aerosmith> AEROSMITH;
+    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":weather_report_punch") public static EntityType<EntityStandPunch.aerosmith> WEATHER_REPORT;
 
 
   private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityStandPunch.class, DataSerializers.BYTE);
@@ -661,55 +662,6 @@ public enum PickupStatus
           return NetworkHooks.getEntitySpawningPacket(this);
         }
   }
-      /*public static class theWorld extends EntityStandPunch
-      {
-          public theWorld(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public theWorld(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
-  }
-      public static class killerQueen extends EntityStandPunch 
-      {
-          public killerQueen(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public killerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
-  }
-      public static class killerQueen8 extends EntityStandPunch 
-      {
-          public killerQueen8(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public killerQueen8(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
-  }
-      public static class stickyFingers extends EntityStandPunch 
-      {
-          public stickyFingers(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public stickyFingers(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
-  }*/
-
       public static class aerosmith extends EntityStandPunch
       {
 
@@ -728,6 +680,24 @@ public enum PickupStatus
           super(aerosmithEntityType, world);
         }
       }
+
+  public static class weatherReport extends EntityStandPunch
+  {
+    public weatherReport(World worldIn)
+    {
+      super(WEATHER_REPORT, worldIn);
+    }
+
+    public weatherReport(World worldIn, EntityStandBase shooter, PlayerEntity player)
+    {
+      super(WEATHER_REPORT, worldIn, shooter, player);
+    }
+
+    public weatherReport(EntityType<weatherReport> weatherReportEntityType , World world)
+    {
+      super(weatherReportEntityType, world);
+    }
+  }
 	@Override
 	protected void registerData()
 	{

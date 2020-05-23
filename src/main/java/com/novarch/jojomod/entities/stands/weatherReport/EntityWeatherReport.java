@@ -1,0 +1,151 @@
+package com.novarch.jojomod.entities.stands.weatherReport;
+
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.stats.Stat;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.registries.ObjectHolder;
+
+public class EntityWeatherReport extends EntityStandBase
+{
+    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":weather_report") public static EntityType<EntityWeatherReport> TYPE;
+
+    private int oratick = 0;
+
+    private int oratickr = 0;
+
+    @Override
+    public boolean canDespawn(double p_213397_1_) {
+        return false;
+    }
+
+    @Override
+    public boolean isAIDisabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEntityInsideOpaqueBlock() {
+        return false;
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT p_213281_1_) {
+        super.writeAdditional(p_213281_1_);
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT p_70037_1_) {
+        super.readAdditional(p_70037_1_);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return super.createSpawnPacket();
+    }
+
+    public EntityWeatherReport(EntityType<? extends MobEntity> type, World worldIn)
+    {
+        super(type, worldIn);
+        this.spawnSound = SoundInit.SPAWN_WR.get();
+        setCatchPassive();
+        this.standID = JojoLibs.StandID.weatherReport;
+    }
+
+    public EntityWeatherReport(World worldIn)
+    {
+        super(TYPE, worldIn);
+        this.spawnSound = SoundInit.SPAWN_WR.get();
+        setCatchPassive();
+        this.standID = JojoLibs.StandID.weatherReport;
+    }
+
+    @Override
+    public void tick()
+    {
+        super.tick();
+        this.fallDistance = 0.0f;
+        if(this.world.rand.nextInt(35) == 1)
+            this.spawnExplosionParticle();
+
+        if(getMaster() != null) {
+            followMaster();
+            PlayerEntity player = getMaster();
+            setRotationYawHead(player.rotationYaw);
+            setRotation(player.rotationYaw, player.rotationPitch);
+            JojoProvider.getLazyOptional(player).ifPresent(props -> this.heavyWeather = props.getAbility());
+
+            if(this.heavyWeather) {
+                if (!this.world.isRemote)
+                    this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {
+                        if (entity.getDistance(player) <= 10) {
+                            if (entity instanceof MobEntity)
+                                ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
+                            if (entity instanceof PlayerEntity && entity != player)
+                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
+                            if(!player.isCreative()) {
+                                player.getFoodStats().addStats(0, -0.2f);
+                                player.getFoodStats().addExhaustion(0.2f);
+                            }
+                        }
+                    });
+            }
+
+            if (!player.isSprinting()) {
+                if (attackSwing(player)) {
+                    this.oratick++;
+                    if (oratick == 1) {
+                        EntityStandPunch.weatherReport weatherReportPunch = new EntityStandPunch.weatherReport(this.world, this, player);
+                        weatherReportPunch.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0.4f);
+                        this.world.addEntity(weatherReportPunch);
+                    }
+                }
+            } else if (player.isSprinting()) {
+                if (attackSwing(player))
+                    if (player.getFoodStats().getFoodLevel() > 6) {
+                        this.oratick++;
+                        if (this.oratick == 1) {
+                            if (!this.world.isRemote)
+                                this.orarush = true;
+                        }
+                    }
+            }
+            if (player.swingProgressInt == 0)
+                this.oratick = 0;
+            if (this.orarush) {
+                player.setSprinting(false);
+                this.oratickr++;
+                if (this.oratickr >= 10)
+                    if (!this.world.isRemote) {
+                        player.setSprinting(false);
+                        EntityStandPunch.weatherReport weatherReportPunch1 = new EntityStandPunch.weatherReport(this.world, this, player);
+                        weatherReportPunch1.setRandomPositions();
+                        weatherReportPunch1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        this.world.addEntity(weatherReportPunch1);
+                        EntityStandPunch.weatherReport weatherReportPunch2 = new EntityStandPunch.weatherReport(this.world, this, player);
+                        weatherReportPunch2.setRandomPositions();
+                        weatherReportPunch2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        this.world.addEntity(weatherReportPunch2);
+                    }
+                if (this.oratickr >= 110) {
+                    this.orarush = false;
+                    this.oratickr = 0;
+                }
+            }
+        }
+    }
+}

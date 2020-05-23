@@ -37,8 +37,7 @@ public abstract class EntityStandBase extends MobEntity
 	public boolean giveItem;
 	public String mastername;
 	public int hungerTimer;
-	public boolean onheal;
-	public boolean heavyweather;
+	public boolean heavyWeather;
 	public boolean ger;
 	public boolean life;
 	public boolean timeSkipped;
@@ -53,14 +52,13 @@ public abstract class EntityStandBase extends MobEntity
 		this.master = null;
         this.standOn = true;
         this.orarush = false;
-        this.onheal = false;
         this.d4c = false;
         this.timeSkipped = true;
         this.heaven = false;
         this.life = false;
         this.spawnSound = null;
         this.ger = true;
-        this.heavyweather = true;
+        this.heavyWeather = true;
         this.longTick = 2;
         this.tick = 0;
         this.hungerTimer = 0;

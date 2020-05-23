@@ -10,6 +10,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -98,4 +99,15 @@ public class EntityInit
 					() -> EntityType.Builder.<FakePlayerEntity>create(FakePlayerEntity::new, EntityClassification.CREATURE)
 							.size(1.0f, 2.0f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "fake_player_jojo").toString()));
+
+	public static final RegistryObject<EntityType<EntityWeatherReport>> WEATHER_REPORT = ENTITY_TYPES
+			.register("weather_report",
+					() -> EntityType.Builder.<EntityWeatherReport>create(EntityWeatherReport::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.weatherReport>> WEATHER_REPORT_PUNCH = ENTITY_TYPES
+			.register("weather_report_punch", () -> EntityType.Builder.<EntityStandPunch.weatherReport>create(EntityStandPunch.weatherReport::new, EntityClassification.MISC)
+					.size(0.2f, 0.2f)
+					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report_punch").toString()));
 }

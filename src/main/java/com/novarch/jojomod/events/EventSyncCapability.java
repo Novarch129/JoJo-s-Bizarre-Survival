@@ -58,13 +58,12 @@ public class EventSyncCapability
     @SubscribeEvent
     public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
-        if(event.getEntity() instanceof PlayerEntity)
-        {
-            PlayerEntity player = event.getPlayer();
-            IStand props = JojoProvider.getCapabilityFromPlayer(player);
+        ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
             props.putStandOn(false);
             if(!player.world.isRemote)
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(props));
-        }
+        });
+
     }
 }
