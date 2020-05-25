@@ -6,13 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -32,7 +30,7 @@ import java.util.List;
 
 public abstract class EntityStandPunch extends Entity implements IProjectile
 {
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":king_crimson_punch") public static EntityType<EntityStandPunch.kingCrimson> KING_CRIMSON;
+    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":king_crimson_punch") public static EntityType<kingCrimson> KING_CRIMSON;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":d4c_punch") public static EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap> D4C;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_punch") public static EntityType<EntityStandPunch.goldExperience> GOLD_EXPERIENCE;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
@@ -40,14 +38,11 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":aerosmith_bullet") public static EntityType<EntityStandPunch.aerosmith> AEROSMITH;
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":weather_report_punch") public static EntityType<EntityStandPunch.aerosmith> WEATHER_REPORT;
 
+public int xTile;
 
-  private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EntityStandPunch.class, DataSerializers.BYTE);
+public int yTile;
 
-private int xTile;
-
-private int yTile;
-
-private int zTile;
+public int zTile;
 
 private Block inTile;
 
@@ -115,10 +110,6 @@ public boolean isInRangeToRenderDist(double distance) {
     d0 = 1.0D; 
   d0 = d0 * 64.0D * getRenderDistanceWeight();
   return (distance < d0 * d0);
-}
-
-protected void entityInit() {
-  this.dataManager.register(CRITICAL, Byte.valueOf((byte)0));
 }
 
 public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
@@ -307,7 +298,7 @@ protected void onHit(EntityRayTraceResult raytraceResultIn) {
         LivingEntity LivingEntity = (LivingEntity)entity;
         if (!this.world.isRemote) {
           this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0D, 0.0D, 0.0D);
-          StandPunchEffects.getStandSpecific(raytraceResultIn, LivingEntity, this, true, this.standID);
+          StandPunchEffects.getStandSpecific(raytraceResultIn, LivingEntity, this, true, this.standID, false);
         } 
         arrowHit(LivingEntity);
         if (this.standMaster != null && LivingEntity != this.standMaster && LivingEntity instanceof PlayerEntity && this.standMaster instanceof ServerPlayerEntity)
@@ -327,19 +318,18 @@ protected void onHit(BlockRayTraceResult raytraceResultIn)
   this.xTile = blockpos.getX();
   this.yTile = blockpos.getY();
   this.zTile = blockpos.getZ();
-  //this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0D, 0.0D, 0.0D);
-  BlockState BlockState = this.world.getBlockState(blockpos);
-  this.inTile = BlockState.getBlock();
-  this.inData = Block.getStateId(BlockState);
+  BlockState blockState = this.world.getBlockState(blockpos);
+  this.inTile = blockState.getBlock();
+  this.inData = Block.getStateId(blockState);
   this.setMotion((float)(raytraceResultIn.getHitVec().x - this.getPosX()), (float)(raytraceResultIn.getHitVec().y - this.getPosY()), (float)(raytraceResultIn.getHitVec().z - this.getPosZ()));
   float f2 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
   this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D);
   this.inGround = true;
   this.arrowShake = 7;
-  //setIsCritical(false);
-  StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
-  if (BlockState.getMaterial() != Material.AIR) {
-    this.inTile.onProjectileCollision(this.world, BlockState, (BlockRayTraceResult) raytraceResultIn, this);
+  StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID, false);
+  if (blockState.getMaterial() != Material.AIR)
+  {
+    this.inTile.onProjectileCollision(this.world, blockState, raytraceResultIn, this);
     remove();
   }
 }
@@ -381,22 +371,21 @@ protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
   Entity entity = null;
   List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0D), JojoLibs.Predicates.STAND_PUNCH_TARGET);
   double d0 = 0.0D;
-  for (int i = 0; i < list.size(); i++) {
-    Entity entity1 = list.get(i);
+  for (Entity entity1 : list) {
     EntityStandPunch punch = null;
     if (entity1 instanceof EntityStandPunch)
-      punch = (EntityStandPunch)entity1; 
+      punch = (EntityStandPunch) entity1;
     if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || entity1 != this.shootingStand || entity1 != this.standMaster || (entity1 instanceof EntityStandPunch && punch != null && punch.shootingEntity != this.shootingEntity) || this.ticksInAir >= 6)) {
       AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(0.30000001192092896D);
-      RayTraceResult raytraceresult =  new EntityRayTraceResult(entity1);
+      RayTraceResult raytraceresult = new EntityRayTraceResult(entity1);
       if (raytraceresult != null) {
         double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
         if (d1 < d0 || d0 == 0.0D) {
           entity = entity1;
           d0 = d1;
-        } 
-      } 
-    } 
+        }
+      }
+    }
   } 
   return entity;
 }
@@ -467,24 +456,6 @@ public void setKnockbackStrength(int knockbackStrengthIn) {
 public boolean canBeAttackedWithItem() {
   return false;
 }
-
-    public void setIsCritical(boolean critical)
-    {
-        byte b0 = (Byte) this.dataManager.get(CRITICAL);
-        if (critical)
-        {
-           this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 | 0x1)));
-        } else
-        {
-          this.dataManager.set(CRITICAL, Byte.valueOf((byte)(b0 & 0xFFFFFFFE)));
-        }
-    }
-
-        public boolean getIsCritical()
-        {
-          byte b0 = ((Byte)this.dataManager.get(CRITICAL)).byteValue();
-          return ((b0 & 0x1) != 0);
-          }
 
 public enum PickupStatus
 {
@@ -664,6 +635,9 @@ public enum PickupStatus
   }
       public static class aerosmith extends EntityStandPunch
       {
+        boolean bomb = false;
+        private Block inTile;
+        private int inData;
 
         public aerosmith(World worldIn)
         {
@@ -673,11 +647,47 @@ public enum PickupStatus
         public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player)
         {
           super(AEROSMITH, worldIn, shooter, player);
+          this.bomb=false;
+        }
+
+        public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player, boolean isBomb)
+        {
+          super(AEROSMITH, worldIn, shooter, player);
+          this.bomb=isBomb;
         }
 
         public aerosmith(EntityType<aerosmith> aerosmithEntityType, World world)
         {
           super(aerosmithEntityType, world);
+        }
+
+        @Override
+        protected void onHit(BlockRayTraceResult raytraceResultIn)
+        {
+          BlockPos blockpos = raytraceResultIn.getPos();
+          this.xTile = blockpos.getX();
+          this.yTile = blockpos.getY();
+          this.zTile = blockpos.getZ();
+          BlockState blockState = this.world.getBlockState(blockpos);
+          this.inTile = blockState.getBlock();
+          this.inData = Block.getStateId(blockState);
+          this.setMotion((float)(raytraceResultIn.getHitVec().x - this.getPosX()), (float)(raytraceResultIn.getHitVec().y - this.getPosY()), (float)(raytraceResultIn.getHitVec().z - this.getPosZ()));
+          float f2 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
+          this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D);
+          this.inGround = true;
+          this.arrowShake = 7;
+          if(bomb) {
+            TNTEntity tnt = new TNTEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), this.standMaster);
+            tnt.setVelocity(this.getLookVec().getX(), this.getLookVec().getY(), this.getLookVec().getZ());
+            this.world.addEntity(tnt);
+          }
+            else
+            StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, JojoLibs.StandID.aerosmith, false);
+          if (blockState.getMaterial() != Material.AIR)
+          {
+            this.inTile.onProjectileCollision(this.world, blockState, raytraceResultIn, this);
+            remove();
+          }
         }
       }
 

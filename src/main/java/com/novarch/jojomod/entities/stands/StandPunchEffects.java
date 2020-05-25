@@ -21,15 +21,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 
-public class StandPunchEffects
+public abstract class StandPunchEffects
 {
-	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean entityBlock, final int entityId) {
+	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean entityBlock, final int entityId, final boolean isBomb) {
         switch (entityId) {
             case JojoLibs.StandID.nullStand: {
                 basicDefault(result, entityIn, entityBlock);
@@ -56,7 +57,7 @@ public class StandPunchEffects
             	break;
             }
             case JojoLibs.StandID.aerosmith: {
-            	aerosmith(result, entityIn, punch, entityBlock);
+            	aerosmith(result, entityIn, punch, entityBlock, isBomb);
             	break;
 			}
 			case JojoLibs.StandID.weatherReport: {
@@ -1461,11 +1462,11 @@ public class StandPunchEffects
         }
     }*/
 
-	public static void aerosmith(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch bullet, final boolean entityBlock)
+	public static void aerosmith(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch bullet, final boolean entityBlock, boolean isBomb)
 	{
 		if(entityBlock)
 		{
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(bullet.shootingStand.getMaster()), 2.0f);
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(bullet.shootingStand.getMaster()), 1.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, 0, 0);
 			bullet.remove();
@@ -1491,7 +1492,10 @@ public class StandPunchEffects
 					bullet.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 					bullet.world.createExplosion(bullet, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 0.8f, Explosion.Mode.DESTROY);
 				}
-				bullet.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
+				if(!isBomb)
+					bullet.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
+				else
+					bullet.world.createExplosion(bullet, bullet.getPosX(), bullet.getPosY(), bullet.getPosZ(), 2.5f, Explosion.Mode.DESTROY);
 				bullet.remove();
 			}
 			else
@@ -1505,7 +1509,7 @@ public class StandPunchEffects
 	{
 		if(entityBlock)
 		{
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.0f);
 			if(punch.shootingStand.heavyWeather)
 				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 300, 10));
 			livingEntity.hurtResistantTime = 0;
@@ -1529,6 +1533,7 @@ public class StandPunchEffects
 			if (hardness != -1.0f && hardness < 3.0f)
 			{
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItem(punch.standMaster.getActiveHand()));
 				punch.remove();
 			}
 			else

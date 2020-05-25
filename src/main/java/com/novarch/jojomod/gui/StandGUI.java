@@ -11,10 +11,9 @@ public class StandGUI extends AbstractGui
 
     public void renderTimeValue(int ticks)
     {
-        String text = "";
         int minutes = ticks / 1200;
         int seconds = (ticks / 20) - (minutes * 60);
-        text = String.valueOf(minutes);
+        String text = String.valueOf(minutes);
         if (seconds < 10)
             text += ":0" + seconds;
         else
@@ -24,19 +23,22 @@ public class StandGUI extends AbstractGui
 
     public void renderTimeLeft(int ticks)
     {
-        String text = ";";
         int seconds = ticks / 20;
-        text = String.valueOf(seconds);
+        String text = String.valueOf(seconds);
         text += " seconds left.";
         drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
     }
 
     public void renderCooldown(int ticks)
     {
-        String text = ";";
         int seconds = ticks / 20;
-        text = "Cooldown: ";
+        String text = "Cooldown: ";
         text += seconds;
+        drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
+    }
+
+    public void renderText(String text)
+    {
         drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
     }
 
@@ -92,11 +94,13 @@ public class StandGUI extends AbstractGui
                 if(cooldown > 0)
                     renderCooldown(cooldown);
             }
-        });
-    }
 
-    public void renderText(String text)
-    {
-        drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
+            //Aerosmith
+            else if(props.getStandID() == JojoLibs.StandID.aerosmith)
+            {
+                if(cooldown > 0)
+                    renderTimeLeft(cooldown);
+            }
+        });
     }
 }

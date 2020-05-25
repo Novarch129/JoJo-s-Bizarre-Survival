@@ -30,12 +30,6 @@ public class EntityAerosmith extends EntityStandBase
 
     boolean shouldFall = false;
 
-    int aeroTick = 0;
-
-    private FakePlayerEntity fakePlayerEntity = new FakePlayerEntity(this.world, this.getMaster());
-
-    FakePlayer fakePlayer = null;
-
     @Override
     public boolean canDespawn(double p_213397_1_) {
         return false;
@@ -149,6 +143,24 @@ public class EntityAerosmith extends EntityStandBase
 
                 else if(Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown() && this.getMotion().getZ() > -0.6)
                     this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
+
+                //Bomb
+                JojoProvider.getLazyOptional(player).ifPresent(props -> {
+                    if(props.getAbility())
+                    {
+                        if(props.getCooldown() > 0)
+                            props.subtractCooldown(1);
+                    }
+                    if(props.getCooldown() <= 0) {
+                        if (KeyHandler.keys[2].isPressed()) {
+                            EntityStandPunch.aerosmith bullet = new EntityStandPunch.aerosmith(this.world, this, player, true);
+                            bullet.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+                            bullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0);
+                            this.world.addEntity(bullet);
+                            props.setCooldown(400);
+                        }
+                    }
+                });
             } else {
                 if(!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
                     this.shouldFall = false;
@@ -198,7 +210,7 @@ public class EntityAerosmith extends EntityStandBase
                     if(oratick == 1)
                     {
                         EntityStandPunch.aerosmith aerosmithBullet = new EntityStandPunch.aerosmith(this.world, this, player);
-                        aerosmithBullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0.4f);
+                        aerosmithBullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 4.0f, 0.4f);
                         this.world.addEntity(aerosmithBullet);
                     }
                 }
@@ -229,11 +241,11 @@ public class EntityAerosmith extends EntityStandBase
                         player.setSprinting(false);
                         EntityStandPunch.aerosmith aerosmithBullet1 = new EntityStandPunch.aerosmith(this.world, this, player);
                         aerosmithBullet1.setRandomPositions();
-                        aerosmithBullet1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        aerosmithBullet1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 4.0F, 0.3F);
                         this.world.addEntity(aerosmithBullet1);
                         EntityStandPunch.aerosmith aerosmithBullet2 = new EntityStandPunch.aerosmith(this.world, this, player);
                         aerosmithBullet2.setRandomPositions();
-                        aerosmithBullet2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        aerosmithBullet2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 4.0F, 0.3F);
                         this.world.addEntity(aerosmithBullet2);
                     }
                 if (this.oratickr >= 110)

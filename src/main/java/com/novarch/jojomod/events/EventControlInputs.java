@@ -2,6 +2,7 @@ package com.novarch.jojomod.events;
 
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.network.message.SyncAbility2Button;
 import com.novarch.jojomod.network.message.SyncAbilityButton;
 import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
 import com.novarch.jojomod.network.message.SyncStandSummonButton;
@@ -38,15 +39,14 @@ public class EventControlInputs
 			 }
 		 }
 
-		 if(KeyHandler.keys[2].isPressed())
+		 /*if(KeyHandler.keys[2].isPressed())
 		 {
 			 ClientPlayerEntity entityPlayerSP = (Minecraft.getInstance()).player;
 			 if (entityPlayerSP != null)
 			 {
-				 //StevesBizarreSurvival.INSTANCE.sendToServer(new SyncAbility2Button());
-				 entityPlayerSP.setMotion(entityPlayerSP.getMotion().getX() * 5.0f, entityPlayerSP.getMotion().getY() * 5.0f, entityPlayerSP.getMotion().getZ() * 5.0f);
+				 JojoBizarreSurvival.INSTANCE.sendToServer(new SyncAbility2Button());
 			 }
-		 }
+		 }*/
 	    
 		 if (Minecraft.getInstance().gameSettings.keyBindAttack.isKeyDown())
 		 {

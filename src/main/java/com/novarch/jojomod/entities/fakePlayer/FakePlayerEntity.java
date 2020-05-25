@@ -12,27 +12,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.registries.ObjectHolder;
 
-public class FakePlayerEntity extends MobEntity
+public final class FakePlayerEntity extends MobEntity
 {
-    private PlayerEntity parent;
+    private final PlayerEntity parent;
 
     @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":fake_player_jojo") public static EntityType<FakePlayerEntity> TYPE;
 
-    public FakePlayerEntity(EntityType<? extends MobEntity> p_i48576_1_, World p_i48576_2_)
+    public FakePlayerEntity(EntityType<? extends MobEntity> p_i48576_1_, World p_i48576_2_, PlayerEntity parent)
     {
         super(p_i48576_1_, p_i48576_2_);
-    }
-
-    public FakePlayerEntity(World world)
-    {
-        super(TYPE, world);
-    }
-
-    public FakePlayerEntity(World p_i48576_2_, PlayerEntity parent)
-    {
-        super(TYPE, p_i48576_2_);
         this.parent = parent;
     }
+
+    public FakePlayerEntity(World world, PlayerEntity parent)
+    {
+        super(TYPE, world);
+        this.parent = parent;
+    }
+
 
     @Override
     public boolean canDespawn(double p_213397_1_)
@@ -81,19 +78,14 @@ public class FakePlayerEntity extends MobEntity
         return parent;
     }
 
-    public void setParent(PlayerEntity parent)
-    {
-        this.parent = parent;
-    }
-
     @Override
     public void tick()
     {
         super.tick();
 
         if(this.parent!=null) {
-           // if(!this.parent.isAlive())
-             //   EventHandleStandAbilities.removalQueue.add(this);
+            if(!this.parent.isAlive())
+                EventHandleStandAbilities.removalQueue.add(this);
 
             JojoProvider.getLazyOptional(this.parent).ifPresent(props -> {
                 if (!props.getAbility())
@@ -101,6 +93,6 @@ public class FakePlayerEntity extends MobEntity
                 if(!props.getStandOn())
                     EventHandleStandAbilities.removalQueue.add(this);
             });
-        }// else { EventHandleStandAbilities.removalQueue.add(this); }
+        } else { EventHandleStandAbilities.removalQueue.add(this); }
     }
 }

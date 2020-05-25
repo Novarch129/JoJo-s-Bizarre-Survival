@@ -91,7 +91,7 @@ public abstract class EntityStandBase extends MobEntity
     
     public void hungerMessage() {
         if (this.hungerTimer == 1) {
-            this.getMaster().sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.hunger.txt", new Object[0]));
+            this.getMaster().sendMessage(new TranslationTextComponent("msg.jojomod.hunger.txt"));
         }
         if (this.hungerTimer >= 40) {
             this.hungerTimer = 0;
@@ -132,15 +132,7 @@ public abstract class EntityStandBase extends MobEntity
 	}
 	
 	public ITextComponent getMastername() {
-        if (this.world.isRemote) {
-            return (ITextComponent)new StringTextComponent("client");
-        }
-        if (this.getMaster() == null) {
-            final ITextComponent name = (ITextComponent)new StringTextComponent(this.mastername);
-            return name;
-        }
-        final ITextComponent name = this.getMaster().getDisplayName();
-        return name;
+        return this.getMaster().getDisplayName();
     }
 
 	public void setGiveItems()
@@ -176,15 +168,9 @@ public abstract class EntityStandBase extends MobEntity
                 this.setDead();
             }
             else {
-                try {
-                    this.setHealth(1000.0f);
-                }
-                catch (ClassCastException ex) {}
                 if (!this.getMaster().isAlive())
                 {
                     this.setDead();
-                    //this.getMaster().sendMessage(new TranslationTextComponent("dead master", new Object[0]));
-
                 }
                 if (this.getGiveItems()) {
                     this.givePlayerItems(this.getMaster());
@@ -192,28 +178,19 @@ public abstract class EntityStandBase extends MobEntity
                 if (this.getCatchPassive()) {
                     this.catchPassive();
                 }
-                /*if (this.getTimeContinue()) {
-                    if (this.getTimeIsSkipped()) {
-                        this.setTimeIsSkipped(false);
-                    }
-                    this.setTimeContinue(false);
-                }*/
                 this.clearActivePotions();
                 if (this.getAir() < 20) {
                     this.setAir(60);
                 }
-                IStand props = JojoProvider.getCapabilityFromPlayer(this.getMaster());
-                if (!props.getStandOn())
-                {
-                    this.setDead();
-                    //this.getMaster().sendMessage(new TranslationTextComponent("stand off", new Object[0]));
-                }
-                else {
-                    //this.followMaster();
-                    if (this.hungerTimer < 80) {
-                        ++this.hungerTimer;
+                JojoProvider.getLazyOptional(this.getMaster()).ifPresent(props -> {
+                    if (!props.getStandOn())
+                        this.setDead();
+                    else {
+                        if (this.hungerTimer < 80) {
+                            ++this.hungerTimer;
+                        }
                     }
-                }
+                });
                 this.resetAllChecks(this.getMaster());
             }
         }
@@ -360,7 +337,7 @@ public abstract class EntityStandBase extends MobEntity
         		        entityplayer = oneEntity;
         	
                     final double distance = entityplayer.getDistance(this.getMaster());
-                    final double distance2 = 3.141592653589793 * 2 * 2 * 2;
+                    final double distance2 = Math.PI * 2 * 2 * 2;
             
                   if(entityplayer != null)
                       entity = entityplayer;

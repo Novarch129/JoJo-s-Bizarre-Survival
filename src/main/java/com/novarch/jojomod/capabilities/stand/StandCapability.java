@@ -24,7 +24,7 @@ public class StandCapability implements IStand
 
 	private int standID = 0;
 
-	private int playerStandAct = 0;
+	private int standAct = 0;
 
 	private boolean standOn = false;
 
@@ -58,10 +58,11 @@ public class StandCapability implements IStand
 	    this.standID = value;
 		onDataUpdated();
 	}
-	  
-	public void setStandAct(int value)
+
+	@Override
+	public void setAct(int value)
 	{
-	    this.playerStandAct = value;
+	    this.standAct = value;
 		onDataUpdated();
 	}
 	  
@@ -93,10 +94,11 @@ public class StandCapability implements IStand
 	  {
 	  	return this.standID;
 	  }
-	  
-	  public int getStandAct()
+
+	  @Override
+	  public int getAct()
 	  {
-	    return this.playerStandAct;
+	    return this.standAct;
 	  }
 	  
 	  public boolean getStandOn() {
@@ -227,8 +229,8 @@ public class StandCapability implements IStand
 	}
 
 	@Override
-	public void putStandAct(int standAct) {
-		this.playerStandAct = standAct;
+	public void putAct(int standAct) {
+		this.standAct = standAct;
 	}
 
 	@Override
@@ -277,7 +279,7 @@ public class StandCapability implements IStand
 	public void clone(IStand props)
 	{
 	    setStandID(props.getStandID());
-	    setStandAct(props.getStandAct());
+	    setAct(props.getAct());
 	    setStandOn(false);
 	    setJojoPower(props.getJojoPower());
 	    setPowerSpawned(false);
@@ -289,10 +291,11 @@ public class StandCapability implements IStand
 	    setAbility(props.getAbility());
 	  }
 
-	  public void setStandRemoved()
+	  @Override
+	  public void removeStand()
 	  {
 	    setStandOn(false);
-	    setStandAct(0);
+	    setAct(0);
 	    setStandID(0);
 	    setPlayerStandName("");
 	    setCooldown(0);
@@ -310,8 +313,8 @@ public class StandCapability implements IStand
 			  public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
 			  {
 				  CompoundNBT props = new CompoundNBT();
-				  props.putInt("standID", instance.getStandID());
-				  props.putInt("StandAct", instance.getStandAct());
+				  props.putInt("StandID", instance.getStandID());
+				  props.putInt("StandAct", instance.getAct());
 				  props.putBoolean("StandOn", instance.getStandOn());
 				  props.putDouble("Cooldown", instance.getCooldown());
 				  props.putDouble("Timeleft", instance.getTimeLeft());
@@ -325,8 +328,8 @@ public class StandCapability implements IStand
 			  public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
 			  {
 				  CompoundNBT propertyData = (CompoundNBT)nbt;
-				  instance.putStandID(propertyData.getInt("standID"));
-				  instance.putStandAct(propertyData.getInt("StandAct"));
+				  instance.putStandID(propertyData.getInt("StandID"));
+				  instance.putAct(propertyData.getInt("StandAct"));
 				  instance.putStandOn(propertyData.getBoolean("StandOn"));
 				  instance.putCooldown(propertyData.getDouble("Cooldown"));
 				  instance.putTimeLeft(propertyData.getDouble("Timeleft"));

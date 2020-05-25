@@ -11,6 +11,7 @@ import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -96,7 +97,7 @@ public class EntityInit
 
 	public static final RegistryObject<EntityType<FakePlayerEntity>> FAKE_PLAYER = ENTITY_TYPES
 			.register("fake_player_jojo",
-					() -> EntityType.Builder.<FakePlayerEntity>create(FakePlayerEntity::new, EntityClassification.CREATURE)
+					() -> EntityType.Builder.<FakePlayerEntity>create((p_i48576_1_, p_i48576_2_) -> new FakePlayerEntity(p_i48576_1_, p_i48576_2_, Minecraft.getInstance().player), EntityClassification.CREATURE)
 							.size(1.0f, 2.0f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "fake_player_jojo").toString()));
 

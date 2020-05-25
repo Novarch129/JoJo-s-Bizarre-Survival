@@ -138,28 +138,23 @@ public class EntityMadeInHeaven extends EntityStandBase
 				{
 					for(PlayerEntity entity : this.world.getPlayers())
 					{
-						LazyOptional<IStand> pwr = ((PlayerEntity) entity).getCapability(JojoProvider.STAND);
+						LazyOptional<IStand> pwr = (entity).getCapability(JojoProvider.STAND);
 						IStand prps = pwr.orElse(new StandCapability(player));
-						if(entity instanceof PlayerEntity && prps.getStandID() != JojoLibs.StandID.GER)
+						if(prps.getStandID() != JojoLibs.StandID.GER)
 						{
-							((PlayerEntity) entity).inventory.clear();
+							(entity).inventory.clear();
 							EventD4CTeleportProcessor.d4cPassengerList.add(player);
 							EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
-							((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
-							((PlayerEntity) entity).fallDistance = 0;
-							((PlayerEntity) entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
-							prps.setStandRemoved();
-							((PlayerEntity) entity).setInvulnerable(false);
+							(entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
+							(entity).fallDistance = 0;
+							(entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+							prps.removeStand();
+							(entity).setInvulnerable(false);
 						}
 					}
 				}
 			}
 
-
-			try {
-				setHealth(1000.0F);
-			} catch (ClassCastException classCastException) {
-			}
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
@@ -167,7 +162,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 			//Orarush food check
 			if (!player.isAlive())
 				setDead();
-			if (player instanceof PlayerEntity) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {
@@ -187,8 +181,8 @@ public class EntityMadeInHeaven extends EntityStandBase
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.madeInHeaven madeInHeaven = new EntityStandPunch.madeInHeaven(this.world, this, player);
-							madeInHeaven.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
-							this.world.addEntity((Entity) madeInHeaven);
+							madeInHeaven.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							this.world.addEntity(madeInHeaven);
 						}
 					}
 				}
@@ -202,12 +196,12 @@ public class EntityMadeInHeaven extends EntityStandBase
 							player.setSprinting(false);
 							EntityStandPunch.madeInHeaven madeInHeaven1 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 							madeInHeaven1.setRandomPositions();
-							madeInHeaven1.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
-							this.world.addEntity((Entity) madeInHeaven1);
+							madeInHeaven1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
+							this.world.addEntity(madeInHeaven1);
 							EntityStandPunch.madeInHeaven madeInHeaven2 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 							madeInHeaven2.setRandomPositions();
-							madeInHeaven2.shoot((Entity) player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
-							this.world.addEntity((Entity) madeInHeaven2);
+							madeInHeaven2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 4.0F, 0.15F);
+							this.world.addEntity(madeInHeaven2);
 						}
 					if (this.oratickr >= 80) {
 						this.orarush = false;
@@ -215,7 +209,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 					}
 				}
 			}
-		}
 	    }
 
 	    @Override

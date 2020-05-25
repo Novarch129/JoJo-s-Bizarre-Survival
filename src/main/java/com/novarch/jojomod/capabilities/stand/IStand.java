@@ -12,7 +12,7 @@ public interface IStand
 
     void setStandID(final int p0);
 
-    void setStandAct(final int p0);
+    void setAct(final int act);
 
     void setStandOn(final boolean p0);
 
@@ -24,7 +24,7 @@ public interface IStand
 
     int getStandID();
 
-    int getStandAct();
+    int getAct();
 
     boolean getStandOn();
 
@@ -34,7 +34,7 @@ public interface IStand
 
     String getPlayerStandName();
 
-    void setStandRemoved();
+    void removeStand();
 
     void clone(final IStand p0);
     
@@ -72,7 +72,7 @@ public interface IStand
 
     void putStandID(final int standID);
 
-    void putStandAct(final int standAct);
+    void putAct(final int act);
 
     void putStandOn(final boolean standOn);
 

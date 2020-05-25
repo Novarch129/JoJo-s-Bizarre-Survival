@@ -82,6 +82,10 @@ public class EntityWeatherReport extends EntityStandBase
         if(this.world.rand.nextInt(35) == 1)
             this.spawnExplosionParticle();
 
+        if (this.heavyWeather) {
+            this.world.getWorldInfo().setRaining(true);
+        } else { this.world.getWorldInfo().setRaining(false);}
+
         if(getMaster() != null) {
             followMaster();
             PlayerEntity player = getMaster();
@@ -89,20 +93,22 @@ public class EntityWeatherReport extends EntityStandBase
             setRotation(player.rotationYaw, player.rotationPitch);
             JojoProvider.getLazyOptional(player).ifPresent(props -> this.heavyWeather = props.getAbility());
 
-            if(this.heavyWeather) {
+            if(this.heavyWeather)
+            {
                 if (!this.world.isRemote)
-                    this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {
+                    this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> entity!=player).filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {
                         if (entity.getDistance(player) <= 10) {
                             if (entity instanceof MobEntity)
                                 ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
-                            if (entity instanceof PlayerEntity && entity != player)
+                            if (entity instanceof PlayerEntity)
                                 ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
                             if(!player.isCreative()) {
-                                player.getFoodStats().addStats(0, -0.2f);
-                                player.getFoodStats().addExhaustion(0.2f);
+                                player.getFoodStats().addStats(0, -0.1f);
+                                player.getFoodStats().addExhaustion(0.05f);
                             }
                         }
                     });
+                this.world.getWorldInfo().setRaining(true);
             }
 
             if (!player.isSprinting()) {

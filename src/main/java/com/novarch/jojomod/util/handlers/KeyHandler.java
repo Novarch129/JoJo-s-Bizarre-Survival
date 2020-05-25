@@ -17,7 +17,7 @@ public class KeyHandler
 		for (int i = 0; i < desc.length; i++)
 	    {
 	    	String descStr = "key." + desc[i] + ".desc";
-	    	keys[i] = new KeyBinding(descStr, keyValues[i], "key.categories.Steve's Bizarre Survival");
+	    	keys[i] = new KeyBinding(descStr, keyValues[i], "key.categories.JoJo's Bizarre Survival");
 	    	ClientRegistry.registerKeyBinding(keys[i]);
 	    }
 	}

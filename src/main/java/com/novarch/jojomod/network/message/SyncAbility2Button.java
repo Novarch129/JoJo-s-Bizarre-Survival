@@ -31,22 +31,8 @@ public class SyncAbility2Button
         final NetworkEvent.Context ctx = supplier.get();
         if(ctx.getDirection().getReceptionSide().isServer())
         {
-            ctx.enqueueWork(() ->
-            {
-                ServerPlayerEntity sender = ctx.getSender();
-                if(sender == null)
-                    return;
-                abilityToggle((PlayerEntity) sender);
-            });
+            ctx.enqueueWork(() -> {});
         }
         ctx.setPacketHandled(true);
-    }
-
-    protected static void abilityToggle(PlayerEntity player)
-    {
-        if(player != null)
-        {
-            player.changeDimension(DimensionType.THE_NETHER);
-        }
     }
 }
