@@ -29,5 +29,5 @@
 - [ ] Hierophant Green
 - [ ] Silver Chariot
 
-##This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
+This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
 
