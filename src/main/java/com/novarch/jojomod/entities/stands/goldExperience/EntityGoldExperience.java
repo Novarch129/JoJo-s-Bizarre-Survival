@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.EntityType;
@@ -19,8 +20,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityGoldExperience extends EntityStandBase
 {
-	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience") public static EntityType<EntityGoldExperience> TYPE;
-
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
@@ -84,7 +83,7 @@ public class EntityGoldExperience extends EntityStandBase
 
 	public EntityGoldExperience(World world)
 	{
-		super(TYPE, world);
+		super(EntityInit.GOLD_EXPERIENCE.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.goldExperience;

@@ -7,8 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -41,7 +40,7 @@ public class SyncAbilityButton
                 ServerPlayerEntity sender = ctx.getSender();
                 if(sender == null)
                     return;
-                abilityToggle((PlayerEntity) sender);
+                abilityToggle(sender);
             });
         }
         ctx.setPacketHandled(true);
@@ -54,37 +53,33 @@ public class SyncAbilityButton
 
                 FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
                 fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-
-            if (props != null)
-            {
                 props.setAbility(!props.getAbility());
-            }
 
             if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Normal", new Object[0]));
+                player.sendMessage(new StringTextComponent("Mode: Normal"));
             }
 
             if (props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Lifegiver", new Object[0]));
+                player.sendMessage(new StringTextComponent("Mode: Lifegiver"));
             }
 
             if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Normal", new Object[0]));
+                player.sendMessage(new StringTextComponent("Mode: Normal"));
             }
 
             if (props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
-                player.sendMessage((ITextComponent)new TranslationTextComponent("Mode: Gold Experience Requiem", new Object[0]));
+                player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
             }
 
-            if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
-                player.sendMessage(new TranslationTextComponent("Ability: OFF", new Object[0]));
+            if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen) {
+                player.sendMessage(new StringTextComponent("Ability: OFF"));
                 if(props.getStandID() == JojoLibs.StandID.aerosmith)
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
             }
 
-            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
-                player.sendMessage(new TranslationTextComponent("Ability: ON", new Object[0]));
-                if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
+            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen) {
+                player.sendMessage(new StringTextComponent("Ability: ON"));
+                if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
                     player.world.addEntity(fakePlayer);
             }
             });

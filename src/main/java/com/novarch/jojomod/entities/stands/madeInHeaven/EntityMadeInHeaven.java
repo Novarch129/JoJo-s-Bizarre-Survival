@@ -2,14 +2,14 @@ package com.novarch.jojomod.entities.stands.madeInHeaven;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,8 +29,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityMadeInHeaven extends EntityStandBase
 {
-	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven") public static EntityType<EntityMadeInHeaven> TYPE;
-
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
@@ -74,7 +72,7 @@ public class EntityMadeInHeaven extends EntityStandBase
 
 	public EntityMadeInHeaven(World world)
 	{
-		super(TYPE, world);
+		super(EntityInit.MADE_IN_HEAVEN.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_MIH.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;

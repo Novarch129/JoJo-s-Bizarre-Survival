@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.material.Material;
@@ -20,8 +21,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityWeatherReport extends EntityStandBase
 {
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":weather_report") public static EntityType<EntityWeatherReport> TYPE;
-
     private int oratick = 0;
 
     private int oratickr = 0;
@@ -66,7 +65,7 @@ public class EntityWeatherReport extends EntityStandBase
 
     public EntityWeatherReport(World worldIn)
     {
-        super(TYPE, worldIn);
+        super(EntityInit.WEATHER_REPORT.get(), worldIn);
         this.spawnSound = SoundInit.SPAWN_WR.get();
         setCatchPassive();
         this.standID = JojoLibs.StandID.weatherReport;

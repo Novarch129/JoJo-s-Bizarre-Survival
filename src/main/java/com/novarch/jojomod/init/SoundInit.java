@@ -31,7 +31,7 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> SPAWN_GOLD_EXPERIENCE = SOUNDS.register("spawn_ge", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_ge")));
 	public static final RegistryObject<SoundEvent> SPAWN_GER = SOUNDS.register("spawn_ger", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_ger")));
 	public static final RegistryObject<SoundEvent> SPAWN_TW = SOUNDS.register("spawn_tw", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tw")));
-	public static final RegistryObject<SoundEvent> SPAWN_KQ = SOUNDS.register("spawn_kq", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_kq")));
+	public static final RegistryObject<SoundEvent> SPAWN_KILLER_QUEEN = SOUNDS.register("spawn_kq", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_kq")));
 	public static final RegistryObject<SoundEvent> SPAWN_SHA = SOUNDS.register("spawn_sha", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sha")));
 	public static final RegistryObject<SoundEvent> LOOK_HERE = SOUNDS.register("look_here", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "look_here")));
 	public static final RegistryObject<SoundEvent> SPAWN_SF = SOUNDS.register("spawn_sf", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sf")));

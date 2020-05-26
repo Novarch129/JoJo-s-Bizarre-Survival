@@ -1,12 +1,11 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
-import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -23,21 +22,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.registries.ObjectHolder;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public abstract class EntityStandPunch extends Entity implements IProjectile
 {
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":king_crimson_punch") public static EntityType<kingCrimson> KING_CRIMSON;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":d4c_punch") public static EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap> D4C;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_punch") public static EntityType<EntityStandPunch.goldExperience> GOLD_EXPERIENCE;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":made_in_heaven_punch") public static EntityType<EntityStandPunch.madeInHeaven> MADE_IN_HEAVEN;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":gold_experience_requiem_punch") public static EntityType<EntityStandPunch.goldExperienceRequiem> GOLD_EXPERIENCE_REQUIEM;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":aerosmith_bullet") public static EntityType<EntityStandPunch.aerosmith> AEROSMITH;
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":weather_report_punch") public static EntityType<EntityStandPunch.aerosmith> WEATHER_REPORT;
-
 public int xTile;
 
 public int yTile;
@@ -298,7 +288,7 @@ protected void onHit(EntityRayTraceResult raytraceResultIn) {
         LivingEntity LivingEntity = (LivingEntity)entity;
         if (!this.world.isRemote) {
           this.world.addParticle(ParticleTypes.EXPLOSION, this.getPosX(), this.getPosY(), this.getPosZ(), 1.0D, 0.0D, 0.0D);
-          StandPunchEffects.getStandSpecific(raytraceResultIn, LivingEntity, this, true, this.standID, false);
+          StandPunchEffects.getStandSpecific(raytraceResultIn, LivingEntity, this, true, this.standID);
         } 
         arrowHit(LivingEntity);
         if (this.standMaster != null && LivingEntity != this.standMaster && LivingEntity instanceof PlayerEntity && this.standMaster instanceof ServerPlayerEntity)
@@ -326,7 +316,7 @@ protected void onHit(BlockRayTraceResult raytraceResultIn)
   this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D);
   this.inGround = true;
   this.arrowShake = 7;
-  StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID, false);
+  StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, this.standID);
   if (blockState.getMaterial() != Material.AIR)
   {
     this.inTile.onProjectileCollision(this.world, blockState, raytraceResultIn, this);
@@ -485,7 +475,7 @@ public enum PickupStatus
   {
       public kingCrimson(World worldIn)
       {
-        super(KING_CRIMSON, worldIn);
+        super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn);
       }
 
       public kingCrimson(EntityType<? extends EntityStandPunch> type, World worldIn)
@@ -495,7 +485,7 @@ public enum PickupStatus
 
       public kingCrimson(World worldIn, EntityStandBase shooter, PlayerEntity player)
       {
-        super(KING_CRIMSON, worldIn, shooter, player);
+        super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn, shooter, player);
       }
 
       @Override
@@ -508,7 +498,7 @@ public enum PickupStatus
   	{
       public dirtyDeedsDoneDirtCheap(World worldIn)
       {
-        super(D4C, worldIn);
+        super(EntityInit.D4C_PUNCH.get(), worldIn);
       }
 
       public dirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandPunch> type, World worldIn)
@@ -518,7 +508,7 @@ public enum PickupStatus
 
       public dirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player)
       {
-        super(D4C, worldIn, shooter, player);
+        super(EntityInit.D4C_PUNCH.get(), worldIn, shooter, player);
       }
 
       @Override
@@ -532,7 +522,7 @@ public enum PickupStatus
       {
         public madeInHeaven(World worldIn)
         {
-          super(MADE_IN_HEAVEN, worldIn);
+          super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn);
         }
 
         public madeInHeaven(EntityType<? extends EntityStandPunch> type, World worldIn)
@@ -542,7 +532,7 @@ public enum PickupStatus
 
         public madeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player)
         {
-          super(MADE_IN_HEAVEN, worldIn, shooter, player);
+          super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn, shooter, player);
         }
 
         @Override
@@ -551,23 +541,11 @@ public enum PickupStatus
           return NetworkHooks.getEntitySpawningPacket(this);
         }
   }
-      /*public static class weatherReport extends EntityStandPunch
-      {
-          public weatherReport(World worldIn)
-          {
-            super(worldIn);
-          }
-          
-          public weatherReport(World worldIn, EntityStandBase shooter, PlayerEntity player) 
-          {
-            super(worldIn, shooter, player);
-          }
-  }*/
       public static class goldExperience extends EntityStandPunch 
       {
         public goldExperience(World worldIn)
         {
-          super(GOLD_EXPERIENCE, worldIn);
+          super(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), worldIn);
         }
 
         public goldExperience(EntityType<? extends EntityStandPunch> type, World worldIn)
@@ -577,7 +555,7 @@ public enum PickupStatus
 
         public goldExperience(World worldIn, EntityStandBase shooter, PlayerEntity player)
         {
-          super(GOLD_EXPERIENCE, worldIn, shooter, player);
+          super(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), worldIn, shooter, player);
         }
 
         @Override
@@ -602,7 +580,7 @@ public enum PickupStatus
       {
         public goldExperienceRequiem(World worldIn)
         {
-          super(GOLD_EXPERIENCE_REQUIEM, worldIn);
+          super(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), worldIn);
         }
 
         public goldExperienceRequiem(EntityType<? extends EntityStandPunch> type, World worldIn)
@@ -612,7 +590,7 @@ public enum PickupStatus
 
         public goldExperienceRequiem(World worldIn, EntityStandBase shooter, PlayerEntity player)
         {
-          super(GOLD_EXPERIENCE_REQUIEM, worldIn, shooter, player);
+          super(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), worldIn, shooter, player);
         }
 
         @Override
@@ -635,59 +613,19 @@ public enum PickupStatus
   }
       public static class aerosmith extends EntityStandPunch
       {
-        boolean bomb = false;
-        private Block inTile;
-        private int inData;
-
         public aerosmith(World worldIn)
         {
-          super(AEROSMITH, worldIn);
+          super(EntityInit.AEROSMITH_BULLET.get(), worldIn);
         }
 
         public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player)
         {
-          super(AEROSMITH, worldIn, shooter, player);
-          this.bomb=false;
-        }
-
-        public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player, boolean isBomb)
-        {
-          super(AEROSMITH, worldIn, shooter, player);
-          this.bomb=isBomb;
+          super(EntityInit.AEROSMITH_BULLET.get(), worldIn, shooter, player);
         }
 
         public aerosmith(EntityType<aerosmith> aerosmithEntityType, World world)
         {
           super(aerosmithEntityType, world);
-        }
-
-        @Override
-        protected void onHit(BlockRayTraceResult raytraceResultIn)
-        {
-          BlockPos blockpos = raytraceResultIn.getPos();
-          this.xTile = blockpos.getX();
-          this.yTile = blockpos.getY();
-          this.zTile = blockpos.getZ();
-          BlockState blockState = this.world.getBlockState(blockpos);
-          this.inTile = blockState.getBlock();
-          this.inData = Block.getStateId(blockState);
-          this.setMotion((float)(raytraceResultIn.getHitVec().x - this.getPosX()), (float)(raytraceResultIn.getHitVec().y - this.getPosY()), (float)(raytraceResultIn.getHitVec().z - this.getPosZ()));
-          float f2 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().y * this.getMotion().y + this.getMotion().z * this.getMotion().z);
-          this.setPosition(this.getPosX() - this.getMotion().x / f2 * 0.05000000074505806D, this.getPosY() - this.getMotion().y / f2 * 0.05000000074505806D, this.getPosZ() - this.getMotion().z / f2 * 0.05000000074505806D);
-          this.inGround = true;
-          this.arrowShake = 7;
-          if(bomb) {
-            TNTEntity tnt = new TNTEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), this.standMaster);
-            tnt.setVelocity(this.getLookVec().getX(), this.getLookVec().getY(), this.getLookVec().getZ());
-            this.world.addEntity(tnt);
-          }
-            else
-            StandPunchEffects.getStandSpecific(raytraceResultIn, null, this, false, JojoLibs.StandID.aerosmith, false);
-          if (blockState.getMaterial() != Material.AIR)
-          {
-            this.inTile.onProjectileCollision(this.world, blockState, raytraceResultIn, this);
-            remove();
-          }
         }
       }
 
@@ -695,17 +633,41 @@ public enum PickupStatus
   {
     public weatherReport(World worldIn)
     {
-      super(WEATHER_REPORT, worldIn);
+      super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn);
     }
 
     public weatherReport(World worldIn, EntityStandBase shooter, PlayerEntity player)
     {
-      super(WEATHER_REPORT, worldIn, shooter, player);
+      super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn, shooter, player);
     }
 
     public weatherReport(EntityType<weatherReport> weatherReportEntityType , World world)
     {
       super(weatherReportEntityType, world);
+    }
+  }
+
+  public static class killerQueen extends EntityStandPunch
+  {
+    public killerQueen(World worldIn)
+    {
+      super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn);
+    }
+
+    public killerQueen(EntityType<? extends EntityStandPunch> type, World worldIn)
+    {
+      super(type, worldIn);
+    }
+
+    public killerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player)
+    {
+      super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 	@Override

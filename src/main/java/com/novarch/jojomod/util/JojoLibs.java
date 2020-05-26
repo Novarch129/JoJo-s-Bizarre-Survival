@@ -7,6 +7,7 @@ import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
+import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
@@ -21,6 +22,7 @@ import net.minecraft.world.World;
 
 import java.util.function.Predicate;
 
+@SuppressWarnings("unused")
 public class JojoLibs
 {
     public static int getHighestBlock(World world, BlockPos pos)
@@ -104,7 +106,9 @@ public class JojoLibs
 
         public static final int weatherReport = 7;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport};
+        public static final int killerQueen = 8;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen};
     }
 
     public static int numberOfStands = StandID.stands.length;
@@ -129,6 +133,8 @@ public class JojoLibs
                 return new EntityAerosmith(world);
             case StandID.weatherReport:
                 return new EntityWeatherReport(world);
+            case StandID.killerQueen:
+                return new EntityKillerQueen(world);
         }
         return null;
     }

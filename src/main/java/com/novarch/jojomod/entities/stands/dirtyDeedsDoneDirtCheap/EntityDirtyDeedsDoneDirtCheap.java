@@ -7,6 +7,7 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
 import com.novarch.jojomod.util.JojoLibs;
@@ -29,8 +30,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 {
-	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":d4c") public static EntityType<EntityDirtyDeedsDoneDirtCheap> TYPE;
-
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
@@ -72,7 +71,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 
 	public EntityDirtyDeedsDoneDirtCheap(World world)
 	{
-		super(TYPE, world);
+		super(EntityInit.D4C.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_D4C.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;

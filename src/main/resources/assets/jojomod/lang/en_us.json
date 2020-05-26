@@ -26,8 +26,9 @@
 
   "key.categories.JoJo's Bizarre Survival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
-  "key.ability.desc": "Stand Ability",
-  "key.ability2.desc": "Stand Ability 2",
+  "key.ability.desc": "Ability Toggle",
+  "key.ability2.desc": "Stand Ability",
+  "key.ability3.desc": "Stand Ability w",
   "key.aerosmith_move_forward.desc": "Aerosmith Forward",
   "key.aerosmith_move_right.desc": "Aerosmith Right",
   "key.aerosmith_move_left.desc": "Aerosmith Left",

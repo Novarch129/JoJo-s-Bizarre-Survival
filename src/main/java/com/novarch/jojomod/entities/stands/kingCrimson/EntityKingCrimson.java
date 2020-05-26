@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.EntityType;
@@ -27,8 +28,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityKingCrimson extends EntityStandBase
 {
-	  @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":king_crimson") public static EntityType<EntityKingCrimson> TYPE;
-	
 	  private int oratick = 0;
 	  
 	  private int oratickr = 0;
@@ -70,7 +69,7 @@ public class EntityKingCrimson extends EntityStandBase
 	
 	public EntityKingCrimson(World world) 
 	{
-		super(TYPE, world);
+		super(EntityInit.KING_CRIMSON.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_KC.get();
 	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
@@ -82,7 +81,6 @@ public class EntityKingCrimson extends EntityStandBase
 		this.fallDistance = 0.0F; 
 	    if (getMaster() != null)
 	    {
-	    	//Minecraft.getInstance().setRenderViewEntity(this); //TODO Remember this!
 	    	PlayerEntity player = getMaster();
 	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	    	IStand props = power.orElse(new StandCapability(player));

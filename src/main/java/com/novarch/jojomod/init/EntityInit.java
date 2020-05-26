@@ -7,6 +7,7 @@ import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
+import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
@@ -20,13 +21,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD)
 public class EntityInit
 {
 	private int ID = 0;
-	
+
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
 	
 	public static final RegistryObject<EntityType<EntityKingCrimson>> KING_CRIMSON = ENTITY_TYPES
@@ -111,4 +113,16 @@ public class EntityInit
 			.register("weather_report_punch", () -> EntityType.Builder.<EntityStandPunch.weatherReport>create(EntityStandPunch.weatherReport::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityKillerQueen>> KILLER_QUEEN = ENTITY_TYPES
+			.register("killer_queen",
+					() -> EntityType.Builder.<EntityKillerQueen>create(EntityKillerQueen::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.killerQueen>> KILLER_QUEEN_PUNCH = ENTITY_TYPES
+			.register("killer_queen_punch",
+					() -> EntityType.Builder.<EntityStandPunch.killerQueen>create(EntityStandPunch.killerQueen::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen_punch").toString()));
 }

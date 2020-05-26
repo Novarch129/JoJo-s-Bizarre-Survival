@@ -4,12 +4,14 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -20,8 +22,6 @@ import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityAerosmith extends EntityStandBase
 {
-    @ObjectHolder(JojoBizarreSurvival.MOD_ID + ":aerosmith") public static EntityType<EntityAerosmith> TYPE;
-
     private int oratick = 0;
 
     private int oratickr = 0;
@@ -74,7 +74,7 @@ public class EntityAerosmith extends EntityStandBase
 
     public EntityAerosmith(World worldIn)
     {
-        super(TYPE, worldIn);
+        super(EntityInit.AEROSMITH.get(), worldIn);
         this.spawnSound = SoundInit.SPAWN_AEROSMITH.get();
         setCatchPassive();
         this.standID = JojoLibs.StandID.aerosmith;
@@ -151,10 +151,9 @@ public class EntityAerosmith extends EntityStandBase
                     }
                     if(props.getCooldown() <= 0) {
                         if (KeyHandler.keys[2].isPressed()) {
-                            EntityStandPunch.aerosmith bullet = new EntityStandPunch.aerosmith(this.world, this, player, true);
-                            bullet.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-                            bullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0);
-                            this.world.addEntity(bullet);
+                            TNTEntity tnt = new TNTEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), player);
+                            tnt.setVelocity(this.getLookVec().getX(), this.getLookVec().getY(), this.getLookVec().getZ());
+                            this.world.addEntity(tnt);
                             props.setCooldown(200);
                         }
                     }

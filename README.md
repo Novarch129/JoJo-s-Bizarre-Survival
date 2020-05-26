@@ -11,11 +11,11 @@
 - [ ] Whitesnake
 - [ ] C-Moon
 - [x] Made in Heaven
-- [ ] Weather Report
+- [x] Weather Report
 - [x] King Crimson
-- [ ] Gold Experience
+- [x] Gold Experience
 - [x] Gold Experience Requiem
-- [ ] Aerosmith
+- [x] Aerosmith
 - [ ] Sticky Fingers
 - [ ] Purple Haze
 - [ ] Green Day
@@ -28,4 +28,6 @@
 - [ ] Magician's Red
 - [ ] Hierophant Green
 - [ ] Silver Chariot
+
+##This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
 
