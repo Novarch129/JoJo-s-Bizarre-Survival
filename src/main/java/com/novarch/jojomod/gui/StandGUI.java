@@ -99,7 +99,7 @@ public class StandGUI extends AbstractGui
             else if(props.getStandID() == JojoLibs.StandID.aerosmith)
             {
                 if(cooldown > 0)
-                    renderTimeLeft(cooldown);
+                    renderCooldown(cooldown);
             }
         });
     }

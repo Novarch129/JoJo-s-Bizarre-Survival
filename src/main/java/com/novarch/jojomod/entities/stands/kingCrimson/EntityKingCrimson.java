@@ -178,7 +178,7 @@ public class EntityKingCrimson extends EntityStandBase
 
 	        //Orarush food check       
 	        if (!player.isAlive())
-	          setDead();
+	          remove();
 	        	if(!this.timeSkipped || !props.getAbility()) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))

@@ -16,6 +16,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
@@ -59,81 +60,74 @@ public class SyncStandSummonButton
 		  
 		public static void work(SyncStandSummonButton message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity serverPlayer)
 		{
-			ServerPlayerEntity player = serverPlayer;
-			FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
+			FakePlayerEntity fakePlayer = new FakePlayerEntity(serverPlayer.world, serverPlayer);
 			fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-		      World world = player.world;
-		      if (!world.isRemote)
-		        if (player != null) {
-		          LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-		          IStand props = power.orElse(new StandCapability(player));
-		          if (props != null) {
-		            int tickDelay = 0;
-		            for (int k = 0; k < 20; k++) {
-		              tickDelay++;
-		              if (tickDelay == 20) {
-		                tickDelay = 0;
-		                if (!player.isCrouching()) {
-		                  boolean standCheck = props.getStandOn();
-		                  if (standCheck) {
-		                  	if(fakePlayer.isAlive())
-		                  		fakePlayer.remove();
-		                    props.setStandOn(false);
-		                    return;
-		                  } 
-		                  SyncStandSummonButton.summonStand((PlayerEntity)player, fakePlayer);
-		                  return;
-		                } 
-		                List<Entity> entityList = world.getEntitiesWithinAABBExcludingEntity((Entity)player, new AxisAlignedBB(player.getPosX() - 1.0D, player.getPosY() - 1.0D, player.getPosZ() - 1.0D, player.getPosX() + 1.0D, player.getPosY() + 1.0D, player.getPosZ() + 1.0D));
-		                if (entityList != null && !entityList.isEmpty())
-		                  for (int i = 0; i < entityList.size(); i++) {
-		                    if (entityList.get(i) instanceof EntityStandBase) {
-		                      EntityStandBase stand = (EntityStandBase) entityList.get(i);
-		                      if (stand.getMaster() == player)
-		                        if (stand.getCanChangeAct()) {
-		                          stand.changeAct();
-		                          return;
-		                        }  
-		                    } 
-		                  }  
-		              } 
-		            } 
-		          } 
-		        }  
-		      return;
+			World world = serverPlayer.world;
+			if (!world.isRemote)
+			{
+				JojoProvider.getLazyOptional(serverPlayer).ifPresent(props -> {
+					int tickDelay = 0;
+					for (int k = 0; k < 20; k++) {
+						tickDelay++;
+						if (tickDelay == 20)
+						{
+							tickDelay = 0;
+							if (!serverPlayer.isCrouching())
+							{
+								boolean standCheck = props.getStandOn();
+								if (standCheck) {
+									if (fakePlayer.isAlive())
+										fakePlayer.remove();
+									props.setStandOn(false);
+									return;
+								}
+								SyncStandSummonButton.summonStand(serverPlayer, fakePlayer);
+								return;
+							}
+							List<Entity> entityList = world.getEntitiesWithinAABBExcludingEntity(serverPlayer, new AxisAlignedBB(serverPlayer.getPosX() - 1.0D, serverPlayer.getPosY() - 1.0D, serverPlayer.getPosZ() - 1.0D, serverPlayer.getPosX() + 1.0D, serverPlayer.getPosY() + 1.0D, serverPlayer.getPosZ() + 1.0D));
+							if (!entityList.isEmpty()) {
+								for (Entity entity : entityList) {
+									if (entity instanceof EntityStandBase) {
+										EntityStandBase stand = (EntityStandBase) entity;
+										if (stand.getMaster() == serverPlayer)
+											if (stand.getCanChangeAct()) {
+												stand.changeAct();
+												return;
+											}
+									}
+								}
+							}
+						}
+					}
+				});
+			}
 		}
 		
-		  public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer)
-		  {
-			  LazyOptional<IStand> power = player.getCapability(JojoProvider.STAND, null);
-			  IStand props = power.orElse(new StandCapability(player));
-			  int standID = props.getStandID();
-			  EntityStandBase theStand = JojoLibs.getStand(standID, player.world);
-			  
-			  if (theStand != null)
-			  {
-			  	if(!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), EntityPredicates.NOT_SPECTATING).contains(theStand))
-			  	{
-					int standAct = props.getAct();
-					if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getAbility())
-						player.world.addEntity(fakePlayer);
-					props.setStandOn(true);
-					theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-					theStand.setMaster(player);
-					theStand.setMastername(player.getDisplayName().toString());
-					String name = props.getPlayerStandName();
+		  public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer) {
+			  JojoProvider.getLazyOptional(player).ifPresent(props -> {
+				  int standID = props.getStandID();
+				  EntityStandBase theStand = JojoLibs.getStand(standID, player.world);
 
-					if (!name.equals(""))
-						theStand.setCustomName((new TranslationTextComponent(name, null, new Object[0])));
+				  if (theStand != null) {
+					  if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), EntityPredicates.NOT_SPECTATING).contains(theStand)) {
+						  int standAct = props.getAct();
+						  if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getAbility())
+							  player.world.addEntity(fakePlayer);
+						  props.setStandOn(true);
+						  theStand.setLocationAndAngles(player.getPosX() + 0.1D, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+						  theStand.setMaster(player);
+						  theStand.setMasterUUID(player.getUniqueID());
+						  String name = props.getPlayerStandName();
 
-					player.world.addEntity((Entity) theStand);
-					theStand.spawnSound();
-					theStand.setGiveItems();
-					theStand.changeAct();
-				}
-			  	else
-			  		theStand.remove();
-		      return;
-		    } 
+						  if (!name.equals(""))
+							  theStand.setCustomName((new StringTextComponent(name)));
+
+						  player.world.addEntity(theStand);
+						  theStand.spawnSound();
+						  theStand.changeAct();
+					  } else
+						  theStand.remove();
+				  }
+			  });
 		}
 }

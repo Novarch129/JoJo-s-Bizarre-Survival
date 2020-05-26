@@ -82,14 +82,12 @@ public final class ItemStandArrow extends Item
 					props.setStandID(newStandID);
 				else
 					props.setStandID(standID);
-				if(!player.isCreative())
-					player.attackEntityFrom(DamageSource.MAGIC, 5.0f);
 				props.setStandOn(true);
 				final EntityStandBase theStand = JojoLibs.getStand(newStandID, world);
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
-					theStand.setMastername(player.getDisplayName().toString());
+					theStand.setMasterUUID(player.getUniqueID());
 					if(this.standID == JojoLibs.StandID.aerosmith)
 					{
 						FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
@@ -98,13 +96,12 @@ public final class ItemStandArrow extends Item
 					}
 					world.addEntity(theStand);
 					theStand.spawnSound();
-					theStand.setGiveItems();
 				}
 			}
 			else if(props.getStandID() == JojoLibs.StandID.goldExperience && this.standID == 0)
 			{
 				props.removeStand();
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), JojoLibs.Predicates.IS_STAND))
 				{
 					if(entity1 instanceof EntityGoldExperience)
 					{
@@ -114,7 +111,7 @@ public final class ItemStandArrow extends Item
 						}
 					}
 				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, -200.0 , -400.0)), JojoLibs.Predicates.IS_STAND))
 				{
 					if(entity1 instanceof EntityGoldExperience)
 					{
@@ -124,7 +121,7 @@ public final class ItemStandArrow extends Item
 						}
 					}
 				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, 200.0 , 400.0)), EntityPredicates.NOT_SPECTATING))
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, 200.0 , 400.0)), JojoLibs.Predicates.IS_STAND))
 				{
 					if(entity1 instanceof EntityGoldExperience)
 					{
@@ -134,7 +131,7 @@ public final class ItemStandArrow extends Item
 						}
 					}
 				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, -200.0 , -400.0)), EntityPredicates.NOT_SPECTATING))
+				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, -200.0 , -400.0)), JojoLibs.Predicates.IS_STAND))
 				{
 					if(entity1 instanceof EntityGoldExperience)
 					{
@@ -150,34 +147,28 @@ public final class ItemStandArrow extends Item
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
-					theStand.setMastername(player.getDisplayName().toString());
+					theStand.setMasterUUID(player.getUniqueID());
 					world.addEntity((Entity) theStand);
 					theStand.spawnSound();
-					theStand.setGiveItems();
 				}
-			}
-			else
-			{
-				player.sendMessage((ITextComponent)new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
 			}
 		});
 	}
 
-	/*@Override
+	@Override
 	public ActionResult onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
 		try {
             IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
-        if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience)
-        {
-            playerIn.setActiveHand(handIn);
-            return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, stack);
-        }
-        playerIn.sendMessage(new TranslationTextComponent("msg.jojomod.standalready.txt", new Object[0]));
-		} catch (ClassCastException cce) {playerIn.sendMessage(new StringTextComponent("Exception!" + playerIn.getCapability(JojoProvider.STAND, null)));}
-        return new ActionResult(ActionResultType.PASS, stack);
-	}*/
+        	if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience) {
+        		playerIn.setActiveHand(handIn);
+        		return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, stack);
+        	} else
+				playerIn.sendMessage(new TranslationTextComponent("msg.jojomod.standalready.txt"));
+		} catch (ClassCastException cce) {playerIn.sendMessage(new StringTextComponent("Exception! " + JojoProvider.getCapabilityFromPlayer(playerIn) + " Send this to https://github.com/Novarch129/JoJo-s-Bizarre-Survival/issues with your debug.log attached!" ));}
+        	return new ActionResult(ActionResultType.PASS, stack);
+	}
 	
 	@Override
 	public int getUseDuration(final ItemStack itemStack) 

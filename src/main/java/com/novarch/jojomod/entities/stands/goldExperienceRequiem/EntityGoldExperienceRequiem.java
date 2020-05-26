@@ -157,7 +157,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 			//Orarush food check
 			if (!player.isAlive())
-				setDead();
+				remove();
 			if (player.isSprinting()) {
 				if (attackSwing(player))
 					if (player.getFoodStats().getFoodLevel() > 6) {

@@ -16,10 +16,6 @@ public interface IStand
 
     void setStandOn(final boolean p0);
 
-    void setJojoPower(final int p0);
-
-    void setPowerSpawned(final boolean p0);
-
     void setPlayerStandName(final String p0);
 
     int getStandID();
@@ -28,17 +24,13 @@ public interface IStand
 
     boolean getStandOn();
 
-    int getJojoPower();
-
-    boolean getPowerSpawned();
-
     String getPlayerStandName();
 
     void removeStand();
 
     void clone(final IStand p0);
     
-    void setCooldown(double new_cooldown);
+    void setCooldown(double ncooldown);
 
     void addCooldown(double addition);
 
@@ -46,7 +38,7 @@ public interface IStand
     
     double getCooldown();
 
-    void setTimeLeft(double new_time_left);
+    void setTimeLeft(double timeLeft);
 
     double getTimeLeft();
 

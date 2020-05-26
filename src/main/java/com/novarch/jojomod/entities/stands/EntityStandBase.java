@@ -21,6 +21,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import java.util.UUID;
+
 @SuppressWarnings("unused")
 public abstract class EntityStandBase extends MobEntity
 {
@@ -35,7 +37,7 @@ public abstract class EntityStandBase extends MobEntity
 	boolean catchCheck;
 	boolean attack;
 	public boolean giveItem;
-	public String mastername;
+	public UUID masterUUID;
 	public int hungerTimer;
 	public boolean heavyWeather;
 	public boolean ger;
@@ -81,21 +83,22 @@ public abstract class EntityStandBase extends MobEntity
     	return this.standID;
     }
 	
-    public boolean attackSwing(final PlayerEntity player) {
-        if (player.isSwingInProgress && this.getAttackTrue()) {
+    public boolean attackSwing(final PlayerEntity player)
+    {
+        if (player.isSwingInProgress && this.getAttackTrue())
+        {
             this.setAttackTrue(false);
             return true;
         }
         return false;
     }
     
-    public void hungerMessage() {
-        if (this.hungerTimer == 1) {
+    public void hungerMessage()
+    {
+        if (this.hungerTimer == 1)
             this.getMaster().sendMessage(new TranslationTextComponent("msg.jojomod.hunger.txt"));
-        }
-        if (this.hungerTimer >= 40) {
+        if (this.hungerTimer >= 40)
             this.hungerTimer = 0;
-        }
     }
 
     @Override
@@ -125,74 +128,55 @@ public abstract class EntityStandBase extends MobEntity
         return false;
     }
 
-    public void setMastername(final String par1Str) {
-        if (!this.world.isRemote) {
-            this.mastername = par1Str;
-        }
+    public void setMasterUUID(final UUID masterUUID)
+    {
+        if (!this.world.isRemote)
+            this.masterUUID = masterUUID;
 	}
-	
-	public ITextComponent getMastername() {
-        return this.getMaster().getDisplayName();
+
+    public UUID getMasterUUID()
+    {
+        return masterUUID;
     }
 
-	public void setGiveItems()
-	{
-        this.giveItem = true;
-    }
-    
-    public void givePlayerItems(final PlayerEntity player)
-    {
-        this.giveItem = false;
+    public ITextComponent getMastername() {
+        return this.getMaster().getDisplayName();
     }
     
     public void resetAllChecks(final PlayerEntity player) {
         this.resetJumpBool(player);
     }
-    
-    public boolean getGiveItems()
+
+    @Override
+    public void tick()
     {
-        return this.giveItem;
-    }
-	
-    public void setDead()
-    {
-    	this.remove();
-    }
-    
-    public void tick() {
         super.tick();
         this.fallDistance = 0.0f;
-        if (!this.world.isRemote) {
-            if (this.getMaster() == null)
-            {
-                this.setDead();
+        if (!this.world.isRemote)
+        {
+            if(this.getMaster() == null) {
+                this.remove();
+                return;
             }
-            else {
-                if (!this.getMaster().isAlive())
-                {
-                    this.setDead();
-                }
-                if (this.getGiveItems()) {
-                    this.givePlayerItems(this.getMaster());
-                }
-                if (this.getCatchPassive()) {
+
+            if (!this.getMaster().isAlive())
+                this.remove();
+
+                if (getCatchPassive())
                     this.catchPassive();
-                }
-                this.clearActivePotions();
-                if (this.getAir() < 20) {
+
+                if (this.getAir() < 20)
                     this.setAir(60);
-                }
-                JojoProvider.getLazyOptional(this.getMaster()).ifPresent(props -> {
-                    if (!props.getStandOn())
-                        this.setDead();
-                    else {
-                        if (this.hungerTimer < 80) {
-                            ++this.hungerTimer;
-                        }
-                    }
-                });
-                this.resetAllChecks(this.getMaster());
-            }
+
+                this.clearActivePotions();
+            JojoProvider.getLazyOptional(this.getMaster()).ifPresent(props -> {
+                if (!props.getStandOn())
+                    this.remove();
+                else
+                    if (this.hungerTimer < 80)
+                        ++this.hungerTimer;
+            });
+            this.resetAllChecks(this.getMaster());
         }
     }
     
@@ -203,23 +187,21 @@ public abstract class EntityStandBase extends MobEntity
 	
 	protected void followMaster()
 	{
-        final Entity entity = this.getMaster();
+        final PlayerEntity entity = this.getMaster();
         final double distance = entity.getDistance(this);
         final double minimum = 0.5;
         final double maximum = 3.0;
+
         if (distance < minimum)
-        {
             this.moveStand(distance, entity);
-        }
-        else if (distance > minimum) {
+
+        else if (distance > minimum)
+        {
             if (distance < maximum && distance > minimum + 0.3)
-            {
                 this.moveStand(distance, entity);
-            }
+
             else if (distance > maximum && !this.world.isRemote)
-            {
                 this.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-            }
         }
     }
 	
@@ -229,50 +211,31 @@ public abstract class EntityStandBase extends MobEntity
         final double distanceY = this.getPosY() - entity.getPosY();
         final double distanceZ = this.getPosZ() - entity.getPosZ();
         float speed = (float)distance / 45.0f;
+
         if (distance < 0.5)
-        {
             speed = -0.1f;
-        }
         if (distanceX > 0.0)
-        {
             this.moveForward += -speed;
-        }
         if (distanceX < 0.0)
-        {
             this.moveForward += speed;
-        }
         if (distanceY > 0.0)
-        {
             this.moveVertical += -speed;
-        }
         if (distanceY < 0.0)
-        {
             this.moveVertical += speed;
-        }
         if (distanceZ > 0.0)
-        {
             this.moveStrafing += -speed;
-        }
         if (distanceZ < 0.0)
-        {
             this.moveStrafing += speed;
-        }
     }
 
     @Override
 	public boolean attackEntityFrom(final DamageSource damageSource, final float damage) {
-        if (this.getMaster() == null || !this.standOn)
-        {
+        if (!this.standOn)
             return false;
-        }
         if (damageSource.getTrueSource() == this.getMaster())
-        {
             return false;
-        }
         if (damageSource == DamageSource.CACTUS)
-        {
             return false;
-        }
         this.getMaster().attackEntityFrom(damageSource, damage * 0.5f);
         return false;
     }
@@ -290,9 +253,7 @@ public abstract class EntityStandBase extends MobEntity
     public void resetJumpBool(final PlayerEntity player)
     {
         if (player.onGround)
-        {
             this.setJumped(true);
-        }
     }
 
 
@@ -324,60 +285,45 @@ public abstract class EntityStandBase extends MobEntity
     
     public void changeAct() {}
 
-    private void catchPassive() 
+    private void catchPassive()
     {
-        Entity entity = null;
-            if(this.world != null)
+        Entity entity;
+        if (this.world != null)
+        {
+            for (Entity entity1 : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(100.0, 400.0, 100.0), EntityPredicates.NOT_SPECTATING))
             {
-                for (Entity oneEntity : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(100.0, 400.0, 100.0), EntityPredicates.NOT_SPECTATING))
-		        {
-        	        Entity entityplayer = null;
+                Entity playerEntity = null;
 
-        	        if(oneEntity != null)
-        		        entityplayer = oneEntity;
-        	
-                    final double distance = entityplayer.getDistance(this.getMaster());
-                    final double distance2 = Math.PI * 2 * 2 * 2;
-            
-                  if(entityplayer != null)
-                      entity = entityplayer;
-            
-                   if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2 && entity != null)
-                   {
-                  	if(entityplayer != null)
-                  	    entity = entityplayer;
-            	
-                      final double distanceX = this.getPosX() - entity.getPosX();
-                      final double distanceY = this.getPosY() - entity.getPosY();
-                      final double distanceZ = this.getPosZ() - entity.getPosZ();
-                      final float speed = 0.3f;
-                
-                if (distanceX > 0.0)
+                if (entity1 != null)
+                    playerEntity = entity1;
+
+                assert playerEntity != null;
+                final double distance = playerEntity.getDistance(this.getMaster());
+                final double distance2 = Math.PI * 2 * 2 * 2;
+
+                entity = playerEntity;
+
+                if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2)
                 {
-                    this.moveForward += -speed;
-                }
-                if (distanceX < 0.0)
-                {
-                    this.moveForward += speed;
-                }
-                if (distanceY > 0.0)
-                {
-                    this.moveVertical += -speed;
-                }
-                if (distanceY < 0.0)
-                {
-                    this.moveVertical += speed;
-                }
-                if (distanceZ > 0.0)
-                {
-                    this.moveStrafing += -speed;
-                }
-                if (distanceZ < 0.0)
-                {
-                    this.moveStrafing += speed;
+
+                    final double distanceX = this.getPosX() - entity.getPosX();
+                    final double distanceY = this.getPosY() - entity.getPosY();
+                    final double distanceZ = this.getPosZ() - entity.getPosZ();
+
+                    if (distanceX > 0.0)
+                        this.moveForward += -0.3;
+                    if (distanceX < 0.0)
+                        this.moveForward += 0.3;
+                    if (distanceY > 0.0)
+                        this.moveVertical += -0.3;
+                    if (distanceY < 0.0)
+                        this.moveVertical += 0.3;
+                    if (distanceZ > 0.0)
+                        this.moveStrafing += -0.3;
+                    if (distanceZ < 0.0)
+                        this.moveStrafing += 0.3;
                 }
             }
-        }
         }
     }
 }

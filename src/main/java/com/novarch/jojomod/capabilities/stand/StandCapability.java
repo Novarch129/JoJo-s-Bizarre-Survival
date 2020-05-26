@@ -14,9 +14,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class StandCapability implements IStand
 {
@@ -27,10 +24,6 @@ public class StandCapability implements IStand
 	private int standAct = 0;
 
 	private boolean standOn = false;
-
-	private boolean playerPowerSpawned = false;
-
-	private int playerJojoPower = 0;
 
 	private double cooldown = 0;
 
@@ -71,19 +64,7 @@ public class StandCapability implements IStand
 	    this.standOn = value;
 		onDataUpdated();
 	}
-	  
-	  public void setJojoPower(int value)
-	  {
-	    this.playerJojoPower = value;
-		  onDataUpdated();
-	  }
-	  
-	  public void setPowerSpawned(boolean value)
-	  {
-	    this.playerPowerSpawned = value;
-		  onDataUpdated();
-	  }
-	  
+
 	  public void setPlayerStandName(String value)
 	  {
 	  	this.playerStandName = value;
@@ -105,22 +86,14 @@ public class StandCapability implements IStand
 	    return this.standOn;
 	  }
 	  
-	  public int getJojoPower() {
-	    return this.playerJojoPower;
-	  }
-	  
-	  public boolean getPowerSpawned() {
-	    return this.playerPowerSpawned;
-	  }
-	  
 	  public String getPlayerStandName() {
 	    return this.playerStandName;
 	  }
 	  
 	  @Override
-	  public void setCooldown(double new_cooldown)
+	  public void setCooldown(double cooldown)
 	  {
-		  this.cooldown = new_cooldown;
+		  this.cooldown = cooldown;
 		  onDataUpdated();
 	  }
 	  
@@ -281,8 +254,6 @@ public class StandCapability implements IStand
 	    setStandID(props.getStandID());
 	    setAct(props.getAct());
 	    setStandOn(false);
-	    setJojoPower(props.getJojoPower());
-	    setPowerSpawned(false);
 	    setPlayerStandName(props.getPlayerStandName());
 	    setCooldown(props.getCooldown());
 	    setTimeLeft(props.getTimeLeft());

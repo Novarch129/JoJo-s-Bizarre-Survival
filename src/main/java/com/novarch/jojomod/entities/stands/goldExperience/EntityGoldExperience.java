@@ -120,7 +120,7 @@ public class EntityGoldExperience extends EntityStandBase
 
 			//Orarush food check
 			if (!player.isAlive())
-				setDead();
+				remove();
 			if (player instanceof PlayerEntity) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
