@@ -4,6 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.network.message.SyncStandCapability;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -58,10 +59,9 @@ public class EventSyncCapability
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)
                             .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                                .forEach(entity -> entity.remove());
+                                .forEach(Entity::remove);
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
             }
         });
-
     }
 }

@@ -1511,7 +1511,7 @@ public abstract class StandPunchEffects
 		{
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.0f);
 			if(punch.shootingStand.heavyWeather)
-				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 300, 10));
+				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 300, 15));
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, 0, 0);
 			punch.remove();

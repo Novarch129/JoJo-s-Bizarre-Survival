@@ -7,7 +7,6 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -15,7 +14,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.stats.Stat;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.ObjectHolder;
@@ -82,10 +80,6 @@ public class EntityWeatherReport extends EntityStandBase
         if(this.world.rand.nextInt(35) == 1)
             this.spawnExplosionParticle();
 
-        if (this.heavyWeather) {
-            this.world.getWorldInfo().setRaining(true);
-        } else { this.world.getWorldInfo().setRaining(false);}
-
         if(getMaster() != null) {
             followMaster();
             PlayerEntity player = getMaster();
@@ -109,6 +103,10 @@ public class EntityWeatherReport extends EntityStandBase
                         }
                     });
                 this.world.getWorldInfo().setRaining(true);
+                this.world.setRainStrength(5);
+            } else {
+                this.world.setRainStrength(-1);
+                this.world.getWorldInfo().setRaining(false);
             }
 
             if (!player.isSprinting()) {
@@ -116,7 +114,7 @@ public class EntityWeatherReport extends EntityStandBase
                     this.oratick++;
                     if (oratick == 1) {
                         EntityStandPunch.weatherReport weatherReportPunch = new EntityStandPunch.weatherReport(this.world, this, player);
-                        weatherReportPunch.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0.4f);
+                        weatherReportPunch.shoot(player, this.rotationPitch, this.rotationYaw, 0, 2.5f, 0.4f);
                         this.world.addEntity(weatherReportPunch);
                     }
                 }
@@ -140,11 +138,11 @@ public class EntityWeatherReport extends EntityStandBase
                         player.setSprinting(false);
                         EntityStandPunch.weatherReport weatherReportPunch1 = new EntityStandPunch.weatherReport(this.world, this, player);
                         weatherReportPunch1.setRandomPositions();
-                        weatherReportPunch1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        weatherReportPunch1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 1.8f, 0.2f);
                         this.world.addEntity(weatherReportPunch1);
                         EntityStandPunch.weatherReport weatherReportPunch2 = new EntityStandPunch.weatherReport(this.world, this, player);
                         weatherReportPunch2.setRandomPositions();
-                        weatherReportPunch2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 2.0F, 0.2F);
+                        weatherReportPunch2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 1.8f, 0.2f);
                         this.world.addEntity(weatherReportPunch2);
                     }
                 if (this.oratickr >= 110) {

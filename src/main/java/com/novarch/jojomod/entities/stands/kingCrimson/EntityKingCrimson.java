@@ -10,17 +10,14 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.item.minecart.MinecartCommandBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
@@ -35,8 +32,6 @@ public class EntityKingCrimson extends EntityStandBase
 	  private int oratick = 0;
 	  
 	  private int oratickr = 0;
-
-	  private boolean timeSkipped;
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -108,51 +103,44 @@ public class EntityKingCrimson extends EntityStandBase
 			}
 
 	        //King Crimson's Ability
-	        if(this.timeSkipped && props.getAbility() && props.getStandOn())
-				{
-	        	if(props.getTimeLeft()==0) {player.sendMessage(new StringTextComponent("Time Skip : ON"));}
-	        	if(props.getTimeLeft() > 800)
-	        	{
-	        		this.getMaster().setInvulnerable(true);
-	        		player.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
-	        		if(!player.isCreative() && !player.isSpectator())
+	        if(this.timeSkipped && props.getAbility() && props.getStandOn()) {
+				if (props.getTimeLeft() == 0) {
+					player.sendMessage(new StringTextComponent("Time Skip : ON"));
+				}
+				if (props.getTimeLeft() > 800) {
+					this.getMaster().setInvulnerable(true);
+					player.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
+					if (!player.isCreative() && !player.isSpectator())
 						player.setGameType(GameType.ADVENTURE);
-	        		props.subtractTimeLeft(1);
+					props.subtractTimeLeft(1);
 
-	        		this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
-	        			IStand prs = entity.getCapability(JojoProvider.STAND).orElse(new StandCapability(player));
-						if(entity != null && !(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch.kingCrimson) && !(entity instanceof ItemEntity) && entity.isAlive())
-						{
-							if(entity instanceof MobEntity && !(entity instanceof PlayerEntity) && !(entity instanceof EntityGoldExperienceRequiem) && !(entity instanceof EntityStandPunch.goldExperienceRequiem))
-							{
-								if(((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster())
-								{
-									((MobEntity)entity).setAttackTarget(null);
+					this.world.getServer().getWorld(this.dimension).getEntities().forEach(entity -> {
+						IStand prs = entity.getCapability(JojoProvider.STAND).orElse(new StandCapability(player));
+						if (!(entity instanceof EntityKingCrimson) && !(entity instanceof EntityStandPunch) && !(entity instanceof ItemEntity) && entity.isAlive()) {
+							if (entity instanceof MobEntity && !(entity instanceof EntityGoldExperienceRequiem)) {
+								if (((MobEntity) entity).getAttackTarget() == this.getMaster() || ((MobEntity) entity).getRevengeTarget() == this.getMaster()) {
+									((MobEntity) entity).setAttackTarget(null);
 									((MobEntity) entity).setRevengeTarget(null);
 								}
-								((MobEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+								((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 
-							if(entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER)
-							{
-								if(prs.getStandID() == JojoLibs.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
+							if (entity instanceof PlayerEntity && entity != this.getMaster() && prs.getStandID() != JojoLibs.StandID.GER) {
+								if (prs.getStandID() == JojoLibs.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
 									return;
-								((PlayerEntity)entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+								((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 							}
 						}
 					});
-				}
-
-	        	else
-	        	{
-	        		if(!this.getMaster().isCreative() && !this.getMaster().isSpectator())
+				} else {
+					if (!this.getMaster().isCreative() && !this.getMaster().isSpectator())
 						this.getMaster().setGameType(GameType.SURVIVAL);
-	        		this.getMaster().setInvulnerable(false);
-	        		this.timeSkipped = false;
-	        		player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+					this.getMaster().setInvulnerable(false);
+					this.timeSkipped = false;
+					player.removePotionEffect(EffectInit.CRIMSON_USER.get());
 					props.setCooldown(200);
-	        	}
-	        }
+				}
+			}
 
 	        if(!timeSkipped)
 			{

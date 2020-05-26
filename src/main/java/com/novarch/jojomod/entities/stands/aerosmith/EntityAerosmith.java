@@ -155,7 +155,7 @@ public class EntityAerosmith extends EntityStandBase
                             bullet.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
                             bullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 3.0f, 0);
                             this.world.addEntity(bullet);
-                            props.setCooldown(400);
+                            props.setCooldown(200);
                         }
                     }
                 });
