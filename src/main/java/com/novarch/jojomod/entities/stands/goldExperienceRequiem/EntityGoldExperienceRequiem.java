@@ -59,7 +59,6 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	{
 		super(type, world);
 	    this.spawnSound = SoundInit.SPAWN_GER.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.GER;
 	}
 
@@ -67,7 +66,6 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 	{
 		super(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_GER.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.GER;
 	}
 	

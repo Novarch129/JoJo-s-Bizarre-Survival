@@ -63,7 +63,6 @@ public class EntityKingCrimson extends EntityStandBase
 	{
 		super(type, world);
 	    this.spawnSound = SoundInit.SPAWN_KC.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
 	
@@ -71,7 +70,6 @@ public class EntityKingCrimson extends EntityStandBase
 	{
 		super(EntityInit.KING_CRIMSON.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_KC.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
 	

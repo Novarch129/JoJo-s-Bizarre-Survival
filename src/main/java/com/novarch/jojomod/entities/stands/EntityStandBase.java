@@ -31,7 +31,6 @@ public abstract class EntityStandBase extends MobEntity
     public int longTick;
     public int standID;
 	boolean jumpCheck;
-	boolean catchCheck;
 	boolean attack;
 	public boolean giveItem;
 	public UUID masterUUID;
@@ -154,13 +153,10 @@ public abstract class EntityStandBase extends MobEntity
             if(this.getMaster() == null) {
                 this.remove();
                 return;
-            }
+            } catchPassive();
 
             if (!this.getMaster().isAlive())
                 this.remove();
-
-                if (getCatchPassive())
-                    this.catchPassive();
 
                 if (this.getAir() < 20)
                     this.setAir(60);
@@ -263,16 +259,6 @@ public abstract class EntityStandBase extends MobEntity
     public boolean getJumped()
     {
         return this.jumpCheck;
-    }
-    
-    public boolean getCatchPassive()
-    {
-        return this.catchCheck;
-    }
-    
-    public void setCatchPassive()
-    {
-        this.catchCheck = true;
     }
     
     public boolean getCanChangeAct()

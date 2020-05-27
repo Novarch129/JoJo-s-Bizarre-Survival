@@ -75,7 +75,6 @@ public class EntityKillerQueen extends EntityStandBase
 	{
 		super(type, world);
 	    this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.killerQueen;
 	}
 	
@@ -83,7 +82,6 @@ public class EntityKillerQueen extends EntityStandBase
 	{
 		super(EntityInit.KILLER_QUEEN.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.killerQueen;
 	}
 	

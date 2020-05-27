@@ -68,7 +68,6 @@ public class EntityAerosmith extends EntityStandBase
     {
         super(type, worldIn);
         this.spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        setCatchPassive();
         this.standID = JojoLibs.StandID.aerosmith;
     }
 
@@ -76,7 +75,6 @@ public class EntityAerosmith extends EntityStandBase
     {
         super(EntityInit.AEROSMITH.get(), worldIn);
         this.spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        setCatchPassive();
         this.standID = JojoLibs.StandID.aerosmith;
     }
 

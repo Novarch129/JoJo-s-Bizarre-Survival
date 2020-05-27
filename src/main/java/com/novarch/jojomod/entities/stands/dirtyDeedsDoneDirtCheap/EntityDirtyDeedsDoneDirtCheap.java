@@ -65,7 +65,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	{
 		super(type, world);
 	    this.spawnSound = SoundInit.SPAWN_D4C.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
 	}
 
@@ -73,7 +72,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase
 	{
 		super(EntityInit.D4C.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_D4C.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
 	}
 

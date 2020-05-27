@@ -66,7 +66,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 	{
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_MIH.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;
 	}
 
@@ -74,7 +73,6 @@ public class EntityMadeInHeaven extends EntityStandBase
 	{
 		super(EntityInit.MADE_IN_HEAVEN.get(), world);
 	    this.spawnSound = SoundInit.SPAWN_MIH.get();
-	    setCatchPassive();
 	    this.standID = JojoLibs.StandID.madeInHeaven;
 	}
 	

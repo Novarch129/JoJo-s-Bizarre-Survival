@@ -59,7 +59,6 @@ public class EntityWeatherReport extends EntityStandBase
     {
         super(type, worldIn);
         this.spawnSound = SoundInit.SPAWN_WR.get();
-        setCatchPassive();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
@@ -67,7 +66,6 @@ public class EntityWeatherReport extends EntityStandBase
     {
         super(EntityInit.WEATHER_REPORT.get(), worldIn);
         this.spawnSound = SoundInit.SPAWN_WR.get();
-        setCatchPassive();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
