@@ -3,6 +3,7 @@ package com.novarch.jojomod.entities.stands.killerQueen;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -10,6 +11,7 @@ import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -26,17 +28,19 @@ public class EntityKillerQueen extends EntityStandBase
 	  
 	  private int oratickr = 0;
 
-	  private Entity bombEntity = null;
+	  private LivingEntity bombEntity = null;
 
 	  private KeyBinding detonate = KeyHandler.keys[2];
 
 	  private KeyBinding summonSHA = KeyHandler.keys[10];
 
-	public Entity getBombEntity() {
+	  private int shaCount = 0;
+
+	public LivingEntity getBombEntity() {
 		return bombEntity;
 	}
 
-	public void setBombEntity(Entity bombEntity) {
+	public void setBombEntity(LivingEntity bombEntity) {
 		this.bombEntity = bombEntity;
 	}
 
@@ -120,6 +124,17 @@ public class EntityKillerQueen extends EntityStandBase
 						}
 					}
 				}
+			}
+
+			EntitySheerHeartAttack sheerHeartAttack = new EntitySheerHeartAttack(this.world, this);
+
+			if(summonSHA.isPressed() && shaCount < 1)
+			{
+				sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+				shaCount++;
+				this.world.addEntity(sheerHeartAttack);
+			} else if(shaCount >= 1) {
+				sheerHeartAttack.remove();
 			}
 
 			if (this.standOn)

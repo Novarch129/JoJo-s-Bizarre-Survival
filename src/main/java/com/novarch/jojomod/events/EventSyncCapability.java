@@ -3,6 +3,7 @@ package com.novarch.jojomod.events;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.network.message.SyncStandCapability;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,8 +59,12 @@ public class EventSyncCapability
             {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)
-                            .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                                .forEach(Entity::remove);
+                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
+                        .forEach(Entity::remove);
+                player.getServerWorld().getEntities()
+                        .filter(entity -> entity instanceof EntitySheerHeartAttack)
+                        .filter(entity -> ((EntitySheerHeartAttack) entity).getMaster() == player)
+                        .forEach(Entity::remove);
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncStandCapability(props));
             }
         });

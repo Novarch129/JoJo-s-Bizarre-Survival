@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDe
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
+import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
@@ -125,4 +126,10 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.killerQueen>create(EntityStandPunch.killerQueen::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntitySheerHeartAttack>> SHEER_HEART_ATTACK = ENTITY_TYPES
+			.register("sheer_heart_attack",
+					() -> EntityType.Builder.<EntitySheerHeartAttack>create(EntitySheerHeartAttack::new, EntityClassification.CREATURE)
+							.size(0.6f, 0.6f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sheer_heart_attack").toString()));
 }

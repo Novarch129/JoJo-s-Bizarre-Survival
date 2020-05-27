@@ -12,6 +12,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExper
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExperienceRequiemPunch;
 import com.novarch.jojomod.entities.stands.killerQueen.RenderKillerQueen;
 import com.novarch.jojomod.entities.stands.killerQueen.RenderKillerQueenPunch;
+import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.RenderSheerHeartAttack;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
@@ -59,5 +60,6 @@ public class ClientEventBusSubscriber
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KILLER_QUEEN.get(), RenderKillerQueen::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KILLER_QUEEN_PUNCH.get(), RenderKillerQueenPunch::new);
 
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.SHEER_HEART_ATTACK.get(), RenderSheerHeartAttack::new);
 	}
 }
