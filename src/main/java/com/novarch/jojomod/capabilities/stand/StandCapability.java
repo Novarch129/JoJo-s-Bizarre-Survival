@@ -236,17 +236,16 @@ public class StandCapability implements IStand
 		this.diavolo=truth;
 	}
 
-	protected void onDataUpdated()
+	/**
+	 * Called to update the {@link Capability} to the client
+	 */
+	private void onDataUpdated()
 	{
 		if(player == null)
 			return;
 
-		final PlayerEntity player = getPlayer();
-
-		if(player.world.isRemote)
-			return;
-
-		JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
+		if(!player.world.isRemote)
+			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
 	public void clone(IStand props)

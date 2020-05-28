@@ -30,6 +30,10 @@ public final class FakePlayerEntity extends MobEntity
         this.parent = parent;
     }
 
+    @Override
+    public float getHealth() {
+        return Float.MAX_VALUE;
+    }
 
     @Override
     public boolean canDespawn(double p_213397_1_)

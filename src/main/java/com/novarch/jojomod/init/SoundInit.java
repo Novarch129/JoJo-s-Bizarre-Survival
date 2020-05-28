@@ -23,7 +23,7 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> STOPTIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
 	public static final RegistryObject<SoundEvent> MUDAGIORNO = SOUNDS.register("mudagiorno", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudagiorno")));
 	public static final RegistryObject<SoundEvent> TRANSMUTE = SOUNDS.register("transmute", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "transmute")));
-	public static final RegistryObject<SoundEvent> SPAWN_CD = SOUNDS.register("spawn_cd", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_cd")));
+	public static final RegistryObject<SoundEvent> SPAWN_CRAZY_DIAMOND = SOUNDS.register("spawn_cd", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_cd")));
 	public static final RegistryObject<SoundEvent> SPAWN_KC = SOUNDS.register("spawn_kc", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_kc")));
 	public static final RegistryObject<SoundEvent> SPAWN_D4C = SOUNDS.register("spawn_d4c", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_d4c")));
 	public static final RegistryObject<SoundEvent> SPAWN_MIH = SOUNDS.register("spawn_mih", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_mih")));

@@ -96,44 +96,51 @@ public class EntityKillerQueen extends EntityStandBase
 				this.bombEntity = player.getLastAttackedEntity();
 
 			//Killer Queen's ability
-			if(detonate.isPressed()) {
-				if (this.bombEntity != null) {
-					if (bombEntity.isAlive()) {
-						if (bombEntity instanceof MobEntity) {
-							Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-							((MobEntity) bombEntity).spawnExplosionParticle();
-							explosion.doExplosionB(true);
-							this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-							bombEntity.remove();
-						} else if (bombEntity instanceof PlayerEntity) {
-							JojoProvider.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
-								if (bombProps.getStandID() != JojoLibs.StandID.GER) {
-									Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-									((PlayerEntity) bombEntity).spawnSweepParticles();
-									explosion.doExplosionB(true);
-									bombEntity.remove();
-								} else {
-									Explosion explosion = new Explosion(player.world, player, player.getPosX(), player.getPosY(), player.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-									player.spawnSweepParticles();
-									explosion.doExplosionB(true);
-									player.setHealth(0);
-								}
-							});
+			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+				props.setAbility(false);
+				if(detonate.isPressed() && props.getCooldown() <= 0) {
+					if (this.bombEntity != null) {
+						if (bombEntity.isAlive()) {
+							props.setCooldown(140);
+							if (bombEntity instanceof MobEntity) {
+								Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+								((MobEntity) bombEntity).spawnExplosionParticle();
+								explosion.doExplosionB(true);
+								this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+								bombEntity.remove();
+							} else if (bombEntity instanceof PlayerEntity) {
+								JojoProvider.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
+									if (bombProps.getStandID() != JojoLibs.StandID.GER) {
+										Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+										((PlayerEntity) bombEntity).spawnSweepParticles();
+										explosion.doExplosionB(true);
+										bombEntity.remove();
+									} else {
+										Explosion explosion = new Explosion(player.world, player, player.getPosX(), player.getPosY(), player.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+										player.spawnSweepParticles();
+										explosion.doExplosionB(true);
+										player.setHealth(0);
+									}
+								});
+							}
+							if(!player.isCreative() && !player.isSpectator())
+								player.getFoodStats().addStats(-2, 0);
 						}
 					}
 				}
-			}
 
-			EntitySheerHeartAttack sheerHeartAttack = new EntitySheerHeartAttack(this.world, this);
+				EntitySheerHeartAttack sheerHeartAttack = new EntitySheerHeartAttack(this.world, this);
 
-			if(summonSHA.isPressed() && shaCount < 1)
-			{
-				sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-				shaCount++;
-				this.world.addEntity(sheerHeartAttack);
-			} else if(shaCount >= 1) {
-				sheerHeartAttack.remove();
-			}
+				if(summonSHA.isPressed() && shaCount < 1)
+				{
+					sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+					shaCount++;
+					this.world.addEntity(sheerHeartAttack);
+					props.setCooldown(300);
+				} else if(shaCount >= 1) {
+					sheerHeartAttack.remove();
+				}
+			});
 
 			if (this.standOn)
 			{

@@ -4,6 +4,8 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.fakePlayer.RenderFakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmith;
 import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmithBullet;
+import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamond;
+import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamondPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
 import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperience;
@@ -61,5 +63,8 @@ public class ClientEventBusSubscriber
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KILLER_QUEEN_PUNCH.get(), RenderKillerQueenPunch::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.SHEER_HEART_ATTACK.get(), RenderSheerHeartAttack::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.CRAZY_DIAMOND.get(), RenderCrazyDiamond::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.CRAZY_DIAMOND_PUNCH.get(), RenderCrazyDiamondPunch::new);
 	}
 }

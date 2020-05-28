@@ -21,7 +21,7 @@
 - [ ] Green Day
 - [ ] The Grateful Dead
 - [ ] Crazy Diamond
-- [ ] Killer Queen
+- [x] Killer Queen
 - [ ] The Hand
 - [ ] 「THE WORLD」
 - [ ] Star Platinum

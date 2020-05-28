@@ -30,7 +30,7 @@ public interface IStand
 
     void clone(final IStand p0);
     
-    void setCooldown(double ncooldown);
+    void setCooldown(double cooldown);
 
     void addCooldown(double addition);
 

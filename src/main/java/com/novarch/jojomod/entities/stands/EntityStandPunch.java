@@ -58,14 +58,9 @@ private int ticksInAir;
 
 private double damage;
 
-@SuppressWarnings("unused")
-private int knockbackStrength;
-
 private int standID;
 
 private int longTick = 3;
-
-public boolean onFire = false;
 
 public EntityStandPunch(EntityType<? extends Entity> type, World worldIn) {
   super(type, worldIn);
@@ -74,8 +69,8 @@ public EntityStandPunch(EntityType<? extends Entity> type, World worldIn) {
   this.zTile = -1;
   this.pickupStatus = PickupStatus.DISALLOWED;
   this.damage = 2.0D;
-  if (worldIn.isRemote);
-  setNoGravity(true);
+  if (worldIn.isRemote)
+    setNoGravity(true);
 }
 
 public EntityStandPunch(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
@@ -324,7 +319,7 @@ protected void onHit(BlockRayTraceResult raytraceResultIn)
   }
 }
 
-public Block getinTile() {
+public Block getInTile() {
   return this.inTile;
 }
 
@@ -436,10 +431,6 @@ public void setDamage(double damageIn) {
 
 public double getDamage() {
   return this.damage;
-}
-
-public void setKnockbackStrength(int knockbackStrengthIn) {
-  this.knockbackStrength = knockbackStrengthIn;
 }
 
 @Override
@@ -662,6 +653,30 @@ public enum PickupStatus
     public killerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player)
     {
       super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
+  public static class crazyDiamond extends EntityStandPunch
+  {
+    public crazyDiamond(World worldIn)
+    {
+      super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn);
+    }
+
+    public crazyDiamond(EntityType<? extends EntityStandPunch> type, World worldIn)
+    {
+      super(type, worldIn);
+    }
+
+    public crazyDiamond(World worldIn, EntityStandBase shooter, PlayerEntity player)
+    {
+      super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn, shooter, player);
     }
 
     @Override

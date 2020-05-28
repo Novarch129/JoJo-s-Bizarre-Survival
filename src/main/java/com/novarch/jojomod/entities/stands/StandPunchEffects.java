@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -9,6 +10,7 @@ import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.WitherEntity;
@@ -22,7 +24,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -65,6 +66,10 @@ public abstract class StandPunchEffects
 				killerQueen(result, entityIn, punch, isBlock);
 				break;
 			}
+			case JojoLibs.StandID.crazyDiamond: {
+				crazyDiamond(result, entityIn, punch, isBlock);
+				break;
+			}
             default: {
             	basicDefault(result, entityIn, isBlock);
             	break;
@@ -82,7 +87,7 @@ public abstract class StandPunchEffects
      * King Crimson's punch
      */
 
-    public static void kingCrimson(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock){
+    public static void kingCrimson(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock) {
         if (isBlock) {
         	final float p = 0.2f;
         	final float p2 = 0.4f;
@@ -99,7 +104,7 @@ public abstract class StandPunchEffects
         	punch.remove();
         }
         else if (!isBlock) {
-            final Block blockB = punch.getinTile();
+            final Block blockB = punch.getInTile();
             final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
             final BlockState BlockState = punch.world.getBlockState(blockpos);
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
@@ -141,7 +146,7 @@ public abstract class StandPunchEffects
                     punch.remove();
         }
         else if (!isBlock) {
-            final Block blockB = punch.getinTile();
+            final Block blockB = punch.getInTile();
             final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
             final BlockState BlockState = punch.world.getBlockState(blockpos);
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
@@ -216,7 +221,7 @@ public abstract class StandPunchEffects
 			}
 		}
 				else if (!isBlock) {
-					final Block blockB = punch.getinTile();
+					final Block blockB = punch.getInTile();
 					final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 					final BlockState BlockState = punch.world.getBlockState(blockpos);
 					final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
@@ -272,7 +277,7 @@ public abstract class StandPunchEffects
 				}
 			}
 			if (!isBlock) {
-				final Block blockB = punch.getinTile();
+				final Block blockB = punch.getInTile();
 				final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
@@ -682,7 +687,7 @@ public abstract class StandPunchEffects
 			}
 		}
 		if (!isBlock) {
-			final Block blockB = punch.getinTile();
+			final Block blockB = punch.getInTile();
 			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
@@ -1055,7 +1060,7 @@ public abstract class StandPunchEffects
 		}
 		else
 		{
-			final Block block = bullet.getinTile();
+			final Block block = bullet.getInTile();
 			final BlockPos blockPos = new BlockPos(bullet.getxTile(), bullet.getyTile(), bullet.getzTile());
 			final BlockState blockState = bullet.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(bullet.world, blockPos);
@@ -1097,7 +1102,7 @@ public abstract class StandPunchEffects
 		}
 		else
 		{
-			final Block block = punch.getinTile();
+			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
@@ -1127,14 +1132,50 @@ public abstract class StandPunchEffects
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
-			final Block blockB = punch.getinTile();
-			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
-			final BlockState BlockState = punch.world.getBlockState(blockpos);
-			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f)
 			{
-				punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-				blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+			}
+		}
+		punch.remove();
+	}
+
+	public static void crazyDiamond(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock)
+	{
+		if (isBlock) {
+			final float p = 0.2f;
+			final float p2 = 0.4f;
+			if(punch.shootingStand.ability)
+				livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 20, 2));
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+			}
+			else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 3.0f)
+			{
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				if(!punch.shootingStand.ability)
+					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+				if(block.getDefaultState().getMaterial() != Material.AIR && punch.shootingStand.ability) {
+					((EntityCrazyDiamond)punch.shootingStand).addBlock(block);
+					((EntityCrazyDiamond)punch.shootingStand).addBlockPos(blockPos);
+				}
 			}
 		}
 		punch.remove();

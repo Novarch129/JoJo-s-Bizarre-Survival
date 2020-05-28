@@ -101,6 +101,20 @@ public class StandGUI extends AbstractGui
                 if(cooldown > 0)
                     renderCooldown(cooldown);
             }
+
+            //Killer Queen
+            else if(props.getStandID() == JojoLibs.StandID.killerQueen)
+            {
+                if(cooldown > 0)
+                    renderCooldown(cooldown);
+            }
+
+            //Crazy Diamond
+            else if(props.getStandID() == JojoLibs.StandID.crazyDiamond)
+            {
+                if(cooldown > 0)
+                    renderCooldown(cooldown);
+            }
         });
     }
 }

@@ -4,6 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -132,4 +133,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntitySheerHeartAttack>create(EntitySheerHeartAttack::new, EntityClassification.CREATURE)
 							.size(0.6f, 0.6f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sheer_heart_attack").toString()));
+
+	public static final RegistryObject<EntityType<EntityCrazyDiamond>> CRAZY_DIAMOND = ENTITY_TYPES
+			.register("crazy_diamond",
+					() -> EntityType.Builder.<EntityCrazyDiamond>create(EntityCrazyDiamond::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.crazyDiamond>> CRAZY_DIAMOND_PUNCH = ENTITY_TYPES
+			.register("crazy_diamond_punch",
+					() -> EntityType.Builder.<EntityStandPunch.crazyDiamond>create(EntityStandPunch.crazyDiamond::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond_punch").toString()));
 }

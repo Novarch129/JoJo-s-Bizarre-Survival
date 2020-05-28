@@ -32,14 +32,12 @@ public abstract class EntityStandBase extends MobEntity
     public int standID;
 	boolean jumpCheck;
 	boolean attack;
-	public boolean giveItem;
 	public UUID masterUUID;
 	public int hungerTimer;
 	public boolean heavyWeather;
 	public boolean ger;
 	public boolean life;
 	public boolean timeSkipped;
-	public boolean d4c;
 	public boolean heaven;
 	public boolean ability;
 	public boolean aerosmith;
@@ -50,7 +48,6 @@ public abstract class EntityStandBase extends MobEntity
 		this.master = null;
         this.standOn = true;
         this.orarush = false;
-        this.d4c = false;
         this.timeSkipped = true;
         this.heaven = false;
         this.life = false;
@@ -163,6 +160,8 @@ public abstract class EntityStandBase extends MobEntity
 
                 this.clearActivePotions();
             JojoProvider.getLazyOptional(this.getMaster()).ifPresent(props -> {
+                this.standOn = props.getStandOn();
+
                 if (!props.getStandOn())
                     this.remove();
                 else
