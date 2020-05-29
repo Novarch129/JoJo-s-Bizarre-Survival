@@ -35,7 +35,6 @@ public abstract class EntityStandBase extends MobEntity
 	public UUID masterUUID;
 	public int hungerTimer;
 	public boolean heavyWeather;
-	public boolean ger;
 	public boolean life;
 	public boolean timeSkipped;
 	public boolean heaven;
@@ -52,7 +51,6 @@ public abstract class EntityStandBase extends MobEntity
         this.heaven = false;
         this.life = false;
         this.spawnSound = null;
-        this.ger = true;
         this.heavyWeather = true;
         this.longTick = 2;
         this.tick = 0;

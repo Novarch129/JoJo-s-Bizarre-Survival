@@ -652,7 +652,7 @@ public abstract class StandPunchEffects
     public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
     {
 		if (isBlock) {
-			if (punch.shootingStand.ger) {
+			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
 					LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
 				} else {
@@ -692,7 +692,7 @@ public abstract class StandPunchEffects
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
 			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 			IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
-			if (punch.shootingStand.ger && blockB != Blocks.AIR) {
+			if (punch.shootingStand.ability && blockB != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)
 						{
@@ -1028,7 +1028,7 @@ public abstract class StandPunchEffects
 					}
 			}
 			if (blockB != Blocks.AIR) {
-				if (!punch.shootingStand.ger) {
+				if (!punch.shootingStand.ability) {
 					punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 					blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
 					punch.remove();
@@ -1172,7 +1172,7 @@ public abstract class StandPunchEffects
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				if(!punch.shootingStand.ability)
 					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
-				if(block.getDefaultState().getMaterial() != Material.AIR && punch.shootingStand.ability) {
+				if(block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER) {
 					((EntityCrazyDiamond)punch.shootingStand).addBlock(block);
 					((EntityCrazyDiamond)punch.shootingStand).addBlockPos(blockPos);
 				}

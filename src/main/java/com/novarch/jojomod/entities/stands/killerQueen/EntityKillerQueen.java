@@ -16,6 +16,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -54,15 +55,15 @@ public class EntityKillerQueen extends EntityStandBase
 	  }
 
 	  @Override
-	  public void readAdditional(CompoundNBT nbttagcompound)
+	  public void readAdditional(CompoundNBT compoundNBT)
 	  {
-	    super.readAdditional(nbttagcompound);
+	    super.readAdditional(compoundNBT);
 	  }
 
 	  @Override
-	  public void writeAdditional(CompoundNBT nbttagcompound)
+	  public void writeAdditional(CompoundNBT compoundNBT)
 	  {
-	    super.writeAdditional(nbttagcompound);
+	    super.writeAdditional(compoundNBT);
 	  }
 
 	  @Override
@@ -114,7 +115,7 @@ public class EntityKillerQueen extends EntityStandBase
 										Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										((PlayerEntity) bombEntity).spawnSweepParticles();
 										explosion.doExplosionB(true);
-										bombEntity.remove();
+										bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f);
 									} else {
 										Explosion explosion = new Explosion(player.world, player, player.getPosX(), player.getPosY(), player.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										player.spawnSweepParticles();

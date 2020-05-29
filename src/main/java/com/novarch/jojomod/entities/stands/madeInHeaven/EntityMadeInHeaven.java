@@ -45,15 +45,15 @@ public class EntityMadeInHeaven extends EntityStandBase
 	  }
 
 	  @Override
-	  public void readAdditional(CompoundNBT nbttagcompound)
+	  public void readAdditional(CompoundNBT compoundNBT)
 	  {
-	    super.readAdditional(nbttagcompound);
+	    super.readAdditional(compoundNBT);
 	  }
 
 	  @Override
-	  public void writeAdditional(CompoundNBT nbttagcompound)
+	  public void writeAdditional(CompoundNBT compoundNBT)
 	  {
-	    super.writeAdditional(nbttagcompound);
+	    super.writeAdditional(compoundNBT);
 	  }
 
 	  @Override

@@ -5,12 +5,12 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,7 +24,7 @@ import java.util.List;
 public class EventHandleStandAbilities
 {
     public static Entity renderViewEntity = null;
-    public static List<Entity> removalQueue = new ArrayList<Entity>();
+    public static List<Entity> removalQueue = new ArrayList<>();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event)
@@ -37,6 +37,9 @@ public class EventHandleStandAbilities
         JojoProvider.getLazyOptional(player).ifPresent(props -> {
             if(props.getCooldown() == 0.5)
                 props.setTimeLeft(1000);
+
+            if(props.getStandID() == JojoLibs.StandID.GER)
+                player.clearActivePotions();
 
             if(!props.getStandOn())
             {
@@ -80,19 +83,21 @@ public class EventHandleStandAbilities
     }
 
     @SubscribeEvent
-    public static void crimsonEffectAddedHandler(PotionEvent.PotionAddedEvent event)
+    public static void effectAddedEvent(PotionEvent.PotionAddedEvent event)
     {
         if(event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
             event.getEntityLiving().setGlowing(true);
     }
 
     @SubscribeEvent
-    public static void crimsonEffectRemovedHandler(PotionEvent.PotionRemoveEvent event)
+    public static void effectRemovedEvent(PotionEvent.PotionRemoveEvent event)
     {
         if(event.getPotion() == EffectInit.CRIMSON.get())
             event.getEntityLiving().setGlowing(false);
         if(event.getPotion() == Effects.GLOWING)
             event.getEntityLiving().setGlowing(false);
+        if(event.getPotion() == EffectInit.OXYGEN_POISIONING.get())
+            event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -124,7 +129,7 @@ public class EventHandleStandAbilities
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event)
     {
-        List<Entity> removed = new ArrayList<Entity>();
+        List<Entity> removed = new ArrayList<>();
         if(event.phase == TickEvent.Phase.END)
         {
             if(removalQueue.size() > 0)
@@ -138,18 +143,10 @@ public class EventHandleStandAbilities
             if(removed.size() > 0)
             {
                 for (Entity removedEntity : removed) {
-                    if (removalQueue.contains(removedEntity))
-                        removalQueue.remove(removedEntity);
+                    removalQueue.remove(removedEntity);
                 }
                 removed.removeAll(removed);
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void lastRender(RenderWorldLastEvent event)
-    {
-        //PlayerModel model = new PlayerModel(1.0f, true);
-        //model.render(event.getMatrixStack(), null, 1, 1, 1, 1, 1, 1);
     }
 }

@@ -51,6 +51,7 @@ public class JojoBizarreSurvival
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
     	modEventBus.addListener(this::setup);
         modEventBus.addListener(this::doClientStuff);
+        modEventBus.addListener(this::onServerStarting);
 
         KeyHandler.addKeys();
         EventInit.register(MinecraftForge.EVENT_BUS);
@@ -101,7 +102,6 @@ public class JojoBizarreSurvival
     	
     }
 
-    @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event)
     {
 

@@ -93,14 +93,17 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
                 master = masterStand.getMaster();
                 if (master != null) {
                     JojoProvider.getLazyOptional(master).ifPresent(props -> {
-                        if (!props.getStandOn())
+                        if (!props.getStandOn() && getAttackTarget() != this)
                             remove();
                         else
                             this.setAttackTarget(masterStand.getBombEntity());
                     });
-                    if (!master.isAlive())
+                    if (!master.isAlive() && getAttackTarget() != this)
                         remove();
                 }
+
+                if(getAttackTarget() == masterStand || getAttackTarget() == master)
+                    setAttackTarget(this);
 
                 Optional<Entity> damageSource = Optional.empty();
                 if (this.getLastDamageSource() != null)
@@ -244,14 +247,6 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
     }
 
     /**
-     * Params: (Float)Render tick. Returns the intensity of the creeper's flash when it is ignited.
-     */
-    @OnlyIn(Dist.CLIENT)
-    public float getCreeperFlashIntensity(float partialTicks) {
-        return MathHelper.lerp(partialTicks, (float)this.lastActiveTime, (float)this.timeSinceIgnited) / (float)(this.fuseTime - 2);
-    }
-
-    /**
      * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
      */
     public int getSheerHeartAttackState() {
@@ -308,7 +303,7 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
             float f = this.isCharged() ? 2.0F : 1.0F;
             this.dead = true;
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float)this.explosionRadius * f * 40, explosion$mode);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float)this.explosionRadius * f * 100, explosion$mode);
             remove();
         }
 

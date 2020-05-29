@@ -1,18 +1,24 @@
 package com.novarch.jojomod.entities.stands.crazyDiamond;
 
+import com.google.common.collect.Lists;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
+import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.FallingBlock;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
@@ -30,9 +36,9 @@ public class EntityCrazyDiamond extends EntityStandBase
 
 	  private KeyBinding repair = KeyHandler.keys[2];
 
-	 private List<Block> blockList = new ArrayList<Block>();
+	 private List<Block> blockList = new ArrayList<>();
 
-	 private List<BlockPos> blockPosList = new ArrayList<BlockPos>();
+	 private List<BlockPos> blockPosList = new ArrayList<>();
 
 	 public void addBlock(Block block) {
 	 	blockList.add(block);
@@ -90,12 +96,16 @@ public class EntityCrazyDiamond extends EntityStandBase
 		{
 			PlayerEntity player = getMaster();
 
+			/*ItemStack itemStack = new ItemStack(ItemInit.summon_king_crimson.get());
+			if(Minecraft.getInstance().gameSettings.keyBindJump.isPressed()) Use for Beach Boy! TODO
+				player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);*/
+
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
 
 				//Crazy Diamond's ability
-				List<Block> blockRepairedList = new ArrayList<Block>();
-				List<BlockPos> blockPosRepairedList = new ArrayList<BlockPos>();
+				List<Block> blockRepairedList = new ArrayList<>();
+				List<BlockPos> blockPosRepairedList = new ArrayList<>();
 
 				if(blockList.size() > 20)
 					blockList.remove(0);
@@ -105,30 +115,22 @@ public class EntityCrazyDiamond extends EntityStandBase
 				if (repair.isPressed() && props.getCooldown() <= 0) {
 					if (blockList.size() > 0 && blockPosList.size() > 0) {
 						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
-						props.setCooldown(100);
-						for (Block block : blockList) {
-							for (BlockPos pos : blockPosList) {
-								world.setBlockState(pos, block.getDefaultState());
-								blockRepairedList.add(block);
-								blockPosRepairedList.add(pos);
-							}
-						}
-					}
+						props.setCooldown(100); }
+
+						blockList
+								.forEach(block -> {
+									BlockPos pos = blockPosList.get(blockList.indexOf(block));
+									world.setBlockState(pos, block.getDefaultState());
+									blockRepairedList.add(block);
+									blockPosRepairedList.add(pos);
+								});
+						blockList.removeAll(blockRepairedList);
+						blockPosList.removeAll(blockPosRepairedList);
+						blockRepairedList.clear();
+						blockPosRepairedList.clear();
 				}
 
-				if(blockRepairedList.size() > 0 && blockPosRepairedList.size() > 0)
-				{
-					for (Block repairedBlock : blockRepairedList) {
-						if (blockList.contains(repairedBlock))
-							blockList.remove(repairedBlock);
-					}
-					for (BlockPos repairedBlockPos : blockPosRepairedList) {
-						if (blockPosList.contains(repairedBlockPos))
-							blockPosList.remove(repairedBlockPos);
-					}
-					blockRepairedList.removeAll(blockRepairedList);
-					blockPosRepairedList.removeAll(blockPosRepairedList);
-				}
+
 
 				if(props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);

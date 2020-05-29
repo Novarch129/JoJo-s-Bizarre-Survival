@@ -77,4 +77,10 @@ public interface IStand
     void putTransformed(final int transformed);
 
     void putDiavolo(final String truth);
+
+    void setNoClip(boolean noClip);
+
+    boolean getNoClip();
+
+    void putNoClip(boolean noClip);
 }

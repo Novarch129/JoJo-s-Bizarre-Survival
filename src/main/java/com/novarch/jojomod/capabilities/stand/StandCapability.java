@@ -37,6 +37,8 @@ public class StandCapability implements IStand
 
 	private int transformed = 0;
 
+	private boolean noClip = false;
+
 	public StandCapability(@Nonnull PlayerEntity player) {
 		this.player = player;
 	}
@@ -236,6 +238,22 @@ public class StandCapability implements IStand
 		this.diavolo=truth;
 	}
 
+	@Override
+	public void setNoClip(boolean noClip) {
+		this.noClip = noClip;
+		onDataUpdated();
+	}
+
+	@Override
+	public boolean getNoClip() {
+		return noClip;
+	}
+
+	@Override
+	public void putNoClip(boolean noClip) {
+		this.noClip = noClip;
+	}
+
 	/**
 	 * Called to update the {@link Capability} to the client
 	 */
@@ -273,6 +291,7 @@ public class StandCapability implements IStand
 	    setTransformed(0);
 	    setDiavolo("");
 	    setAbility(true);
+	    setNoClip(false);
 	  }
 
 	  public static void register()
@@ -291,6 +310,7 @@ public class StandCapability implements IStand
 				  props.putBoolean("Ability", instance.getAbility());
 				  props.putInt("Transformed", instance.getTransformed());
 				  props.putString("Diavolo", instance.getDiavolo());
+				  props.putBoolean("NoClip", instance.getNoClip());
 				  return (INBT)props;
 			  }
 
@@ -306,6 +326,7 @@ public class StandCapability implements IStand
 				  instance.putAbility(propertyData.getBoolean("Ability"));
 				  instance.putTransformed(propertyData.getInt("Transformed"));
 				  instance.putDiavolo(propertyData.getString("Diavolo"));
+				  instance.putNoClip(propertyData.getBoolean("NoClip"));
 			  }
 		  }, () -> new StandCapability(Minecraft.getInstance().player));
 	  }
