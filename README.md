@@ -20,14 +20,17 @@
 - [ ] Purple Haze
 - [ ] Green Day
 - [ ] The Grateful Dead
+- [ ] Beach Boy
 - [ ] Crazy Diamond
 - [x] Killer Queen
 - [ ] The Hand
+- [ ] Echoes
 - [ ] 「THE WORLD」
 - [ ] Star Platinum
 - [ ] Magician's Red
 - [ ] Hierophant Green
 - [ ] Silver Chariot
+- [ ] The Emperor
 
 This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
 
