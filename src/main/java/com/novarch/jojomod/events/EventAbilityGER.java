@@ -80,11 +80,13 @@ public class EventAbilityGER
                 PlayerEntity player = (PlayerEntity) event.getEntity();
                 if (props.getNoClip()) {
                     player.noClip = true;
-                    player.setVelocity(player.getMotion().getX(), 0, player.getMotion().getZ());
-                    if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
-                        player.setPosition(player.getPosX(), player.getPosY() + 1, player.getPosZ());
-                    else if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-                        player.setPosition(player.getPosX(), player.getPosY() - 1, player.getPosZ());
+                    if(props.getStandID()== JojoLibs.StandID.GER) {
+                        player.setVelocity(player.getMotion().getX(), 0, player.getMotion().getZ());
+                        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
+                            player.setPosition(player.getPosX(), player.getPosY() + 1, player.getPosZ());
+                        else if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
+                            player.setPosition(player.getPosX(), player.getPosY() - 1, player.getPosZ());
+                    }
                 }
             });
     }

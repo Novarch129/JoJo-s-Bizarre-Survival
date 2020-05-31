@@ -69,6 +69,10 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
         return master;
     }
 
+    public EntityKillerQueen getMasterStand() {
+        return masterStand;
+    }
+
     @Override
     protected void registerGoals()
     {

@@ -82,7 +82,7 @@ public class EntityKingCrimson extends EntityStandBase
 	    	PlayerEntity player = getMaster();
 	    	LazyOptional<IStand> power = this.getMaster().getCapability(JojoProvider.STAND, null);
 	    	IStand props = power.orElse(new StandCapability(player));
-	    	this.timeSkipped = !(props.getCooldown() > 0);
+	    	this.ability = !(props.getCooldown() > 0);
 
 	      player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 	      if (this.standOn)
@@ -99,7 +99,7 @@ public class EntityKingCrimson extends EntityStandBase
 			}
 
 	        //King Crimson's Ability
-	        if(this.timeSkipped && props.getAbility() && props.getStandOn()) {
+	        if(this.ability && props.getAbility() && props.getStandOn()) {
 				if (props.getTimeLeft() == 0) {
 					player.sendMessage(new StringTextComponent("Time Skip : ON"));
 				}
@@ -132,13 +132,13 @@ public class EntityKingCrimson extends EntityStandBase
 					if (!this.getMaster().isCreative() && !this.getMaster().isSpectator())
 						this.getMaster().setGameType(GameType.SURVIVAL);
 					this.getMaster().setInvulnerable(false);
-					this.timeSkipped = false;
+					this.ability = false;
 					player.removePotionEffect(EffectInit.CRIMSON_USER.get());
 					props.setCooldown(200);
 				}
 			}
 
-	        if(!timeSkipped)
+	        if(!ability)
 			{
 				if(props.getCooldown()==200) { player.sendMessage(new StringTextComponent("Time Skip : OFF")); }
 				if(props.getCooldown() > 0 && props.getAbility())
@@ -149,7 +149,7 @@ public class EntityKingCrimson extends EntityStandBase
 				if(props.getCooldown() <= 0)
 				{
 					props.setTimeLeft(1000);
-					this.timeSkipped = true;
+					this.ability = true;
 				}
 			}
 
@@ -163,7 +163,7 @@ public class EntityKingCrimson extends EntityStandBase
 	        //Orarush food check       
 	        if (!player.isAlive())
 	          remove();
-	        	if(!this.timeSkipped || !props.getAbility()) {
+	        	if(!this.ability || !props.getAbility()) {
 				if (player.isSprinting()) {
 					if (attackSwing(player))
 						if (player.getFoodStats().getFoodLevel() > 6) {

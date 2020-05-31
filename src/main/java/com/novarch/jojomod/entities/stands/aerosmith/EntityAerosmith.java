@@ -86,7 +86,7 @@ public class EntityAerosmith extends EntityStandBase
 
         if(pitch1 > 89.0f)
             pitch1 = 89.0f;
-        
+
         else if(pitch1 < -89.0f)
             pitch1 = -89.0f;
 
@@ -98,9 +98,9 @@ public class EntityAerosmith extends EntityStandBase
         if(getMaster() != null)
         {
             PlayerEntity player = getMaster();
-            JojoProvider.getLazyOptional(player).ifPresent(props -> this.aerosmith = props.getAbility());
+            JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
-            if(this.aerosmith)
+            if(this.ability)
             {
                 if(!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
                     this.shouldFall = false;

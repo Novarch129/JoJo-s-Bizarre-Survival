@@ -38,6 +38,8 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 	  private KeyBinding noClipKey = KeyHandler.keys[10];
 
+	  private boolean truth = false;
+
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
 
@@ -103,8 +105,11 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 					if(player.getLastAttackedEntity() != null)
 					{
-						if(abilityKey.isKeyDown())
-							player.getLastAttackedEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 2.0f);
+						if(abilityKey.isPressed())
+							truth=!truth;
+
+						if(truth)
+							player.getLastAttackedEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 3.0f);
 
 						if(player.getLastAttackedEntity() instanceof PlayerEntity)
 						{

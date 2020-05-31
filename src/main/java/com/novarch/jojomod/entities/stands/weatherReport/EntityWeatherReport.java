@@ -82,9 +82,9 @@ public class EntityWeatherReport extends EntityStandBase
             PlayerEntity player = getMaster();
             setRotationYawHead(player.rotationYaw);
             setRotation(player.rotationYaw, player.rotationPitch);
-            JojoProvider.getLazyOptional(player).ifPresent(props -> this.heavyWeather = props.getAbility());
+            JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
-            if(this.heavyWeather)
+            if(this.ability)
             {
                 if (!this.world.isRemote)
                     this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> entity!=player).filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {

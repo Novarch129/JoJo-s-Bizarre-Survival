@@ -1,5 +1,6 @@
 package com.novarch.jojomod;
 
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.init.*;
 import com.novarch.jojomod.network.message.*;
 import com.novarch.jojomod.proxy.ClientProxy;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -61,6 +63,7 @@ public class JojoBizarreSurvival
 		SoundInit.SOUNDS.register(modEventBus);
         DimensionInit.DIMENSIONS.register(modEventBus);
         EffectInit.EFFECTS.register(modEventBus);
+        JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
 		
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);

@@ -5,6 +5,8 @@ import com.novarch.jojomod.JojoBizarreSurvival.JojoItemGroup;
 import com.novarch.jojomod.objects.items.*;
 
 import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.handlers.KeyHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.TextFormatting;
@@ -24,7 +26,7 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_made_in_heaven = ITEMS.register("summon_made_in_heaven", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("made_in_heaven", TextFormatting.GREEN)).group(JojoItemGroup.instance), JojoLibs.StandID.madeInHeaven, "Possess the ability to accelerate the passage of time."));
 	public static final RegistryObject<Item> summon_aerosmith = ITEMS.register("summon_aerosmith", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("aerosmith", TextFormatting.LIGHT_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.aerosmith, "Remote controlled Stand, allows the user to detect entities by their breathing."));
 	public static final RegistryObject<Item> summon_weather_report = ITEMS.register("summon_weather_report", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("weather_report", TextFormatting.WHITE)).group(JojoItemGroup.instance), JojoLibs.StandID.weatherReport, "Possess the ability to control the weather, is there something more to this ability?"));
-	public static final RegistryObject<Item> summon_killer_queen = ITEMS.register("summon_killer_queen", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("killer_queen", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.killerQueen, "Can turn anything it touches into a bomb."));
+	public static final RegistryObject<Item> summon_killer_queen = ITEMS.register("summon_killer_queen", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("killer_queen", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.killerQueen, "Can turn anything it touches into a bomb.\n\nControls: \n"+JojoLibs.KeyCodes.ability1+": Activate 1st bomb.\n"+JojoLibs.KeyCodes.ability2+": Summon Sheer Heart Attack."));
 	public static final RegistryObject<Item> summon_crazy_diamond = ITEMS.register("summon_crazy_diamond", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("crazy_diamond", TextFormatting.BLUE)).group(JojoItemGroup.instance), JojoLibs.StandID.crazyDiamond, "Has the ability to revert objects to a previous state."));
 
 	public static final RegistryObject<Item> remove_stand = ITEMS.register("remove_stand", () -> new ItemRemoveStand(new Item.Properties().maxStackSize(1).rarity(Rarity.create("stand_disc", TextFormatting.GRAY)).group(JojoItemGroup.instance)));

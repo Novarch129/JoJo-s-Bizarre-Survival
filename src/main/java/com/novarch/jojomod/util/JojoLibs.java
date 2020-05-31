@@ -12,6 +12,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.*;
@@ -112,6 +113,14 @@ public class JojoLibs
         public static final int crazyDiamond = 9;
 
         public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond};
+    }
+
+    public static class KeyCodes
+    {
+        public static String summonStand = KeyHandler.keys[0].getLocalizedName().toUpperCase();
+        public static String abilityToggle = KeyHandler.keys[1].getLocalizedName().toUpperCase();
+        public static String ability1 = KeyHandler.keys[2].getLocalizedName().toUpperCase();
+        public static String ability2 = KeyHandler.keys[10].getLocalizedName().toUpperCase();
     }
 
     public static int numberOfStands = StandID.stands.length;

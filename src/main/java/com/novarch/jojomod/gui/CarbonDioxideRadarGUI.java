@@ -19,6 +19,7 @@ import net.minecraftforge.fml.client.gui.GuiUtils;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class CarbonDioxideRadarGUI extends AbstractGui
 {
     public static final Minecraft mc = Minecraft.getInstance();
@@ -28,6 +29,7 @@ public class CarbonDioxideRadarGUI extends AbstractGui
         PlayerEntity player = mc.player;
         int posX = mc.getMainWindow().getScaledWidth() - 180, posY = (mc.getMainWindow().getScaledHeight() - 256) / 2;
 
+        assert player != null;
         JojoProvider.getLazyOptional(player).ifPresent(props ->{
             if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
             {

@@ -132,14 +132,22 @@ public class EntityKillerQueen extends EntityStandBase
 
 				EntitySheerHeartAttack sheerHeartAttack = new EntitySheerHeartAttack(this.world, this);
 
-				if(summonSHA.isPressed() && shaCount < 1)
-				{
-					sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-					shaCount++;
-					this.world.addEntity(sheerHeartAttack);
-					props.setCooldown(300);
-				} else if(shaCount >= 1) {
-					sheerHeartAttack.remove();
+				if(summonSHA.isPressed()) {
+					if(shaCount == 0) {
+						sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
+						shaCount++;
+						this.world.addEntity(sheerHeartAttack);
+						props.setCooldown(300);
+					} else {
+						if (!world.isRemote)
+							world.getServer().getWorld(dimension).getEntities()
+									.filter(entity -> entity instanceof EntitySheerHeartAttack)
+									.filter(entity -> ((EntitySheerHeartAttack) entity).getMasterStand() == this)
+									.forEach(entity -> {
+										entity.remove();
+										shaCount--;
+									});
+					}
 				}
 			});
 

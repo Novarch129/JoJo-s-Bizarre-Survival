@@ -168,7 +168,7 @@ public abstract class StandPunchEffects
     public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
 	{
 		if (isBlock) {
-			if (punch.shootingStand.heaven) {
+			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
 					LivingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 140, 1));
 				} else {
@@ -242,7 +242,7 @@ public abstract class StandPunchEffects
 		public static void goldExperience (RayTraceResult result,final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
 		{
 			if (isBlock) {
-				if (punch.shootingStand.life) {
+				if (punch.shootingStand.ability) {
 					if (punch.shootingStand.orarush) {
 						LivingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
 					} else {
@@ -282,7 +282,7 @@ public abstract class StandPunchEffects
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
 				IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
-				if (punch.shootingStand.life && blockB != Blocks.AIR && blockB != Blocks.AIR) {
+				if (punch.shootingStand.ability && blockB != Blocks.AIR && blockB != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
 							if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
@@ -632,7 +632,7 @@ public abstract class StandPunchEffects
 					}
 				}
 				if (hardness != -1.0f && hardness <= 3.0f && blockB != Blocks.AIR) {
-					if (!punch.shootingStand.life) {
+					if (!punch.shootingStand.ability) {
 						punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
 						blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
 						punch.remove();
@@ -1086,7 +1086,7 @@ public abstract class StandPunchEffects
 		if(isBlock)
 		{
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.0f);
-			if(punch.shootingStand.heavyWeather)
+			if(punch.shootingStand.ability)
 				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 300, 15));
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, 0, 0);
@@ -1169,13 +1169,14 @@ public abstract class StandPunchEffects
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f)
 			{
+				if(block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER) {
+					((EntityCrazyDiamond)punch.shootingStand).addBlock(block);
+					if(punch.world.getBlockState(blockPos).getMaterial() != Material.AIR && punch.world.getBlockState(blockPos).getMaterial() != Material.WATER)
+						((EntityCrazyDiamond)punch.shootingStand).addBlockPos(blockPos);
+				}
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				if(!punch.shootingStand.ability)
 					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
-				if(block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER) {
-					((EntityCrazyDiamond)punch.shootingStand).addBlock(block);
-					((EntityCrazyDiamond)punch.shootingStand).addBlockPos(blockPos);
-				}
 			}
 		}
 		punch.remove();

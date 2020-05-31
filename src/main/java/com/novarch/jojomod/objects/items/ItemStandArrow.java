@@ -1,14 +1,12 @@
 package com.novarch.jojomod.objects.items;
 
-import java.util.List;
-
+import com.novarch.jojomod.capabilities.stand.IStand;
+import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.capabilities.stand.IStand;
-
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -17,14 +15,22 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-@SuppressWarnings("unused")
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+@SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public final class ItemStandArrow extends Item
 { // TODO add animation when obtaining GER
 	final int standID;
@@ -38,7 +44,7 @@ public final class ItemStandArrow extends Item
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
 	{
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		if(!this.tooltip.equals(""))
@@ -48,11 +54,7 @@ public final class ItemStandArrow extends Item
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment)
 	{
-		if (enchantment.isAllowedOnBooks() && stack.hasEffect())
-		{
-			return true;
-		}
-		return false;
+		return enchantment.isAllowedOnBooks() && stack.hasEffect();
 	}
 
 	@Override
@@ -101,46 +103,13 @@ public final class ItemStandArrow extends Item
 			else if(props.getStandID() == JojoLibs.StandID.goldExperience && this.standID == 0)
 			{
 				props.removeStand();
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, 200.0 , 400.0)), JojoLibs.Predicates.IS_STAND))
-				{
-					if(entity1 instanceof EntityGoldExperience)
-					{
-						if(((EntityGoldExperience) entity1).getMaster() == player)
-						{
-							((EntityGoldExperience) entity1).setTransforming(true);
-						}
-					}
+				if(!world.isRemote) {
+					world.getServer().getWorld(player.dimension).getEntities()
+							.filter(entity1 -> entity1 instanceof EntityGoldExperience)
+							.filter(entity1 -> ((EntityGoldExperience) entity1).getMaster() == player)
+							.forEach(Entity::remove);
 				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, -200.0 , -400.0)), JojoLibs.Predicates.IS_STAND))
-				{
-					if(entity1 instanceof EntityGoldExperience)
-					{
-						if(((EntityGoldExperience) entity1).getMaster() == player)
-						{
-							((EntityGoldExperience) entity1).setTransforming(true);
-						}
-					}
-				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(-400.0, 200.0 , 400.0)), JojoLibs.Predicates.IS_STAND))
-				{
-					if(entity1 instanceof EntityGoldExperience)
-					{
-						if(((EntityGoldExperience) entity1).getMaster() == player)
-						{
-							((EntityGoldExperience) entity1).setTransforming(true);
-						}
-					}
-				}
-				for(Entity entity1 : world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(new Vec3d(400.0, -200.0 , -400.0)), JojoLibs.Predicates.IS_STAND))
-				{
-					if(entity1 instanceof EntityGoldExperience)
-					{
-						if(((EntityGoldExperience) entity1).getMaster() == player)
-						{
-							((EntityGoldExperience) entity1).setTransforming(true);
-						}
-					}
-				}
+
 				props.setStandID(JojoLibs.StandID.GER);
 				props.setStandOn(true);
 				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.GER, world);
@@ -148,7 +117,7 @@ public final class ItemStandArrow extends Item
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
 					theStand.setMasterUUID(player.getUniqueID());
-					world.addEntity((Entity) theStand);
+					world.addEntity(theStand);
 					theStand.spawnSound();
 				}
 			}
@@ -156,17 +125,15 @@ public final class ItemStandArrow extends Item
 	}
 
 	@Override
-	public ActionResult onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
-		try {
             IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
         	if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience) {
         		playerIn.setActiveHand(handIn);
-        		return (ActionResult<ItemStack>)new ActionResult(ActionResultType.SUCCESS, stack);
+        		return new ActionResult(ActionResultType.SUCCESS, stack);
         	} else
 				playerIn.sendMessage(new TranslationTextComponent("msg.jojomod.standalready.txt"));
-		} catch (ClassCastException cce) {playerIn.sendMessage(new StringTextComponent("Exception! " + JojoProvider.getCapabilityFromPlayer(playerIn) + " Send this to https://github.com/Novarch129/JoJo-s-Bizarre-Survival/issues with your debug.log attached!" ));}
         	return new ActionResult(ActionResultType.PASS, stack);
 	}
 	

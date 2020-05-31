@@ -2,11 +2,14 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.network.message.SyncStandCapability;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.GameRules;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +22,7 @@ public class EventSyncCapability
     @SubscribeEvent
     public static void saveStand(PlayerEvent.Clone event)
     {
-        if(!event.isWasDeath())
+        if(!event.isWasDeath() || JojoBizarreSurvivalConfig.COMMON.saveStandOnDeath.get())
         {
             JojoProvider.getLazyOptional(event.getOriginal()).ifPresent(originalProps -> {
                 ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();

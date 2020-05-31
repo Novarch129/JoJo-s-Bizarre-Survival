@@ -94,23 +94,20 @@ public class EntityGoldExperience extends EntityStandBase
 
 	    if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			IStand props = JojoProvider.getCapabilityFromPlayer(player);
-			this.life = props.getAbility();
+			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+				this.ability = props.getAbility();
 
-			//Cooldown handler
-			if (props.getTransformed() > 0) {
-				props.subtractCooldown(1);
-			}
-			if (props.getCooldown() <= 0) {
-				props.setTransformed(0);
-				props.setCooldown(80);
-			}
+				//Cooldown handler
+				if (props.getTransformed() > 0) {
+					props.subtractCooldown(1);
+				}
+				if (props.getCooldown() <= 0) {
+					props.setTransformed(0);
+					props.setCooldown(80);
+				}
+			});
 
 			player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
-			try {
-				setHealth(1000.0F);
-			} catch (ClassCastException classCastException) {
-			}
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);

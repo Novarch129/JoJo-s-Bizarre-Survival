@@ -25,6 +25,7 @@ public abstract class EntityStandBase extends MobEntity
 {
 	private PlayerEntity master;
     protected boolean standOn;
+    private int act;
     protected int tick;
     public boolean orarush;
     protected SoundEvent spawnSound;
@@ -34,12 +35,7 @@ public abstract class EntityStandBase extends MobEntity
 	boolean attack;
 	public UUID masterUUID;
 	public int hungerTimer;
-	public boolean heavyWeather;
-	public boolean life;
-	public boolean timeSkipped;
-	public boolean heaven;
 	public boolean ability;
-	public boolean aerosmith;
     
 	public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn)
 	{
@@ -47,16 +43,11 @@ public abstract class EntityStandBase extends MobEntity
 		this.master = null;
         this.standOn = true;
         this.orarush = false;
-        this.timeSkipped = true;
-        this.heaven = false;
-        this.life = false;
         this.spawnSound = null;
-        this.heavyWeather = true;
         this.longTick = 2;
         this.tick = 0;
         this.hungerTimer = 0;
         this.ability = true;
-        this.aerosmith = true;
 	}
 	
 	public SoundEvent getSpawnSound()
@@ -246,7 +237,13 @@ public abstract class EntityStandBase extends MobEntity
             this.setJumped(true);
     }
 
+    public boolean hasAct() {
+	    return false;
+    }
 
+    public void changeAct(){
+	    act+=1;
+    }
 
     public void setJumped(final boolean value)
     {
@@ -257,53 +254,45 @@ public abstract class EntityStandBase extends MobEntity
     {
         return this.jumpCheck;
     }
-    
-    public boolean getCanChangeAct()
-    {
-        return false;
-    }
-    
-    public void changeAct() {}
 
     private void catchPassive()
     {
-        Entity entity;
         if (this.world != null)
         {
-            for (Entity entity1 : this.world.getEntitiesInAABBexcluding(getMaster(), this.getBoundingBox().expand(100.0, 400.0, 100.0), EntityPredicates.NOT_SPECTATING))
-            {
-                Entity playerEntity = null;
+            if (!world.isRemote)
+                world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
+                    Entity entity;
+                    Entity playerEntity = null;
 
-                if (entity1 != null)
-                    playerEntity = entity1;
+                    if (entity1 != null)
+                        playerEntity = entity1;
 
-                assert playerEntity != null;
-                final double distance = playerEntity.getDistance(this.getMaster());
-                final double distance2 = Math.PI * 2 * 2 * 2;
+                    assert playerEntity != null;
+                    final double distance = playerEntity.getDistance(this.getMaster());
+                    final double distance2 = Math.PI * 2 * 2 * 2;
 
-                entity = playerEntity;
+                    entity = playerEntity;
 
-                if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2)
-                {
+                    if (!this.world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
 
-                    final double distanceX = this.getPosX() - entity.getPosX();
-                    final double distanceY = this.getPosY() - entity.getPosY();
-                    final double distanceZ = this.getPosZ() - entity.getPosZ();
+                        final double distanceX = this.getPosX() - entity.getPosX();
+                        final double distanceY = this.getPosY() - entity.getPosY();
+                        final double distanceZ = this.getPosZ() - entity.getPosZ();
 
-                    if (distanceX > 0.0)
-                        this.moveForward += -0.3;
-                    if (distanceX < 0.0)
-                        this.moveForward += 0.3;
-                    if (distanceY > 0.0)
-                        this.moveVertical += -0.3;
-                    if (distanceY < 0.0)
-                        this.moveVertical += 0.3;
-                    if (distanceZ > 0.0)
-                        this.moveStrafing += -0.3;
-                    if (distanceZ < 0.0)
-                        this.moveStrafing += 0.3;
-                }
-            }
+                        if (distanceX > 0.0)
+                            this.moveForward += -0.3;
+                        if (distanceX < 0.0)
+                            this.moveForward += 0.3;
+                        if (distanceY > 0.0)
+                            this.moveVertical += -0.3;
+                        if (distanceY < 0.0)
+                            this.moveVertical += 0.3;
+                        if (distanceZ > 0.0)
+                            this.moveStrafing += -0.3;
+                        if (distanceZ < 0.0)
+                            this.moveStrafing += 0.3;
+                    }
+                });
         }
     }
 }

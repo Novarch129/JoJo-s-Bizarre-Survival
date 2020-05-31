@@ -40,13 +40,13 @@
   "entity.jojomod.crazy_diamond_punch" : "Crazy Diamond's punch",
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
-  "msg.standdeath.config": "Keep Stand on death",
+  "jojomod.savestand.config": "Keep Stand on death",
 
   "key.categories.JoJo's Bizarre Survival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Ability Toggle",
   "key.ability2.desc": "Stand Ability",
-  "key.ability3.desc": "Stand Ability w",
+  "key.ability3.desc": "Stand Ability 2",
   "key.aerosmith_move_forward.desc": "Aerosmith Forward",
   "key.aerosmith_move_right.desc": "Aerosmith Right",
   "key.aerosmith_move_left.desc": "Aerosmith Left",

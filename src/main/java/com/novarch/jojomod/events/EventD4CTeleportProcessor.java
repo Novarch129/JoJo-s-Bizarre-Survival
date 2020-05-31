@@ -25,13 +25,12 @@ public class EventD4CTeleportProcessor
         List<DimensionType> used = new ArrayList<>();
         if(event.phase == TickEvent.Phase.END)
         {
-            d4cPassengerList
-                    .forEach(passenger -> {
-                        DimensionType type = d4cDestinationList.get(d4cPassengerList.indexOf(passenger));
-                        passenger.changeDimension(type, new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
-                        transported.add(passenger);
-                        used.add(type);
-                    });
+            d4cPassengerList.forEach(passenger -> {
+                DimensionType type = d4cDestinationList.get(d4cPassengerList.indexOf(passenger));
+                passenger.changeDimension(type, new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld(), passenger.getPosX(), passenger.getPosY(), passenger.getPosZ()));
+                transported.add(passenger);
+                used.add(type);
+            });
             d4cPassengerList.removeAll(transported);
             d4cDestinationList.removeAll(used);
             transported.clear();
