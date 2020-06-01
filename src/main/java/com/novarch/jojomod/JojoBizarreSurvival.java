@@ -7,6 +7,7 @@ import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
 import com.novarch.jojomod.util.handlers.KeyHandler;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -109,7 +110,8 @@ public class JojoBizarreSurvival
     {
 
     }
-    
+
+    @MethodsReturnNonnullByDefault
     public static class JojoItemGroup extends ItemGroup 
     {
 		public static final ItemGroup instance = new JojoItemGroup(ItemGroup.GROUPS.length, "jojotab");

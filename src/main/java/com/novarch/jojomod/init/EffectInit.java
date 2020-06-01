@@ -3,6 +3,7 @@ package com.novarch.jojomod.init;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.effects.CrimsonEffect;
 import com.novarch.jojomod.effects.CrimsonEffectUser;
+import com.novarch.jojomod.effects.HazeEffect;
 import com.novarch.jojomod.effects.OxygenPoisoningEffect;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -25,7 +26,12 @@ public class EffectInit
             () -> new CrimsonEffect(EffectType.HARMFUL, 10819625)
                     .addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "a55e2313-560e-4881-95a7-0ee8df22fa04", -0.15f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Effect> OXYGEN_POISIONING = EFFECTS.register("oxygen_poisoning",
+    public static final RegistryObject<Effect> OXYGEN_POISONING = EFFECTS.register("oxygen_poisoning",
             () -> new OxygenPoisoningEffect(EffectType.HARMFUL, 7009526)
                     .addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "81d95dec-554d-4199-adbc-a339d2a671d3", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
+    public static final RegistryObject<Effect> HAZE = EFFECTS.register("haze",
+            () -> new HazeEffect(EffectType.HARMFUL, 9250166)
+                    .addAttributesModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "36feea01-c301-4eeb-b085-42d38ed2d742", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    .addAttributesModifier(SharedMonsterAttributes.ATTACK_SPEED, "36feea01-c301-4eeb-b085-42d38ed2d742", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 }

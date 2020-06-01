@@ -1,6 +1,5 @@
 package com.novarch.jojomod.entities.stands.weatherReport;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -17,7 +16,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ObjectHolder;
 
 public class EntityWeatherReport extends EntityStandBase
 {
@@ -90,9 +88,9 @@ public class EntityWeatherReport extends EntityStandBase
                     this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> entity!=player).filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {
                         if (entity.getDistance(player) <= 10) {
                             if (entity instanceof MobEntity)
-                                ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
+                                ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
                             if (entity instanceof PlayerEntity)
-                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISIONING.get(), 150, 5));
+                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
                             if(!player.isCreative()) {
                                 player.getFoodStats().addStats(0, -0.1f);
                                 player.getFoodStats().addExhaustion(0.05f);

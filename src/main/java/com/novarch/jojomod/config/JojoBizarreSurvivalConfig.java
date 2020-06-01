@@ -10,15 +10,21 @@ public class JojoBizarreSurvivalConfig
     public static class Common
     {
         public final ForgeConfigSpec.BooleanValue saveStandOnDeath;
+        public final ForgeConfigSpec.BooleanValue sheerHeartAttackDeathLoop;
 
         Common(final ForgeConfigSpec.Builder builder)
         {
             builder.push("common");
 
-            saveStandOnDeath = builder.
-                    comment("Toggle save Stand on death")
+            saveStandOnDeath = builder
+                    .comment("Toggle save Stand on death")
                     .translation("jojomod.savestand.config")
                     .define("saveStandOnDeath", false);
+
+            sheerHeartAttackDeathLoop = builder
+                    .comment("Toggle Sheer Heart Attack attacking himself repeatedly.")
+                    .translation("jojomod.shaexplode.config")
+                    .define("sheerHeartAttackDeathLoop", false);
 
             builder.pop();
         }

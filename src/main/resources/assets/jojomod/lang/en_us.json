@@ -17,6 +17,7 @@
   "effect.jojomod.crimson_effect_user": "The Results",
   "effect.jojomod.crimson_effect": "Crimson",
   "effect.jojomod.oxygen_poisoning": "Oxygen Poisoning",
+  "effect.jojomod.haze": "Purple Haze",
 
   "entity.jojomod.king_crimson": "King Crimson",
   "entity.jojomod.king_crimson_punch": "King Crimson's punch",
@@ -41,6 +42,7 @@
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
   "jojomod.savestand.config": "Keep Stand on death",
+  "jojomod.shaexplode.config": "Allow SHA to explode infinitely",
 
   "key.categories.JoJo's Bizarre Survival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",

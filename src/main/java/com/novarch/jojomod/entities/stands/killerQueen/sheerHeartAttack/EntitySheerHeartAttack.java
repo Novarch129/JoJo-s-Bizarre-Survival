@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack;
 
 import com.novarch.jojomod.ai.goals.SheerHeartAttackSwellGoal;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.init.EntityInit;
@@ -50,7 +51,6 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
     private int timeSinceIgnited;
     private int fuseTime = 30;
     private int explosionRadius = 3;
-    private int droppedSkulls;
 
     public EntitySheerHeartAttack(EntityType<? extends MonsterEntity> type, World worldIn)
     {
@@ -78,10 +78,10 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
     {
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new SheerHeartAttackSwellGoal(this));
-        this.goalSelector.addGoal(11, new AvoidEntityGoal<>(this, EntityGoldExperienceRequiem.class, 6.0F, 1.0D, 1.2D));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0D, false));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8D));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, VillagerEntity.class, 8.0F));
+        this.goalSelector.addGoal(11, new AvoidEntityGoal<>(this, EntityGoldExperienceRequiem.class, 6.0f, 1.0f, 1.2f));
+        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0f, false));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8));
+        this.goalSelector.addGoal(6, new LookAtGoal(this, VillagerEntity.class, 8.0f));
         this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, VillagerEntity.class, true));
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
@@ -97,13 +97,22 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
                 master = masterStand.getMaster();
                 if (master != null) {
                     JojoProvider.getLazyOptional(master).ifPresent(props -> {
-                        if (!props.getStandOn() && getAttackTarget() != this)
-                            remove();
+                        if (!props.getStandOn()) {
+                            if (getAttackTarget() == this && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
+                                remove();
+                            else if (getAttackTarget() != this)
+                                remove();
+                        }
                         else
                             this.setAttackTarget(masterStand.getBombEntity());
                     });
-                    if (!master.isAlive() && getAttackTarget() != this)
-                        remove();
+                    if (!master.isAlive() && getAttackTarget() != this) {
+                        if (getAttackTarget() == this && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
+                            remove();
+                        else if (getAttackTarget() != this)
+                            remove();
+                    }
+
                 }
 
                 if(getAttackTarget() == masterStand || getAttackTarget() == master)
@@ -302,6 +311,9 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
 
     }
 
+    /**
+     * Creates an enormous explosion and kills the entity, fired on {@link net.minecraftforge.event.entity.EntityStruckByLightningEvent}.
+     */
     private void destroy() {
         if (!this.world.isRemote) {
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
@@ -319,18 +331,5 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
 
     public void ignite() {
         this.dataManager.set(IGNITED, true);
-    }
-
-    /**
-     * Returns true if an entity is able to drop its skull due to being blown up by this creeper.
-     *
-     * Does not test if this creeper is charged; the caller must do that. However, does test the doMobLoot gamerule.
-     */
-    public boolean ableToCauseSkullDrop() {
-        return this.isCharged() && this.droppedSkulls < 1;
-    }
-
-    public void incrementDroppedSkulls() {
-        ++this.droppedSkulls;
     }
 }

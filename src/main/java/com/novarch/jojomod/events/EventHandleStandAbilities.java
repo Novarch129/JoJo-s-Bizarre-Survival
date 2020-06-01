@@ -13,6 +13,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -96,8 +97,22 @@ public class EventHandleStandAbilities
             event.getEntityLiving().setGlowing(false);
         if(event.getPotion() == Effects.GLOWING)
             event.getEntityLiving().setGlowing(false);
-        if(event.getPotion() == EffectInit.OXYGEN_POISIONING.get())
+        if(event.getPotion() == EffectInit.OXYGEN_POISONING.get())
             event.setCanceled(true);
+        if(event.getPotion() == EffectInit.HAZE.get())
+            event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event)
+    {
+        if(event.getPotionEffect().getPotion() == null)
+            return;
+
+        if(event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
+            event.getEntityLiving().setGlowing(false);
+        if(event.getPotionEffect().getPotion() == Effects.GLOWING)
+            event.getEntityLiving().setGlowing(false);
     }
 
     @SubscribeEvent
@@ -129,24 +144,14 @@ public class EventHandleStandAbilities
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event)
     {
-        List<Entity> removed = new ArrayList<>();
-        if(event.phase == TickEvent.Phase.END)
-        {
-            if(removalQueue.size() > 0)
-            {
-                for (Entity entity : removalQueue)
-                {
-                    entity.remove();
-                }
-            }
-
-            if(removed.size() > 0)
-            {
-                for (Entity removedEntity : removed) {
-                    removalQueue.remove(removedEntity);
-                }
-                removed.removeAll(removed);
-            }
+        if(event.phase == TickEvent.Phase.END) {
+            List<Entity> removed = new ArrayList<>();
+            removalQueue.forEach(entity -> {
+                entity.remove();
+                removed.add(entity);
+            });
+            removalQueue.removeAll(removed);
+            removed.clear();
         }
     }
 }

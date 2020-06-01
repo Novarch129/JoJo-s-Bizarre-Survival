@@ -15,9 +15,6 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
-import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.IFluidState;
 import net.minecraft.potion.Effects;
@@ -37,7 +34,6 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventRenderStandOverlay
@@ -80,7 +76,7 @@ public class EventRenderStandOverlay
         fogEvent.setDensity(0.3f);
 
         if(fogEvent.getInfo().getRenderViewEntity() instanceof LivingEntity)
-            if(((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISIONING.get()))
+            if(((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()) || ((LivingEntity) fogEvent.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISONING.get()))
                 if(fogEvent.isCancelable())
                     fogEvent.setCanceled(true);
                 fogEvent.setDensity(5f);
