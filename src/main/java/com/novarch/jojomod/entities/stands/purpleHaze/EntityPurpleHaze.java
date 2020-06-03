@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.crazyDiamond;
+package com.novarch.jojomod.entities.stands.purpleHaze;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
@@ -8,7 +8,6 @@ import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,25 +19,11 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityCrazyDiamond extends EntityStandBase
+public class EntityPurpleHaze extends EntityStandBase
 {
 	  private int oratick = 0;
 
 	  private int oratickr = 0;
-
-	  private KeyBinding repair = KeyHandler.keys[2];
-
-	 private List<BlockState> blockList = new ArrayList<>();
-
-	 private List<BlockPos> blockPosList = new ArrayList<>();
-
-	 public void addBlock(BlockState block) {
-	 	blockList.add(block);
-	 }
-
-	public void addBlockPos(BlockPos blockPos) {
-		blockPosList.add(blockPos);
-	}
 
 	@Override
 	public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -67,18 +52,18 @@ public class EntityCrazyDiamond extends EntityStandBase
 		return super.createSpawnPacket();
 	}
 
-	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world)
+	public EntityPurpleHaze(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-	    this.standID = JojoLibs.StandID.crazyDiamond;
+	    this.spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
+	    this.standID = JojoLibs.StandID.purpleHaze;
 	}
 
-	public EntityCrazyDiamond(World world)
+	public EntityPurpleHaze(World world)
 	{
-		super(EntityInit.CRAZY_DIAMOND.get(), world);
-	    this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-	    this.standID = JojoLibs.StandID.crazyDiamond;
+		super(EntityInit.PURPLE_HAZE.get(), world);
+	    this.spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
+	    this.standID = JojoLibs.StandID.purpleHaze;
 	}
 	
 	public void tick() {
@@ -88,35 +73,8 @@ public class EntityCrazyDiamond extends EntityStandBase
 		{
 			PlayerEntity player = getMaster();
 
-			/*ItemStack itemStack = new ItemStack(ItemInit.summon_king_crimson.get());
-			if(Minecraft.getInstance().gameSettings.keyBindJump.isPressed()) Use for Beach Boy! TODO
-				player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);*/
-
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
-
-				//Crazy Diamond's ability
-				List<BlockState> blockRepairedList = new ArrayList<>();
-				List<BlockPos> blockPosRepairedList = new ArrayList<>();
-
-				if (repair.isPressed() && props.getCooldown() <= 0) {
-					if (blockList.size() > 0 && blockPosList.size() > 0) {
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
-						props.setCooldown(100);
-					}
-					blockPosList.forEach(blockPos -> {
-						BlockState block = blockList.get(blockPosList.indexOf(blockPos));
-						world.setBlockState(blockPos, block);
-						blockRepairedList.add(block);
-						blockPosRepairedList.add(blockPos);
-					});
-					blockList.removeAll(blockRepairedList);
-					blockPosList.removeAll(blockPosRepairedList);
-					blockRepairedList.clear();
-					blockPosRepairedList.clear();
-				}
-
-
 
 				if(props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);
@@ -137,7 +95,7 @@ public class EntityCrazyDiamond extends EntityStandBase
 							this.oratick++;
 							if (this.oratick == 1) {
 								if(!world.isRemote)
-									world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+									world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PURPLE_HAZE_RUSH.get(), getSoundCategory(), 1.0f, 1.0f);
 
 								if (!this.world.isRemote)
 									this.orarush = true;
@@ -149,9 +107,9 @@ public class EntityCrazyDiamond extends EntityStandBase
 						this.oratick++;
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (this.rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-							EntityStandPunch.crazyDiamond crazyDiamond = new EntityStandPunch.crazyDiamond(this.world, this, player);
-							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond);
+							EntityStandPunch.purpleHaze purpleHaze = new EntityStandPunch.purpleHaze(this.world, this, player);
+							purpleHaze.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							this.world.addEntity(purpleHaze);
 						}
 					}
 				}
@@ -163,16 +121,16 @@ public class EntityCrazyDiamond extends EntityStandBase
 					if (this.oratickr >= 10)
 						if (!this.world.isRemote) {
 							player.setSprinting(false);
-							EntityStandPunch.crazyDiamond crazyDiamond1 = new EntityStandPunch.crazyDiamond(this.world, this, player);
-							crazyDiamond1.setRandomPositions();
-							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond1);
-							EntityStandPunch.crazyDiamond crazyDiamond2 = new EntityStandPunch.crazyDiamond(this.world, this, player);
-							crazyDiamond2.setRandomPositions();
-							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond2);
+							EntityStandPunch.purpleHaze purpleHaze1 = new EntityStandPunch.purpleHaze(this.world, this, player);
+							purpleHaze1.setRandomPositions();
+							purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							this.world.addEntity(purpleHaze1);
+							EntityStandPunch.purpleHaze purpleHaze2 = new EntityStandPunch.purpleHaze(this.world, this, player);
+							purpleHaze2.setRandomPositions();
+							purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							this.world.addEntity(purpleHaze2);
 						}
-					if (this.oratickr >= 80) {
+					if (this.oratickr >= 120) {
 						this.orarush = false;
 						this.oratickr = 0;
 					}

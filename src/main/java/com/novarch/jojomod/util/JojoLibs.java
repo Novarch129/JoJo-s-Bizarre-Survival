@@ -11,6 +11,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.material.Material;
@@ -112,7 +113,9 @@ public class JojoLibs
 
         public static final int crazyDiamond = 9;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond};
+        public static final int purpleHaze = 10;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze};
     }
 
     public static class KeyCodes
@@ -127,8 +130,7 @@ public class JojoLibs
 
     public static EntityStandBase getStand(int standID, World world)
     {
-        switch (standID)
-        {
+        switch (standID) {
             case StandID.nullStand:
                 return null;
             case StandID.kingCrimson:
@@ -149,6 +151,8 @@ public class JojoLibs
                 return new EntityKillerQueen(world);
             case StandID.crazyDiamond:
                 return new EntityCrazyDiamond(world);
+            case StandID.purpleHaze:
+                return new EntityPurpleHaze(world);
         }
         return null;
     }

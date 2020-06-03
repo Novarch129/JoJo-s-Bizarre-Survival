@@ -13,6 +13,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
@@ -26,6 +27,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
@@ -70,6 +72,10 @@ public abstract class StandPunchEffects
 				crazyDiamond(result, entityIn, punch, isBlock);
 				break;
 			}
+			case JojoLibs.StandID.purpleHaze: {
+				purpleHaze(result, entityIn, punch, isBlock);
+				break;
+			}
             default: {
             	basicDefault(result, entityIn, isBlock);
             	break;
@@ -77,15 +83,7 @@ public abstract class StandPunchEffects
         }
     }
 
-	/**
-	 * Default punch
-	 */
-
     public static void basicDefault(final RayTraceResult result, final LivingEntity LivingEntity, final boolean isBlock) { }
-
-    /**
-     * King Crimson's punch
-     */
 
     public static void kingCrimson(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock) {
         if (isBlock) {
@@ -119,10 +117,6 @@ public abstract class StandPunchEffects
         }
     }
 
-    /**
-     * D4C's punch
-     */
-
     public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
     {
     	if (isBlock) {
@@ -152,10 +146,6 @@ public abstract class StandPunchEffects
 			punch.remove();
 		}
     }
-
-    /**
-     * Made in Heaven's punch
-     */
 
     public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock) {
 		if (isBlock) {
@@ -223,10 +213,6 @@ public abstract class StandPunchEffects
 		}
 	}
 
-		/**
-		 * Gold Experience's punch
-		 */
-
 		public static void goldExperience (RayTraceResult result,final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
 		{
 			if (isBlock) {
@@ -269,356 +255,358 @@ public abstract class StandPunchEffects
 				final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 				final BlockState BlockState = punch.world.getBlockState(blockpos);
 				final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-				IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
-				if (punch.shootingStand.ability && blockB != Blocks.AIR && blockB != Blocks.AIR) {
-					if (hardness <= 15.0f) {
-						if (props.getTransformed() == 0) {
-							if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
-							{
-								props.addTransformed(1);
-								BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
-								bat.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(bat);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
+				JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props ->{
+					if (punch.shootingStand.ability && blockB != Blocks.AIR) {
+						if (hardness <= 15.0f) {
+							if (props.getTransformed() == 0) {
+								if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK || blockB == Blocks.NETHERRACK)
 								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+									props.addTransformed(1);
+									BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
+									bat.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(bat);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.JUNGLE_LEAVES) {
-								props.addTransformed(1);
-								ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
-								parrot.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(parrot);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.JUNGLE_LEAVES) {
+									props.addTransformed(1);
+									ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
+									parrot.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(parrot);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.TNT) {
-								props.addTransformed(1);
-								CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
-								creeper.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(creeper);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.TNT) {
+									props.addTransformed(1);
+									CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
+									creeper.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(creeper);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.SLIME_BLOCK) {
-								props.addTransformed(1);
-								SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
-								slime.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(slime);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.SLIME_BLOCK) {
+									props.addTransformed(1);
+									SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
+									slime.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(slime);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.STONE) {
-								props.addTransformed(1);
-								SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
-								silverfish.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(silverfish);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.STONE) {
+									props.addTransformed(1);
+									SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
+									silverfish.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(silverfish);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.POTATOES || blockB == Blocks.OAK_LOG) {
-								props.addTransformed(1);
-								PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
-								pig.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(pig);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.POTATOES || blockB == Blocks.OAK_LOG) {
+									props.addTransformed(1);
+									PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
+									pig.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(pig);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.HAY_BLOCK) {
-								props.addTransformed(1);
-								HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
-								horse.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(horse);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.HAY_BLOCK) {
+									props.addTransformed(1);
+									HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
+									horse.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(horse);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.MYCELIUM) {
-								props.addTransformed(1);
-								MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
-								mooshroom.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(mooshroom);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.MYCELIUM) {
+									props.addTransformed(1);
+									MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
+									mooshroom.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(mooshroom);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.EMERALD_BLOCK || blockB == Blocks.EMERALD_ORE) {
-								props.addTransformed(1);
-								VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
-								villager.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(villager);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.EMERALD_BLOCK || blockB == Blocks.EMERALD_ORE) {
+									props.addTransformed(1);
+									VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
+									villager.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(villager);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.MOSSY_COBBLESTONE) {
-								props.addTransformed(1);
-								ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
-								zombie.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(zombie);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.MOSSY_COBBLESTONE) {
+									props.addTransformed(1);
+									ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
+									zombie.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(zombie);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.BONE_BLOCK || blockB == Blocks.BOOKSHELF) {
-								props.addTransformed(1);
-								SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
-								skeleton.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(skeleton);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.BONE_BLOCK || blockB == Blocks.BOOKSHELF) {
+									props.addTransformed(1);
+									SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
+									skeleton.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(skeleton);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.VINE) {
-								props.addTransformed(1);
-								SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
-								spider.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(spider);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.VINE) {
+									props.addTransformed(1);
+									SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
+									spider.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(spider);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.WHITE_WOOL || blockB == Blocks.WHEAT) {
-								props.addTransformed(1);
-								SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
-								sheep.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(sheep);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.WHITE_WOOL || blockB == Blocks.WHEAT) {
+									props.addTransformed(1);
+									SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
+									sheep.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(sheep);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.BEETROOTS) {
-								props.addTransformed(1);
-								CowEntity cow = new CowEntity(EntityType.COW, punch.world);
-								cow.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(cow);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.BEETROOTS) {
+									props.addTransformed(1);
+									CowEntity cow = new CowEntity(EntityType.COW, punch.world);
+									cow.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(cow);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.CARROTS) {
-								props.addTransformed(1);
-								RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
-								rabbit.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(rabbit);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.CARROTS) {
+									props.addTransformed(1);
+									RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
+									rabbit.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(rabbit);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.FIRE) {
-								props.addTransformed(1);
-								BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
-								blaze.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(blaze);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.FIRE) {
+									props.addTransformed(1);
+									BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
+									blaze.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(blaze);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.MAGMA_BLOCK) {
-								props.addTransformed(1);
-								MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
-								magma.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(magma);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.MAGMA_BLOCK) {
+									props.addTransformed(1);
+									MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
+									magma.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(magma);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.NETHER_BRICKS || blockB == Blocks.NETHER_WART || blockB == Blocks.NETHER_WART_BLOCK) {
-								props.addTransformed(1);
-								ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
-								zombiepig.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(zombiepig);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.NETHER_BRICKS || blockB == Blocks.NETHER_WART || blockB == Blocks.NETHER_WART_BLOCK) {
+									props.addTransformed(1);
+									ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
+									zombiepig.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(zombiepig);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.BLACK_SHULKER_BOX || blockB == Blocks.BLUE_SHULKER_BOX || blockB == Blocks.BROWN_SHULKER_BOX || blockB == Blocks.CYAN_SHULKER_BOX || blockB == Blocks.GRAY_SHULKER_BOX || blockB == Blocks.GREEN_SHULKER_BOX || blockB == Blocks.LIGHT_BLUE_SHULKER_BOX || blockB == Blocks.LIME_SHULKER_BOX || blockB == Blocks.MAGENTA_SHULKER_BOX || blockB == Blocks.ORANGE_SHULKER_BOX || blockB == Blocks.PINK_SHULKER_BOX || blockB == Blocks.PURPLE_SHULKER_BOX || blockB == Blocks.RED_SHULKER_BOX || blockB == Blocks.WHITE_SHULKER_BOX || blockB == Blocks.YELLOW_SHULKER_BOX) {
-								props.addTransformed(1);
-								ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
-								shulker.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(shulker);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.BLACK_SHULKER_BOX || blockB == Blocks.BLUE_SHULKER_BOX || blockB == Blocks.BROWN_SHULKER_BOX || blockB == Blocks.CYAN_SHULKER_BOX || blockB == Blocks.GRAY_SHULKER_BOX || blockB == Blocks.GREEN_SHULKER_BOX || blockB == Blocks.LIGHT_BLUE_SHULKER_BOX || blockB == Blocks.LIME_SHULKER_BOX || blockB == Blocks.MAGENTA_SHULKER_BOX || blockB == Blocks.ORANGE_SHULKER_BOX || blockB == Blocks.PINK_SHULKER_BOX || blockB == Blocks.PURPLE_SHULKER_BOX || blockB == Blocks.RED_SHULKER_BOX || blockB == Blocks.WHITE_SHULKER_BOX || blockB == Blocks.YELLOW_SHULKER_BOX) {
+									props.addTransformed(1);
+									ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
+									shulker.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(shulker);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.SAND || blockB == Blocks.SANDSTONE) {
-								props.addTransformed(1);
-								HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
-								husk.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(husk);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.SAND || blockB == Blocks.SANDSTONE) {
+									props.addTransformed(1);
+									HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
+									husk.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(husk);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.SEA_PICKLE) {
-								props.addTransformed(1);
-								SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
-								salmon.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(salmon);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.SEA_PICKLE) {
+									props.addTransformed(1);
+									SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
+									salmon.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(salmon);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.SEA_LANTERN || blockB == Blocks.PRISMARINE) {
-								props.addTransformed(1);
-								GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
-								guardian.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(guardian);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.SEA_LANTERN || blockB == Blocks.PRISMARINE) {
+									props.addTransformed(1);
+									GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
+									guardian.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(guardian);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.DIAMOND_BLOCK) {
-								props.addTransformed(1);
-								DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
-								dolphin.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								punch.world.addEntity(dolphin);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.DIAMOND_BLOCK) {
+									props.addTransformed(1);
+									DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
+									dolphin.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									punch.world.addEntity(dolphin);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
-							}
-							if (blockB == Blocks.TURTLE_EGG) {
-								props.addTransformed(1);
-								TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
-								turtle.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-								turtle.setCustomName(new StringTextComponent("Jean Pierre Polnareff"));
-								punch.world.addEntity(turtle);
-								punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
-								if (!punch.standMaster.isCreative())
-								{
-									punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+								if (blockB == Blocks.TURTLE_EGG) {
+									props.addTransformed(1);
+									TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
+									turtle.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+									turtle.setCustomName(new StringTextComponent("Jean Pierre Polnareff"));
+									punch.world.addEntity(turtle);
+									punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+									punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
+									if (!punch.standMaster.isCreative())
+									{
+										punch.standMaster.getFoodStats().addStats(-2, 0.0f);
+										punch.remove();
+									}
 									punch.remove();
 								}
-								punch.remove();
+								if(punch.ticksExisted > 60)
+								{
+									punch.remove();
+								}
+								props.setCooldown(80);
 							}
-							if(punch.ticksExisted > 60)
-							{
-								punch.remove();
-							}
-							props.setCooldown(80);
 						}
 					}
-				}
+				});
+
 				if (hardness != -1.0f && hardness <= 3.0f && blockB != Blocks.AIR) {
 					if (!punch.shootingStand.ability) {
 						punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
@@ -632,10 +620,6 @@ public abstract class StandPunchEffects
 				punch.remove();
 			}
 		}
-
-    /**
-     * GER's punch
-     */
 
     public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
     {
@@ -678,9 +662,8 @@ public abstract class StandPunchEffects
 			final Block blockB = punch.getInTile();
 			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState BlockState = punch.world.getBlockState(blockpos);
-			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-			IStand props = JojoProvider.getCapabilityFromPlayer(punch.shootingStand.getMaster());
-			if (punch.shootingStand.ability && blockB != Blocks.AIR) {
+			JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
+				if (punch.shootingStand.ability && blockB != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (blockB == Blocks.GRASS || blockB == Blocks.GRASS_BLOCK|| blockB == Blocks.NETHERRACK)
 						{
@@ -1014,7 +997,8 @@ public abstract class StandPunchEffects
 						}
 						props.setCooldown(60);
 					}
-			}
+				}
+			});
 			if (blockB != Blocks.AIR) {
 				if (!punch.shootingStand.ability) {
 					punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
@@ -1152,19 +1136,55 @@ public abstract class StandPunchEffects
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(result.getHitVec().getX(), result.getHitVec().getY(), result.getHitVec().getZ());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f)
 			{
-				if(block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER) {
-					((EntityCrazyDiamond)punch.shootingStand).addBlock(block);
+				if(block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER && punch.shootingStand.ability) {
+					((EntityCrazyDiamond)punch.shootingStand).addBlock(blockState);
 					if(punch.world.getBlockState(blockPos).getMaterial() != Material.AIR && punch.world.getBlockState(blockPos).getMaterial() != Material.WATER)
 						((EntityCrazyDiamond)punch.shootingStand).addBlockPos(blockPos);
 				}
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				if(!punch.shootingStand.ability)
 					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+			}
+		}
+		punch.remove();
+	}
+
+	public static void purpleHaze(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock)
+	{
+		if (isBlock) {
+			final float p = 0.2f;
+			final float p2 = 0.4f;
+			if(!punch.world.isRemote) {
+				punch.world.getServer().getWorld(punch.dimension).getEntities()
+						.filter(entity -> entity instanceof MobEntity)
+						.forEach(entity -> ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 150, 1)));
+			}
+			if(punch.shootingStand.ability)
+				livingEntity.addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 600, 5));
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+			}
+			else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 3.0f)
+			{
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
 			}
 		}
 		punch.remove();

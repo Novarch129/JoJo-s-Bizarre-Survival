@@ -62,14 +62,14 @@ public class EntityKingCrimson extends EntityStandBase
 	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world)
 	{
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_KC.get();
+	    this.spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
 	
 	public EntityKingCrimson(World world) 
 	{
 		super(EntityInit.KING_CRIMSON.get(), world);
-	    this.spawnSound = SoundInit.SPAWN_KC.get();
+	    this.spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
 	    this.standID = JojoLibs.StandID.kingCrimson;
 	}
 	
@@ -169,9 +169,6 @@ public class EntityKingCrimson extends EntityStandBase
 						if (player.getFoodStats().getFoodLevel() > 6) {
 							this.oratick++;
 							if (this.oratick == 1) {
-								if (!this.world.isRemote)
-									this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.LAST_ORA_KC.get(), getSoundCategory(), 6.0F, 1.0F);
-
 								if (!player.isCreative())
 									player.getFoodStats().addStats(0, 0.0F);
 								if (!this.world.isRemote)

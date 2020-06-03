@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 
 public class RenderCrazyDiamond extends MobRenderer<EntityCrazyDiamond, ModelCrazyDiamond<EntityCrazyDiamond>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond.png");
 
 	public RenderCrazyDiamond(EntityRendererManager renderManagerIn)
 	{

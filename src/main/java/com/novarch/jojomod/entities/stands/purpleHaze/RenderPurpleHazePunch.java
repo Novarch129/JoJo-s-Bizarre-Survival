@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.crazyDiamond;
+package com.novarch.jojomod.entities.stands.purpleHaze;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
@@ -13,26 +13,26 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
-public class RenderCrazyDiamondPunch extends EntityRenderer<EntityStandPunch.crazyDiamond>
+public class RenderPurpleHazePunch extends EntityRenderer<EntityStandPunch.purpleHaze>
 {
-	protected ModelCrazyDiamondPunch punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
+	protected ModelPurpleHazePunch<EntityStandPunch.purpleHaze> punch;
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
 
-	public RenderCrazyDiamondPunch(EntityRendererManager renderManagerIn)
+	public RenderPurpleHazePunch(EntityRendererManager renderManagerIn)
 	{
 		super(renderManagerIn);
-		this.punch = new ModelCrazyDiamondPunch();
+		this.punch = new ModelPurpleHazePunch<EntityStandPunch.purpleHaze>();
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.crazyDiamond entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.purpleHaze entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.crazyDiamond entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.purpleHaze entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		renderManager.textureManager.bindTexture(texture);
+		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());
 		GL11.glRotatef(entityIn.prevRotationYaw + (entityIn.rotationYaw - entityIn.prevRotationYaw) * packedLightIn - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -42,16 +42,16 @@ public class RenderCrazyDiamondPunch extends EntityRenderer<EntityStandPunch.cra
 		GL11.glRotatef(180.0F, 1.0F, 0.0F, 0.0F);
 		GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 		GL11.glScalef(2.0F, 2.0F, 2.0F);
-		punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0);
+		this.punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntityNoOutline(getEntityTexture(entityIn))), packedLightIn, 0);
 		GL11.glDisable(32826);
 		GL11.glPopMatrix();
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.crazyDiamond entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.purpleHaze entity)
 	{
-		return RenderCrazyDiamondPunch.texture;
+		return RenderPurpleHazePunch.texture;
 	}
 }
 

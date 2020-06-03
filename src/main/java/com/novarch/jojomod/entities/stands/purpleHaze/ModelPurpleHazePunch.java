@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.crazyDiamond;
+package com.novarch.jojomod.entities.stands.purpleHaze;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -6,11 +6,11 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelCrazyDiamondPunch<T extends EntityStandPunch.purpleHaze> extends EntityModel<T> {
+public class ModelPurpleHazePunch<T extends EntityStandPunch.purpleHaze> extends EntityModel<T>
+{
 	private final ModelRenderer Punch;
-	private final ModelRenderer ElbowPad1;
 
-	public ModelCrazyDiamondPunch()
+	public ModelPurpleHazePunch()
 	{
 		textureWidth = 64;
 		textureHeight = 32;
@@ -18,15 +18,7 @@ public class ModelCrazyDiamondPunch<T extends EntityStandPunch.purpleHaze> exten
 		Punch = new ModelRenderer(this);
 		Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
 		Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
-
-		ElbowPad1 = new ModelRenderer(this);
-		ElbowPad1.setRotationPoint(0.2614F, -2.314F, 0.1614F);
-		Punch.addChild(ElbowPad1);
-		setRotationAngle(ElbowPad1, -1.5708F, 0.0F, 0.0F);
-		ElbowPad1.setTextureOffset(30, 25).addBox(1.5F, -1.5F, -1.9125F, 1.0F, 3.0F, 4.0F, 0.0F, false);
-		ElbowPad1.setTextureOffset(53, 16).addBox(-2.5F, -0.5F, -2.1875F, 1.0F, 1.0F, 4.0F, 0.0F, false);
-		ElbowPad1.setTextureOffset(50, 28).addBox(-2.5F, -0.5F, -2.1625F, 5.0F, 1.0F, 1.0F, 0.0F, false);
-		ElbowPad1.setTextureOffset(49, 29).addBox(-2.5F, -0.5F, 1.4625F, 5.0F, 1.0F, 1.0F, 0.0F, false);
+		Punch.setTextureOffset(0, 0).addBox(1.125F, -3.0F, -5.25F, 1.0F, 2.0F, 2.0F, 0.0F, false);
 	}
 
 	@Override

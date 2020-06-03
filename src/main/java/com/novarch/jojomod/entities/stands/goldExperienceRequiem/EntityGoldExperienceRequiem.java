@@ -36,9 +36,11 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 	  private KeyBinding abilityKey = KeyHandler.keys[2];
 
-	  private KeyBinding noClipKey = KeyHandler.keys[10];
+	  private KeyBinding fly = KeyHandler.keys[10];
 
 	  private boolean truth = false;
+
+	  private boolean flightBool = false;
 
 	  @Override
 	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
@@ -95,14 +97,18 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 				player.getFoodStats().addStats(20, 20.0f);
 
+				if(fly.isPressed()) {
+					flightBool = !flightBool;
+				}
+
+				if(flightBool)
+					player.setNoGravity(true);
+				else
+					player.setNoGravity(false);
+
 				//Gold Experience Requiem's ability
 				if(ability)
 				{
-					if(noClipKey.isPressed()) {
-						props.setNoClip(!props.getNoClip());
-						player.sendMessage(new StringTextComponent(String.valueOf(props.getNoClip())));
-					}
-
 					if(player.getLastAttackedEntity() != null)
 					{
 						if(abilityKey.isPressed())
@@ -152,6 +158,13 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 											truth.setDropChance(EquipmentSlotType.MAINHAND, 0.0f);
 											playerEntity.world.addEntity(truth);
 											truth.setAttackTarget(playerEntity);
+										} else {
+											if(!world.isRemote) {
+												world.getServer().getWorld(dimension).getEntities()
+														.filter(entity -> entity instanceof CreeperEntity)
+														.filter(entity -> entity.getCustomName().equals(new StringTextComponent(truthname)))
+														.forEach(Entity::remove);
+											}
 										}
 									}
 								}

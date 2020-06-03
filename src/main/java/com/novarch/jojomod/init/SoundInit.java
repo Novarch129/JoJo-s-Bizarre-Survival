@@ -13,29 +13,22 @@ public class SoundInit
 	public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, JojoBizarreSurvival.MOD_ID);
 
 	public static final RegistryObject<SoundEvent> CANZONI_PREFERITE = SOUNDS.register("canzoni_preferite", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "canzoni_preferite")));
+
 	public static final RegistryObject<SoundEvent> PUNCH_MISS = SOUNDS.register("knife_swing_miss1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "knife_swing_miss1")));
-	public static final RegistryObject<SoundEvent> DORARUSH = SOUNDS.register("dorarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "dorarush")));
-	public static final RegistryObject<SoundEvent> LAST_ORA = SOUNDS.register("last_ora", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "last_ora")));
-	public static final RegistryObject<SoundEvent> LAST_ORA_KC = SOUNDS.register("last_ora_kc", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "last_ora_kc")));
-	public static final RegistryObject<SoundEvent> ORA = SOUNDS.register("ora", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "ora")));
-	public static final RegistryObject<SoundEvent> ORARUSH = SOUNDS.register("orarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "orarush")));
-	public static final RegistryObject<SoundEvent> MUDARUSH = SOUNDS.register("mudarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudarush")));
-	public static final RegistryObject<SoundEvent> STOPTIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
+	public static final RegistryObject<SoundEvent> SPAWN_KING_CRIMSON = SOUNDS.register("spawn_king_crimson", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_king_crimson")));
+	public static final RegistryObject<SoundEvent> SPAWN_D4C = SOUNDS.register("spawn_d4c", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_d4c")));
+	public static final RegistryObject<SoundEvent> SPAWN_GOLD_EXPERIENCE = SOUNDS.register("spawn_gold_experience", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_gold_experience")));
 	public static final RegistryObject<SoundEvent> MUDAGIORNO = SOUNDS.register("mudagiorno", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudagiorno")));
 	public static final RegistryObject<SoundEvent> TRANSMUTE = SOUNDS.register("transmute", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "transmute")));
-	public static final RegistryObject<SoundEvent> SPAWN_CRAZY_DIAMOND = SOUNDS.register("spawn_cd", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_cd")));
-	public static final RegistryObject<SoundEvent> SPAWN_KC = SOUNDS.register("spawn_kc", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_kc")));
-	public static final RegistryObject<SoundEvent> SPAWN_D4C = SOUNDS.register("spawn_d4c", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_d4c")));
-	public static final RegistryObject<SoundEvent> SPAWN_MIH = SOUNDS.register("spawn_mih", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_mih")));
-	public static final RegistryObject<SoundEvent> SPAWN_WR = SOUNDS.register("spawn_wr", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_wr")));
-	public static final RegistryObject<SoundEvent> SPAWN_GOLD_EXPERIENCE = SOUNDS.register("spawn_ge", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_ge")));
+	public static final RegistryObject<SoundEvent> SPAWN_MADE_IN_HEAVEN = SOUNDS.register("spawn_made_in_heaven", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_made_in_heaven")));
 	public static final RegistryObject<SoundEvent> SPAWN_GER = SOUNDS.register("spawn_ger", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_ger")));
-	public static final RegistryObject<SoundEvent> SPAWN_TW = SOUNDS.register("spawn_tw", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tw")));
-	public static final RegistryObject<SoundEvent> SPAWN_KILLER_QUEEN = SOUNDS.register("spawn_kq", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_kq")));
-	public static final RegistryObject<SoundEvent> SPAWN_SHA = SOUNDS.register("spawn_sha", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sha")));
-	public static final RegistryObject<SoundEvent> LOOK_HERE = SOUNDS.register("look_here", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "look_here")));
-	public static final RegistryObject<SoundEvent> SPAWN_SF = SOUNDS.register("spawn_sf", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sf")));
-	public static final RegistryObject<SoundEvent> SPAWN_AEROSMITH = SOUNDS.register("spawn_a", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_a")));
+	public static final RegistryObject<SoundEvent> SPAWN_AEROSMITH = SOUNDS.register("spawn_aerosmith", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_aerosmith")));
 	public static final RegistryObject<SoundEvent> VOLARUSH = SOUNDS.register("volarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "volarush")));
-
+	public static final RegistryObject<SoundEvent> SPAWN_WEATHER_REPORT = SOUNDS.register("spawn_weather_report", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_weather_report")));
+	public static final RegistryObject<SoundEvent> SPAWN_KILLER_QUEEN = SOUNDS.register("spawn_killer_queen", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_killer_queen")));
+	public static final RegistryObject<SoundEvent> LOOK_HERE = SOUNDS.register("look_here", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "look_here")));
+	public static final RegistryObject<SoundEvent> SPAWN_CRAZY_DIAMOND = SOUNDS.register("spawn_crazy_diamond", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_crazy_diamond")));
+	public static final RegistryObject<SoundEvent> DORARUSH = SOUNDS.register("dorarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "dorarush")));
+	public static final RegistryObject<SoundEvent> SPAWN_PURPLE_HAZE = SOUNDS.register("spawn_purple_haze", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_purple_haze")));
+	public static final RegistryObject<SoundEvent> PURPLE_HAZE_RUSH = SOUNDS.register("purple_haze_rush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_rush")));
 }

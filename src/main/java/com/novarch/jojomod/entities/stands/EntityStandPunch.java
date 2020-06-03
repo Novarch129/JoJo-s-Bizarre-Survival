@@ -608,6 +608,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
+  public static class purpleHaze extends EntityStandPunch {
+    public purpleHaze(World worldIn) {
+      super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn);
+    }
+
+    public purpleHaze(EntityType <?extends EntityStandPunch > type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public purpleHaze(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket <?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
   @Override
   protected void registerData() {
 

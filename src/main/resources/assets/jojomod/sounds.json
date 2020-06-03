@@ -1,62 +1,8 @@
 {
-    "dorarush":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:dorarush", "stream": false}]
-    },
-    
-    "knife_stab": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:knife_stab", "stream": false}]
-    },
-    
     "knife_swing_miss1": 
     {
         "category": "neutral", 
         "sounds": [{"name": "jojomod:knife_swing_miss1", "stream": false}]
-    },
-      
-    "knife_swing_miss2": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:knife_swing_miss2", "stream": false}]
-    },
-      
-    "last_ora": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:last_ora", "stream": false}]
-    },
-    
-    "last_ora_kc": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:last_ora_kc", "stream": false}]
-    },
-      
-    "ora": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:ora", "stream": false}]
-    },
-      
-    "orarush": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:orarush", "stream": false}]
-    },
-    
-    "mudarush":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:mudarush", "stream": false}]
-    },
-    
-    "stoptime":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:stoptime", "stream": false}]
     },
     
     "mudagiorno":
@@ -83,16 +29,16 @@
         "sounds": [{"name": "jojomod:canzoni_preferite", "stream": true}]
     },
 
-    "spawn_cd": 
+    "spawn_crazy_diamond":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_cd", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_crazy_diamond", "stream": false}]
     },
     
-    "spawn_kc": 
+    "spawn_king_crimson":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_kc", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_king_crimson", "stream": false}]
     },
     
     "spawn_d4c": 
@@ -101,22 +47,22 @@
         "sounds": [{"name": "jojomod:spawn_d4c", "stream": false}]
     },
     
-    "spawn_mih": 
+    "spawn_made_in_heaven":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_mih", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_made_in_heaven", "stream": false}]
     },
     
-    "spawn_wr": 
+    "spawn_weather_report":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_wr", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_weather_report", "stream": false}]
     },
     
-    "spawn_ge": 
+    "spawn_gold_experience":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_ge", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_gold_experience", "stream": false}]
     },
     
     "spawn_ger": 
@@ -124,40 +70,40 @@
         "category": "neutral", 
         "sounds": [{"name": "jojomod:spawn_ger", "stream": false}]
     },
-    
-    "spawn_tw": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_tw", "stream": false}]
-    },
 
-    "spawn_kq":
+    "spawn_killer_queen":
     {
         "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_kq", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_killer_queen", "stream": false}]
     },
 
-    "spawn_sha":
+    "spawn_aerosmith":
     {
         "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_sha", "stream": false}]
-    },
-
-    "spawn_sf":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_sf", "stream": false}]
-    },
-
-    "spawn_a":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_a", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_aerosmith", "stream": false}]
     },
 
     "volarush":
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:volarush", "stream": false}]
+    },
+
+    "dorarush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:dorarush", "stream": false}]
+    },
+
+    "spawn_purple_haze":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_purple_haze", "stream": false}]
+    },
+
+    "purple_haze_rush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:purple_haze_rush", "stream": false}]
     }
 }

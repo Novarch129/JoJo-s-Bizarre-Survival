@@ -13,6 +13,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySh
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
@@ -145,4 +146,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.crazyDiamond>create(EntityStandPunch.crazyDiamond::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityPurpleHaze>> PURPLE_HAZE = ENTITY_TYPES
+			.register("purple_haze",
+					() -> EntityType.Builder.<EntityPurpleHaze>create(EntityPurpleHaze::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.purpleHaze>> PURPLE_HAZE_PUNCH = ENTITY_TYPES
+			.register("purple_haze_punch",
+					() -> EntityType.Builder.<EntityStandPunch.purpleHaze>create(EntityStandPunch.purpleHaze::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_punch").toString()));
 }

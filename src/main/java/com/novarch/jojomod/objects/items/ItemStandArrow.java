@@ -31,7 +31,7 @@ import java.util.List;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 @SuppressWarnings({"unused", "unchecked", "rawtypes"})
-public final class ItemStandArrow extends Item
+public class ItemStandArrow extends Item
 { // TODO add animation when obtaining GER
 	final int standID;
 	final String tooltip;

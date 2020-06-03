@@ -30,7 +30,7 @@ public class OxygenPoisoningEffect extends Effect
             if(entityLivingBaseIn instanceof PlayerEntity)
                 if(((PlayerEntity) entityLivingBaseIn).isCreative() | entityLivingBaseIn.isSpectator())
                     return;
-            entityLivingBaseIn.attackEntityFrom(DamageSource.DROWN, (entityLivingBaseIn.getMaxHealth() / entityLivingBaseIn.getHealth() - 0.4f) * (amplifier / 5.0f)/*2.0f*/);
+            entityLivingBaseIn.attackEntityFrom(DamageSource.DROWN, (entityLivingBaseIn.getMaxHealth() / entityLivingBaseIn.getHealth() - 0.4f) * (amplifier / 5.0f));
         }
 
         if(entityLivingBaseIn instanceof MobEntity)

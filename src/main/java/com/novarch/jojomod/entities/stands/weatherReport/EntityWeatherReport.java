@@ -56,14 +56,14 @@ public class EntityWeatherReport extends EntityStandBase
     public EntityWeatherReport(EntityType<? extends MobEntity> type, World worldIn)
     {
         super(type, worldIn);
-        this.spawnSound = SoundInit.SPAWN_WR.get();
+        this.spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
     public EntityWeatherReport(World worldIn)
     {
         super(EntityInit.WEATHER_REPORT.get(), worldIn);
-        this.spawnSound = SoundInit.SPAWN_WR.get();
+        this.spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
