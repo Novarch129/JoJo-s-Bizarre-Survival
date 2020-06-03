@@ -8,6 +8,7 @@ import net.minecraft.potion.EffectType;
 public class CrimsonEffectUser extends Effect
 {
     protected final double bonusPerLevel;
+
     public CrimsonEffectUser(EffectType typeIn, int liquidColorIn, double bonusPerLevel)
     {
         super(typeIn, liquidColorIn);
