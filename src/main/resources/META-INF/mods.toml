@@ -8,7 +8,7 @@ issueTrackerURL="https://github.com/Novarch129/JoJo-s-Blocky-Adventure/issues"
 
 modId="jojomod"
 
-version="1.15.2-0.0.6.0"
+version="1.15.2-0.0.6.1"
 
 displayName="JoJo's Bizarre Survival"
 
@@ -27,15 +27,10 @@ description='''
 '''
 
 [[dependencies.jojomod]]
-    # the modid of the dependency
     modId="forge" #mandatory
-    # Does this dependency have to exist - if not, ordering below must be specified
     mandatory=true #mandatory
-    # The version range of the dependency
     versionRange="[31,)" #mandatory
-    # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
     ordering="NONE"
-    # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 
 [[dependencies.jojomod]]

@@ -1,33 +1,20 @@
 package com.novarch.jojomod.entities.stands.crazyDiamond;
 
-import com.google.common.collect.Lists;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
-import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FallingBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.FallingBlockEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,14 +93,6 @@ public class EntityCrazyDiamond extends EntityStandBase
 
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
-
-				if(KeyHandler.keys[10].isPressed())
-					props.setNoClip(!props.getNoClip());
-
-				if(KeyHandler.keys[10].isPressed()) {
-					player.world.setBlockState(new BlockPos(player.getPosX(), player.getPosY() +1, player.getPosZ()), Blocks.AIR.getDefaultState());
-					player.world.setBlockState(player.getPosition(), Blocks.AIR.getDefaultState());
-				}
 
 				//Crazy Diamond's ability
 				List<Block> blockRepairedList = new ArrayList<>();

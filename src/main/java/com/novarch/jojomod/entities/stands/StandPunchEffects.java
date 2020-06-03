@@ -110,11 +110,6 @@ public abstract class StandPunchEffects
             final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-                    /*Class clazz = blockB.getClass();
-                    Field slipperiness = clazz.getDeclaredField("slipperiness");
-                    slipperiness.setAccessible(true);
-                    slipperiness.setInt(slipperiness, slipperiness.getModifiers() & ~Modifier.FINAL);
-                    slipperiness.set(null, 100.0f);*/
                     blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
                     punch.remove();
             }
@@ -133,7 +128,7 @@ public abstract class StandPunchEffects
     	if (isBlock) {
                 final float p = 0.2f;
                 final float p2 = 0.4f;
-                    LivingEntity.attackEntityFrom(DamageSource.causeMobDamage((LivingEntity)punch.shootingStand.getMaster()), 2.0f);
+                    LivingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
                     LivingEntity.hurtResistantTime = 0;
                     LivingEntity.setMotion(0, LivingEntity.getMotion().getY(), LivingEntity.getMotion().getZ());
                     if (LivingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -153,20 +148,16 @@ public abstract class StandPunchEffects
             if (hardness != -1.0f && hardness < 3.0f) {
                     punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
                     blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
-                    punch.remove();
-            }
-            else {
-                punch.remove();
-            }
-        }
+			}
+			punch.remove();
+		}
     }
 
     /**
      * Made in Heaven's punch
      */
 
-    public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock)
-	{
+    public static void madeInHeaven(RayTraceResult result, final LivingEntity LivingEntity, final EntityStandPunch punch, final boolean isBlock) {
 		if (isBlock) {
 			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
@@ -219,21 +210,18 @@ public abstract class StandPunchEffects
 					punch.remove();
 				}
 			}
+		} else if (!isBlock) {
+			final Block blockB = punch.getInTile();
+			final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState BlockState = punch.world.getBlockState(blockpos);
+			final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
+			if (hardness != -1.0f && hardness < 100.0f) {
+				punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
+				blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+			}
+			punch.remove();
 		}
-				else if (!isBlock) {
-					final Block blockB = punch.getInTile();
-					final BlockPos blockpos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
-					final BlockState BlockState = punch.world.getBlockState(blockpos);
-					final float hardness = BlockState.getBlockHardness(punch.world, blockpos);
-					if (hardness != -1.0f && hardness < 100.0f) {
-						punch.world.setBlockState(blockpos, Blocks.AIR.getDefaultState());
-						blockB.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockpos, BlockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
-						punch.remove();
-					} else {
-						punch.remove();
-					}
-				}
-		}
+	}
 
 		/**
 		 * Gold Experience's punch
