@@ -1,10 +1,34 @@
 {
-    "knife_swing_miss1": 
+    "canzoni_preferite":
+    {
+        "category": "record",
+        "sounds": [{"name": "jojomod:canzoni_preferite", "stream": true}]
+    },
+
+    "punch_miss":
     {
         "category": "neutral", 
-        "sounds": [{"name": "jojomod:knife_swing_miss1", "stream": false}]
+        "sounds": [{"name": "jojomod:punch_miss", "stream": false}]
     },
-    
+
+    "spawn_king_crimson":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_king_crimson", "stream": false}]
+    },
+
+    "spawn_d4c":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_d4c", "stream": false}]
+    },
+
+    "spawn_gold_experience":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_gold_experience", "stream": false}]
+    },
+
     "mudagiorno":
     {
         "category": "neutral", 
@@ -17,64 +41,16 @@
         "sounds": [{"name": "jojomod:transmute", "stream": false}]
     },
 
-    "look_here":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:look_here", "stream": false}]
-    },
-
-    "canzoni_preferite":
-    {
-        "category": "record",
-        "sounds": [{"name": "jojomod:canzoni_preferite", "stream": true}]
-    },
-
-    "spawn_crazy_diamond":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_crazy_diamond", "stream": false}]
-    },
-    
-    "spawn_king_crimson":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_king_crimson", "stream": false}]
-    },
-    
-    "spawn_d4c": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_d4c", "stream": false}]
-    },
-    
     "spawn_made_in_heaven":
     {
-        "category": "neutral", 
+        "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_made_in_heaven", "stream": false}]
     },
-    
-    "spawn_weather_report":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_weather_report", "stream": false}]
-    },
-    
-    "spawn_gold_experience":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_gold_experience", "stream": false}]
-    },
-    
-    "spawn_ger": 
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_ger", "stream": false}]
-    },
 
-    "spawn_killer_queen":
+    "spawn_ger":
     {
         "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_killer_queen", "stream": false}]
+        "sounds": [{"name": "jojomod:spawn_ger", "stream": false}]
     },
 
     "spawn_aerosmith":
@@ -87,6 +63,30 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:volarush", "stream": false}]
+    },
+
+    "spawn_weather_report":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_weather_report", "stream": false}]
+    },
+
+    "spawn_killer_queen":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_killer_queen", "stream": false}]
+    },
+
+    "look_here":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:look_here", "stream": false}]
+    },
+
+    "spawn_crazy_diamond":
+    {
+        "category": "neutral", 
+        "sounds": [{"name": "jojomod:spawn_crazy_diamond", "stream": false}]
     },
 
     "dorarush":

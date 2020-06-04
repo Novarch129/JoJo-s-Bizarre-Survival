@@ -7,7 +7,7 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.block.Block;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
@@ -20,72 +20,67 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityCrazyDiamond extends EntityStandBase
-{
-	  private int oratick = 0;
+@MethodsReturnNonnullByDefault
+public class EntityCrazyDiamond extends EntityStandBase {
+	private int oratick = 0;
 
-	  private int oratickr = 0;
+	private int oratickr = 0;
 
-	  private KeyBinding repair = KeyHandler.keys[2];
+	private KeyBinding repair = KeyHandler.keys[2];
 
-	 private List<BlockState> blockList = new ArrayList<>();
+	private List<BlockState> blockList = new ArrayList<>();
 
-	 private List<BlockPos> blockPosList = new ArrayList<>();
+	private List<BlockPos> blockPosList = new ArrayList<>();
 
-	 public void addBlock(BlockState block) {
-	 	blockList.add(block);
-	 }
+	public void addBlock(BlockState block) {
+		blockList.add(block);
+	}
 
 	public void addBlockPos(BlockPos blockPos) {
 		blockPosList.add(blockPos);
 	}
 
 	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) { return false; }
+	public boolean canDespawn(double distanceToClosestPlayer) {
+		return false;
+	}
 
 	@Override
-	public boolean isAIDisabled()
-	  {
-	    return false;
-	  }
+	public boolean isAIDisabled() {
+		return false;
+	}
 
-	  @Override
-	  public void readAdditional(CompoundNBT compoundNBT)
-	  {
-	    super.readAdditional(compoundNBT);
-	  }
+	@Override
+	public void readAdditional(CompoundNBT compoundNBT) {
+		super.readAdditional(compoundNBT);
+	}
 
-	  @Override
-	  public void writeAdditional(CompoundNBT compoundNBT)
-	  {
-	    super.writeAdditional(compoundNBT);
-	  }
+	@Override
+	public void writeAdditional(CompoundNBT compoundNBT) {
+		super.writeAdditional(compoundNBT);
+	}
 
-	  @Override
-	  public IPacket<?> createSpawnPacket()
-	{
+	@Override
+	public IPacket<?> createSpawnPacket() {
 		return super.createSpawnPacket();
 	}
 
-	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world)
-	{
+	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-	    this.standID = JojoLibs.StandID.crazyDiamond;
+		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		this.standID = JojoLibs.StandID.crazyDiamond;
 	}
 
-	public EntityCrazyDiamond(World world)
-	{
+	public EntityCrazyDiamond(World world) {
 		super(EntityInit.CRAZY_DIAMOND.get(), world);
-	    this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-	    this.standID = JojoLibs.StandID.crazyDiamond;
+		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		this.standID = JojoLibs.StandID.crazyDiamond;
 	}
-	
+
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0f;
-		if (getMaster() != null)
-		{
+		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
 			/*ItemStack itemStack = new ItemStack(ItemInit.summon_king_crimson.get());
@@ -117,13 +112,11 @@ public class EntityCrazyDiamond extends EntityStandBase
 				}
 
 
-
-				if(props.getCooldown() > 0 && ability)
+				if (props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);
 			});
 
-			if (this.standOn)
-			{
+			if (this.standOn) {
 				followMaster();
 				setRotationYawHead(player.rotationYaw);
 				setRotation(player.rotationYaw, player.rotationPitch);
@@ -136,7 +129,7 @@ public class EntityCrazyDiamond extends EntityStandBase
 						if (player.getFoodStats().getFoodLevel() > 6) {
 							this.oratick++;
 							if (this.oratick == 1) {
-								if(!world.isRemote)
+								if (!world.isRemote)
 									world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
 
 								if (!this.world.isRemote)
@@ -172,7 +165,7 @@ public class EntityCrazyDiamond extends EntityStandBase
 							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
 							this.world.addEntity(crazyDiamond2);
 						}
-					if (this.oratickr >= 80) {
+					if (this.oratickr >= 117) {
 						this.orarush = false;
 						this.oratickr = 0;
 					}
@@ -182,14 +175,12 @@ public class EntityCrazyDiamond extends EntityStandBase
 	}
 
 
-	  public boolean isEntityInsideOpaqueBlock()
-	  {
-	  	return false;
-	  }
+	public boolean isEntityInsideOpaqueBlock() {
+		return false;
+	}
 
 	@Override
-	public boolean canBeCollidedWith()
-	{
-		return super.canBeCollidedWith();
+	public boolean canBeCollidedWith() {
+		return false;
 	}
 }
