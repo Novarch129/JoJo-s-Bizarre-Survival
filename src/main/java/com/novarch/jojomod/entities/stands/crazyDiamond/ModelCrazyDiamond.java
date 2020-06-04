@@ -5,12 +5,14 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel<T> {
+public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel<T>
+{
 	private final ModelRenderer HeadBase;
 	private final ModelRenderer Head;
 	private final ModelRenderer Eyes;
 	private final ModelRenderer Chin;
 	private final ModelRenderer ChinPart1;
+	private final ModelRenderer Helmet;
 	private final ModelRenderer Pipes;
 	private final ModelRenderer Pipes1;
 	private final ModelRenderer Pipe1;
@@ -85,7 +87,8 @@ public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel
 	private final ModelRenderer KneePad1;
 	private final ModelRenderer KneePad3;
 
-	public ModelCrazyDiamond() {
+	public ModelCrazyDiamond()
+	{
 		textureWidth = 128;
 		textureHeight = 128;
 
@@ -97,14 +100,13 @@ public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel
 		Head.setRotationPoint(0.0F, 0.0F, 0.0F);
 		HeadBase.addChild(Head);
 		Head.setTextureOffset(0, 0).addBox(-4.0F, -10.2F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
-		Head.setTextureOffset(83, 1).addBox(-4.5F, -10.4F, -4.5F, 9.0F, 2.0F, 9.0F, 0.0F, false);
 
 		Eyes = new ModelRenderer(this);
-		Eyes.setRotationPoint(0.0F, 0.0F, 0.0F);
+		Eyes.setRotationPoint(0.0F, 0.0F, 0.2F);
 		Head.addChild(Eyes);
-		Eyes.setTextureOffset(72, 0).addBox(-3.0F, -7.2F, -4.175F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-		Eyes.setTextureOffset(72, 0).addBox(1.0F, -7.2F, -4.175F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-		Eyes.setTextureOffset(46, 0).addBox(-3.5F, -7.7F, -4.15F, 7.0F, 2.0F, 1.0F, 0.0F, false);
+		Eyes.setTextureOffset(72, 0).addBox(-3.0F, -7.2F, -4.525F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+		Eyes.setTextureOffset(72, 0).addBox(1.0F, -7.2F, -4.525F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		Eyes.setTextureOffset(46, 0).addBox(-3.5F, -7.7F, -4.45F, 7.0F, 2.0F, 1.0F, 0.0F, false);
 
 		Chin = new ModelRenderer(this);
 		Chin.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -116,6 +118,26 @@ public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel
 		Chin.addChild(ChinPart1);
 		setRotationAngle(ChinPart1, 0.0F, 0.0F, -0.7854F);
 		ChinPart1.setTextureOffset(0, 0).addBox(0.596F, -0.8889F, 0.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+		Helmet = new ModelRenderer(this);
+		Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
+		Head.addChild(Helmet);
+		Helmet.setTextureOffset(92, 0).addBox(3.5F, -11.375F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, false);
+		Helmet.setTextureOffset(83, 1).addBox(3.5F, -11.475F, -5.25F, 1.0F, 1.0F, 10.0F, 0.0F, false);
+		Helmet.setTextureOffset(92, 0).addBox(-4.5F, -11.475F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, true);
+		Helmet.setTextureOffset(93, 2).addBox(-4.5F, -11.475F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, true);
+		Helmet.setTextureOffset(96, 9).addBox(3.5F, -11.375F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(94, 5).addBox(3.5F, -6.375F, -5.25F, 1.0F, 2.0F, 6.0F, 0.0F, false);
+		Helmet.setTextureOffset(94, 5).addBox(-4.5F, -7.375F, -5.25F, 1.0F, 3.0F, 6.0F, 0.0F, true);
+		Helmet.setTextureOffset(94, 5).addBox(3.5F, -4.375F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+		Helmet.setTextureOffset(94, 5).addBox(-4.5F, -4.375F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, true);
+		Helmet.setTextureOffset(83, 1).addBox(-4.0F, -11.475F, -5.25F, 8.0F, 2.0F, 9.0F, 0.0F, false);
+		Helmet.setTextureOffset(99, 7).addBox(1.0F, -4.225F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(99, 7).addBox(-4.0F, -4.225F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, true);
+		Helmet.setTextureOffset(99, 7).addBox(2.0F, -5.725F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(99, 7).addBox(-4.0F, -5.725F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+		Helmet.setTextureOffset(94, 6).addBox(-4.0F, -9.725F, -5.25F, 8.0F, 2.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(92, 5).addBox(-4.0F, -11.475F, 3.0F, 8.0F, 5.0F, 2.0F, 0.0F, false);
 
 		Pipes = new ModelRenderer(this);
 		Pipes.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -603,7 +625,8 @@ public class ModelCrazyDiamond<T extends EntityCrazyDiamond> extends EntityModel
 		BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z)
+	{
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
