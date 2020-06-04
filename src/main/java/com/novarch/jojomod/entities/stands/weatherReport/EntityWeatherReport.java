@@ -7,21 +7,25 @@ import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
-public class EntityWeatherReport extends EntityStandBase
-{
+public class EntityWeatherReport extends EntityStandBase {
     private int oratick = 0;
 
     private int oratickr = 0;
+
+    private int weatherTick = 0;
 
     @Override
     public boolean canDespawn(double p_213397_1_) {
@@ -53,55 +57,77 @@ public class EntityWeatherReport extends EntityStandBase
         return super.createSpawnPacket();
     }
 
-    public EntityWeatherReport(EntityType<? extends MobEntity> type, World worldIn)
-    {
+    public EntityWeatherReport(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         this.spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
-    public EntityWeatherReport(World worldIn)
-    {
+    public EntityWeatherReport(World worldIn) {
         super(EntityInit.WEATHER_REPORT.get(), worldIn);
         this.spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
         this.standID = JojoLibs.StandID.weatherReport;
     }
 
     @Override
-    public void tick()
-    {
+    public void tick() {
         super.tick();
         this.fallDistance = 0.0f;
-        if(this.world.rand.nextInt(35) == 1)
+        if (this.world.rand.nextInt(35) == 1)
             this.spawnExplosionParticle();
 
-        if(getMaster() != null) {
+        if (weatherTick > 2)
+            weatherTick = 0;
+
+        if (getMaster() != null) {
             followMaster();
             PlayerEntity player = getMaster();
             setRotationYawHead(player.rotationYaw);
             setRotation(player.rotationYaw, player.rotationPitch);
             JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
-            if(this.ability)
-            {
-                if (!this.world.isRemote)
-                    this.world.getServer().getWorld(this.dimension).getEntities().filter(entity -> entity!=player).filter(entity -> !(entity instanceof EntityStandBase)).filter(entity -> !(entity instanceof EntityStandPunch)).filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER).forEach(entity -> {
-                        if (entity.getDistance(player) <= 10) {
-                            if (entity instanceof MobEntity)
-                                ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
-                            if (entity instanceof PlayerEntity)
-                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
-                            if(!player.isCreative()) {
-                                player.getFoodStats().addStats(0, -0.1f);
-                                player.getFoodStats().addExhaustion(0.05f);
-                            }
-                        }
-                    });
-                this.world.getWorldInfo().setRaining(true);
-                this.world.setRainStrength(5);
-            } else {
-                this.world.setRainStrength(-1);
-                this.world.getWorldInfo().setRaining(false);
+            if (KeyHandler.keys[2].isPressed())
+                weatherTick++;
+
+            switch (weatherTick) {
+                case 0: {
+                    world.getWorldInfo().setRaining(false);
+                    world.setRainStrength(-1);
+                    world.getWorldInfo().setThundering(false);
+                    world.setThunderStrength(-1);
+                    break;
+                }
+                case 1: {
+                    world.getWorldInfo().setRaining(true);
+                    world.setRainStrength(5);
+                    world.getWorldInfo().setThundering(false);
+                    world.setThunderStrength(-1);
+                    break;
+                }
+                case 2: {
+                    world.getWorldInfo().setRaining(true);
+                    world.setRainStrength(5);
+                    world.getWorldInfo().setThundering(true);
+                    world.setThunderStrength(5);
+                    break;
+                }
+            }
+
+            if (this.ability) {
+                if (!world.isRemote)
+                    world.getServer().getWorld(this.dimension).getEntities().filter(entity -> entity != player)
+                            .filter(entity -> entity instanceof LivingEntity)
+                            .filter(entity -> !(entity instanceof EntityStandBase))
+                            .filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER)
+                            .forEach(entity -> {
+                                if (entity.getDistance(player) <= 10) {
+                                    ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
+                                    if (!player.isCreative()) {
+                                        player.getFoodStats().addStats(0, -0.1f);
+                                        player.getFoodStats().addExhaustion(0.05f);
+                                    }
+                                }
+                            });
             }
 
             if (!player.isSprinting()) {

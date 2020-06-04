@@ -4,6 +4,7 @@ import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
+import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -1162,6 +1163,7 @@ public abstract class StandPunchEffects
 			if(!punch.world.isRemote) {
 				punch.world.getServer().getWorld(punch.dimension).getEntities()
 						.filter(entity -> entity instanceof MobEntity)
+						.filter(entity -> entity.getDistance(punch) < 25)
 						.forEach(entity -> ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 150, 1)));
 			}
 			if(punch.shootingStand.ability)
@@ -1183,8 +1185,12 @@ public abstract class StandPunchEffects
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f)
 			{
-				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-				block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+				if(blockState.getMaterial() != Material.AIR && blockState.getMaterial() != Material.WATER && blockState.getMaterial() != Material.LAVA) {
+					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+					if (punch.shootingStand.ability)
+						((EntityPurpleHaze) punch.shootingStand).burstCapsule();
+				}
 			}
 		}
 		punch.remove();

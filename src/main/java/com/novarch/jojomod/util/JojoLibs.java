@@ -87,8 +87,9 @@ public class JojoLibs
                                                                                 .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
-                                                                                                    .and(entity -> !(entity instanceof EntityStandPunch))
-                                                                                                        .and(entity -> !(entity instanceof EntityStandBase)))))))))));
+                                                                                                        .and(entity -> !(entity instanceof PhantomEntity))
+                                                                                                                .and(entity -> !(entity instanceof EntityStandPunch))
+                                                                                                                        .and(entity -> !(entity instanceof EntityStandBase)))))))))));
     }
 
     public static class StandID

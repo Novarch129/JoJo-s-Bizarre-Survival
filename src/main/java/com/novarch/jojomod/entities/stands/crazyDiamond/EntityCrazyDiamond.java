@@ -65,6 +65,11 @@ public class EntityCrazyDiamond extends EntityStandBase {
 		return super.createSpawnPacket();
 	}
 
+	@Override
+	public void spawnSound() {
+		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
+	}
+
 	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
@@ -165,7 +170,7 @@ public class EntityCrazyDiamond extends EntityStandBase {
 							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
 							this.world.addEntity(crazyDiamond2);
 						}
-					if (this.oratickr >= 117) {
+					if (this.oratickr >= 100) {
 						this.orarush = false;
 						this.oratickr = 0;
 					}
