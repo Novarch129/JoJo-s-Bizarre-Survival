@@ -40,6 +40,8 @@
   "entity.jojomod.sheer_heart_attack" : "Sheer Heart Attack",
   "entity.jojomod.crazy_diamond" : "Crazy Diamond",
   "entity.jojomod.crazy_diamond_punch" : "Crazy Diamond's punch",
+  "entity.jojomod.purple_haze" : "Purple Haze",
+  "entity.jojomod.purple_haze_punch" : "Purple Haze's punch",
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
   "jojomod.savestand.config": "Keep Stand on death",
