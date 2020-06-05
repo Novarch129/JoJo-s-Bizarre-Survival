@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 public class EntityWeatherReport extends EntityStandBase {
@@ -72,7 +71,6 @@ public class EntityWeatherReport extends EntityStandBase {
     @Override
     public void tick() {
         super.tick();
-        this.fallDistance = 0.0f;
         if (this.world.rand.nextInt(35) == 1)
             this.spawnExplosionParticle();
 

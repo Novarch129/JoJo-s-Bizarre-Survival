@@ -47,7 +47,6 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(CreeperEntity.class, DataSerializers.BOOLEAN);
-    private int lastActiveTime;
     private int timeSinceIgnited;
     private int fuseTime = 30;
     private int explosionRadius = 3;
@@ -130,10 +129,8 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
                         });
                 });
 
-                this.lastActiveTime = this.timeSinceIgnited;
-                if (this.hasIgnited()) {
+                if (this.hasIgnited())
                     this.setSheerHeartAttackState(1);
-                }
 
                 int i = this.getSheerHeartAttackState();
                 if (i > 0 && this.timeSinceIgnited == 0) {

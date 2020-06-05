@@ -93,9 +93,6 @@ public class EntityKillerQueen extends EntityStandBase
 		{
 			PlayerEntity player = getMaster();
 
-			if(player.getLastAttackedEntity() != null)
-				this.bombEntity = player.getLastAttackedEntity();
-
 			//Killer Queen's ability
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				props.setAbility(false);
@@ -115,7 +112,7 @@ public class EntityKillerQueen extends EntityStandBase
 										Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										((PlayerEntity) bombEntity).spawnSweepParticles();
 										explosion.doExplosionB(true);
-										bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f);
+										bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
 									} else {
 										Explosion explosion = new Explosion(player.world, player, player.getPosX(), player.getPosY(), player.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										player.spawnSweepParticles();

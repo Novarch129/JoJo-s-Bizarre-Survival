@@ -13,10 +13,11 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-public class StandCapability implements IStand
-{
+/**
+ * The {@link Capability} used for storing the player's Stand ability.
+ */
+public class StandCapability implements IStand {
 	private final PlayerEntity player;
 
 	private int standID = 0;
@@ -48,93 +49,74 @@ public class StandCapability implements IStand
 		return this.player;
 	}
 
-	public void setStandID(int value)
-	{
-	    this.standID = value;
+	public void setStandID(int value) {
+		this.standID = value;
 		onDataUpdated();
 	}
 
 	@Override
-	public void setAct(int value)
-	{
-	    this.standAct = value;
-		onDataUpdated();
-	}
-	  
-	public void setStandOn(boolean value)
-	{
-	    this.standOn = value;
+	public void setAct(int value) {
+		this.standAct = value;
 		onDataUpdated();
 	}
 
-	  public void setPlayerStandName(String value)
-	  {
-	  	this.playerStandName = value;
-		  onDataUpdated();
-	  }
-	  
-	  public int getStandID()
-	  {
-	  	return this.standID;
-	  }
+	public void setStandOn(boolean value) {
+		this.standOn = value;
+		onDataUpdated();
+	}
 
-	  @Override
-	  public int getAct()
-	  {
-	    return this.standAct;
-	  }
-	  
-	  public boolean getStandOn() {
-	    return this.standOn;
-	  }
-	  
-	  public String getPlayerStandName() {
-	    return this.playerStandName;
-	  }
-	  
-	  @Override
-	  public void setCooldown(double cooldown)
-	  {
-		  this.cooldown = cooldown;
-		  onDataUpdated();
-	  }
-	  
-	  @Override
-	  public double getCooldown()
-	  {
-		  return this.cooldown;
-	  }
+	public void setPlayerStandName(String value) {
+		this.playerStandName = value;
+		onDataUpdated();
+	}
+
+	public int getStandID() {
+		return this.standID;
+	}
 
 	@Override
-	public void addCooldown(double addition)
-	{
-		this.cooldown += addition;
+	public int getAct() {
+		return this.standAct;
+	}
+
+	public boolean getStandOn() {
+		return this.standOn;
+	}
+
+	public String getPlayerStandName() {
+		return this.playerStandName;
+	}
+
+	@Override
+	public void setCooldown(double cooldown) {
+		this.cooldown = cooldown;
 		onDataUpdated();
 	}
 
 	@Override
-	public void subtractCooldown(double subtraction)
-	{
+	public double getCooldown() {
+		return this.cooldown;
+	}
+
+	@Override
+	public void subtractCooldown(double subtraction) {
 		this.cooldown -= subtraction;
 		onDataUpdated();
 	}
 
 	@Override
-	public void setTimeLeft(double timeleft)
-	{
+	public void setTimeLeft(double timeleft) {
 		this.timeleft = timeleft;
 		onDataUpdated();
 	}
 
 	@Override
-	public double getTimeLeft()
-	{
+	public double getTimeLeft() {
 		return this.timeleft;
 	}
 
 	@Override
-	public void addTimeLeft(double addition)
-	{
+	public void addTimeLeft(double addition) {
 		this.timeleft += addition;
 		onDataUpdated();
 	}
@@ -146,61 +128,47 @@ public class StandCapability implements IStand
 	}
 
 	@Override
-	public void setDiavolo(String truth)
-	{
+	public void setDiavolo(String truth) {
 		this.diavolo = truth;
 		onDataUpdated();
 	}
 
 	@Override
-	public String getDiavolo()
-	{
+	public String getDiavolo() {
 		return this.diavolo;
 	}
 
 	@Override
-	public boolean getAbility()
-	{
+	public boolean getAbility() {
 		return this.ability;
 	}
 
 	@Override
-	public void setAbility(boolean value)
-	{
+	public void setAbility(boolean value) {
 		this.ability = value;
 		onDataUpdated();
 	}
 
 	@Override
-	public int getTransformed()
-	{
+	public int getTransformed() {
 		return this.transformed;
 	}
 
 	@Override
-	public void setTransformed(int value)
-	{
+	public void setTransformed(int value) {
 		this.transformed = value;
 		onDataUpdated();
 	}
 
 	@Override
-	public void subtractTransformed(int subtraction)
-	{
-		this.transformed -= subtraction;
-		onDataUpdated();
-	}
-
-	@Override
-	public void addTransformed(int addition)
-	{
+	public void addTransformed(int addition) {
 		this.transformed += addition;
 		onDataUpdated();
 	}
 
 	@Override
 	public void putStandID(int standID) {
-		this.standID=standID;
+		this.standID = standID;
 	}
 
 	@Override
@@ -210,32 +178,32 @@ public class StandCapability implements IStand
 
 	@Override
 	public void putStandOn(boolean standOn) {
-		this.standOn=standOn;
+		this.standOn = standOn;
 	}
 
 	@Override
 	public void putTimeLeft(double timeleft) {
-		this.timeleft=timeleft;
+		this.timeleft = timeleft;
 	}
 
 	@Override
 	public void putCooldown(double cooldown) {
-		this.cooldown=cooldown;
+		this.cooldown = cooldown;
 	}
 
 	@Override
 	public void putAbility(boolean ability) {
-		this.ability=ability;
+		this.ability = ability;
 	}
 
 	@Override
 	public void putTransformed(int transformed) {
-		this.transformed=transformed;
+		this.transformed = transformed;
 	}
 
 	@Override
 	public void putDiavolo(String truth) {
-		this.diavolo=truth;
+		this.diavolo = truth;
 	}
 
 	@Override
@@ -255,79 +223,71 @@ public class StandCapability implements IStand
 	}
 
 	/**
-	 * Called to update the {@link Capability} to the client
+	 * Called to update the {@link Capability} to the client.
 	 */
-	private void onDataUpdated()
-	{
-		if(player == null)
-			return;
-
-		if(!player.world.isRemote)
-			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
+	private void onDataUpdated() {
+		if (player != null)
+			if (!player.world.isRemote)
+				JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
-	public void clone(IStand props)
-	{
-	    setStandID(props.getStandID());
-	    setAct(props.getAct());
-	    setStandOn(false);
-	    setPlayerStandName(props.getPlayerStandName());
-	    setCooldown(props.getCooldown());
-	    setTimeLeft(props.getTimeLeft());
-	    setTransformed(props.getTransformed());
-	    setDiavolo(props.getDiavolo());
-	    setAbility(props.getAbility());
-	  }
+	public void clone(IStand props) {
+		setStandID(props.getStandID());
+		setAct(props.getAct());
+		setStandOn(false);
+		setPlayerStandName(props.getPlayerStandName());
+		setCooldown(props.getCooldown());
+		setTimeLeft(props.getTimeLeft());
+		setTransformed(props.getTransformed());
+		setDiavolo(props.getDiavolo());
+		setAbility(props.getAbility());
+	}
 
-	  @Override
-	  public void removeStand()
-	  {
-	    setStandOn(false);
-	    setAct(0);
-	    setStandID(0);
-	    setPlayerStandName("");
-	    setCooldown(0);
-	    setTimeLeft(0);
-	    setTransformed(0);
-	    setDiavolo("");
-	    setAbility(true);
-	    setNoClip(false);
-	  }
+	@Override
+	public void removeStand() {
+		setStandOn(false);
+		setAct(0);
+		setStandID(0);
+		setPlayerStandName("");
+		setCooldown(0);
+		setTimeLeft(0);
+		setTransformed(0);
+		setDiavolo("");
+		setAbility(true);
+		setNoClip(false);
+	}
 
-	  public static void register()
-	  {
-		  CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
-			  @Nullable
-			  @Override
-			  public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side)
-			  {
-				  CompoundNBT props = new CompoundNBT();
-				  props.putInt("StandID", instance.getStandID());
-				  props.putInt("StandAct", instance.getAct());
-				  props.putBoolean("StandOn", instance.getStandOn());
-				  props.putDouble("Cooldown", instance.getCooldown());
-				  props.putDouble("Timeleft", instance.getTimeLeft());
-				  props.putBoolean("Ability", instance.getAbility());
-				  props.putInt("Transformed", instance.getTransformed());
-				  props.putString("Diavolo", instance.getDiavolo());
-				  props.putBoolean("NoClip", instance.getNoClip());
-				  return (INBT)props;
-			  }
+	public static void register() {
+		CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
+			@Nonnull
+			@Override
+			public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side) {
+				CompoundNBT props = new CompoundNBT();
+				props.putInt("StandID", instance.getStandID());
+				props.putInt("StandAct", instance.getAct());
+				props.putBoolean("StandOn", instance.getStandOn());
+				props.putDouble("Cooldown", instance.getCooldown());
+				props.putDouble("Timeleft", instance.getTimeLeft());
+				props.putBoolean("Ability", instance.getAbility());
+				props.putInt("Transformed", instance.getTransformed());
+				props.putString("Diavolo", instance.getDiavolo());
+				props.putBoolean("NoClip", instance.getNoClip());
+				return (INBT) props;
+			}
 
-			  @Override
-			  public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt)
-			  {
-				  CompoundNBT propertyData = (CompoundNBT)nbt;
-				  instance.putStandID(propertyData.getInt("StandID"));
-				  instance.putAct(propertyData.getInt("StandAct"));
-				  instance.putStandOn(propertyData.getBoolean("StandOn"));
-				  instance.putCooldown(propertyData.getDouble("Cooldown"));
-				  instance.putTimeLeft(propertyData.getDouble("Timeleft"));
-				  instance.putAbility(propertyData.getBoolean("Ability"));
-				  instance.putTransformed(propertyData.getInt("Transformed"));
-				  instance.putDiavolo(propertyData.getString("Diavolo"));
-				  instance.putNoClip(propertyData.getBoolean("NoClip"));
-			  }
-		  }, () -> new StandCapability(Minecraft.getInstance().player));
-	  }
+			@Override
+			public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt) {
+				CompoundNBT propertyData = (CompoundNBT) nbt;
+				instance.putStandID(propertyData.getInt("StandID"));
+				instance.putAct(propertyData.getInt("StandAct"));
+				instance.putStandOn(propertyData.getBoolean("StandOn"));
+				instance.putCooldown(propertyData.getDouble("Cooldown"));
+				instance.putTimeLeft(propertyData.getDouble("Timeleft"));
+				instance.putAbility(propertyData.getBoolean("Ability"));
+				instance.putTransformed(propertyData.getInt("Transformed"));
+				instance.putDiavolo(propertyData.getString("Diavolo"));
+				instance.putNoClip(propertyData.getBoolean("NoClip"));
+			}
+		}, () -> new StandCapability(Minecraft.getInstance().player));
+	}
 }

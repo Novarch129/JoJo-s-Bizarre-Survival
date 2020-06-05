@@ -7,12 +7,9 @@ import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.block.Block;
-import net.minecraft.client.settings.KeyBinding;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -20,9 +17,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@MethodsReturnNonnullByDefault
 public class EntityPurpleHaze extends EntityStandBase {
 	private int oratick = 0;
 
@@ -31,6 +26,11 @@ public class EntityPurpleHaze extends EntityStandBase {
 	@Override
 	public boolean canDespawn(double distanceToClosestPlayer) {
 		return false;
+	}
+
+	@Override
+	protected void registerGoals() {
+		//goalSelector.addGoal(10, new StandFollowMasterGoal(this, navigator));
 	}
 
 	@Override
@@ -76,6 +76,8 @@ public class EntityPurpleHaze extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
+			if (getDistance(player) > 5)
+				navigator.tryMoveToXYZ(player.getPosX(), player.getPosY(), player.getPosZ(), 5);
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 
@@ -83,7 +85,7 @@ public class EntityPurpleHaze extends EntityStandBase {
 					props.subtractCooldown(1);
 			});
 
-			followMaster();
+			//followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
 

@@ -77,7 +77,7 @@ public class SyncAbilityButton
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
             }
 
-            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen) {
+            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.madeInHeaven) {
                 player.sendMessage(new StringTextComponent("Ability: ON"));
                 if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
                     player.world.addEntity(fakePlayer);

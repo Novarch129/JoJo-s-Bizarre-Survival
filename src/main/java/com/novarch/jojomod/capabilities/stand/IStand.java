@@ -2,12 +2,7 @@ package com.novarch.jojomod.capabilities.stand;
 
 import net.minecraft.entity.player.PlayerEntity;
 
-import java.util.List;
-import java.util.UUID;
-
-@SuppressWarnings("unused")
-public interface IStand
-{
+public interface IStand {
     PlayerEntity getPlayer();
 
     void setStandID(final int p0);
@@ -29,13 +24,11 @@ public interface IStand
     void removeStand();
 
     void clone(final IStand p0);
-    
+
     void setCooldown(double cooldown);
 
-    void addCooldown(double addition);
-
     void subtractCooldown(double subtraction);
-    
+
     double getCooldown();
 
     void setTimeLeft(double timeLeft);
@@ -57,8 +50,6 @@ public interface IStand
     int getTransformed();
 
     void setTransformed(int value);
-
-    void subtractTransformed(int subtraction);
 
     void addTransformed(int addition);
 

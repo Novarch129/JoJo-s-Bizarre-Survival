@@ -1,4 +1,4 @@
-package com.novarch.jojomod.gui;
+package com.novarch.jojomod.gui.overlay;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.util.JojoLibs;

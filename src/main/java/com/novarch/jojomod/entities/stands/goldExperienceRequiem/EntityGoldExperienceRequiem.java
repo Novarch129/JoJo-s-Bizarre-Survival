@@ -1,6 +1,5 @@
 package com.novarch.jojomod.entities.stands.goldExperienceRequiem;
 
-import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -8,8 +7,7 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.material.Material;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -20,74 +18,64 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class EntityGoldExperienceRequiem extends EntityStandBase
-{
-	  private int oratick = 0;
+@MethodsReturnNonnullByDefault
+public class EntityGoldExperienceRequiem extends EntityStandBase {
+	private int oratick = 0;
 
-	  private int oratickr = 0;
+	private int oratickr = 0;
 
-	  private String truthname = "You will never reach the truth.";
+	private StringTextComponent truthname = new StringTextComponent("You will never reach the truth.");
 
-	  private KeyBinding abilityKey = KeyHandler.keys[2];
+	private KeyBinding abilityKey = KeyHandler.keys[2];
 
-	  private KeyBinding fly = KeyHandler.keys[10];
+	private KeyBinding fly = KeyHandler.keys[10];
 
-	  private boolean truth = false;
+	private boolean truth = false;
 
-	  private boolean flightBool = false;
+	private boolean flightBool = false;
 
-	  @Override
-	  public boolean canDespawn(double distanceToClosestPlayer) { return false; }
+	@Override
+	public boolean canDespawn(double distanceToClosestPlayer) {
+		return false;
+	}
 
-	  @Override
-	  public boolean isAIDisabled()
-	  {
-	    return false;
-	  }
+	@Override
+	public boolean isAIDisabled() {
+		return false;
+	}
 
-	  @Override
-	  public IPacket<?> createSpawnPacket()
-	{
+	@Override
+	public IPacket<?> createSpawnPacket() {
 		return super.createSpawnPacket();
 	}
 
-	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world)
-	{
+	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_GER.get();
-	    this.standID = JojoLibs.StandID.GER;
+		this.spawnSound = SoundInit.SPAWN_GER.get();
+		this.standID = JojoLibs.StandID.GER;
 	}
 
-	public EntityGoldExperienceRequiem(World world)
-	{
+	public EntityGoldExperienceRequiem(World world) {
 		super(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
-	    this.spawnSound = SoundInit.SPAWN_GER.get();
-	    this.standID = JojoLibs.StandID.GER;
+		this.spawnSound = SoundInit.SPAWN_GER.get();
+		this.standID = JojoLibs.StandID.GER;
 	}
-	
-	public void tick()
-	{
+
+	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
 
-	    if (getMaster() != null)
-	    {
+		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-
-			this.noClip = player.noClip;
 
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
 
 				//Cooldown handler
-				if (props.getTransformed() > 1)
-				{
+				if (props.getTransformed() > 1) {
 					props.subtractCooldown(1);
 				}
 				if (props.getCooldown() <= 0) {
@@ -97,74 +85,56 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 
 				player.getFoodStats().addStats(20, 20.0f);
 
-				if(fly.isPressed()) {
+				if (fly.isPressed())
 					flightBool = !flightBool;
-				}
 
-				if(flightBool)
+				if (flightBool)
 					player.setNoGravity(true);
 				else
 					player.setNoGravity(false);
 
 				//Gold Experience Requiem's ability
-				if(ability)
-				{
-					if(player.getLastAttackedEntity() != null)
-					{
-						if(abilityKey.isPressed())
-							truth=!truth;
+				if (ability) {
+					if (player.getLastAttackedEntity() != null) {
+						if (abilityKey.isPressed())
+							truth = !truth;
 
-						if(truth)
+						if (truth)
 							player.getLastAttackedEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 3.0f);
 
-						if(player.getLastAttackedEntity() instanceof PlayerEntity)
-						{
+						if (player.getLastAttackedEntity() instanceof PlayerEntity) {
 							props.setDiavolo(player.getLastAttackedEntity().getDisplayName().toString());
 						}
 					}
-					for(PlayerEntity playerEntity : this.world.getPlayers())
-					{
-						if(playerEntity != null)
-						{
-							if(playerEntity != this.getMaster())
-							{
-								if(playerEntity.getLastAttackedEntity() == this.getMaster())
-								{
-									props.setDiavolo(playerEntity.getDisplayName().toString());
-								}
+					for (PlayerEntity playerEntity : this.world.getPlayers()) {
+						if (playerEntity != this.getMaster()) {
+							if (playerEntity.getLastAttackedEntity() == this.getMaster()) {
+								props.setDiavolo(playerEntity.getDisplayName().toString());
 							}
 						}
 					}
 
-					if(props.getDiavolo() != null && !props.getDiavolo().equals(""))
-					{
-						for(PlayerEntity playerEntity : this.world.getPlayers())
-						{
-							if(playerEntity != null)
-							{
-								if(playerEntity != this.getMaster())
-								{
-									if(playerEntity.getDisplayName().toString().equals(props.getDiavolo()))
-									{
-										if(playerEntity.isAlive())
-										{
+					if (props.getDiavolo() != null && !props.getDiavolo().equals("")) {
+						for (PlayerEntity playerEntity : this.world.getPlayers()) {
+							if (playerEntity != this.getMaster()) {
+								if (playerEntity.getDisplayName().toString().equals(props.getDiavolo())) {
+									if (playerEntity.isAlive()) {
+										world.getServer().getWorld(dimension).getEntities()
+												.filter(entity -> entity instanceof MobEntity)
+												.forEach(entity -> ((MobEntity) entity).setAttackTarget(playerEntity));
+										CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
+										truth.setCustomName(truthname);
+										truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), playerEntity.getPosZ());
+										truth.setAttackTarget(playerEntity);
+										truth.setDropChance(EquipmentSlotType.MAINHAND, 0.0f);
+										playerEntity.world.addEntity(truth);
+										truth.setAttackTarget(playerEntity);
+									} else {
+										if (!world.isRemote) {
 											world.getServer().getWorld(dimension).getEntities()
-													.filter(entity -> entity instanceof MobEntity)
-													.forEach(entity -> ((MobEntity) entity).setAttackTarget(playerEntity));
-											CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
-											truth.setCustomName(new StringTextComponent(truthname));
-											truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), playerEntity.getPosZ());
-											truth.setAttackTarget(playerEntity);
-											truth.setDropChance(EquipmentSlotType.MAINHAND, 0.0f);
-											playerEntity.world.addEntity(truth);
-											truth.setAttackTarget(playerEntity);
-										} else {
-											if(!world.isRemote) {
-												world.getServer().getWorld(dimension).getEntities()
-														.filter(entity -> entity instanceof CreeperEntity)
-														.filter(entity -> entity.getCustomName().equals(new StringTextComponent(truthname)))
-														.forEach(Entity::remove);
-											}
+													.filter(entity -> entity instanceof CreeperEntity)
+													.filter(entity -> entity.getCustomName().equals(truthname))
+													.forEach(Entity::remove);
 										}
 									}
 								}
@@ -231,19 +201,15 @@ public class EntityGoldExperienceRequiem extends EntityStandBase
 				}
 			}
 		}
-	    }
-
-	  public boolean isEntityInsideOpaqueBlock()
-	  {
-	  	return false;
-	  }
+	}
 
 	@Override
-	public boolean canBeCollidedWith()
-	{
+	public boolean isEntityInsideOpaqueBlock() {
 		return false;
 	}
 
 	@Override
-	public void applyEntityCollision(Entity entityIn) { }
+	public boolean canBeCollidedWith() {
+		return false;
+	}
 }

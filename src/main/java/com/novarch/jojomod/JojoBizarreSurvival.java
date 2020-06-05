@@ -2,7 +2,10 @@ package com.novarch.jojomod;
 
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.init.*;
-import com.novarch.jojomod.network.message.*;
+import com.novarch.jojomod.network.message.SyncAbilityButton;
+import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
+import com.novarch.jojomod.network.message.SyncStandCapability;
+import com.novarch.jojomod.network.message.SyncStandSummonButton;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
@@ -13,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -28,8 +30,9 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * @author Novarch
+ *
+ * The main {@link Mod} {@link Class}, used mostly for registering objects.
  */
-@SuppressWarnings("unused")
 @Mod("jojomod")
 public class JojoBizarreSurvival
 {
@@ -37,7 +40,6 @@ public class JojoBizarreSurvival
     public static final IProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
-    public static JojoBizarreSurvival instance;
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(MOD_ID, "main"),
@@ -65,8 +67,7 @@ public class JojoBizarreSurvival
         DimensionInit.DIMENSIONS.register(modEventBus);
         EffectInit.EFFECTS.register(modEventBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
-		
-        instance = this;
+
         MinecraftForge.EVENT_BUS.register(this);
         int networkId = 0;
 		INSTANCE.registerMessage(networkId++,
@@ -85,11 +86,6 @@ public class JojoBizarreSurvival
                 SyncAbilityButton::decode,
                 SyncAbilityButton::handle);
         INSTANCE.registerMessage(networkId++,
-                SyncAbility2Button.class,
-                SyncAbility2Button::encode,
-                SyncAbility2Button::decode,
-                SyncAbility2Button::handle);
-        INSTANCE.registerMessage(networkId++,
                 SyncStandCapability.class,
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
@@ -103,7 +99,7 @@ public class JojoBizarreSurvival
 
     private void doClientStuff(final FMLClientSetupEvent event)
     {
-    	
+
     }
 
     public void onServerStarting(FMLServerStartingEvent event)
