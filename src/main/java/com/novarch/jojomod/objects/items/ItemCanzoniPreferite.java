@@ -31,14 +31,12 @@ public class ItemCanzoniPreferite extends MusicDiscItem
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(this.getRecordDescription().applyTextStyle(TextFormatting.GRAY));
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public ITextComponent getRecordDescription()
     {
         return new TranslationTextComponent(this.getTranslationKey() + ".desc");

@@ -17,16 +17,13 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class EntityStandPunch extends Entity implements IProjectile
-{
+public abstract class EntityStandPunch extends Entity implements IProjectile {
   public int xTile;
 
   public int yTile;
@@ -61,7 +58,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
 
   private int longTick = 3;
 
-  public EntityStandPunch(EntityType <?extends Entity > type, World worldIn) {
+  public EntityStandPunch(EntityType<? extends Entity> type, World worldIn) {
     super(type, worldIn);
     this.xTile = -1;
     this.yTile = -1;
@@ -72,12 +69,12 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       setNoGravity(true);
   }
 
-  public EntityStandPunch(EntityType <?extends Entity > type, World worldIn,double x,double y,double z) {
+  public EntityStandPunch(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
     this(type, worldIn);
     setPosition(x, y, z);
   }
 
-  public EntityStandPunch(EntityType <?extends Entity > type, World worldIn, EntityStandBase shooter, PlayerEntity player) {
+  public EntityStandPunch(EntityType<? extends Entity> type, World worldIn, EntityStandBase shooter, PlayerEntity player) {
     this(type, worldIn, shooter.getPosX(), shooter.getPosY() + (shooter.getMaster()).getEyeHeight(), shooter.getPosZ());
     this.shootingEntity = shooter;
     this.shootingStand = shooter;
@@ -94,13 +91,12 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     return blockPos;
   }
 
-  @OnlyIn(Dist.CLIENT)
   public boolean isInRangeToRenderDist(double distance) {
-   double d0 = getBoundingBox().getAverageEdgeLength() * 10.0d;
+    double d0 = getBoundingBox().getAverageEdgeLength() * 10.0d;
     if (Double.isNaN(d0))
-     d0 = 1.0d;
-   d0 =d0 * 64.0d * getRenderDistanceWeight();
-    return (distance <d0 *d0);
+      d0 = 1.0d;
+    d0 = d0 * 64.0d * getRenderDistanceWeight();
+    return (distance < d0 * d0);
   }
 
   public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
@@ -114,7 +110,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
   }
 
   @Override
-  public void shoot(double x,double y,double z, float velocity, float inaccuracy) {
+  public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
     float f = MathHelper.sqrt(x * x + y * y + z * z);
     x /= f;
     y /= f;
@@ -127,25 +123,24 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     z *= velocity;
     setMotion(x, y, z);
     float f1 = MathHelper.sqrt(x * x + z * z);
-    rotationYaw = (float)(MathHelper.atan2(x, z) * 57.29577951308232d);
-    rotationPitch = (float)(MathHelper.atan2(y, f1) * 57.29577951308232d);
+    rotationYaw = (float) (MathHelper.atan2(x, z) * 57.29577951308232d);
+    rotationPitch = (float) (MathHelper.atan2(y, f1) * 57.29577951308232d);
   }
 
   public void setRandomPositions() {
     Vec3d lookVec = shootingStand.getLookVec();
-   double rand1 = rand.nextDouble() * 2 - 1;
-   double rand2 = rand.nextDouble() * 2 - 1;
-   double rand3 = rand.nextDouble() * 2 - 1;
-   double posX = getPosX() + rand1 + lookVec.getX() * 1.5;
-   double posY = getPosY() + rand2 + lookVec.getY() * 1.5;
-   double posZ = getPosZ() + rand3 + lookVec.getZ() * 1.5;
+    double rand1 = rand.nextDouble() * 2 - 1;
+    double rand2 = rand.nextDouble() * 2 - 1;
+    double rand3 = rand.nextDouble() * 2 - 1;
+    double posX = getPosX() + rand1 + lookVec.getX() * 1.5;
+    double posY = getPosY() + rand2 + lookVec.getY() * 1.5;
+    double posZ = getPosZ() + rand3 + lookVec.getZ() * 1.5;
     setPosition(posX, posY, posZ);
     setRotation(shootingStand.rotationYaw, shootingStand.rotationPitch);
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
-  public void setPositionAndRotationDirect(double x,double y,double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+  public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
     setPosition(x, y, z);
     setRotation(yaw, pitch);
   }
@@ -153,20 +148,19 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
   public void movePunchInFront(EntityStandBase base) {
     PlayerEntity playerEntity = base.getMaster();
     Vec3d vector = playerEntity.getLookVec();
-   double x = this.getPosX() + vector.x * 0.5d;
-   double y = this.getPosY() + vector.y * 0.4d * 0.5d;
-   double z = this.getPosZ() + vector.z * 0.5d;
+    double x = this.getPosX() + vector.x * 0.5d;
+    double y = this.getPosY() + vector.y * 0.4d * 0.5d;
+    double z = this.getPosZ() + vector.z * 0.5d;
     setPosition(x, y, z);
   }
 
-  @OnlyIn(Dist.CLIENT)
   @Override
-  public void setVelocity(double x,double y,double z) {
+  public void setVelocity(double x, double y, double z) {
     this.setMotion(x, y, z);
     if (this.prevRotationPitch == 0.0f && this.prevRotationYaw == 0.0f) {
       float f = MathHelper.sqrt(x * x + z * z);
-      this.rotationPitch = (float)(MathHelper.atan2(y, f) * 57.29577951308232d);
-      this.rotationYaw = (float)(MathHelper.atan2(x, z) * 57.29577951308232d);
+      this.rotationPitch = (float) (MathHelper.atan2(y, f) * 57.29577951308232d);
+      this.rotationYaw = (float) (MathHelper.atan2(x, z) * 57.29577951308232d);
       this.prevRotationPitch = this.rotationPitch;
       this.prevRotationYaw = this.rotationYaw;
       setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
@@ -239,14 +233,15 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z, -this.getMotion().x, -this.getMotion().y + 0.2d, -this.getMotion().z);
       this.setPosition(this.getPosX() + this.getMotion().getX(), this.getPosY() + this.getMotion().getY(), this.getPosZ() + this.getMotion().getZ());
       float f4 = MathHelper.sqrt(this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z);
-      this.rotationYaw = (float)(MathHelper.atan2(this.getMotion().x, this.getMotion().z) * 57.29577951308232d);
-      for (this.rotationPitch = (float)(MathHelper.atan2(this.getMotion().y, f4) * 57.29577951308232d); this.rotationPitch - this.prevRotationPitch < -180.0f; this.prevRotationPitch -= 360.0f);
+      this.rotationYaw = (float) (MathHelper.atan2(this.getMotion().x, this.getMotion().z) * 57.29577951308232d);
+      for (this.rotationPitch = (float) (MathHelper.atan2(this.getMotion().y, f4) * 57.29577951308232d); this.rotationPitch - this.prevRotationPitch < -180.0f; this.prevRotationPitch -= 360.0f)
+        ;
       while (this.rotationPitch - this.prevRotationPitch >= 180.0f)
-      this.prevRotationPitch += 360.0f;
+        this.prevRotationPitch += 360.0f;
       while (this.rotationYaw - this.prevRotationYaw < -180.0f)
-      this.prevRotationYaw -= 360.0f;
+        this.prevRotationYaw -= 360.0f;
       while (this.rotationYaw - this.prevRotationYaw >= 180.0f)
-      this.prevRotationYaw += 360.0f;
+        this.prevRotationYaw += 360.0f;
       this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2f;
       this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2f;
       float f1 = 0.99f;
@@ -262,20 +257,20 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       if (!hasNoGravity())
         this.setMotion(this.getMotion().getX(), this.getMotion().getY() - 0.05000000074505806d, this.getMotion().getZ());
       setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
-     doBlockCollisions();
+      doBlockCollisions();
     }
   }
 
   protected void onHit(EntityRayTraceResult raytraceResultIn) {
     Entity entity = raytraceResultIn.getEntity();
     if (entity != null && entity != this.standMaster) {
-    DamageSource damagesource;
+      DamageSource damagesource;
       if (this.shootingStand == null) {
-       damagesource = DamageSource.causeThrownDamage(this, this);
+        damagesource = DamageSource.causeThrownDamage(this, this);
       } else if (this.standMaster == null) {
-       damagesource = DamageSource.causeThrownDamage(this, this.shootingStand);
+        damagesource = DamageSource.causeThrownDamage(this, this.shootingStand);
       } else {
-       damagesource = DamageSource.causeThrownDamage(this, this.standMaster);
+        damagesource = DamageSource.causeThrownDamage(this, this.standMaster);
       }
       if (isBurning() && !(entity instanceof net.minecraft.entity.monster.EndermanEntity))
         entity.setFire(5);
@@ -303,7 +298,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     BlockState state = world.getBlockState(pos);
     setXYZ(pos);
     inTile = state.getBlock();
-    setMotion((float)(result.getHitVec().x - getPosX()), (float)(result.getHitVec().y - getPosY()), (float)(result.getHitVec().z - getPosZ()));
+    setMotion((float) (result.getHitVec().x - getPosX()), (float) (result.getHitVec().y - getPosY()), (float) (result.getHitVec().z - getPosZ()));
     float f2 = MathHelper.sqrt(getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ());
     setPosition(this.getPosX() - getMotion().getX() / f2 * 0.05000000074505806d, getPosY() - getMotion().getY() / f2 * 0.05000000074505806d, getPosZ() - getMotion().getZ() / f2 * 0.05000000074505806d);
     inGround = true;
@@ -341,14 +336,15 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
   }
 
-  protected void arrowHit(LivingEntity living) {}
+  protected void arrowHit(LivingEntity living) {
+  }
 
   @Nullable
   protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
     Entity entity = null;
-    List < Entity > list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0d), JojoLibs.Predicates.STAND_PUNCH_TARGET);
-   double d0 = 0.0d;
-    for (Entity entity1: list) {
+    List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0d), JojoLibs.Predicates.STAND_PUNCH_TARGET);
+    double d0 = 0.0d;
+    for (Entity entity1 : list) {
       EntityStandPunch punch = null;
       if (entity1 instanceof EntityStandPunch)
         punch = (EntityStandPunch) entity1;
@@ -356,10 +352,10 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
         AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(0.30000001192092896d);
         RayTraceResult raytraceresult = new EntityRayTraceResult(entity1);
         if (raytraceresult != null) {
-         double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
-          if (d1 <d0 ||d0 == 0.0d) {
+          double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
+          if (d1 < d0 || d0 == 0.0d) {
             entity = entity1;
-           d0 =d1;
+            d0 = d1;
           }
         }
       }
@@ -375,7 +371,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     compound.putShort("life", (short) this.ticksInGround);
     compound.putByte("inData", (byte) this.inData);
     compound.putByte("shake", (byte) this.arrowShake);
-    compound.putByte("inGround", (byte)(this.inGround ? 1 : 0));
+    compound.putByte("inGround", (byte) (this.inGround ? 1 : 0));
     compound.putByte("pickup", (byte) this.pickupStatus.ordinal());
     compound.putDouble("damage", this.damage);
   }
@@ -421,7 +417,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
   }
 
   public enum PickupStatus {
-  dISALLOWED,
+    dISALLOWED,
     ALLOWED,
     CREATIVE_ONLY;
 
@@ -437,7 +433,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn);
     }
 
-    public kingCrimson(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public kingCrimson(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -446,16 +442,17 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
   public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch {
     public dirtyDeedsDoneDirtCheap(World worldIn) {
       super(EntityInit.D4C_PUNCH.get(), worldIn);
     }
 
-    public dirtyDeedsDoneDirtCheap(EntityType <? extends EntityStandPunch > type, World worldIn) {
+    public dirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -464,7 +461,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
@@ -474,7 +471,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn);
     }
 
-    public madeInHeaven(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public madeInHeaven(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -483,16 +480,17 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
   public static class goldExperience extends EntityStandPunch {
     public goldExperience(World worldIn) {
       super(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), worldIn);
     }
 
-    public goldExperience(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public goldExperience(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -511,16 +509,17 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
   public static class goldExperienceRequiem extends EntityStandPunch {
     public goldExperienceRequiem(World worldIn) {
       super(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), worldIn);
     }
 
-    public goldExperienceRequiem(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public goldExperienceRequiem(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -539,10 +538,11 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
   public static class aerosmith extends EntityStandPunch {
     public aerosmith(World worldIn) {
       super(EntityInit.AEROSMITH_BULLET.get(), worldIn);
@@ -552,7 +552,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.AEROSMITH_BULLET.get(), worldIn, shooter, player);
     }
 
-    public aerosmith(EntityType < aerosmith > aerosmithEntityType, World world) {
+    public aerosmith(EntityType<aerosmith> aerosmithEntityType, World world) {
       super(aerosmithEntityType, world);
     }
   }
@@ -566,7 +566,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn, shooter, player);
     }
 
-    public weatherReport(EntityType < weatherReport > weatherReportEntityType, World world) {
+    public weatherReport(EntityType<weatherReport> weatherReportEntityType, World world) {
       super(weatherReportEntityType, world);
     }
   }
@@ -576,7 +576,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn);
     }
 
-    public killerQueen(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public killerQueen(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -585,7 +585,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
@@ -595,7 +595,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn);
     }
 
-    public crazyDiamond(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public crazyDiamond(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -604,7 +604,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
@@ -614,7 +614,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
       super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn);
     }
 
-    public purpleHaze(EntityType <?extends EntityStandPunch > type, World worldIn) {
+    public purpleHaze(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
@@ -623,17 +623,18 @@ public abstract class EntityStandPunch extends Entity implements IProjectile
     }
 
     @Override
-    public IPacket <?> createSpawnPacket() {
+    public IPacket<?> createSpawnPacket() {
       return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
+
   @Override
   protected void registerData() {
 
   }
 
   @Override
-  public IPacket <?> createSpawnPacket() {
+  public IPacket<?> createSpawnPacket() {
     return NetworkHooks.getEntitySpawningPacket(this);
   }
 }

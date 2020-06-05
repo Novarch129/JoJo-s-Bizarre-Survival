@@ -23,8 +23,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
@@ -69,7 +67,6 @@ public class EventRenderStandOverlay
             carbonDioxideRadarGUI.renderRadar(entityList, playerStand);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void renderCrimsonEffect(EntityViewRenderEvent.FogDensity fogEvent)
     {
