@@ -17,11 +17,11 @@
 - [x] Gold Experience Requiem
 - [x] Aerosmith
 - [ ] Sticky Fingers
-- [ ] Purple Haze
+- [x] Purple Haze
 - [ ] Green Day
 - [ ] The Grateful Dead
 - [ ] Beach Boy
-- [ ] Crazy Diamond
+- [x] Crazy Diamond
 - [x] Killer Queen
 - [ ] The Hand
 - [ ] Echoes

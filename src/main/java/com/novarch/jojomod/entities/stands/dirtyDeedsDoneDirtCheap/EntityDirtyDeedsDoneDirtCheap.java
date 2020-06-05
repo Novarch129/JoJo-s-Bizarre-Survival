@@ -143,7 +143,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 								EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.THE_END);
 							}
 
-							this.world.getServer().getWorld(dimension).getEntities()
+							world.getServer().getWorld(dimension).getEntities()
 									.filter(entity -> entity instanceof LivingEntity)
 									.filter(entity -> !(entity instanceof PlayerEntity))
 									.filter(entity -> !(entity instanceof EntityStandBase))
@@ -163,7 +163,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 					}
 				}
 			});
-			if (this.standOn) {
+			if (standOn) {
 				followMaster();
 				setRotationYawHead(player.rotationYaw);
 				setRotation(player.rotationYaw, player.rotationPitch);
@@ -181,9 +181,8 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 								if (!this.world.isRemote)
 									this.orarush = true;
 							}
-						} else {
+						} else
 							hungerMessage();
-						}
 				} else if (attackSwing(getMaster())) {
 					if (!this.world.isRemote) {
 						this.oratick++;

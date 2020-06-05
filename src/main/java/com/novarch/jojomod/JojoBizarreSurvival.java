@@ -2,10 +2,6 @@ package com.novarch.jojomod;
 
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.init.*;
-import com.novarch.jojomod.network.message.SyncAbilityButton;
-import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
-import com.novarch.jojomod.network.message.SyncStandCapability;
-import com.novarch.jojomod.network.message.SyncStandSummonButton;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
@@ -19,7 +15,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -52,53 +47,25 @@ public class JojoBizarreSurvival
 
     public JojoBizarreSurvival()
     {
-        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-    	modEventBus.addListener(this::setup);
-        modEventBus.addListener(this::doClientStuff);
-        modEventBus.addListener(this::onServerStarting);
+        final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    	eventBus.addListener(this::setup);
+        eventBus.addListener(this::onServerStarting);
 
         KeyHandler.addKeys();
         EventInit.register(MinecraftForge.EVENT_BUS);
 
-        ItemInit.ITEMS.register(modEventBus);
-		EntityInit.ENTITY_TYPES.register(modEventBus);
-		SoundInit.SOUNDS.register(modEventBus);
-        DimensionInit.DIMENSIONS.register(modEventBus);
-        EffectInit.EFFECTS.register(modEventBus);
+        ItemInit.ITEMS.register(eventBus);
+		EntityInit.ENTITY_TYPES.register(eventBus);
+		SoundInit.SOUNDS.register(eventBus);
+        DimensionInit.DIMENSIONS.register(eventBus);
+        EffectInit.EFFECTS.register(eventBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
-
-        MinecraftForge.EVENT_BUS.register(this);
-        int networkId = 0;
-		INSTANCE.registerMessage(networkId++,
-				SyncStandSummonButton.class,
-				SyncStandSummonButton::encode,
-				SyncStandSummonButton::decode,
-				SyncStandSummonButton::handle);
-		INSTANCE.registerMessage(networkId++,
-				SyncPlayerAttackMessage.class,
-				SyncPlayerAttackMessage::encode,
-				SyncPlayerAttackMessage::decode,
-				SyncPlayerAttackMessage::handle);
-		INSTANCE.registerMessage(networkId++,
-                SyncAbilityButton.class,
-                SyncAbilityButton::encode,
-                SyncAbilityButton::decode,
-                SyncAbilityButton::handle);
-        INSTANCE.registerMessage(networkId++,
-                SyncStandCapability.class,
-                SyncStandCapability::encode,
-                SyncStandCapability::decode,
-                SyncStandCapability::handle);
+        PacketInit.register();
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
         CapabilityInit.register();
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event)
-    {
-
     }
 
     public void onServerStarting(FMLServerStartingEvent event)
