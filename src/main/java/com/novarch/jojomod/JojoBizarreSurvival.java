@@ -36,8 +36,7 @@ import org.apache.logging.log4j.Logger;
 @Mod("jojomod")
 public class JojoBizarreSurvival
 {
-    public static final boolean debug = true;
-    public static final IProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
+    public static final IProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
     private static final String PROTOCOL_VERSION = "1";
