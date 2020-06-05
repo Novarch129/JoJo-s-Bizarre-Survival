@@ -131,17 +131,14 @@ public class EntityCrazyDiamond extends EntityStandBase {
 					remove();
 				if (player.isSprinting()) {
 					if (attackSwing(player))
-						if (player.getFoodStats().getFoodLevel() > 6) {
-							this.oratick++;
-							if (this.oratick == 1) {
-								if (!world.isRemote)
-									world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+						this.oratick++;
+					if (this.oratick == 1) {
+						if (!world.isRemote)
+							world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
 
-								if (!this.world.isRemote)
-									this.orarush = true;
-							}
-						} else
-							hungerMessage();
+						if (!this.world.isRemote)
+							this.orarush = true;
+					}
 				} else if (attackSwing(getMaster())) {
 					if (!this.world.isRemote) {
 						this.oratick++;

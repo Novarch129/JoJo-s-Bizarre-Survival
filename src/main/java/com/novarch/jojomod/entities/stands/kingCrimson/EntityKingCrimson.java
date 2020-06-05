@@ -91,9 +91,8 @@ public class EntityKingCrimson extends EntityStandBase {
 
 				//King Crimson's Ability
 				if (this.ability && props.getAbility() && props.getStandOn()) {
-					if (props.getTimeLeft() == 0) {
+					if (props.getTimeLeft() == 0)
 						player.sendMessage(new StringTextComponent("Time Skip : ON"));
-					}
 					if (props.getTimeLeft() > 800) {
 						this.getMaster().setInvulnerable(true);
 						player.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
@@ -135,13 +134,10 @@ public class EntityKingCrimson extends EntityStandBase {
 				}
 
 				if (!ability) {
-					if (props.getCooldown() == 200) {
+					if (props.getCooldown() == 200)
 						player.sendMessage(new StringTextComponent("Time Skip : OFF"));
-					}
-					if (props.getCooldown() > 0 && props.getAbility()) {
+					if (props.getCooldown() > 0 && props.getAbility())
 						props.subtractCooldown(1);
-					}
-
 					if (props.getCooldown() <= 0) {
 						props.setTimeLeft(1000);
 						ability = true;
@@ -161,16 +157,13 @@ public class EntityKingCrimson extends EntityStandBase {
 				if (!this.ability || !props.getAbility()) {
 					if (player.isSprinting()) {
 						if (attackSwing(player))
-							if (player.getFoodStats().getFoodLevel() > 6) {
-								this.oratick++;
-								if (this.oratick == 1) {
-									if (!player.isCreative())
-										player.getFoodStats().addStats(0, 0.0F);
-									if (!this.world.isRemote)
-										this.orarush = true;
-								}
-							} else
-								hungerMessage();
+							this.oratick++;
+						if (this.oratick == 1) {
+							if (!player.isCreative())
+								player.getFoodStats().addStats(0, 0.0F);
+							if (!this.world.isRemote)
+								this.orarush = true;
+						}
 					} else if (attackSwing(getMaster())) {
 						if (!this.world.isRemote) {
 							this.oratick++;

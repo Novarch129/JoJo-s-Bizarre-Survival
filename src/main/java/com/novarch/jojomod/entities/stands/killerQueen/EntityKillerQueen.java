@@ -23,19 +23,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class EntityKillerQueen extends EntityStandBase
-{
-	  private int oratick = 0;
-	  
-	  private int oratickr = 0;
+public class EntityKillerQueen extends EntityStandBase {
+	private int oratick = 0;
 
-	  private LivingEntity bombEntity = null;
+	private int oratickr = 0;
 
-	  private KeyBinding detonate = KeyHandler.keys[2];
+	private LivingEntity bombEntity = null;
 
-	  private KeyBinding summonSHA = KeyHandler.keys[10];
+	private KeyBinding detonate = KeyHandler.keys[2];
 
-	  private int shaCount = 0;
+	private KeyBinding summonSHA = KeyHandler.keys[10];
+
+	private int shaCount = 0;
 
 	public LivingEntity getBombEntity() {
 		return bombEntity;
@@ -46,57 +45,52 @@ public class EntityKillerQueen extends EntityStandBase
 	}
 
 	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) { return false; }
+	public boolean canDespawn(double distanceToClosestPlayer) {
+		return false;
+	}
 
 	@Override
-	public boolean isAIDisabled()
-	  {
-	    return false;
-	  }
+	public boolean isAIDisabled() {
+		return false;
+	}
 
-	  @Override
-	  public void readAdditional(CompoundNBT compoundNBT)
-	  {
-	    super.readAdditional(compoundNBT);
-	  }
+	@Override
+	public void readAdditional(CompoundNBT compoundNBT) {
+		super.readAdditional(compoundNBT);
+	}
 
-	  @Override
-	  public void writeAdditional(CompoundNBT compoundNBT)
-	  {
-	    super.writeAdditional(compoundNBT);
-	  }
+	@Override
+	public void writeAdditional(CompoundNBT compoundNBT) {
+		super.writeAdditional(compoundNBT);
+	}
 
-	  @Override
-	  public IPacket<?> createSpawnPacket()
-	{
+	@Override
+	public IPacket<?> createSpawnPacket() {
 		return super.createSpawnPacket();
 	}
 
-	public EntityKillerQueen(EntityType<? extends EntityStandBase> type, World world)
-	{
+	public EntityKillerQueen(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-	    this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-	    this.standID = JojoLibs.StandID.killerQueen;
+		this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
+		this.standID = JojoLibs.StandID.killerQueen;
 	}
-	
-	public EntityKillerQueen(World world)
-	{
+
+	public EntityKillerQueen(World world) {
 		super(EntityInit.KILLER_QUEEN.get(), world);
-	    this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-	    this.standID = JojoLibs.StandID.killerQueen;
+		this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
+		this.standID = JojoLibs.StandID.killerQueen;
 	}
-	
+
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
-		if (getMaster() != null)
-		{
+		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
 			//Killer Queen's ability
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				props.setAbility(false);
-				if(detonate.isPressed() && props.getCooldown() <= 0) {
+				if (detonate.isPressed() && props.getCooldown() <= 0) {
 					if (this.bombEntity != null) {
 						if (bombEntity.isAlive()) {
 							props.setCooldown(140);
@@ -121,7 +115,7 @@ public class EntityKillerQueen extends EntityStandBase
 									}
 								});
 							}
-							if(!player.isCreative() && !player.isSpectator())
+							if (!player.isCreative() && !player.isSpectator())
 								player.getFoodStats().addStats(-2, 0);
 						}
 					}
@@ -129,8 +123,8 @@ public class EntityKillerQueen extends EntityStandBase
 
 				EntitySheerHeartAttack sheerHeartAttack = new EntitySheerHeartAttack(this.world, this);
 
-				if(summonSHA.isPressed()) {
-					if(shaCount == 0) {
+				if (summonSHA.isPressed()) {
+					if (shaCount == 0) {
 						sheerHeartAttack.setPosition(this.getPosX(), this.getPosY(), this.getPosZ());
 						shaCount++;
 						this.world.addEntity(sheerHeartAttack);
@@ -148,8 +142,7 @@ public class EntityKillerQueen extends EntityStandBase
 				}
 			});
 
-			if (this.standOn)
-			{
+			if (this.standOn) {
 				followMaster();
 				setRotationYawHead(player.rotationYaw);
 				setRotation(player.rotationYaw, player.rotationPitch);
@@ -159,16 +152,13 @@ public class EntityKillerQueen extends EntityStandBase
 					remove();
 				if (player.isSprinting()) {
 					if (attackSwing(player))
-						if (player.getFoodStats().getFoodLevel() > 6) {
-							this.oratick++;
-							if (this.oratick == 1) {
-								if (!player.isCreative())
-									player.getFoodStats().addStats(0, 0.0F);
-								if (!this.world.isRemote)
-									this.orarush = true;
-							}
-						} else
-							hungerMessage();
+						this.oratick++;
+					if (this.oratick == 1) {
+						if (!player.isCreative())
+							player.getFoodStats().addStats(0, 0.0F);
+						if (!this.world.isRemote)
+							this.orarush = true;
+					}
 				} else if (attackSwing(getMaster())) {
 					if (!this.world.isRemote) {
 						this.oratick++;
@@ -207,14 +197,12 @@ public class EntityKillerQueen extends EntityStandBase
 	}
 
 
-	  public boolean isEntityInsideOpaqueBlock()
-	  {
-	  	return false;
-	  }
+	public boolean isEntityInsideOpaqueBlock() {
+		return false;
+	}
 
 	@Override
-	public boolean canBeCollidedWith()
-	{
+	public boolean canBeCollidedWith() {
 		return super.canBeCollidedWith();
 	}
 }

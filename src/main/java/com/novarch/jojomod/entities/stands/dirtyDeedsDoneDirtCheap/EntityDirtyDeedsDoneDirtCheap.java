@@ -173,16 +173,13 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 					remove();
 				if (player.isSprinting()) {
 					if (attackSwing(player))
-						if (player.getFoodStats().getFoodLevel() > 6) {
-							this.oratick++;
-							if (this.oratick == 1) {
-								if (!player.isCreative())
-									player.getFoodStats().addStats(-1, 0.0F);
-								if (!this.world.isRemote)
-									this.orarush = true;
-							}
-						} else
-							hungerMessage();
+						this.oratick++;
+					if (this.oratick == 1) {
+						if (!player.isCreative())
+							player.getFoodStats().addStats(-1, 0.0F);
+						if (!this.world.isRemote)
+							this.orarush = true;
+					}
 				} else if (attackSwing(getMaster())) {
 					if (!this.world.isRemote) {
 						this.oratick++;
