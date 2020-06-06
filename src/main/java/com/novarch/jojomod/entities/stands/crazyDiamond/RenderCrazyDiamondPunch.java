@@ -3,6 +3,7 @@ package com.novarch.jojomod.entities.stands.crazyDiamond;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -12,25 +13,28 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class RenderCrazyDiamondPunch extends EntityRenderer<EntityStandPunch.crazyDiamond>
 {
-	protected ModelCrazyDiamondPunch punch;
+	protected ModelCrazyDiamondPunch<EntityStandPunch.crazyDiamond> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
 
 	public RenderCrazyDiamondPunch(EntityRendererManager renderManagerIn)
 	{
 		super(renderManagerIn);
-		this.punch = new ModelCrazyDiamondPunch();
+		this.punch = new ModelCrazyDiamondPunch<>();
 	}
 
 	@Override
 	public void render(@Nonnull EntityStandPunch.crazyDiamond entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		renderEntityModel(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.crazyDiamond entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.crazyDiamond entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();

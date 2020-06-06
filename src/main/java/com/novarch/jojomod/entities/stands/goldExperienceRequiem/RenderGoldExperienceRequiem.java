@@ -2,21 +2,23 @@ package com.novarch.jojomod.entities.stands.goldExperienceRequiem;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
-import net.minecraft.client.Minecraft;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class RenderGoldExperienceRequiem extends MobRenderer<EntityGoldExperienceRequiem, ModelGoldExperienceRequiem<EntityGoldExperienceRequiem>>
 {
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger.png");
 
 	public RenderGoldExperienceRequiem(EntityRendererManager renderManagerIn)
 	{
-		super(renderManagerIn, new ModelGoldExperienceRequiem<EntityGoldExperienceRequiem>(), 0.5f);
+		super(renderManagerIn, new ModelGoldExperienceRequiem<>(), 0.5f);
 	}
 
 	@Override

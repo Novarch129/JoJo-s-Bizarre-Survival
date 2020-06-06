@@ -5,18 +5,17 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -156,5 +155,61 @@ public class EventHandleStandAbilities
             removalQueue.removeAll(removed);
             removed.clear();
         }
+    }
+
+    @SubscribeEvent
+    public static void tooltipEvent(ItemTooltipEvent event)
+    {
+        String standName = "";
+        if(event.getItemStack().getTag() != null)
+            switch(event.getItemStack().getTag().getInt("StandID")) {
+                default: {
+                    standName = "";
+                    break;
+                }
+                case JojoLibs.StandID.kingCrimson: {
+                    standName = "King Crimson";
+                    break;
+                }
+                case JojoLibs.StandID.dirtyDeedsDoneDirtCheap: {
+                    standName = "D4C";
+                    break;
+                }
+                case JojoLibs.StandID.goldExperience: {
+                    standName = "Gold Experience";
+                    break;
+                }
+                case JojoLibs.StandID.madeInHeaven: {
+                    standName = "Made in Heaven";
+                    break;
+                }
+                case JojoLibs.StandID.GER: {
+                    standName = "Gold Experience Requiem";
+                    break;
+                }
+                case JojoLibs.StandID.aerosmith: {
+                    standName = "Aerosmith";
+                    break;
+                }
+                case JojoLibs.StandID.weatherReport: {
+                    standName = "Weather Report";
+                    break;
+                }
+                case JojoLibs.StandID.killerQueen: {
+                    standName = "Killer Queen";
+                    break;
+                }
+                case JojoLibs.StandID.crazyDiamond: {
+                    standName = "Crazy Diamond";
+                    break;
+                }
+                case JojoLibs.StandID.purpleHaze: {
+                    standName = "Purple Haze";
+                    break;
+                }
+            }
+        if(event.getItemStack().getItem() instanceof ItemStandDisc)
+            if(!standName.equals(""))
+                event.getToolTip().add(new StringTextComponent(standName));
     }
 }

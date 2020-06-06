@@ -76,8 +76,6 @@ public class EntityPurpleHaze extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
-			if (getDistance(player) > 5)
-				navigator.tryMoveToXYZ(player.getPosX(), player.getPosY(), player.getPosZ(), 5);
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 
@@ -85,11 +83,10 @@ public class EntityPurpleHaze extends EntityStandBase {
 					props.subtractCooldown(1);
 			});
 
-			//followMaster();
+			followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
 
-			//Orarush food check
 			if (!player.isAlive())
 				remove();
 			if (player.isSprinting()) {
@@ -97,7 +94,7 @@ public class EntityPurpleHaze extends EntityStandBase {
 					this.oratick++;
 				if (this.oratick == 1) {
 					if (!world.isRemote)
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PURPLE_HAZE_RUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PURPLE_HAZE_RUSH.get(), getSoundCategory(), 4.5f, 1.0f);
 
 					if (!this.world.isRemote)
 						this.orarush = true;

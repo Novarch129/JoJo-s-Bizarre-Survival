@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 public class RenderPurpleHaze extends MobRenderer<EntityPurpleHaze, ModelPurpleHaze<EntityPurpleHaze>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze.png");
 
 	public RenderPurpleHaze(EntityRendererManager renderManagerIn)
 	{

@@ -2,11 +2,11 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.JojoBizarreSurvival.JojoItemGroup;
-import com.novarch.jojomod.objects.items.*;
-
+import com.novarch.jojomod.objects.items.ItemCanzoniPreferite;
+import com.novarch.jojomod.objects.items.ItemRemoveStand;
+import com.novarch.jojomod.objects.items.ItemStandArrow;
+import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.TextFormatting;
@@ -30,6 +30,7 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_crazy_diamond = ITEMS.register("summon_crazy_diamond", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("crazy_diamond", TextFormatting.BLUE)).group(JojoItemGroup.instance), JojoLibs.StandID.crazyDiamond, "Has the ability to revert objects to a previous state."));
 	public static final RegistryObject<Item> summon_purple_haze = ITEMS.register("summon_purple_haze", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("purple_haze", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.purpleHaze, "Releases a deadly virus into the atmosphere."));
 
+	public static final RegistryObject<Item> stand_disc = ITEMS.register("stand_disc", () -> new ItemStandDisc(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> remove_stand = ITEMS.register("remove_stand", () -> new ItemRemoveStand(new Item.Properties().maxStackSize(1).rarity(Rarity.create("stand_disc", TextFormatting.GRAY)).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new ItemCanzoniPreferite(1, SoundInit.CANZONI_PREFERITE, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.instance)));
 }

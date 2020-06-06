@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
@@ -38,8 +39,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
   protected int timeInGround;
 
-  public PickupStatus pickupStatus;
-
   public int arrowShake;
 
   public Entity shootingEntity;
@@ -63,7 +62,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     this.xTile = -1;
     this.yTile = -1;
     this.zTile = -1;
-    this.pickupStatus = PickupStatus.dISALLOWED;
     this.damage = 2.0d;
     if (worldIn.isRemote)
       setNoGravity(true);
@@ -372,7 +370,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     compound.putByte("inData", (byte) this.inData);
     compound.putByte("shake", (byte) this.arrowShake);
     compound.putByte("inGround", (byte) (this.inGround ? 1 : 0));
-    compound.putByte("pickup", (byte) this.pickupStatus.ordinal());
     compound.putDouble("damage", this.damage);
   }
 
@@ -387,11 +384,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     this.inGround = (compound.getByte("inGround") == 1);
     if (compound.contains("damage", 99))
       this.damage = compound.getDouble("damage");
-    if (compound.contains("pickup", 99)) {
-      this.pickupStatus = PickupStatus.getByOrdinal(compound.getByte("pickup"));
-    } else if (compound.contains("player", 99)) {
-      this.pickupStatus = compound.getBoolean("player") ? PickupStatus.ALLOWED : PickupStatus.dISALLOWED;
-    }
   }
 
   @Override
@@ -414,18 +406,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
   @Override
   public boolean canBeAttackedWithItem() {
     return false;
-  }
-
-  public enum PickupStatus {
-    dISALLOWED,
-    ALLOWED,
-    CREATIVE_ONLY;
-
-    public static PickupStatus getByOrdinal(int ordinal) {
-      if (ordinal < 0 || ordinal > (values()).length)
-        ordinal = 0;
-      return values()[ordinal];
-    }
   }
 
   public static class kingCrimson extends EntityStandPunch {
