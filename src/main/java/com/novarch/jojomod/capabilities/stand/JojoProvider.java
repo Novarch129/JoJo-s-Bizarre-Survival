@@ -46,7 +46,7 @@ public class JojoProvider implements ICapabilitySerializable<INBT> {
 	}
 
 	/**
-	 * Used to suppress warnings saying that the STAND {@link Capability} is <code>null</code>
+	 * Used to suppress warnings saying that the STAND {@link Capability} is {@code null}
 	 * Based on diesieben07's solution <a href="http://www.minecraftforge.net/forum/topic/60980-solved-disable-%E2%80%9Cconstant-conditions-exceptions%E2%80%9D-inspection-for-field-in-intellij-idea/?do=findCommentcomment=285024">here</a>.
 	 *
 	 * @return null

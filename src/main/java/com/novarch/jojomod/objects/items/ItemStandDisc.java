@@ -3,7 +3,7 @@ package com.novarch.jojomod.objects.items;
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,8 +18,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ItemStandDisc extends Item {
-    private int standID;
-
     public ItemStandDisc(Properties properties) {
         super(properties);
     }
@@ -30,12 +28,13 @@ public class ItemStandDisc extends Item {
             ItemStack stack = player.getHeldItem(hand);
             CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
             IStand props = JojoProvider.getCapabilityFromPlayer(player);
-            if (props.getStandID() != 0 && standID == 0) {
+            if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();
+                stack.setTag(nbt);
                 return new ActionResult<>(ActionResultType.CONSUME, stack);
-            } else if (props.getStandID() == 0 && standID != 0) {
-                props.setStandID(standID);
+            } else if (props.getStandID() == 0 && nbt.getInt("StandID") != 0) {
+                props.setStandID(nbt.getInt("StandID"));
                 nbt.putInt("StandID", 0);
                 return new ActionResult<>(ActionResultType.CONSUME, stack);
             }
@@ -45,9 +44,22 @@ public class ItemStandDisc extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if(isSelected)
-            if(stack.getTag() != null)
-                standID = stack.getTag().getInt("StandID");
+    public boolean hitEntity(ItemStack stack, LivingEntity livingEntityIn, LivingEntity attacker) {
+        CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
+        if (livingEntityIn instanceof PlayerEntity) {
+            JojoProvider.getLazyOptional((PlayerEntity) livingEntityIn).ifPresent(props -> {
+                if(props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
+                    nbt.putInt("StandID", props.getStandID());
+                    props.removeStand();
+                    stack.setTag(nbt);
+                } else if (props.getStandID() == 0 && nbt.getInt("StandID") != 0) {
+                    //TODO Make it so only Whitesnake users can do this
+                    props.setStandID(nbt.getInt("StandID"));
+                    nbt.putInt("StandID", 0);
+                }
+                stack.setTag(nbt);
+            });
+        }
+        return true;
     }
 }
