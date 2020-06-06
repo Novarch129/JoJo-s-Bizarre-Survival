@@ -115,14 +115,13 @@ public class EntityMadeInHeaven extends EntityStandBase {
 			if (heaventickr <= 0) {
 				world.getPlayers().forEach(entity -> JojoProvider.getLazyOptional(entity).ifPresent(prps -> {
 					if (prps.getStandID() != JojoLibs.StandID.GER) {
-						(entity).inventory.clear();
-						EventD4CTeleportProcessor.d4cPassengerList.add(player);
-						EventD4CTeleportProcessor.d4cDestinationList.add(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
-						(entity).addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
-						(entity).fallDistance = 0;
-						(entity).setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						entity.inventory.clear();
+						EventD4CTeleportProcessor.d4cPassengers.put(entity, DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						entity.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
+						entity.fallDistance = 0;
+						entity.setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
 						prps.removeStand();
-						(entity).setInvulnerable(false);
+						entity.setInvulnerable(false);
 					}
 				}));
 			}
