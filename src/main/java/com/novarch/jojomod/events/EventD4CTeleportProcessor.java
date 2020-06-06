@@ -9,11 +9,11 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventD4CTeleportProcessor {
-    public static HashMap<PlayerEntity, DimensionType> d4cPassengers = new HashMap<>();
+    public static WeakHashMap<PlayerEntity, DimensionType> d4cPassengers = new WeakHashMap<>();
 
     @SuppressWarnings("unused")
     @SubscribeEvent

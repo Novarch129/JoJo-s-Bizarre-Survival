@@ -2,6 +2,7 @@ package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +29,7 @@ public class ItemStandDisc extends Item {
             ItemStack stack = player.getHeldItem(hand);
             CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
             IStand props = JojoProvider.getCapabilityFromPlayer(player);
-            if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
+            if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") == 0) {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();
                 stack.setTag(nbt);
@@ -52,7 +53,7 @@ public class ItemStandDisc extends Item {
                     nbt.putInt("StandID", props.getStandID());
                     props.removeStand();
                     stack.setTag(nbt);
-                } else if (props.getStandID() == 0 && nbt.getInt("StandID") != 0) {
+                } else if (props.getStandID() == 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") != 0) {
                     //TODO Make it so only Whitesnake users can do this
                     props.setStandID(nbt.getInt("StandID"));
                     nbt.putInt("StandID", 0);
