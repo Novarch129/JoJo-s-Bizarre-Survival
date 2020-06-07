@@ -194,7 +194,7 @@ public class EntityAerosmith extends EntityStandBase {
                     this.oratick++;
                     if (oratick == 1) {
                         EntityStandPunch.aerosmith aerosmithBullet = new EntityStandPunch.aerosmith(this.world, this, player);
-                        aerosmithBullet.shoot(player, this.rotationPitch, this.rotationYaw, 0, 4.0f, 0.4f);
+                        aerosmithBullet.shoot(player, this.rotationPitch, this.rotationYaw, 4.0f, 0.4f);
                         this.world.addEntity(aerosmithBullet);
                     }
                 }
@@ -219,11 +219,11 @@ public class EntityAerosmith extends EntityStandBase {
                         player.setSprinting(false);
                         EntityStandPunch.aerosmith aerosmithBullet1 = new EntityStandPunch.aerosmith(this.world, this, player);
                         aerosmithBullet1.setRandomPositions();
-                        aerosmithBullet1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 4.0F, 0.3F);
+                        aerosmithBullet1.shoot(player, this.rotationPitch, this.rotationYaw, 4.0F, 0.3F);
                         this.world.addEntity(aerosmithBullet1);
                         EntityStandPunch.aerosmith aerosmithBullet2 = new EntityStandPunch.aerosmith(this.world, this, player);
                         aerosmithBullet2.setRandomPositions();
-                        aerosmithBullet2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 4.0F, 0.3F);
+                        aerosmithBullet2.shoot(player, this.rotationPitch, this.rotationYaw, 4.0F, 0.3F);
                         this.world.addEntity(aerosmithBullet2);
                     }
                 if (this.oratickr >= 110) {

@@ -116,7 +116,9 @@ public class JojoLibs
 
         public static final int purpleHaze = 10;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze};
+        public static final int emperor = 11;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, emperor};
     }
 
     public static class KeyCodes

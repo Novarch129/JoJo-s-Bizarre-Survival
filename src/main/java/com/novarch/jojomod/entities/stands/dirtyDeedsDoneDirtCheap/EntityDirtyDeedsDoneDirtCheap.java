@@ -152,7 +152,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.dirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap = new EntityStandPunch.dirtyDeedsDoneDirtCheap(this.world, this, player);
-							dirtyDeedsDoneDirtCheap.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							dirtyDeedsDoneDirtCheap.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap);
 						}
 					}
@@ -167,11 +167,11 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 							player.setSprinting(false);
 							EntityStandPunch.dirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap1 = new EntityStandPunch.dirtyDeedsDoneDirtCheap(this.world, this, player);
 							dirtyDeedsDoneDirtCheap1.setRandomPositions();
-							dirtyDeedsDoneDirtCheap1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							dirtyDeedsDoneDirtCheap1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap1);
 							EntityStandPunch.dirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap2 = new EntityStandPunch.dirtyDeedsDoneDirtCheap(this.world, this, player);
 							dirtyDeedsDoneDirtCheap2.setRandomPositions();
-							dirtyDeedsDoneDirtCheap2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							dirtyDeedsDoneDirtCheap2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap2);
 						}
 					if (this.oratickr >= 80) {

@@ -6,6 +6,7 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
+import com.novarch.jojomod.objects.items.stands.ItemEmperor;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -14,6 +15,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -207,9 +209,20 @@ public class EventHandleStandAbilities
                     standName = "Purple Haze";
                     break;
                 }
+                case JojoLibs.StandID.emperor: {
+                    standName = "The Emperor";
+                    break;
+                }
             }
         if(event.getItemStack().getItem() instanceof ItemStandDisc)
             if(!standName.equals(""))
                 event.getToolTip().add(new StringTextComponent(standName));
+    }
+
+    @SubscribeEvent
+    public static void throwawayEvent(ItemTossEvent event)
+    {
+        if(event.getEntityItem().getItem().getItem() instanceof ItemEmperor)
+            event.setCanceled(true);
     }
 }

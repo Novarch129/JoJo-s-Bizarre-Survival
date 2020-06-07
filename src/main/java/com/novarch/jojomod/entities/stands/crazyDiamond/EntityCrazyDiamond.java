@@ -88,10 +88,6 @@ public class EntityCrazyDiamond extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
-			/*ItemStack itemStack = new ItemStack(ItemInit.summon_king_crimson.get());
-			if(Minecraft.getInstance().gameSettings.keyBindJump.isPressed()) Use for Beach Boy! TODO
-				player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);*/
-
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
 
@@ -145,7 +141,7 @@ public class EntityCrazyDiamond extends EntityStandBase {
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (this.rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
 							EntityStandPunch.crazyDiamond crazyDiamond = new EntityStandPunch.crazyDiamond(this.world, this, player);
-							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							this.world.addEntity(crazyDiamond);
 						}
 					}
@@ -160,11 +156,11 @@ public class EntityCrazyDiamond extends EntityStandBase {
 							player.setSprinting(false);
 							EntityStandPunch.crazyDiamond crazyDiamond1 = new EntityStandPunch.crazyDiamond(this.world, this, player);
 							crazyDiamond1.setRandomPositions();
-							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							this.world.addEntity(crazyDiamond1);
 							EntityStandPunch.crazyDiamond crazyDiamond2 = new EntityStandPunch.crazyDiamond(this.world, this, player);
 							crazyDiamond2.setRandomPositions();
-							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							this.world.addEntity(crazyDiamond2);
 						}
 					if (this.oratickr >= 100) {

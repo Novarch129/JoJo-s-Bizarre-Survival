@@ -5,6 +5,7 @@ import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.FrostWalkerEnchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -97,7 +98,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     return (distance < d0 * d0);
   }
 
-  public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
+  public void shoot(Entity shooter, float pitch, float yaw, float velocity, float inaccuracy) {
     float f = -MathHelper.sin(yaw * 0.017453292f) * MathHelper.cos(pitch * 0.017453292f);
     float f1 = -MathHelper.sin(pitch * 0.017453292f);
     float f2 = MathHelper.cos(yaw * 0.017453292f) * MathHelper.cos(pitch * 0.017453292f);
@@ -600,6 +601,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public purpleHaze(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
+  public static class emperor extends EntityStandPunch {
+    public emperor(World worldIn) {
+      super(EntityInit.EMPEROR_BULLET.get(), worldIn);
+    }
+
+    public emperor(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public emperor(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.EMPEROR_BULLET.get(), worldIn, shooter, player);
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHaze;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHazePunch;
+import com.novarch.jojomod.entities.stands.theEmperor.RenderEmperorBullet;
 import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReport;
 import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -71,5 +72,7 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.PURPLE_HAZE.get(), RenderPurpleHaze::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.PURPLE_HAZE_PUNCH.get(), RenderPurpleHazePunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMPEROR_BULLET.get(), RenderEmperorBullet::new);
 	}
 }

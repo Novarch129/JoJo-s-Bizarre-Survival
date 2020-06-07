@@ -133,7 +133,7 @@ public class EntityWeatherReport extends EntityStandBase {
                     this.oratick++;
                     if (oratick == 1) {
                         EntityStandPunch.weatherReport weatherReportPunch = new EntityStandPunch.weatherReport(this.world, this, player);
-                        weatherReportPunch.shoot(player, this.rotationPitch, this.rotationYaw, 0, 2.5f, 0.4f);
+                        weatherReportPunch.shoot(player, this.rotationPitch, this.rotationYaw, 2.5f, 0.4f);
                         this.world.addEntity(weatherReportPunch);
                     }
                 }
@@ -157,11 +157,11 @@ public class EntityWeatherReport extends EntityStandBase {
                         player.setSprinting(false);
                         EntityStandPunch.weatherReport weatherReportPunch1 = new EntityStandPunch.weatherReport(this.world, this, player);
                         weatherReportPunch1.setRandomPositions();
-                        weatherReportPunch1.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 1.8f, 0.2f);
+                        weatherReportPunch1.shoot(player, this.rotationPitch, this.rotationYaw, 1.8f, 0.2f);
                         this.world.addEntity(weatherReportPunch1);
                         EntityStandPunch.weatherReport weatherReportPunch2 = new EntityStandPunch.weatherReport(this.world, this, player);
                         weatherReportPunch2.setRandomPositions();
-                        weatherReportPunch2.shoot(player, this.rotationPitch, this.rotationYaw, 0.0F, 1.8f, 0.2f);
+                        weatherReportPunch2.shoot(player, this.rotationPitch, this.rotationYaw, 1.8f, 0.2f);
                         this.world.addEntity(weatherReportPunch2);
                     }
                 if (this.oratickr >= 110) {

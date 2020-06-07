@@ -6,6 +6,7 @@ import com.novarch.jojomod.objects.items.ItemCanzoniPreferite;
 import com.novarch.jojomod.objects.items.ItemRemoveStand;
 import com.novarch.jojomod.objects.items.ItemStandArrow;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
+import com.novarch.jojomod.objects.items.stands.ItemEmperor;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Rarity;
@@ -29,8 +30,10 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_killer_queen = ITEMS.register("summon_killer_queen", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("killer_queen", TextFormatting.GRAY)).group(JojoItemGroup.instance), JojoLibs.StandID.killerQueen, "Can turn anything it touches into a bomb.\n\nControls: \n"+JojoLibs.KeyCodes.ability1+": Activate 1st bomb.\n"+JojoLibs.KeyCodes.ability2+": Summon Sheer Heart Attack."));
 	public static final RegistryObject<Item> summon_crazy_diamond = ITEMS.register("summon_crazy_diamond", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("crazy_diamond", TextFormatting.BLUE)).group(JojoItemGroup.instance), JojoLibs.StandID.crazyDiamond, "Has the ability to revert objects to a previous state."));
 	public static final RegistryObject<Item> summon_purple_haze = ITEMS.register("summon_purple_haze", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("purple_haze", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.purpleHaze, "Releases a deadly virus into the atmosphere."));
+	public static final RegistryObject<Item> summon_the_emperor = ITEMS.register("summon_the_emperor", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("emperor", TextFormatting.YELLOW)).group(JojoItemGroup.instance), JojoLibs.StandID.emperor, ""));
 
 	public static final RegistryObject<Item> stand_disc = ITEMS.register("stand_disc", () -> new ItemStandDisc(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
+	public static final RegistryObject<Item> the_emperor = ITEMS.register("the_emperor", () -> new ItemEmperor(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> remove_stand = ITEMS.register("remove_stand", () -> new ItemRemoveStand(new Item.Properties().maxStackSize(1).rarity(Rarity.create("stand_disc", TextFormatting.GRAY)).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new ItemCanzoniPreferite(1, SoundInit.CANZONI_PREFERITE, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.instance)));
 }

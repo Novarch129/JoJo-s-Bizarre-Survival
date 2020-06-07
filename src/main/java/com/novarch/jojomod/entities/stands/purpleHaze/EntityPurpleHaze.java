@@ -105,7 +105,7 @@ public class EntityPurpleHaze extends EntityStandBase {
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (this.rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
 						EntityStandPunch.purpleHaze purpleHaze = new EntityStandPunch.purpleHaze(this.world, this, player);
-						purpleHaze.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+						purpleHaze.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						this.world.addEntity(purpleHaze);
 					}
 				}
@@ -120,11 +120,11 @@ public class EntityPurpleHaze extends EntityStandBase {
 						player.setSprinting(false);
 						EntityStandPunch.purpleHaze purpleHaze1 = new EntityStandPunch.purpleHaze(this.world, this, player);
 						purpleHaze1.setRandomPositions();
-						purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+						purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						this.world.addEntity(purpleHaze1);
 						EntityStandPunch.purpleHaze purpleHaze2 = new EntityStandPunch.purpleHaze(this.world, this, player);
 						purpleHaze2.setRandomPositions();
-						purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0f, 2.0f, 0.2f);
+						purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						this.world.addEntity(purpleHaze2);
 					}
 				if (this.oratickr >= 120) {

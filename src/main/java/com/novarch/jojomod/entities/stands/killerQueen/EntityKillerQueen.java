@@ -9,7 +9,6 @@ import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -165,7 +164,7 @@ public class EntityKillerQueen extends EntityStandBase {
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 							EntityStandPunch.killerQueen killerQueen = new EntityStandPunch.killerQueen(this.world, this, player);
-							killerQueen.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							killerQueen.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(killerQueen);
 						}
 					}
@@ -180,11 +179,11 @@ public class EntityKillerQueen extends EntityStandBase {
 							player.setSprinting(false);
 							EntityStandPunch.killerQueen killerQueen1 = new EntityStandPunch.killerQueen(this.world, this, player);
 							killerQueen1.setRandomPositions();
-							killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(killerQueen1);
 							EntityStandPunch.killerQueen killerQueen2 = new EntityStandPunch.killerQueen(this.world, this, player);
 							killerQueen2.setRandomPositions();
-							killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 0.2F);
+							killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(killerQueen2);
 						}
 					if (this.oratickr >= 80) {

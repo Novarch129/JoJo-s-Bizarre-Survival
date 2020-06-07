@@ -158,4 +158,9 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.purpleHaze>create(EntityStandPunch.purpleHaze::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.emperor>> EMPEROR_BULLET = ENTITY_TYPES
+			.register("emperor_bullet", () -> EntityType.Builder.<EntityStandPunch.emperor>create(EntityStandPunch.emperor::new, EntityClassification.MISC)
+					.size(0.1f, 0.1f)
+					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emperor_bullet").toString()));
 }

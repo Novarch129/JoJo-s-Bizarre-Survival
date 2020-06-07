@@ -4,15 +4,20 @@ import java.util.List;
 
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.init.ItemInit;
+import com.novarch.jojomod.objects.items.stands.ItemEmperor;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.StandCapability;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 
 import java.util.function.Supplier;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -85,7 +90,7 @@ public class SyncStandSummonButton {
 
 	public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer) {
 		JojoProvider.getLazyOptional(player).ifPresent(props -> {
-			if (props.getStandID() != 0) {
+			if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.emperor) {
 				EntityStandBase stand = JojoLibs.getStand(props.getStandID(), player.world);
 
 				if (stand != null) {
@@ -106,6 +111,17 @@ public class SyncStandSummonButton {
 						stand.remove();
 					}
 				}
+			} else if(props.getStandID() == JojoLibs.StandID.emperor) {
+				ItemStack itemStack = new ItemStack(ItemInit.the_emperor.get());
+
+				if(!player.inventory.hasItemStack(itemStack)) {
+					if (player.inventory.getStackInSlot(player.inventory.getBestHotbarSlot()).isEmpty()) {
+						player.inventory.currentItem = player.inventory.getBestHotbarSlot();
+						player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);
+					} else
+						player.sendMessage(new StringTextComponent("No"));
+				} else
+					itemStack.shrink(1);
 			}
 		});
 	}
