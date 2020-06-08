@@ -30,7 +30,7 @@
 - [ ] Magician's Red
 - [ ] Hierophant Green
 - [ ] Silver Chariot
-- [ ] The Emperor
+- [x] The Emperor
 
 This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
 
