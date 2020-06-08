@@ -4,6 +4,7 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import org.lwjgl.system.CallbackI;
 
 public class StandGUI extends AbstractGui
 {
@@ -113,6 +114,13 @@ public class StandGUI extends AbstractGui
             else if(props.getStandID() == JojoLibs.StandID.crazyDiamond)
             {
                 if(cooldown > 0)
+                    renderCooldown(cooldown);
+            }
+
+            //The Emperor
+            else if(props.getStandID() == JojoLibs.StandID.theEmperor)
+            {
+                if (cooldown > 0)
                     renderCooldown(cooldown);
             }
         });

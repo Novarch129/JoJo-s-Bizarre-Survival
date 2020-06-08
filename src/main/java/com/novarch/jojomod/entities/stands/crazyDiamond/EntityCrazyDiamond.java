@@ -10,6 +10,7 @@ import com.novarch.jojomod.util.handlers.KeyHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,10 +18,12 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityCrazyDiamond extends EntityStandBase {
 	private int oratick = 0;
 
@@ -180,5 +183,10 @@ public class EntityCrazyDiamond extends EntityStandBase {
 	@Override
 	public boolean canBeCollidedWith() {
 		return false;
+	}
+
+	@Override
+	public void applyEntityCollision(Entity entityIn) {
+		super.applyEntityCollision(entityIn);
 	}
 }

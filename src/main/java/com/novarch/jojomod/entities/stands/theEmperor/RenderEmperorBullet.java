@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.theEmperor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -17,9 +16,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderEmperorBullet extends EntityRenderer<EntityStandPunch.emperor>
+public class RenderEmperorBullet extends EntityRenderer<EntityEmperorBullet>
 {
-	protected ModelEmperorBullet<EntityStandPunch.emperor> bullet;
+	protected ModelEmperorBullet<EntityEmperorBullet> bullet;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/emperor_bullet.png");
 
 	public RenderEmperorBullet(EntityRendererManager renderManagerIn)
@@ -29,12 +28,12 @@ public class RenderEmperorBullet extends EntityRenderer<EntityStandPunch.emperor
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.emperor entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityEmperorBullet entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.emperor entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityEmperorBullet entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +52,7 @@ public class RenderEmperorBullet extends EntityRenderer<EntityStandPunch.emperor
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.emperor entity)
+	public ResourceLocation getEntityTexture(final EntityEmperorBullet entity)
 	{
 		return RenderEmperorBullet.texture;
 	}

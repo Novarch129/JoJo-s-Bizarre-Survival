@@ -105,5 +105,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:purple_haze_rush", "stream": false}]
+    },
+
+    "spawn_the_emperor":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_the_emperor", "stream": false}]
     }
 }

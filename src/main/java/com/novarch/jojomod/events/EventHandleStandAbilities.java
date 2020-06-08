@@ -5,8 +5,8 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.init.EffectInit;
+import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
-import com.novarch.jojomod.objects.items.stands.ItemEmperor;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -209,7 +209,7 @@ public class EventHandleStandAbilities
                     standName = "Purple Haze";
                     break;
                 }
-                case JojoLibs.StandID.emperor: {
+                case JojoLibs.StandID.theEmperor: {
                     standName = "The Emperor";
                     break;
                 }
@@ -222,7 +222,9 @@ public class EventHandleStandAbilities
     @SubscribeEvent
     public static void throwawayEvent(ItemTossEvent event)
     {
-        if(event.getEntityItem().getItem().getItem() instanceof ItemEmperor)
+        if(event.getEntityItem().getItem().getItem() == ItemInit.the_emperor.get()) {
             event.setCanceled(true);
+            JojoProvider.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
+        }
     }
 }

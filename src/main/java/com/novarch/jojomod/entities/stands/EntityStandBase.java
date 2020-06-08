@@ -225,4 +225,10 @@ public abstract class EntityStandBase extends MobEntity {
                 });
         }
     }
+
+    @Override
+    public void applyEntityCollision(Entity entityIn) {
+        if(entityIn instanceof EntityStandBase)
+            super.applyEntityCollision(entityIn);
+    }
 }

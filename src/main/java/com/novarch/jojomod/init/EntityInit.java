@@ -11,9 +11,9 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
-
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
@@ -24,7 +24,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ObjectHolder;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD)
@@ -159,8 +158,8 @@ public class EntityInit
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_punch").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.emperor>> EMPEROR_BULLET = ENTITY_TYPES
-			.register("emperor_bullet", () -> EntityType.Builder.<EntityStandPunch.emperor>create(EntityStandPunch.emperor::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityEmperorBullet>> EMPEROR_BULLET = ENTITY_TYPES
+			.register("emperor_bullet", () -> EntityType.Builder.<EntityEmperorBullet>create(EntityEmperorBullet::new, EntityClassification.MISC)
 					.size(0.1f, 0.1f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emperor_bullet").toString()));
 }

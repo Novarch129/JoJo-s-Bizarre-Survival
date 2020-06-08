@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.theEmperor;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
@@ -11,7 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelEmperorBullet<T extends EntityStandPunch.emperor> extends EntityModel<T> {
+public class ModelEmperorBullet<T extends EntityEmperorBullet> extends EntityModel<T> {
 	private final ModelRenderer Bullet;
 
 	public ModelEmperorBullet() {
