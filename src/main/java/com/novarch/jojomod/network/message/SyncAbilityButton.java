@@ -71,13 +71,13 @@ public class SyncAbilityButton
                 player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
             }
 
-            if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen) {
+            if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.madeInHeaven && props.getStandID() != JojoLibs.StandID.theEmperor) {
                 player.sendMessage(new StringTextComponent("Ability: OFF"));
                 if(props.getStandID() == JojoLibs.StandID.aerosmith)
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
             }
 
-            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.madeInHeaven) {
+            if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.madeInHeaven && props.getStandID() != JojoLibs.StandID.theEmperor) {
                 player.sendMessage(new StringTextComponent("Ability: ON"));
                 if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
                     player.world.addEntity(fakePlayer);
