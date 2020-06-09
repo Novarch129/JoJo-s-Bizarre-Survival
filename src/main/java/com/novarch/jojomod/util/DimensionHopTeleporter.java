@@ -1,17 +1,20 @@
 package com.novarch.jojomod.util;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Teleporter;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Function;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class DimensionHopTeleporter extends Teleporter
 {
     private final ServerWorld world;

@@ -119,7 +119,7 @@ public class EntityWeatherReport extends EntityStandBase {
                             .filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER)
                             .forEach(entity -> {
                                 if (entity.getDistance(player) <= 10) {
-                                    ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
+                                    ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
                                     if (!player.isCreative()) {
                                         player.getFoodStats().addStats(0, -0.1f);
                                         player.getFoodStats().addExhaustion(0.05f);

@@ -2,10 +2,15 @@ package com.novarch.jojomod.gui.overlay;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.util.JojoLibs;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
-import org.lwjgl.system.CallbackI;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("unused")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class StandGUI extends AbstractGui
 {
    public static final Minecraft mc = Minecraft.getInstance();
@@ -45,6 +50,7 @@ public class StandGUI extends AbstractGui
 
     public void render()
     {
+        assert Minecraft.getInstance().player != null;
         JojoProvider.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
@@ -52,7 +58,7 @@ public class StandGUI extends AbstractGui
             if (props.getStandOn())
             {
                 //Made in Heaven
-                if (props.getStandID() == JojoLibs.StandID.madeInHeaven)
+                if (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() == 0)
                 {
                     if (timeLeft > 0 && cooldown <= 0)
                         renderTimeValue(timeLeft);
@@ -67,60 +73,14 @@ public class StandGUI extends AbstractGui
                         renderTimeLeft(timeLeft - 800);
                 }
             }
-
-            //King Crimson
-            if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-            {
+            if(props.getStandID() != JojoLibs.StandID.madeInHeaven && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 if(cooldown > 0)
                     renderCooldown(cooldown);
-            }
-
-            //Gold Experience
-            else if(props.getStandID() == JojoLibs.StandID.goldExperience)
-            {
+            } else if(props.getStandID() == JojoLibs.StandID.goldExperience) {
                 if(cooldown > 0 && transformed > 0)
                     renderCooldown(cooldown);
-            }
-
-            //Gold Experience Requiem
-            else if(props.getStandID() == JojoLibs.StandID.GER)
-            {
+            } else if(props.getStandID() == JojoLibs.StandID.GER) {
                 if(cooldown > 0 && transformed > 1)
-                    renderCooldown(cooldown);
-            }
-
-            //Dirty Deeds Done Dirt Cheap
-            else if(props.getStandID() == JojoLibs.StandID.dirtyDeedsDoneDirtCheap)
-            {
-                if(cooldown > 0)
-                    renderCooldown(cooldown);
-            }
-
-            //Aerosmith
-            else if(props.getStandID() == JojoLibs.StandID.aerosmith)
-            {
-                if(cooldown > 0)
-                    renderCooldown(cooldown);
-            }
-
-            //Killer Queen
-            else if(props.getStandID() == JojoLibs.StandID.killerQueen)
-            {
-                if(cooldown > 0)
-                    renderCooldown(cooldown);
-            }
-
-            //Crazy Diamond
-            else if(props.getStandID() == JojoLibs.StandID.crazyDiamond)
-            {
-                if(cooldown > 0)
-                    renderCooldown(cooldown);
-            }
-
-            //The Emperor
-            else if(props.getStandID() == JojoLibs.StandID.theEmperor)
-            {
-                if (cooldown > 0)
                     renderCooldown(cooldown);
             }
         });

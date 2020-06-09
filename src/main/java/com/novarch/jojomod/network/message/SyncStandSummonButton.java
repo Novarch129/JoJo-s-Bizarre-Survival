@@ -9,6 +9,7 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 
 import java.util.function.Supplier;
 
+import com.novarch.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -67,7 +68,10 @@ public class SyncStandSummonButton {
 							if (props.getStandOn()) {
 								if (fakePlayer.isAlive())
 									fakePlayer.remove();
-								props.setStandOn(false);
+								if(!props.hasAct())
+									props.setStandOn(false);
+								else
+									props.changeAct();
 								return;
 							}
 							SyncStandSummonButton.summonStand(player, fakePlayer);
@@ -99,7 +103,6 @@ public class SyncStandSummonButton {
 							stand.remove();
 						else
 							stand.changeAct();
-						stand.remove();
 					}
 				}
 			} else if(props.getStandID() == JojoLibs.StandID.theEmperor) {

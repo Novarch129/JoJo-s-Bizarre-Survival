@@ -213,6 +213,10 @@ public class EventHandleStandAbilities
                     standName = "The Emperor";
                     break;
                 }
+                case JojoLibs.StandID.whitesnake: {
+                    standName = "Whitesnake";
+                    break;
+                }
             }
         if(event.getItemStack().getItem() instanceof ItemStandDisc)
             if(!standName.equals(""))

@@ -19,16 +19,14 @@ public class JojoBizarreSurvivalConfig
 
             saveStandOnDeath = builder
                     .comment("Toggle save Stand on death")
-                    .translation("jojomod.savestand.config")
                     .define("saveStandOnDeath", false);
 
             sheerHeartAttackDeathLoop = builder
                     .comment("Toggle Sheer Heart Attack attacking himself repeatedly.")
-                    .translation("jojomod.shaexplode.config")
                     .define("sheerHeartAttackDeathLoop", false);
 
             madeInHeavenAbilityAccelerating = builder
-                    .comment("Toggle being able to accelerate Made in Heaven ability with shift")
+                    .comment("Toggle being able to accelerate Made in Heaven's ability with shift")
                     .define("madeInHeavenAbilityAccelerating", false);
 
             builder.pop();

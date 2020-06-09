@@ -15,6 +15,7 @@ import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -162,4 +163,16 @@ public class EntityInit
 			.register("emperor_bullet", () -> EntityType.Builder.<EntityEmperorBullet>create(EntityEmperorBullet::new, EntityClassification.MISC)
 					.size(0.1f, 0.1f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emperor_bullet").toString()));
+
+	public static final RegistryObject<EntityType<EntityWhitesnake>> WHITESNAKE = ENTITY_TYPES
+			.register("whitesnake",
+					() -> EntityType.Builder.<EntityWhitesnake>create(EntityWhitesnake::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.whitesnake>> WHITESNAKE_PUNCH = ENTITY_TYPES
+			.register("whitesnake_punch",
+					() -> EntityType.Builder.<EntityStandPunch.whitesnake>create(EntityStandPunch.whitesnake::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake_punch").toString()));
 }

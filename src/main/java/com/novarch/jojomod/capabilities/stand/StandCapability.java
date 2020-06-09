@@ -2,6 +2,7 @@ package com.novarch.jojomod.capabilities.stand;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.network.message.SyncStandCapability;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -58,6 +59,30 @@ public class StandCapability implements IStand {
 	public void setAct(int value) {
 		this.standAct = value;
 		onDataUpdated();
+	}
+
+	@Override
+	public void changeAct() {
+		standAct++;
+		if(standAct == getMaxAct()) {
+			standAct = 0;
+			setStandOn(false);
+		}
+		onDataUpdated();
+	}
+
+	@Override
+	public boolean hasAct() {
+		return getStandID() == JojoLibs.StandID.madeInHeaven;
+	}
+
+	@Override
+	public int getMaxAct() {
+		switch(standID) {
+			case JojoLibs.StandID.madeInHeaven:
+				return 3;
+		}
+		return 0;
 	}
 
 	public void setStandOn(boolean value) {

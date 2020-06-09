@@ -111,5 +111,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_the_emperor", "stream": false}]
+    },
+
+    "spawn_whitesnake":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_whitesnake", "stream": false}]
     }
 }

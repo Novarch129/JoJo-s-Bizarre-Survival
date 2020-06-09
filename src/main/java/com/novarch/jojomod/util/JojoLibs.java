@@ -13,6 +13,7 @@ import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -118,7 +119,9 @@ public class JojoLibs
 
         public static final int theEmperor = 11;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor};
+        public static final int whitesnake = 12;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake};
     }
 
     public static class KeyCodes
@@ -156,6 +159,8 @@ public class JojoLibs
                 return new EntityCrazyDiamond(world);
             case StandID.purpleHaze:
                 return new EntityPurpleHaze(world);
+            case StandID.whitesnake:
+                return new EntityWhitesnake(world);
         }
         return null;
     }

@@ -7,7 +7,7 @@
 - [ ] Tusk
 - [x] Dirty Deeds Done Dirt Cheap
 - [ ] 20th Century Boy
-- [ ] Whitesnake
+- [x] Whitesnake
 - [ ] C-Moon
 - [x] Made in Heaven
 - [x] Weather Report

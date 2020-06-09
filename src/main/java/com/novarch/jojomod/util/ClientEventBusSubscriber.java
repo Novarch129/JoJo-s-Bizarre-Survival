@@ -24,6 +24,8 @@ import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHazePunch;
 import com.novarch.jojomod.entities.stands.theEmperor.RenderEmperorBullet;
 import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReport;
 import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunch;
+import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnake;
+import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnakePunch;
 import com.novarch.jojomod.init.EntityInit;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -74,5 +76,8 @@ public class ClientEventBusSubscriber
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.PURPLE_HAZE_PUNCH.get(), RenderPurpleHazePunch::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMPEROR_BULLET.get(), RenderEmperorBullet::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE.get(), RenderWhitesnake::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE_PUNCH.get(), RenderWhitesnakePunch::new);
 	}
 }

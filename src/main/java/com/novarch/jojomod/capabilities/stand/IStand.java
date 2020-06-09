@@ -9,6 +9,12 @@ public interface IStand {
 
     void setAct(final int act);
 
+    void changeAct();
+
+    boolean hasAct();
+
+    int getMaxAct();
+
     void setStandOn(final boolean p0);
 
     void setPlayerStandName(final String p0);

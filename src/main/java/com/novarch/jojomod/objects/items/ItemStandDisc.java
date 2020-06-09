@@ -49,16 +49,22 @@ public class ItemStandDisc extends Item {
         CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
         if (livingEntityIn instanceof PlayerEntity) {
             JojoProvider.getLazyOptional((PlayerEntity) livingEntityIn).ifPresent(props -> {
-                if(props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
-                    nbt.putInt("StandID", props.getStandID());
-                    props.removeStand();
-                    stack.setTag(nbt);
-                } else if (props.getStandID() == 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") != 0) {
-                    //TODO Make it so only Whitesnake users can do this
-                    props.setStandID(nbt.getInt("StandID"));
-                    nbt.putInt("StandID", 0);
+                if (attacker instanceof PlayerEntity) {
+                    final int standID = JojoProvider.getCapabilityFromPlayer(((PlayerEntity) attacker)).getStandID();
+                    final int standAct = JojoProvider.getCapabilityFromPlayer(((PlayerEntity) attacker)).getAct();
+                    if(standID == JojoLibs.StandID.whitesnake || (standID == JojoLibs.StandID.madeInHeaven && standAct == 2)) {
+                        if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
+                            nbt.putInt("StandID", props.getStandID());
+                            props.removeStand();
+                            stack.setTag(nbt);
+                        } else if (props.getStandID() == 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") != 0) {
+
+                            props.setStandID(nbt.getInt("StandID"));
+                            nbt.putInt("StandID", 0);
+                        }
+                        stack.setTag(nbt);
+                    }
                 }
-                stack.setTag(nbt);
             });
         }
         return true;

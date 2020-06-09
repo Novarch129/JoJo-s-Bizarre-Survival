@@ -615,6 +615,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     }
   }
 
+  public static class whitesnake extends EntityStandPunch {
+    public whitesnake(World worldIn) {
+      super(EntityInit.WHITESNAKE_PUNCH.get(), worldIn);
+    }
+
+    public whitesnake(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public whitesnake(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.WHITESNAKE_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
   @Override
   protected void registerData() {
 

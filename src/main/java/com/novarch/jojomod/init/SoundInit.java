@@ -32,4 +32,5 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> SPAWN_PURPLE_HAZE = SOUNDS.register("spawn_purple_haze", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_purple_haze")));
 	public static final RegistryObject<SoundEvent> PURPLE_HAZE_RUSH = SOUNDS.register("purple_haze_rush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_rush")));
 	public static final RegistryObject<SoundEvent> SPAWN_THE_EMPEROR = SOUNDS.register("spawn_the_emperor", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_emperor")));
+	public static final RegistryObject<SoundEvent> SPAWN_WHITESNAKE = SOUNDS.register("spawn_whitesnake", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_whitesnake")));
 }

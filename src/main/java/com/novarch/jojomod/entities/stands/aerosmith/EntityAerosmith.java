@@ -1,5 +1,6 @@
 package com.novarch.jojomod.entities.stands.aerosmith;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -18,6 +19,8 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 @MethodsReturnNonnullByDefault
 public class EntityAerosmith extends EntityStandBase {
@@ -97,6 +100,8 @@ public class EntityAerosmith extends EntityStandBase {
             JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
             if (this.ability) {
+                if(world.isRemote)
+                    Minecraft.getInstance().setRenderViewEntity(this);
                 if (!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
                     this.shouldFall = false;
 

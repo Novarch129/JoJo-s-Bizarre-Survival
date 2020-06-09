@@ -9,10 +9,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.WeakHashMap;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventD4CTeleportProcessor {
@@ -35,17 +32,23 @@ public class EventD4CTeleportProcessor {
         );
         d4cPassengers.clear();
 
-        madeInHeaven.forEach(passenger ->
-                passenger.changeDimension(
-                        Objects.requireNonNull(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE)),
-                        new DimensionHopTeleporter(
-                                (ServerWorld) passenger.getEntityWorld(),
-                                passenger.getPosX() + passenger.world.rand.nextInt(100000),
-                                passenger.getPosY() + passenger.world.rand.nextInt(100000),
-                                passenger.getPosZ() + passenger.world.rand.nextInt(100000)
-                        )
-                )
-        );
+        madeInHeaven.forEach(passenger -> {
+            Random rand = passenger.world.rand;
+            passenger.changeDimension(
+                    Objects.requireNonNull(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE)),
+                    new DimensionHopTeleporter(
+                            (ServerWorld) passenger.getEntityWorld(),
+                            passenger.getPosX(),
+                            passenger.getPosY(),
+                            passenger.getPosZ()
+                    )
+            );
+            passenger.setPositionAndUpdate(
+                    rand.nextBoolean() ? passenger.getPosX() + rand.nextInt(100000) : passenger.getPosX() - rand.nextInt(100000),
+                    passenger.getPosY() + rand.nextInt(10),
+                    rand.nextBoolean() ? passenger.getPosZ() + rand.nextInt(100000) : passenger.getPosZ() - rand.nextInt(100000)
+            );
+        });
         madeInHeaven.clear();
     }
 }
