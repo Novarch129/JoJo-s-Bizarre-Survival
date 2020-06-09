@@ -12,6 +12,7 @@
   "item.jojomod.summon_purple_haze": "Purple Haze",
   "item.jojomod.summon_the_emperor": "The Emperor",
   "item.jojomod.summon_whitesnake": "Whitesnake",
+  "item.jojomod.summon_cmoon": "C-Moon",
 
   "item.jojomod.the_emperor": "The Emperor",
   "item.jojomod.remove_stand": "Remove Stand",
@@ -49,6 +50,8 @@
   "entity.jojomod.emperor_bullet" : "The Emperor's bullet",
   "entity.jojomod.whitesnake" : "Whitesnake",
   "entity.jojomod.whitesnake_punch" : "Whitesnake's punch",
+  "entity.jojomod.cmoon" : "C-Moon",
+  "entity.jojomod.cmoon_punch" : "C-Moon's punch",
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
 

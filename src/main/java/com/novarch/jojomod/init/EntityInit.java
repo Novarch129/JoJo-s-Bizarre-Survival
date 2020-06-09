@@ -4,6 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.cMoon.EntityCMoon;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
@@ -175,4 +176,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.whitesnake>create(EntityStandPunch.whitesnake::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityCMoon>> CMOON = ENTITY_TYPES
+			.register("cmoon",
+					() -> EntityType.Builder.<EntityCMoon>create(EntityCMoon::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.cMoon>> CMOON_PUNCH = ENTITY_TYPES
+			.register("cmoon_punch",
+					() -> EntityType.Builder.<EntityStandPunch.cMoon>create(EntityStandPunch.cMoon::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon_punch").toString()));
 }

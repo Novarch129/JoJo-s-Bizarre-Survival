@@ -117,5 +117,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_whitesnake", "stream": false}]
+    },
+
+    "spawn_cmoon":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_cmoon", "stream": false}]
     }
 }

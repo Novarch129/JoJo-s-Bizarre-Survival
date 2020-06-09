@@ -4,6 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.cMoon.EntityCMoon;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
@@ -121,6 +122,8 @@ public class JojoLibs
 
         public static final int whitesnake = 12;
 
+        public static final int cMoon = 13;
+
         public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake};
     }
 
@@ -161,6 +164,8 @@ public class JojoLibs
                 return new EntityPurpleHaze(world);
             case StandID.whitesnake:
                 return new EntityWhitesnake(world);
+            case StandID.cMoon:
+                return new EntityCMoon(world);
         }
         return null;
     }

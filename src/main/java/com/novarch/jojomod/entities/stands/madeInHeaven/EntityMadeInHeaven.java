@@ -5,10 +5,8 @@ import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
-import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
+import com.novarch.jojomod.entities.stands.cMoon.EntityCMoon;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
-import com.novarch.jojomod.events.EventHandleStandAbilities;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -81,19 +79,14 @@ public class EntityMadeInHeaven extends EntityStandBase {
 			PlayerEntity player = getMaster();
 			JojoProvider.getLazyOptional(player).ifPresent(props -> {
 				props.setTimeLeft(heaventickr - 1200);
-				switch(props.getAct()) {
-					default:
-						break;
-					case(2): {
-						remove();
-						EntityWhitesnake whitesnake = new EntityWhitesnake(world);
-						whitesnake.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
-						whitesnake.setMaster(getMaster());
-						whitesnake.setMasterUUID(getMaster().getUniqueID());
-						world.addEntity(whitesnake);
-						whitesnake.spawnSound();
-						break;
-					}
+				if (props.getAct() == 1) {
+					remove();
+					EntityCMoon cMoon = new EntityCMoon(world);
+					cMoon.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
+					cMoon.setMaster(getMaster());
+					cMoon.setMasterUUID(getMaster().getUniqueID());
+					world.addEntity(cMoon);
+					cMoon.spawnSound();
 				}
 			});
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));

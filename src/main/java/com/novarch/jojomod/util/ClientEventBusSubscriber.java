@@ -4,6 +4,8 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.fakePlayer.RenderFakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmith;
 import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmithBullet;
+import com.novarch.jojomod.entities.stands.cMoon.RenderCMoon;
+import com.novarch.jojomod.entities.stands.cMoon.RenderCMoonPunch;
 import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamond;
 import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamondPunch;
 import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
@@ -35,6 +37,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber
 {
@@ -79,5 +82,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE.get(), RenderWhitesnake::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE_PUNCH.get(), RenderWhitesnakePunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.CMOON.get(), RenderCMoon::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.CMOON_PUNCH.get(), RenderCMoonPunch::new);
 	}
 }

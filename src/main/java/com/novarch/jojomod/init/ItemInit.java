@@ -32,6 +32,7 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_purple_haze = ITEMS.register("summon_purple_haze", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("purple_haze", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.purpleHaze, "Releases a deadly virus into the atmosphere."));
 	public static final RegistryObject<Item> summon_the_emperor = ITEMS.register("summon_the_emperor", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("emperor", TextFormatting.YELLOW)).group(JojoItemGroup.instance), JojoLibs.StandID.theEmperor, ""));
 	public static final RegistryObject<Item> summon_whitesnake = ITEMS.register("summon_whitesnake", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("whitesnake", TextFormatting.WHITE)).group(JojoItemGroup.instance), JojoLibs.StandID.whitesnake, ""));
+	public static final RegistryObject<Item> summon_cmoon = ITEMS.register("summon_cmoon", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("cmoon", TextFormatting.DARK_GREEN)).group(JojoItemGroup.instance), JojoLibs.StandID.cMoon, ""));
 
 	public static final RegistryObject<Item> stand_disc = ITEMS.register("stand_disc", () -> new ItemStandDisc(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> the_emperor = ITEMS.register("the_emperor", () -> new ItemEmperor(new Item.Properties().maxStackSize(1)));

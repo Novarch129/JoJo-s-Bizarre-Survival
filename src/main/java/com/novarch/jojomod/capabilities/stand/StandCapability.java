@@ -2,7 +2,6 @@ package com.novarch.jojomod.capabilities.stand;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.network.message.SyncStandCapability;
-import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -14,6 +13,9 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
+
+import static com.novarch.jojomod.util.JojoLibs.StandID.cMoon;
+import static com.novarch.jojomod.util.JojoLibs.StandID.madeInHeaven;
 
 /**
  * The {@link Capability} used for storing the player's Stand ability.
@@ -73,14 +75,16 @@ public class StandCapability implements IStand {
 
 	@Override
 	public boolean hasAct() {
-		return getStandID() == JojoLibs.StandID.madeInHeaven;
+		return getStandID() == madeInHeaven || getStandID() == cMoon;
 	}
 
 	@Override
 	public int getMaxAct() {
 		switch(standID) {
-			case JojoLibs.StandID.madeInHeaven:
+			case madeInHeaven:
 				return 3;
+			case cMoon:
+				return 2;
 		}
 		return 0;
 	}

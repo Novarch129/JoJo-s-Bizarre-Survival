@@ -49,6 +49,8 @@ public class EventHandleStandAbilities
             if(!props.getStandOn())
             {
                 player.setInvulnerable(false);
+                if(!player.isPotionActive(Effects.LEVITATION))
+                    player.setNoGravity(false);
                 if(!player.isCreative() && !player.isSpectator())
                     player.setGameType(GameType.SURVIVAL);
 
@@ -215,6 +217,10 @@ public class EventHandleStandAbilities
                 }
                 case JojoLibs.StandID.whitesnake: {
                     standName = "Whitesnake";
+                    break;
+                }
+                case JojoLibs.StandID.cMoon: {
+                    standName = "C-Moon";
                     break;
                 }
             }

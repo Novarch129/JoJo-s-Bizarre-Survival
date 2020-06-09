@@ -634,6 +634,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     }
   }
 
+  public static class cMoon extends EntityStandPunch {
+    public cMoon(World worldIn) {
+      super(EntityInit.CMOON_PUNCH.get(), worldIn);
+    }
+
+    public cMoon(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public cMoon(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.CMOON_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
   @Override
   protected void registerData() {
 

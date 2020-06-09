@@ -8,7 +8,6 @@ import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.ValueTextComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -37,64 +36,72 @@ import net.minecraft.world.Explosion;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class StandPunchEffects {
-	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean isBlock, final int standID) {
+	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean isEntity, final int standID) {
 		switch (standID) {
 			case JojoLibs.StandID.kingCrimson: {
-				kingCrimson(result, entityIn, punch, isBlock);
+				kingCrimson(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.dirtyDeedsDoneDirtCheap: {
-				dirtyDeedsDoneDirtCheap(result, entityIn, punch, isBlock);
+				dirtyDeedsDoneDirtCheap(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.goldExperience: {
-				goldExperience(result, entityIn, punch, isBlock);
+				goldExperience(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.madeInHeaven: {
-				madeInHeaven(result, entityIn, punch, isBlock);
+				madeInHeaven(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.GER: {
-				goldExperienceRequiem(result, entityIn, punch, isBlock);
+				goldExperienceRequiem(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.aerosmith: {
-				aerosmith(result, entityIn, punch, isBlock);
+				aerosmith(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.weatherReport: {
-				weatherReport(result, entityIn, punch, isBlock);
+				weatherReport(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.killerQueen: {
-				killerQueen(result, entityIn, punch, isBlock);
+				killerQueen(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.crazyDiamond: {
-				crazyDiamond(result, entityIn, punch, isBlock);
+				crazyDiamond(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.purpleHaze: {
-				purpleHaze(result, entityIn, punch, isBlock);
+				purpleHaze(result, entityIn, punch, isEntity);
 				break;
 			}
 			case JojoLibs.StandID.whitesnake: {
-				whitesnake(result, entityIn, punch, isBlock);
+				whitesnake(result, entityIn, punch, isEntity);
+				break;
+			}
+			case JojoLibs.StandID.cMoon: {
+				cMoon(result, entityIn, punch, isEntity);
 				break;
 			}
 			default: {
-				basicDefault(result, entityIn, punch, isBlock);
+				basicDefault(result, entityIn, punch, isEntity);
 				break;
 			}
 		}
 	}
 
-	public static void basicDefault(final RayTraceResult result, final LivingEntity livingEntity, EntityStandPunch punch, final boolean isBlock) {
+	public static void basicDefault(final RayTraceResult result, final LivingEntity livingEntity, EntityStandPunch punch, final boolean isEntity) {
+		if(isEntity)
+			livingEntity.attackEntityFrom(DamageSource.GENERIC, 1.0f);
+		else
+			punch.world.removeBlock(new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile()), false);
 	}
 
-	public static void kingCrimson(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void kingCrimson(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
@@ -107,7 +114,7 @@ public abstract class StandPunchEffects {
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 			punch.remove();
-		} else if (!isBlock) {
+		} else if (!isEntity) {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
@@ -120,8 +127,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
@@ -134,7 +141,7 @@ public abstract class StandPunchEffects {
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 			punch.remove();
-		} else if (!isBlock) {
+		} else if (!isEntity) {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
@@ -147,12 +154,15 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void madeInHeaven(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
+	public static void madeInHeaven(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if(JojoProvider.getCapabilityFromPlayer(punch.standMaster).getAct() == 2) {
-			whitesnake(result, livingEntity, punch, isBlock);
+			whitesnake(result, livingEntity, punch, isEntity);
+			return;
+		} else if(JojoProvider.getCapabilityFromPlayer(punch.standMaster).getAct() == 1) {
+			cMoon(result, livingEntity, punch, isEntity);
 			return;
 		}
-		if (isBlock) {
+		if (isEntity) {
 			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
 					livingEntity.addPotionEffect(new EffectInstance(Effects.SLOWNESS, 140, 1));
@@ -193,7 +203,7 @@ public abstract class StandPunchEffects {
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 			punch.remove();
-		} else if (!isBlock) {
+		} else if (!isEntity) {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
@@ -206,8 +216,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void goldExperience(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void goldExperience(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
 					livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
@@ -242,7 +252,7 @@ public abstract class StandPunchEffects {
 				punch.remove();
 			}
 		}
-		if (!isBlock) {
+		if (!isEntity) {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
@@ -587,8 +597,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void goldExperienceRequiem(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			if (punch.shootingStand.ability) {
 				if (punch.shootingStand.orarush) {
 					livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
@@ -623,7 +633,7 @@ public abstract class StandPunchEffects {
 				punch.remove();
 			}
 		}
-		if (!isBlock) {
+		if (!isEntity) {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
@@ -973,8 +983,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void aerosmith(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch bullet, final boolean isBlock) {
-		if (isBlock) {
+	public static void aerosmith(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch bullet, final boolean isEntity) {
+		if (isEntity) {
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(bullet.shootingStand.getMaster()), 1.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, 0, 0);
@@ -1001,8 +1011,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void weatherReport(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void weatherReport(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.0f);
 			if (punch.shootingStand.ability)
 				livingEntity.addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 300, 15));
@@ -1028,8 +1038,8 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void killerQueen(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void killerQueen(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			((EntityKillerQueen) punch.shootingStand).setBombEntity(livingEntity);
@@ -1054,8 +1064,8 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void crazyDiamond(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void crazyDiamond(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			if (punch.shootingStand.ability)
@@ -1086,8 +1096,8 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void purpleHaze(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void purpleHaze(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			if (!punch.world.isRemote) {
@@ -1123,8 +1133,8 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void whitesnake(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isBlock) {
-		if (isBlock) {
+	public static void whitesnake(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
 			if (punch.shootingStand.ability)
@@ -1143,6 +1153,43 @@ public abstract class StandPunchEffects {
 						}
 					});
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+			} else
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 3.0f) {
+				if (blockState.getMaterial() != Material.AIR && blockState.getMaterial() != Material.WATER && blockState.getMaterial() != Material.LAVA) {
+					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+					block.harvestBlock(punch.world, punch.shootingStand.getMaster(), blockPos, blockState, null, punch.shootingStand.getMaster().getHeldItemMainhand());
+				}
+			}
+		}
+		punch.remove();
+	}
+
+	public static void cMoon(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
+			if(props.getAct() == 1 && props.getStandID() == JojoLibs.StandID.cMoon) {
+				whitesnake(result, livingEntity, punch, isEntity);
+			}
+		});
+		if (isEntity) {
+			final float p = 0.2f;
+			final float p2 = 0.4f;
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), livingEntity.getHealth() / 2 + 0.0001f);
+			if(punch.shootingStand.ability) {
+				livingEntity.setCustomName(new StringTextComponent("Dinnerbone"));
+				if(punch.standMaster.getRNG().nextInt(10) == 10)
+					livingEntity.addPotionEffect(new EffectInstance(Effects.SPEED, 100, 5));
+			}
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
