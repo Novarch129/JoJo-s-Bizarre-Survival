@@ -79,36 +79,12 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 
 				player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 
-				if (player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() - 1)).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() + 1)).getMaterial() != Material.AIR) {
+				if ((player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() - 1)).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() + 1)).getMaterial() != Material.AIR) || (player.world.getBlockState(new BlockPos(player.getPosition().getX() - 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX() + 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR)) {
 					if (player.isCrouching() || player.isAirBorne) {
 						if (props.getAbility() && props.getCooldown() <= 0) {
 							changePlayerDimension(player);
 
 							world.getServer().getWorld(this.dimension).getEntities()
-									.filter(entity -> entity instanceof LivingEntity)
-									.filter(entity -> !(entity instanceof PlayerEntity))
-									.filter(entity -> !(entity instanceof EntityStandBase))
-									.filter(entity -> entity.getDistance(player) < 3.0f || entity.getDistance(this) < 3.0f)
-									.forEach(this::transportEntity);
-
-							world.getPlayers()
-									.stream()
-									.filter(playerEntity -> JojoProvider.getCapabilityFromPlayer(playerEntity).getStandID() != JojoLibs.StandID.GER)
-									.filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
-									.forEach(this::changePlayerDimension);
-
-							player.getFoodStats().addStats(-3, 0.0f);
-							props.setStandOn(false);
-							props.setCooldown(200);
-							this.remove();
-						}
-					}
-				} else if (player.world.getBlockState(new BlockPos(player.getPosition().getX() - 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX() + 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR) {
-					if (player.isCrouching() || player.isAirBorne) {
-						if (props.getAbility() && props.getCooldown() <= 0) {
-							changePlayerDimension(player);
-
-							world.getServer().getWorld(dimension).getEntities()
 									.filter(entity -> entity instanceof LivingEntity)
 									.filter(entity -> !(entity instanceof PlayerEntity))
 									.filter(entity -> !(entity instanceof EntityStandBase))

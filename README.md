@@ -4,7 +4,6 @@
 # A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft 1.15.2.
 
 ### List of planned Stands:
-- [ ] Soft & Wet
 - [ ] Tusk
 - [x] Dirty Deeds Done Dirt Cheap
 - [ ] 20th Century Boy

@@ -38,6 +38,8 @@ public class ItemEmperor extends Item {
                 bullet.setPositionAndRotation(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), playerIn.rotationYaw, playerIn.rotationPitch);
                 bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0, 20.0f, 0.001f);
                 playerIn.world.addEntity(bullet);
+                if(!playerIn.isCreative() && !playerIn.isSpectator())
+                    playerIn.getFoodStats().addStats(2, 0);
                 props.setCooldown(100);
                 return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
             } else

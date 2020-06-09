@@ -1,5 +1,6 @@
 package com.novarch.jojomod.world.dimension.d4c.overworld;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -16,6 +17,7 @@ import net.minecraft.world.gen.OverworldGenSettings;
 
 import javax.annotation.Nullable;
 
+@MethodsReturnNonnullByDefault
 public class D4CDimension extends OverworldDimension
 {
     public D4CDimension(World worldIn, DimensionType type_)

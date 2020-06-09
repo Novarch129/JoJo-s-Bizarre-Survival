@@ -9,11 +9,15 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.WeakHashMap;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventD4CTeleportProcessor {
     public static WeakHashMap<PlayerEntity, DimensionType> d4cPassengers = new WeakHashMap<>();
+    public static List<PlayerEntity> madeInHeaven = new ArrayList<>();
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -30,5 +34,18 @@ public class EventD4CTeleportProcessor {
                 )
         );
         d4cPassengers.clear();
+
+        madeInHeaven.forEach(passenger ->
+                passenger.changeDimension(
+                        Objects.requireNonNull(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE)),
+                        new DimensionHopTeleporter(
+                                (ServerWorld) passenger.getEntityWorld(),
+                                passenger.getPosX() + passenger.world.rand.nextInt(100000),
+                                passenger.getPosY() + passenger.world.rand.nextInt(100000),
+                                passenger.getPosZ() + passenger.world.rand.nextInt(100000)
+                        )
+                )
+        );
+        madeInHeaven.clear();
     }
 }

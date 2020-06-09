@@ -1,25 +1,21 @@
 package com.novarch.jojomod.world.dimension.d4c.nether;
 
-import net.minecraft.block.Blocks;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.biome.provider.BiomeProviderType;
-import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.NetherDimension;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.ChunkGeneratorType;
-import net.minecraft.world.gen.NetherGenSettings;
 
 import javax.annotation.Nullable;
 
+@MethodsReturnNonnullByDefault
 public class D4CDimensionNether extends NetherDimension
 {
-    private static final Vec3d fogColor = new Vec3d((double)0.2F, (double)0.03F, (double)0.03F);
+    private static final Vec3d fogColor = new Vec3d(0.2F, 0.03F, 0.03F);
     public D4CDimensionNether(World worldIn, DimensionType type)
     {
         super(worldIn, type);

@@ -44,6 +44,7 @@ public class JojoBizarreSurvival
     public static final ResourceLocation D4C_DIMENSION_TYPE = new ResourceLocation(MOD_ID, "d4c_dimension_overworld");
     public static final ResourceLocation D4C_DIMENSION_TYPE_NETHER = new ResourceLocation(MOD_ID, "d4c_dimension_nether");
     public static final ResourceLocation D4C_DIMENSION_TYPE_END = new ResourceLocation(MOD_ID, "d4c_dimension_end");
+    public static final ResourceLocation MADE_IN_HEAVEN_DIMENSION_TYPE = new ResourceLocation(MOD_ID, "made_in_heaven_dimension");
 
     public JojoBizarreSurvival()
     {

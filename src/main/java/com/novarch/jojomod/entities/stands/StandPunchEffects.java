@@ -1074,10 +1074,9 @@ public abstract class StandPunchEffects {
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
-				if (block.getDefaultState().getMaterial() != Material.AIR && block.getDefaultState().getMaterial() != Material.WATER && punch.shootingStand.ability) {
-					((EntityCrazyDiamond) punch.shootingStand).addBlock(blockState);
+				if (blockState.getMaterial() != Material.AIR && blockState.getMaterial() != Material.WATER && punch.shootingStand.ability) {
 					if (punch.world.getBlockState(blockPos).getMaterial() != Material.AIR && punch.world.getBlockState(blockPos).getMaterial() != Material.WATER)
-						((EntityCrazyDiamond) punch.shootingStand).addBlockPos(blockPos);
+						((EntityCrazyDiamond) punch.shootingStand).putRepairBlock(blockPos, blockState);
 				}
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				if (!punch.shootingStand.ability)

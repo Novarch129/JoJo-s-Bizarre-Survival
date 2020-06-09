@@ -11,6 +11,7 @@ public class JojoBizarreSurvivalConfig
     {
         public final ForgeConfigSpec.BooleanValue saveStandOnDeath;
         public final ForgeConfigSpec.BooleanValue sheerHeartAttackDeathLoop;
+        public final ForgeConfigSpec.BooleanValue madeInHeavenAbilityAccelerating;
 
         Common(final ForgeConfigSpec.Builder builder)
         {
@@ -25,6 +26,10 @@ public class JojoBizarreSurvivalConfig
                     .comment("Toggle Sheer Heart Attack attacking himself repeatedly.")
                     .translation("jojomod.shaexplode.config")
                     .define("sheerHeartAttackDeathLoop", false);
+
+            madeInHeavenAbilityAccelerating = builder
+                    .comment("Toggle being able to accelerate Made in Heaven ability with shift")
+                    .define("madeInHeavenAbilityAccelerating", false);
 
             builder.pop();
         }

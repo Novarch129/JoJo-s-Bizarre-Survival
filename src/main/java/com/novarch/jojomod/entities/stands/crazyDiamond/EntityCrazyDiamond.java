@@ -19,8 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.WeakHashMap;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -31,16 +30,10 @@ public class EntityCrazyDiamond extends EntityStandBase {
 
 	private KeyBinding repair = KeyHandler.keys[2];
 
-	private List<BlockState> blockList = new ArrayList<>();
+	private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
 
-	private List<BlockPos> blockPosList = new ArrayList<>();
-
-	public void addBlock(BlockState block) {
-		blockList.add(block);
-	}
-
-	public void addBlockPos(BlockPos blockPos) {
-		blockPosList.add(blockPos);
+	public void putRepairBlock(BlockPos blockPos, BlockState state) {
+		repairBlocks.put(blockPos, state);
 	}
 
 	@Override
@@ -95,24 +88,13 @@ public class EntityCrazyDiamond extends EntityStandBase {
 				this.ability = props.getAbility();
 
 				//Crazy Diamond's ability
-				List<BlockState> blockRepairedList = new ArrayList<>();
-				List<BlockPos> blockPosRepairedList = new ArrayList<>();
-
 				if (repair.isPressed() && props.getCooldown() <= 0) {
-					if (blockList.size() > 0 && blockPosList.size() > 0) {
+					if (repairBlocks.size() > 0) {
 						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
 						props.setCooldown(100);
 					}
-					blockPosList.forEach(blockPos -> {
-						BlockState block = blockList.get(blockPosList.indexOf(blockPos));
-						world.setBlockState(blockPos, block);
-						blockRepairedList.add(block);
-						blockPosRepairedList.add(blockPos);
-					});
-					blockList.removeAll(blockRepairedList);
-					blockPosList.removeAll(blockPosRepairedList);
-					blockRepairedList.clear();
-					blockPosRepairedList.clear();
+					repairBlocks.forEach(this::setBlockState);
+					repairBlocks.clear();
 				}
 
 
@@ -175,6 +157,9 @@ public class EntityCrazyDiamond extends EntityStandBase {
 		}
 	}
 
+	private void setBlockState(BlockPos pos, BlockState state) {
+		world.setBlockState(pos, state);
+	}
 
 	public boolean isEntityInsideOpaqueBlock() {
 		return false;

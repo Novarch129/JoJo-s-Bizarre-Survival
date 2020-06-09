@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands.madeInHeaven;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
@@ -80,6 +81,9 @@ public class EntityMadeInHeaven extends EntityStandBase {
 			player.setHealth(20.0f);
 			player.getFoodStats().addStats(20, 20.0f);
 
+			if(player.isCrouching() && JojoBizarreSurvivalConfig.COMMON.madeInHeavenAbilityAccelerating.get())
+				heaventickr-=200;
+
 			//Made In Heaven's Ability
 			if (heaventickr > 0)
 				heaventickr--;
@@ -116,10 +120,11 @@ public class EntityMadeInHeaven extends EntityStandBase {
 				world.getPlayers().forEach(entity -> JojoProvider.getLazyOptional(entity).ifPresent(prps -> {
 					if (prps.getStandID() != JojoLibs.StandID.GER) {
 						entity.inventory.clear();
-						EventD4CTeleportProcessor.d4cPassengers.put(entity, DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						entity.getInventoryEnderChest().clear();
+						EventD4CTeleportProcessor.madeInHeaven.add(entity);
 						entity.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 						entity.fallDistance = 0;
-						entity.setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
+						entity.setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE));
 						prps.removeStand();
 						entity.setInvulnerable(false);
 					}

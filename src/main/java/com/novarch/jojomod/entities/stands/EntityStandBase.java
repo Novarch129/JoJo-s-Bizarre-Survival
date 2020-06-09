@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -175,6 +176,7 @@ public abstract class EntityStandBase extends MobEntity {
             return false;
         if (damageSource == DamageSource.CACTUS)
             return false;
+        assert getMaster() != null;
         getMaster().attackEntityFrom(damageSource, damage * 0.5f);
         return false;
     }
@@ -198,6 +200,7 @@ public abstract class EntityStandBase extends MobEntity {
                         playerEntity = entity1;
 
                     assert playerEntity != null;
+                    assert getMaster() != null;
                     final double distance = playerEntity.getDistance(getMaster());
                     final double distance2 = Math.PI * 2 * 2 * 2;
 

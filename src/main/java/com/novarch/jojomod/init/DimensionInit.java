@@ -4,6 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.world.dimension.d4c.end.D4CDimensionTypeEnd;
 import com.novarch.jojomod.world.dimension.d4c.nether.D4CDimensionTypeNether;
 import com.novarch.jojomod.world.dimension.d4c.overworld.D4CDimensionType;
+import com.novarch.jojomod.world.dimension.madeInHeaven.MadeInHeavenDimensionType;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,4 +17,6 @@ public class DimensionInit
     public static final RegistryObject<ModDimension> D4C_DIMENSION = DIMENSIONS.register("d4c_dimension", D4CDimensionType::new);
     public static final RegistryObject<ModDimension> D4C_DIMENSION_NETHER = DIMENSIONS.register("d4c_dimension_nether", D4CDimensionTypeNether::new);
     public static final RegistryObject<ModDimension> D4C_DIMENSION_END = DIMENSIONS.register("d4c_dimension_end", D4CDimensionTypeEnd::new);
+
+    public static final RegistryObject<ModDimension> MADE_IN_HEAVEN_DIMENSION = DIMENSIONS.register("made_in_heaven_dimension", MadeInHeavenDimensionType::new);
 }
