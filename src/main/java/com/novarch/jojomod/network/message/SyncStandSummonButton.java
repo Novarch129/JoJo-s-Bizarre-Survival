@@ -74,7 +74,8 @@ public class SyncStandSummonButton {
 									props.changeAct();
 								return;
 							}
-							SyncStandSummonButton.summonStand(player, fakePlayer);
+							if(!player.isSpectator())
+								SyncStandSummonButton.summonStand(player, fakePlayer);
 							return;
 						}
 					}

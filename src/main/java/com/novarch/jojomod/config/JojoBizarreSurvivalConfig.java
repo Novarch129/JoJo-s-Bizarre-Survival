@@ -12,6 +12,8 @@ public class JojoBizarreSurvivalConfig
         public final ForgeConfigSpec.BooleanValue saveStandOnDeath;
         public final ForgeConfigSpec.BooleanValue sheerHeartAttackDeathLoop;
         public final ForgeConfigSpec.BooleanValue madeInHeavenAbilityAccelerating;
+        public final ForgeConfigSpec.BooleanValue standPunchDamage;
+        public final ForgeConfigSpec.BooleanValue standPunchBlockBreaking;
 
         Common(final ForgeConfigSpec.Builder builder)
         {
@@ -28,6 +30,14 @@ public class JojoBizarreSurvivalConfig
             madeInHeavenAbilityAccelerating = builder
                     .comment("Toggle being able to accelerate Made in Heaven's ability with shift")
                     .define("madeInHeavenAbilityAccelerating", false);
+
+            standPunchDamage = builder
+                    .comment("Toggle Stand punches damaging entities.")
+                    .define("standPunchDamage", true);
+
+            standPunchBlockBreaking = builder
+                    .comment("Toggle Stand punches breaking blocks, like the MobGriefing gamerule.")
+                    .define("standPunchBlockBreaking", true);
 
             builder.pop();
         }

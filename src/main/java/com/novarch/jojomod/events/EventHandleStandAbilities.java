@@ -2,9 +2,11 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.events.custom.AbilityEvent;
+import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.events.custom.StandUnsummonedEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
@@ -245,6 +247,7 @@ public class EventHandleStandAbilities
     @SubscribeEvent
     public static void abilityOff(AbilityEvent.AbilityDeactivated event) {
         PlayerEntity player = Minecraft.getInstance().player;
+        assert player != null;
         JojoProvider.getLazyOptional(player).ifPresent(props -> {
             if(props.getStandID() == JojoLibs.StandID.aerosmith)
                 if(!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
@@ -252,5 +255,17 @@ public class EventHandleStandAbilities
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                 }
         });
+    }
+
+    @SubscribeEvent
+    public static void standPunchEntityEvent(StandPunchEvent.EntityHit event) {
+        if(!JojoBizarreSurvivalConfig.COMMON.standPunchDamage.get())
+            event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
+        if(!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
+            event.setCanceled(true);
     }
 }

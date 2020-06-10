@@ -109,7 +109,7 @@ public abstract class EntityStandBase extends MobEntity {
             }
             dodgeAttacks();
 
-            if (!getMaster().isAlive())
+            if (!getMaster().isAlive() || getMaster().isSpectator())
                 remove();
 
             if (getAir() < 20)
