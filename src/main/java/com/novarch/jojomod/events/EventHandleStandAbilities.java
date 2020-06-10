@@ -6,8 +6,8 @@ import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.events.custom.AbilityEvent;
+import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
-import com.novarch.jojomod.events.custom.StandUnsummonedEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
@@ -219,7 +219,7 @@ public class EventHandleStandAbilities
     }
 
     @SubscribeEvent
-    public static void standUnsummoned(StandUnsummonedEvent event) {
+    public static void standUnsummoned(StandEvent.StandUnsummonedEvent event) {
         PlayerEntity player = event.getPlayer();
         JojoProvider.getLazyOptional(player).ifPresent(props -> {
             player.setInvulnerable(false);

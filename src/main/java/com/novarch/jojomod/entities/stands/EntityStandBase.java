@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.events.custom.StandUnsummonedEvent;
+import com.novarch.jojomod.events.custom.StandEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -120,7 +120,7 @@ public abstract class EntityStandBase extends MobEntity {
                 standOn = props.getStandOn();
 
                 if (!props.getStandOn()) {
-                    StandUnsummonedEvent event = new StandUnsummonedEvent(getMaster(), this);
+                    StandEvent.StandUnsummonedEvent event = new StandEvent.StandUnsummonedEvent(getMaster(), this);
                     MinecraftForge.EVENT_BUS.post(event);
                     remove();
                 }
@@ -237,5 +237,11 @@ public abstract class EntityStandBase extends MobEntity {
     public void applyEntityCollision(Entity entityIn) {
         if(entityIn instanceof EntityStandBase)
             super.applyEntityCollision(entityIn);
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
     }
 }
