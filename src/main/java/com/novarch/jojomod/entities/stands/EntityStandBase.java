@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.events.custom.StandUnsummonedEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -13,9 +14,9 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -118,8 +119,11 @@ public abstract class EntityStandBase extends MobEntity {
             JojoProvider.getLazyOptional(getMaster()).ifPresent(props -> {
                 standOn = props.getStandOn();
 
-                if (!props.getStandOn())
+                if (!props.getStandOn()) {
+                    StandUnsummonedEvent event = new StandUnsummonedEvent(getMaster(), this);
+                    MinecraftForge.EVENT_BUS.post(event);
                     remove();
+                }
             });
         }
     }

@@ -21,8 +21,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import java.util.function.Predicate;
@@ -65,6 +67,11 @@ public class JojoLibs
             }
         }
         return new BlockPos(0, 65, 0);
+    }
+
+    public static void sendStringMessage(PlayerEntity player, String message)
+    {
+        player.sendMessage(new StringTextComponent(message));
     }
 
     public static class Predicates

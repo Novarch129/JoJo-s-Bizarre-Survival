@@ -4,6 +4,8 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.events.custom.AbilityEvent;
+import com.novarch.jojomod.events.custom.StandUnsummonedEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
@@ -48,27 +50,11 @@ public class EventHandleStandAbilities
 
             if(!props.getStandOn())
             {
-                player.setInvulnerable(false);
-                if(!player.isPotionActive(Effects.LEVITATION))
-                    player.setNoGravity(false);
-                if(!player.isCreative() && !player.isSpectator())
-                    player.setGameType(GameType.SURVIVAL);
-
-                if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                    player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-
                 if(props.getCooldown() > 0)
                     props.subtractCooldown(0.5);
 
                 if(props.getTimeLeft() < 1000)
                     props.addTimeLeft(0.5);
-
-                if(!player.world.isRemote)
-                    player.world.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                        if(entity instanceof FakePlayerEntity)
-                            if(((FakePlayerEntity) entity).getParent() == player)
-                                removalQueue.add(entity);
-                });
             }
 
             else if(props.getStandOn() && !props.getAbility())
@@ -122,27 +108,24 @@ public class EventHandleStandAbilities
     }
 
     @SubscribeEvent
-    public static void clientTick(TickEvent.ClientTickEvent event)
-    {
-        if(Minecraft.getInstance().player==null)
+    public static void clientTick(TickEvent.ClientTickEvent event) {
+        if (Minecraft.getInstance().player == null)
             return;
 
         PlayerEntity player = Minecraft.getInstance().player;
 
         JojoProvider.getLazyOptional(player).ifPresent(props -> {
-            if(!props.getStandOn()) {
-                if(!player.isSpectator())
+            if (!props.getStandOn()) {
+                if (!player.isSpectator())
                     Minecraft.getInstance().setRenderViewEntity(player);
             } else {
-                if(renderViewEntity != null)
-                    if(renderViewEntity.isAlive())
-                        if(props.getAbility()) {
+                if (renderViewEntity != null)
+                    if (renderViewEntity.isAlive())
+                        if (props.getAbility()) {
                             Minecraft.getInstance().setRenderViewEntity(renderViewEntity);
-                            if(Minecraft.getInstance().gameSettings.thirdPersonView != 1)
-                                Minecraft.getInstance().gameSettings.thirdPersonView=1;
+                            if (Minecraft.getInstance().gameSettings.thirdPersonView != 1)
+                                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
                         }
-                    else
-                        Minecraft.getInstance().setRenderViewEntity(player);
             }
         });
     }
@@ -151,13 +134,8 @@ public class EventHandleStandAbilities
     public static void serverTick(TickEvent.ServerTickEvent event)
     {
         if(event.phase == TickEvent.Phase.END) {
-            List<Entity> removed = new ArrayList<>();
-            removalQueue.forEach(entity -> {
-                entity.remove();
-                removed.add(entity);
-            });
-            removalQueue.removeAll(removed);
-            removed.clear();
+           removalQueue.forEach(Entity::remove);
+           removalQueue.clear();
         }
     }
 
@@ -236,5 +214,43 @@ public class EventHandleStandAbilities
             event.setCanceled(true);
             JojoProvider.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }
+    }
+
+    @SubscribeEvent
+    public static void standUnsummoned(StandUnsummonedEvent event) {
+        PlayerEntity player = event.getPlayer();
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+            player.setInvulnerable(false);
+            player.setNoGravity(false);
+            if(!player.isCreative() && !player.isSpectator())
+                player.setGameType(GameType.SURVIVAL);
+            if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+                player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+            if(!player.world.isRemote) {
+                player.world.getServer().getWorld(player.dimension).getEntities()
+                        .filter(entity -> entity instanceof FakePlayerEntity)
+                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
+                        .forEach(Entity::remove);
+            }
+            if(player.world.isRemote) {
+                if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                    if(!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
+                        Minecraft.getInstance().setRenderViewEntity(player);
+                        Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                }
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void abilityOff(AbilityEvent.AbilityDeactivated event) {
+        PlayerEntity player = Minecraft.getInstance().player;
+        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+            if(props.getStandID() == JojoLibs.StandID.aerosmith)
+                if(!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
+                    Minecraft.getInstance().setRenderViewEntity(player);
+                    Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                }
+        });
     }
 }
