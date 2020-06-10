@@ -165,7 +165,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 						EntityStandPunch.madeInHeaven madeInHeaven = new EntityStandPunch.madeInHeaven(this.world, this, player);
-						madeInHeaven.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
+						madeInHeaven.shoot(player, player.rotationPitch, player.rotationYaw, 6.0f, 0.0001f);
 						this.world.addEntity(madeInHeaven);
 					}
 				}
@@ -180,11 +180,11 @@ public class EntityMadeInHeaven extends EntityStandBase {
 						player.setSprinting(false);
 						EntityStandPunch.madeInHeaven madeInHeaven1 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 						madeInHeaven1.setRandomPositions();
-						madeInHeaven1.shoot(player, player.rotationPitch, player.rotationYaw, 4.0F, 0.15F);
+						madeInHeaven1.shoot(player, player.rotationPitch, player.rotationYaw, 4.0f, 0.1f);
 						this.world.addEntity(madeInHeaven1);
 						EntityStandPunch.madeInHeaven madeInHeaven2 = new EntityStandPunch.madeInHeaven(this.world, this, player);
 						madeInHeaven2.setRandomPositions();
-						madeInHeaven2.shoot(player, player.rotationPitch, player.rotationYaw, 4.0F, 0.15F);
+						madeInHeaven2.shoot(player, player.rotationPitch, player.rotationYaw, 4.0f, 0.1f);
 						this.world.addEntity(madeInHeaven2);
 					}
 				if (this.oratickr >= 80) {

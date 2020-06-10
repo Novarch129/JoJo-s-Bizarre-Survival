@@ -18,7 +18,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class RenderCMoonPunch extends EntityRenderer<EntityStandPunch.cMoon>
 {
 	protected ModelCMoonPunch<EntityStandPunch.cMoon> punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon_punch.png");
 
 	public RenderCMoonPunch(EntityRendererManager renderManagerIn)
 	{
