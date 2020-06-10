@@ -104,7 +104,10 @@ public abstract class StandPunchEffects {
 		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+			if(punch.shootingStand.orarush)
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.5f);
+			else
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 3.0f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -131,7 +134,7 @@ public abstract class StandPunchEffects {
 		if (isEntity) {
 			final float p = 0.2f;
 			final float p2 = 0.4f;
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -169,7 +172,7 @@ public abstract class StandPunchEffects {
 				} else {
 					livingEntity.addPotionEffect(new EffectInstance(Effects.LEVITATION, 130, 1));
 				}
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.7f);
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 3.0f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				livingEntity.setMotion(livingEntity.getMotion().getX(), 0, livingEntity.getMotion().getZ());
@@ -219,12 +222,10 @@ public abstract class StandPunchEffects {
 	public static void goldExperience(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if (punch.shootingStand.ability) {
-				if (punch.shootingStand.orarush) {
+				if (punch.shootingStand.orarush)
 					livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 40, 0));
-				} else {
+				else
 					livingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 1));
-				}
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.3f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				livingEntity.setMotion(livingEntity.getMotion().getX(), 0, livingEntity.getMotion().getZ());
@@ -240,7 +241,7 @@ public abstract class StandPunchEffects {
 			} else {
 				final float p = 0.2f;
 				final float p2 = 0.4f;
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 1.5f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -605,7 +606,6 @@ public abstract class StandPunchEffects {
 				} else {
 					livingEntity.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 1));
 				}
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.3f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				livingEntity.setMotion(livingEntity.getMotion().getX(), 0, livingEntity.getMotion().getZ());
@@ -621,7 +621,7 @@ public abstract class StandPunchEffects {
 			} else {
 				final float p = 0.2f;
 				final float p2 = 0.4f;
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.0f);
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 5.0f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -1070,7 +1070,8 @@ public abstract class StandPunchEffects {
 			final float p2 = 0.4f;
 			if (punch.shootingStand.ability)
 				livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 20, 2));
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			else
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 2.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -1108,7 +1109,7 @@ public abstract class StandPunchEffects {
 			}
 			if (punch.shootingStand.ability)
 				livingEntity.addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 600, 5));
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.85f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
@@ -1152,7 +1153,7 @@ public abstract class StandPunchEffects {
 							}
 						}
 					});
-			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.5f);
+			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand.getMaster()), 0.8f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
