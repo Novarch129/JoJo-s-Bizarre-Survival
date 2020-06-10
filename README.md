@@ -8,7 +8,7 @@
 - [x] Dirty Deeds Done Dirt Cheap
 - [ ] 20th Century Boy
 - [x] Whitesnake
-- [ ] C-Moon
+- [x] C-Moon
 - [x] Made in Heaven
 - [x] Weather Report
 - [x] King Crimson
