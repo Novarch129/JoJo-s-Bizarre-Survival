@@ -1,10 +1,7 @@
 package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.network.message.SyncAbilityButton;
-import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
-import com.novarch.jojomod.network.message.SyncStandCapability;
-import com.novarch.jojomod.network.message.SyncStandSummonButton;
+import com.novarch.jojomod.network.message.*;
 
 public class PacketInit {
     public static void register() {
@@ -29,5 +26,10 @@ public class PacketInit {
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                SyncTimestopCapability.class,
+                SyncTimestopCapability::encode,
+                SyncTimestopCapability::decode,
+                SyncTimestopCapability::handle);
     }
 }

@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 
+import static com.novarch.jojomod.util.JojoLibs.Null;
+
 public class JojoProvider implements ICapabilitySerializable<INBT> {
 	private PlayerEntity player;
 
@@ -43,17 +45,5 @@ public class JojoProvider implements ICapabilitySerializable<INBT> {
 
 	public static LazyOptional<IStand> getLazyOptional(PlayerEntity player) {
 		return player.getCapability(STAND, null);
-	}
-
-	/**
-	 * Used to suppress warnings saying that the STAND {@link Capability} is {@code null}
-	 * Based on diesieben07's solution <a href="http://www.minecraftforge.net/forum/topic/60980-solved-disable-%E2%80%9Cconstant-conditions-exceptions%E2%80%9D-inspection-for-field-in-intellij-idea/?do=findCommentcomment=285024">here</a>.
-	 *
-	 * @return null
-	 */
-	@Nonnull
-	@SuppressWarnings({"ConstantConditions"})
-	private static <T> T Null() {
-		return null;
 	}
 }

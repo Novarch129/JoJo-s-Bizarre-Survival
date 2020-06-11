@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
@@ -63,6 +64,18 @@ public class JojoLibs
     public static void sendStringMessage(PlayerEntity player, String message)
     {
         player.sendMessage(new StringTextComponent(message));
+    }
+
+    /**
+     * Used to suppress warnings saying that <code>static final</code> fields are <code>null</code>.
+     * Based on diesieben07's solution <a href="http://www.minecraftforge.net/forum/topic/60980-solved-disable-%E2%80%9Cconstant-conditions-exceptions%E2%80%9D-inspection-for-field-in-intellij-idea/?do=findCommentcomment=285024">here</a>.
+     *
+     * @return null
+     */
+    @Nonnull
+    @SuppressWarnings({"ConstantConditions"})
+    public static <T> T Null() {
+        return null;
     }
 
     public static class Predicates

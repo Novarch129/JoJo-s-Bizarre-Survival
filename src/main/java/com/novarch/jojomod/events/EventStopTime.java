@@ -1,66 +1,109 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
-import net.minecraft.entity.LivingEntity;
+import com.novarch.jojomod.init.SoundInit;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.UUID;
-import java.util.HashMap;
-
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
-    public static HashMap<String, Double> entityPositions = new HashMap<>();
-    public static HashMap<String, Float> entityLook = new HashMap<>();
+    static EntityTheWorld theWorld = null;
+    static long dayTime = 0;
+    static long gameTime = 0;
 
     @SubscribeEvent
     public static void stopTime(StandEvent.StandTickEvent event) {
         PlayerEntity player = event.getPlayer();
-        if(event.getStand() instanceof EntityTheWorld) {
-            EntityTheWorld theWorld = (EntityTheWorld) event.getStand();
-            if(theWorld.ability) {
-                if (!theWorld.world.isRemote)
+        if (event.getStand() instanceof EntityTheWorld) {
+            theWorld = (EntityTheWorld) event.getStand();
+            if (theWorld.ability) {
+                if (!theWorld.world.isRemote) {
+                    if (theWorld.timestopTick == 1) {
+                        dayTime = theWorld.world.getDayTime();
+                        gameTime = theWorld.world.getGameTime();
+                    } else {
+                        theWorld.world.setDayTime(dayTime);
+                        theWorld.world.setGameTime(gameTime);
+                    }
                     theWorld.world.getServer().getWorld(theWorld.dimension).getEntities()
                             .filter(entity -> entity != theWorld)
                             .filter(entity -> entity != player)
-                            .filter(entity -> entity instanceof LivingEntity)
                             .forEach(entity -> {
-                                UUID uuid = entity.getUniqueID();
-                                if (theWorld.timestopTick == 2) {
-                                    entityPositions.put(uuid + "posX", entity.getPosX());
-                                    entityPositions.put(uuid + "posY", entity.getPosY());
-                                    entityPositions.put(uuid + "posZ", entity.getPosZ());
-                                    entityPositions.put(uuid + "motionX", entity.getMotion().getX());
-                                    entityPositions.put(uuid + "motionY", entity.getMotion().getY());
-                                    entityPositions.put(uuid + "motionZ", entity.getMotion().getZ());
-                                    entityLook.put(uuid + "rotationYaw", entity.rotationYaw);
-                                    entityLook.put(uuid + "rotationPitch", entity.rotationPitch);
+                                if (theWorld.timestopTick == 1) {
+                                    Timestop.getLazyOptional(entity).ifPresent(props -> {
+                                        props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+                                        props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
+                                        props.setRotation(entity.rotationYaw, entity.rotationPitch);
+                                        if(entity instanceof TNTEntity)
+                                            props.setFuse(((TNTEntity) entity).getFuse());
+                                    });
                                 } else {
-                                    try {
-                                        if(entityPositions.containsKey(uuid + "posX") &&
-                                                entityPositions.containsKey(uuid + "posY") &&
-                                                entityPositions.containsKey(uuid + "posZ") &&
-                                                entityPositions.containsKey(uuid + "motionX") &&
-                                                entityPositions.containsKey(uuid + "motionY") &&
-                                                entityPositions.containsKey(uuid + "motionZ") &&
-                                                entityPositions.containsKey(uuid + "rotationYaw") &&
-                                                entityPositions.containsKey(uuid + "rotationPitch"))
-                                        entity.setPosition(entityPositions.get(uuid + "posX"), entityPositions.get(uuid + "posY"), entityPositions.get(uuid + "posZ"));
-                                        entity.setMotion(entityPositions.get(uuid + "motionX"), entityPositions.get(uuid + "motionY"), entityPositions.get(uuid + "motionZ"));
-                                        entity.rotationYaw = entityLook.get(uuid + "rotationYaw");
-                                        entity.rotationPitch = entityLook.get(uuid + "rotationPitch");
-                                    } catch(NullPointerException exception) {
-                                        player.sendMessage(new StringTextComponent("a"));
-                                        exception.printStackTrace();
-                                    }
+                                    Timestop.getLazyOptional(entity).ifPresent(props -> {
+                                        if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
+                                            entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
+                                            entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                                            entity.rotationYaw = props.getRotationYaw();
+                                            entity.rotationPitch = props.getRotationPitch();
+                                            if(entity instanceof TNTEntity)
+                                                ((TNTEntity) entity).setFuse(props.getFuse());
+                                        } else {
+                                            props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+                                            props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
+                                            props.setRotation(entity.rotationYaw, entity.rotationPitch);
+                                            if(entity instanceof TNTEntity)
+                                                props.setFuse(((TNTEntity) entity).getFuse());
+                                        }
+                                    });
                                 }
                             });
-            } else
-                entityPositions.clear();
+                }
+            }
         }
     }
+
+    @SubscribeEvent
+    public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
+        event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void blockBreakEvent(BlockEvent.BreakEvent event) {
+        if(theWorld != null)
+            if(theWorld.ability)
+                event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+        if(theWorld != null)
+            if(theWorld.ability)
+                event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void entityPlaceEvent(EntityJoinWorldEvent event) {
+        if(theWorld != null)
+            if(theWorld.ability)
+                if(!(event.getEntity() instanceof PlayerEntity))
+                    event.setCanceled(true);
+    }
+
+//    @SubscribeEvent
+//    public static void soundPlaceEvent(PlaySoundEvent event) {
+//        if(theWorld != null)
+//            if(theWorld.ability)
+//                if(event.getSound().getSoundLocation() == SoundInit.STOP_TIME.get().getName())
+//                    event.setCanceled(true);
+//    }
 }

@@ -301,7 +301,7 @@ public class StandCapability implements IStand {
 				props.putInt("Transformed", instance.getTransformed());
 				props.putString("Diavolo", instance.getDiavolo());
 				props.putBoolean("NoClip", instance.getNoClip());
-				return (INBT) props;
+				return props;
 			}
 
 			@Override
