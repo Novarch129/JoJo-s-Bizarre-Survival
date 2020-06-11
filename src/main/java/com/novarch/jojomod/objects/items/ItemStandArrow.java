@@ -20,16 +20,15 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Objects;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-@SuppressWarnings({"unused", "unchecked", "rawtypes"})
 public class ItemStandArrow extends Item
 { // TODO add animation when obtaining GER
 	final int standID;
@@ -103,7 +102,7 @@ public class ItemStandArrow extends Item
 			{
 				props.removeStand();
 				if(!world.isRemote) {
-					world.getServer().getWorld(player.dimension).getEntities()
+					Objects.requireNonNull(world.getServer()).getWorld(player.dimension).getEntities()
 							.filter(entity1 -> entity1 instanceof EntityGoldExperience)
 							.filter(entity1 -> ((EntityGoldExperience) entity1).getMaster() == player)
 							.forEach(Entity::remove);
@@ -130,10 +129,10 @@ public class ItemStandArrow extends Item
             IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
         	if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience) {
         		playerIn.setActiveHand(handIn);
-        		return new ActionResult(ActionResultType.SUCCESS, stack);
+        		return new ActionResult<>(ActionResultType.SUCCESS, stack);
         	} else
-				playerIn.sendMessage(new TranslationTextComponent("msg.jojomod.standalready.txt"));
-        	return new ActionResult(ActionResultType.PASS, stack);
+				playerIn.sendMessage(new StringTextComponent("You already have a Stand!"));
+        	return new ActionResult<>(ActionResultType.PASS, stack);
 	}
 	
 	@Override

@@ -151,7 +151,6 @@ public class EntityKingCrimson extends EntityStandBase {
 						props.addTimeLeft(1);
 				}
 
-				//Orarush food check
 				if (!player.isAlive())
 					remove();
 				if (!this.ability || !props.getAbility()) {

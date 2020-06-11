@@ -110,7 +110,6 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 				setRotationYawHead(player.rotationYaw);
 				setRotation(player.rotationYaw, player.rotationPitch);
 
-				//Orarush food check
 				if (!player.isAlive())
 					remove();
 				if (player.isSprinting()) {

@@ -1,5 +1,4 @@
 {
-  "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.stand_arrow": "Stand Arrow",
   "item.jojomod.summon_king_crimson": "King Crimson",
   "item.jojomod.summon_d4c": "Dirty Deeds Done Dirt Cheap",
@@ -15,6 +14,7 @@
   "item.jojomod.summon_cmoon": "C-Moon",
   "item.jojomod.summon_the_world": "The World",
 
+  "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
   "item.jojomod.remove_stand": "Remove Stand",
   "item.jojomod.stand_disc": "Stand Disc",
@@ -55,8 +55,6 @@
   "entity.jojomod.cmoon_punch" : "C-Moon's punch",
   "entity.jojomod.the_world" : "The World",
   "entity.jojomod.the_world_punch" : "The World's punch",
-
-  "msg.jojomod.standalready.txt": "You already have a Stand!",
 
   "key.categories.JoJo's Bizarre Survival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",

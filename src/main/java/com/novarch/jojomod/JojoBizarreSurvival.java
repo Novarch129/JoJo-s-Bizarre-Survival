@@ -32,7 +32,6 @@ import org.apache.logging.log4j.Logger;
 public class JojoBizarreSurvival
 {
     public static final IProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-    public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "jojomod";
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
