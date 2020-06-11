@@ -74,7 +74,7 @@ public class SyncAbilityButton {
                 if (props.getAbility() && props.getStandID() == JojoLibs.StandID.GER)
                     player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
 
-                if(props.getAbility() && props.getStandID() == JojoLibs.StandID.theWorld)
+                if(props.getAbility() && props.getStandID() == JojoLibs.StandID.theWorld && props.getStandOn())
                     player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.STOP_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
 
                 if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.theEmperor) {

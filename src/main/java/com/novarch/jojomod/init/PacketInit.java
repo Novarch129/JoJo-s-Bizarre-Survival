@@ -26,10 +26,5 @@ public class PacketInit {
                 SyncStandCapability::encode,
                 SyncStandCapability::decode,
                 SyncStandCapability::handle);
-        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SyncTimestopCapability.class,
-                SyncTimestopCapability::encode,
-                SyncTimestopCapability::decode,
-                SyncTimestopCapability::handle);
     }
 }

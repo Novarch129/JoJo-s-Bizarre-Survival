@@ -29,7 +29,9 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     private float rotationYaw = 0;
     private float rotationPitch = 0;
     private float rotationYawHead = 0;
+    private float fallDistance = 0;
     private int fuse = 0;
+    private int fire = 0;
 
     @CapabilityInject(ITimestop.class)
     public static final Capability<ITimestop> CAPABILITY = Null();
@@ -64,7 +66,6 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
-        onDataUpdated();
     }
 
     @Override
@@ -87,7 +88,6 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.motionX = motionX;
         this.motionY = motionY;
         this.motionZ = motionZ;
-        onDataUpdated();
     }
 
     @Override
@@ -113,6 +113,16 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public float getFallDistance() {
+        return fallDistance;
+    }
+
+    @Override
+    public void setFallDistance(float fallDistance) {
+        this.fallDistance = fallDistance;
+    }
+
+    @Override
     public int getFuse() {
         return fuse;
     }
@@ -120,6 +130,16 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void setFuse(int fuse) {
         this.fuse = fuse;
+    }
+
+    @Override
+    public int getFire() {
+        return fire;
+    }
+
+    @Override
+    public void setFire(int fire) {
+        this.fire = fire;
     }
 
     @Override
@@ -168,18 +188,6 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
-    public void putFuse(int fuse) {
-        this.fuse = fuse;
-    }
-
-    @Override
-    public void onDataUpdated() {
-//        if(entity != null)
-//            if(!entity.world.isRemote)
-//                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SyncTimestopCapability(this, entity.getUniqueID()));
-    }
-
-    @Override
     public void clear() {
         this.posX = 0;
         this.posY = 0;
@@ -189,6 +197,10 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.motionZ = 0;
         this.rotationYaw = 0;
         this.rotationPitch = 0;
+        this.rotationYawHead = 0;
+        this.fallDistance = 0;
+        this.fuse = 0;
+        this.fire = 0;
     }
 
     @Nonnull
@@ -229,7 +241,9 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 nbt.putFloat("rotationYaw", instance.getRotationYaw());
                 nbt.putFloat("rotationPitch", instance.getRotationPitch());
                 nbt.putFloat("rotationYawHead", instance.getRotationYawHead());
+                nbt.putFloat("fallDistance", instance.getFallDistance());
                 nbt.putInt("fuse", instance.getFuse());
+                nbt.putInt("fire", instance.getFire());
                 return nbt;
             }
 
@@ -245,7 +259,9 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putRotationYaw(compoundNBT.getFloat("rotationYaw"));
                 instance.putRotationPitch(compoundNBT.getFloat("rotationPitch"));
                 instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
-                instance.putFuse(compoundNBT.getInt("fuse"));
+                instance.setFallDistance(compoundNBT.getInt("fallDistance"));
+                instance.setFuse(compoundNBT.getInt("fuse"));
+                instance.setFire(compoundNBT.getInt("fire"));
             }
         }, () -> new Timestop(Null()));
     }

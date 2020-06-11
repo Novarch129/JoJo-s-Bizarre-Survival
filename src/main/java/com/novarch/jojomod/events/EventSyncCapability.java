@@ -56,6 +56,7 @@ public class EventSyncCapability
     public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event)
     {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+        player.setInvulnerable(false);
         JojoProvider.getLazyOptional(player).ifPresent(props -> {
             props.putStandOn(false);
             if (!player.world.isRemote)

@@ -2,6 +2,8 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.timestop.ITimestop;
+import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
@@ -240,6 +242,15 @@ public class EventHandleStandAbilities
                         Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                 }
             }
+
+            if(props.getStandID() == JojoLibs.StandID.theWorld)
+                if(!player.world.isRemote)
+                    player.world.getServer().getWorld(player.dimension).getEntities()
+                        .filter(entity -> entity != player)
+                        .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                            entity.fallDistance = props2.getFallDistance();
+                            props2.clear();
+                        }));
         });
     }
 

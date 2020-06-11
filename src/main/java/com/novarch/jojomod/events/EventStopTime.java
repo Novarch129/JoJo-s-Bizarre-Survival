@@ -1,18 +1,16 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.timestop.ITimestop;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.play.client.CEntityActionPacket;
-import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -48,6 +46,8 @@ public class EventStopTime {
                                         props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                         props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
                                         props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
+                                        props.setFallDistance(entity.fallDistance);
+                                        props.setFire(entity.getFireTimer());
                                         if(entity instanceof TNTEntity)
                                             props.setFuse(((TNTEntity) entity).getFuse());
                                     });
@@ -59,18 +59,32 @@ public class EventStopTime {
                                             entity.rotationYaw = props.getRotationYaw();
                                             entity.rotationPitch = props.getRotationPitch();
                                             entity.setRotationYawHead(props.getRotationYawHead());
+                                            entity.fallDistance = props.getFallDistance();
+                                            entity.setFireTimer(props.getFire());
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
                                             props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
+                                            props.setFallDistance(entity.fallDistance);
+                                            props.setFire(entity.getFireTimer());
                                             if(entity instanceof TNTEntity)
                                                 props.setFuse(((TNTEntity) entity).getFuse());
                                         }
                                     });
                                 }
                             });
+                }
+            } else {
+                if(!theWorld.world.isRemote) {
+                    theWorld.world.getServer().getWorld(theWorld.dimension).getEntities()
+                            .filter(entity -> entity != theWorld)
+                            .filter(entity -> entity != player)
+                            .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+                                entity.fallDistance = props.getFallDistance();
+                                props.clear();
+                            }));
                 }
             }
         }
