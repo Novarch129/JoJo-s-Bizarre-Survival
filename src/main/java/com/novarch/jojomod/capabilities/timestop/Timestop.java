@@ -28,6 +28,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     private double motionZ = 0;
     private float rotationYaw = 0;
     private float rotationPitch = 0;
+    private float rotationYawHead = 0;
     private int fuse = 0;
 
     @CapabilityInject(ITimestop.class)
@@ -100,10 +101,15 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
-    public void setRotation(float rotationYaw, float rotationPitch) {
+    public float getRotationYawHead() {
+        return rotationYawHead;
+    }
+
+    @Override
+    public void setRotation(float rotationYaw, float rotationPitch, float rotationYawHead) {
         this.rotationYaw = rotationYaw;
         this.rotationPitch = rotationPitch;
-        onDataUpdated();
+        this.rotationYawHead = rotationYawHead;
     }
 
     @Override
@@ -154,6 +160,11 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void putRotationPitch(float rotationPitch) {
         this.rotationPitch = rotationPitch;
+    }
+
+    @Override
+    public void putRotationYawHead(float rotationYawHead) {
+        this.rotationYawHead = rotationYawHead;
     }
 
     @Override
@@ -217,6 +228,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 nbt.putDouble("motionZ", instance.getMotionZ());
                 nbt.putFloat("rotationYaw", instance.getRotationYaw());
                 nbt.putFloat("rotationPitch", instance.getRotationPitch());
+                nbt.putFloat("rotationYawHead", instance.getRotationYawHead());
                 nbt.putInt("fuse", instance.getFuse());
                 return nbt;
             }
@@ -232,6 +244,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putMotionZ(compoundNBT.getDouble("motionZ"));
                 instance.putRotationYaw(compoundNBT.getFloat("rotationYaw"));
                 instance.putRotationPitch(compoundNBT.getFloat("rotationPitch"));
+                instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
                 instance.putFuse(compoundNBT.getInt("fuse"));
             }
         }, () -> new Timestop(Null()));

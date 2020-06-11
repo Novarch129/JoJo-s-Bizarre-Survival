@@ -4,17 +4,15 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
-import com.novarch.jojomod.init.SoundInit;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraftforge.client.event.sound.PlaySoundEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraft.network.play.client.CEntityActionPacket;
+import net.minecraft.network.play.server.SEntityVelocityPacket;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -40,11 +38,16 @@ public class EventStopTime {
                             .filter(entity -> entity != theWorld)
                             .filter(entity -> entity != player)
                             .forEach(entity -> {
+                                if(entity instanceof MobEntity)
+                                    if(((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                        ((MobEntity) entity).setAttackTarget(null);
+                                        ((MobEntity) entity).setRevengeTarget(null);
+                                    }
                                 if (theWorld.timestopTick == 1) {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
                                         props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                         props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
-                                        props.setRotation(entity.rotationYaw, entity.rotationPitch);
+                                        props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
                                         if(entity instanceof TNTEntity)
                                             props.setFuse(((TNTEntity) entity).getFuse());
                                     });
@@ -55,12 +58,13 @@ public class EventStopTime {
                                             entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                             entity.rotationYaw = props.getRotationYaw();
                                             entity.rotationPitch = props.getRotationPitch();
+                                            entity.setRotationYawHead(props.getRotationYawHead());
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
-                                            props.setRotation(entity.rotationYaw, entity.rotationPitch);
+                                            props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
                                             if(entity instanceof TNTEntity)
                                                 props.setFuse(((TNTEntity) entity).getFuse());
                                         }
@@ -89,14 +93,6 @@ public class EventStopTime {
         if(theWorld != null)
             if(theWorld.ability)
                 event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void entityPlaceEvent(EntityJoinWorldEvent event) {
-        if(theWorld != null)
-            if(theWorld.ability)
-                if(!(event.getEntity() instanceof PlayerEntity))
-                    event.setCanceled(true);
     }
 
 //    @SubscribeEvent

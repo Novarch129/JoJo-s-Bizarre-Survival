@@ -73,7 +73,7 @@ public class JojoLibs
      * @return null
      */
     @Nonnull
-    @SuppressWarnings({"ConstantConditions"})
+    @SuppressWarnings("ConstantConditions")
     public static <T> T Null() {
         return null;
     }

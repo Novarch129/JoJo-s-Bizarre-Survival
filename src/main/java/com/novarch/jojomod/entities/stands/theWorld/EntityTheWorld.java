@@ -71,10 +71,13 @@ public class EntityTheWorld extends EntityStandBase {
 			PlayerEntity player = getMaster();
 			JojoProvider.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
-			if(ability)
+			if(ability) {
 				timestopTick++;
-			else
+				player.setInvulnerable(true);
+			} else {
 				timestopTick = 0;
+				player.setInvulnerable(false);
+			}
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
