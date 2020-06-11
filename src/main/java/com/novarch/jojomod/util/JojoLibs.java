@@ -1,6 +1,5 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
@@ -13,6 +12,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
 import com.novarch.jojomod.util.handlers.KeyHandler;
@@ -32,35 +32,26 @@ import java.util.function.Predicate;
 @SuppressWarnings("unused")
 public class JojoLibs
 {
-    public static int getHighestBlock(World world, BlockPos pos)
-    {
-        for(int height = world.getActualHeight(); height > 0; height--)
-        {
-            if(world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
-            {
+    public static int getHighestBlock(World world, BlockPos pos) {
+        for (int height = world.getActualHeight(); height > 0; height--) {
+            if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR) {
                 return height;
             }
         }
         return -1;
     }
 
-    public static BlockPos getNearestBlockEnd(World world, BlockPos pos)
-    {
-        for(int height = world.getActualHeight(); height > 0; height--)
-        {
-            if(pos.getX() > 0) {
+    public static BlockPos getNearestBlockEnd(World world, BlockPos pos) {
+        for (int height = world.getActualHeight(); height > 0; height--) {
+            if (pos.getX() > 0) {
                 for (int x = pos.getX(); x > 0; x--) {
                     if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
-                        JojoBizarreSurvival.LOGGER.debug(x);
                         return new BlockPos(x, height, pos.getZ());
                     }
                 }
-            }
-
-            else if(pos.getX() < 0) {
+            } else if (pos.getX() < 0) {
                 for (int x = pos.getX(); x < 0; x++) {
                     if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
-                        JojoBizarreSurvival.LOGGER.debug(x);
                         return new BlockPos(x, height, pos.getZ());
                     }
                 }
@@ -131,7 +122,11 @@ public class JojoLibs
 
         public static final int cMoon = 13;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake};
+        public static final int theWorld = 14;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake, theWorld};
+
+        public static int numberOfStands = stands.length;
     }
 
     public static class KeyCodes
@@ -141,8 +136,6 @@ public class JojoLibs
         public static String ability1 = KeyHandler.keys[2].getLocalizedName().toUpperCase();
         public static String ability2 = KeyHandler.keys[10].getLocalizedName().toUpperCase();
     }
-
-    public static int numberOfStands = StandID.stands.length;
 
     public static EntityStandBase getStand(int standID, World world)
     {
@@ -173,6 +166,8 @@ public class JojoLibs
                 return new EntityWhitesnake(world);
             case StandID.cMoon:
                 return new EntityCMoon(world);
+            case StandID.theWorld:
+                return new EntityTheWorld(world);
         }
         return null;
     }

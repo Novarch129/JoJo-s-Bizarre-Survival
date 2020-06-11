@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.events.custom.StandEvent;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -17,9 +18,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class EntityStandBase extends MobEntity {
     private PlayerEntity master;
     protected boolean standOn;
@@ -107,6 +111,8 @@ public abstract class EntityStandBase extends MobEntity {
                 remove();
                 return;
             }
+
+            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this));
             dodgeAttacks();
 
             if (!getMaster().isAlive() || getMaster().isSpectator())

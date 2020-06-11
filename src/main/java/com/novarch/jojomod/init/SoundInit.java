@@ -34,4 +34,6 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> SPAWN_THE_EMPEROR = SOUNDS.register("spawn_the_emperor", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_emperor")));
 	public static final RegistryObject<SoundEvent> SPAWN_WHITESNAKE = SOUNDS.register("spawn_whitesnake", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_whitesnake")));
 	public static final RegistryObject<SoundEvent> SPAWN_CMOON = SOUNDS.register("spawn_cmoon", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_cmoon")));
+	public static final RegistryObject<SoundEvent> SPAWN_THE_WORLD = SOUNDS.register("spawn_the_world", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_world")));
+	public static final RegistryObject<SoundEvent> STOP_TIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
 }

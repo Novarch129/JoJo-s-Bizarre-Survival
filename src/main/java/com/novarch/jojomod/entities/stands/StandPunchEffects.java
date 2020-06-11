@@ -36,9 +36,11 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.MinecraftForge;
 
+import javax.annotation.Nullable;
+
 @SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class StandPunchEffects {
-	public static void getStandSpecific(final RayTraceResult result, final LivingEntity entityIn, final EntityStandPunch punch, final boolean isEntity, final int standID) {
+	public static void getStandSpecific(final RayTraceResult result, @Nullable final LivingEntity entityIn, final EntityStandPunch punch, final boolean isEntity, final int standID) {
 		if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent(punch, result, entityIn, isEntity))) return;
 		switch (standID) {
 			case JojoLibs.StandID.kingCrimson: {
@@ -89,6 +91,10 @@ public abstract class StandPunchEffects {
 				cMoon(result, entityIn, punch, isEntity);
 				break;
 			}
+			case JojoLibs.StandID.theWorld: {
+				theWorld(result, entityIn, punch, isEntity);
+				break;
+			}
 			default: {
 				basicDefault(result, entityIn, punch, isEntity);
 				break;
@@ -103,7 +109,7 @@ public abstract class StandPunchEffects {
 		}
 		else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
-			punch.world.removeBlock(new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile()), false);
+			punch.world.removeBlock(new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile()), false);
 		}
 	}
 
@@ -127,7 +133,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -155,7 +161,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -219,7 +225,7 @@ public abstract class StandPunchEffects {
 			punch.remove();
 		} else if (!isEntity) {
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 100.0f) {
@@ -267,7 +273,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
@@ -277,7 +283,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.GRASS || block == Blocks.GRASS_BLOCK || block == Blocks.NETHERRACK) {
 								props.addTransformed(1);
 								BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
-								bat.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								bat.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(bat);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -290,7 +296,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.JUNGLE_LEAVES) {
 								props.addTransformed(1);
 								ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
-								parrot.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								parrot.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(parrot);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -303,7 +309,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.TNT) {
 								props.addTransformed(1);
 								CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
-								creeper.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								creeper.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(creeper);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -316,7 +322,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.SLIME_BLOCK) {
 								props.addTransformed(1);
 								SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
-								slime.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								slime.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(slime);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -329,7 +335,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.STONE) {
 								props.addTransformed(1);
 								SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
-								silverfish.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								silverfish.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(silverfish);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -342,7 +348,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.POTATOES || block == Blocks.OAK_LOG) {
 								props.addTransformed(1);
 								PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
-								pig.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								pig.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(pig);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -355,7 +361,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.HAY_BLOCK) {
 								props.addTransformed(1);
 								HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
-								horse.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								horse.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(horse);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -368,7 +374,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.MYCELIUM) {
 								props.addTransformed(1);
 								MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
-								mooshroom.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								mooshroom.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(mooshroom);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -381,7 +387,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.EMERALD_BLOCK || block == Blocks.EMERALD_ORE) {
 								props.addTransformed(1);
 								VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
-								villager.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								villager.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(villager);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -394,7 +400,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.MOSSY_COBBLESTONE) {
 								props.addTransformed(1);
 								ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
-								zombie.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								zombie.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(zombie);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -407,7 +413,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.BONE_BLOCK || block == Blocks.BOOKSHELF) {
 								props.addTransformed(1);
 								SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
-								skeleton.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								skeleton.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(skeleton);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -420,7 +426,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.VINE) {
 								props.addTransformed(1);
 								SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
-								spider.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								spider.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(spider);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -433,7 +439,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.WHITE_WOOL || block == Blocks.WHEAT) {
 								props.addTransformed(1);
 								SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
-								sheep.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								sheep.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(sheep);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -446,7 +452,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.BEETROOTS) {
 								props.addTransformed(1);
 								CowEntity cow = new CowEntity(EntityType.COW, punch.world);
-								cow.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								cow.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(cow);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -459,7 +465,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.CARROTS) {
 								props.addTransformed(1);
 								RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
-								rabbit.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								rabbit.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(rabbit);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -472,7 +478,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.FIRE) {
 								props.addTransformed(1);
 								BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
-								blaze.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								blaze.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(blaze);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -485,7 +491,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.MAGMA_BLOCK) {
 								props.addTransformed(1);
 								MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
-								magma.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								magma.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(magma);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -498,7 +504,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.NETHER_BRICKS || block == Blocks.NETHER_WART || block == Blocks.NETHER_WART_BLOCK) {
 								props.addTransformed(1);
 								ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
-								zombiepig.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								zombiepig.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(zombiepig);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -511,7 +517,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.BLACK_SHULKER_BOX || block == Blocks.BLUE_SHULKER_BOX || block == Blocks.BROWN_SHULKER_BOX || block == Blocks.CYAN_SHULKER_BOX || block == Blocks.GRAY_SHULKER_BOX || block == Blocks.GREEN_SHULKER_BOX || block == Blocks.LIGHT_BLUE_SHULKER_BOX || block == Blocks.LIME_SHULKER_BOX || block == Blocks.MAGENTA_SHULKER_BOX || block == Blocks.ORANGE_SHULKER_BOX || block == Blocks.PINK_SHULKER_BOX || block == Blocks.PURPLE_SHULKER_BOX || block == Blocks.RED_SHULKER_BOX || block == Blocks.WHITE_SHULKER_BOX || block == Blocks.YELLOW_SHULKER_BOX) {
 								props.addTransformed(1);
 								ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
-								shulker.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								shulker.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(shulker);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -524,7 +530,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.SAND || block == Blocks.SANDSTONE) {
 								props.addTransformed(1);
 								HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
-								husk.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								husk.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(husk);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -537,7 +543,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.SEA_PICKLE) {
 								props.addTransformed(1);
 								SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
-								salmon.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								salmon.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(salmon);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -550,7 +556,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.SEA_LANTERN || block == Blocks.PRISMARINE) {
 								props.addTransformed(1);
 								GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
-								guardian.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								guardian.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(guardian);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -563,7 +569,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.DIAMOND_BLOCK) {
 								props.addTransformed(1);
 								DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
-								dolphin.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								dolphin.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								punch.world.addEntity(dolphin);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 								punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -576,7 +582,7 @@ public abstract class StandPunchEffects {
 							if (block == Blocks.TURTLE_EGG) {
 								props.addTransformed(1);
 								TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
-								turtle.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+								turtle.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 								turtle.setCustomName(new StringTextComponent("Jean Pierre Polnareff"));
 								punch.world.addEntity(turtle);
 								punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -646,7 +652,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
 				if (punch.shootingStand.ability && block != Blocks.AIR) {
@@ -656,9 +662,9 @@ public abstract class StandPunchEffects {
 							BatEntity bat = new BatEntity(EntityType.BAT, punch.world);
 							BatEntity bat2 = new BatEntity(EntityType.BAT, punch.world);
 							BatEntity bat3 = new BatEntity(EntityType.BAT, punch.world);
-							bat.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							bat2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							bat3.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							bat.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							bat2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							bat3.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(bat);
 							punch.world.addEntity(bat2);
 							punch.world.addEntity(bat3);
@@ -670,8 +676,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							ParrotEntity parrot = new ParrotEntity(EntityType.PARROT, punch.world);
 							ParrotEntity parrot2 = new ParrotEntity(EntityType.PARROT, punch.world);
-							parrot.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							parrot2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							parrot.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							parrot2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(parrot);
 							punch.world.addEntity(parrot2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -682,8 +688,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							CreeperEntity creeper = new CreeperEntity(EntityType.CREEPER, punch.world);
 							CreeperEntity creeper2 = new CreeperEntity(EntityType.CREEPER, punch.world);
-							creeper.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							creeper2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							creeper.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							creeper2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(creeper);
 							punch.world.addEntity(creeper2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -694,8 +700,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SlimeEntity slime = new SlimeEntity(EntityType.SLIME, punch.world);
 							SlimeEntity slime2 = new SlimeEntity(EntityType.SLIME, punch.world);
-							slime.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							slime2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							slime.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							slime2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(slime);
 							punch.world.addEntity(slime2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -706,8 +712,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SilverfishEntity silverfish = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
 							SilverfishEntity silverfish2 = new SilverfishEntity(EntityType.SILVERFISH, punch.world);
-							silverfish.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							silverfish2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							silverfish.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							silverfish2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(silverfish);
 							punch.world.addEntity(silverfish2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -718,8 +724,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							PigEntity pig = new PigEntity(EntityType.PIG, punch.world);
 							PigEntity pig2 = new PigEntity(EntityType.PIG, punch.world);
-							pig.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							pig2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							pig.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							pig2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(pig);
 							punch.world.addEntity(pig2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -730,8 +736,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							HorseEntity horse = new HorseEntity(EntityType.HORSE, punch.world);
 							HorseEntity horse2 = new HorseEntity(EntityType.HORSE, punch.world);
-							horse.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							horse2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							horse.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							horse2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(horse);
 							punch.world.addEntity(horse2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -742,8 +748,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							MooshroomEntity mooshroom = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
 							MooshroomEntity mooshroom2 = new MooshroomEntity(EntityType.MOOSHROOM, punch.world);
-							mooshroom.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							mooshroom2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							mooshroom.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							mooshroom2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(mooshroom);
 							punch.world.addEntity(mooshroom2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -754,8 +760,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							VillagerEntity villager = new VillagerEntity(EntityType.VILLAGER, punch.world);
 							VillagerEntity villager2 = new VillagerEntity(EntityType.VILLAGER, punch.world);
-							villager.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							villager2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							villager.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							villager2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(villager);
 							punch.world.addEntity(villager2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -766,8 +772,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							ZombieEntity zombie = new ZombieEntity(EntityType.ZOMBIE, punch.world);
 							ZombieEntity zombie2 = new ZombieEntity(EntityType.ZOMBIE, punch.world);
-							zombie.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							zombie2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							zombie.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							zombie2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(zombie);
 							punch.world.addEntity(zombie2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -778,8 +784,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SkeletonEntity skeleton = new SkeletonEntity(EntityType.SKELETON, punch.world);
 							SkeletonEntity skeleton2 = new SkeletonEntity(EntityType.SKELETON, punch.world);
-							skeleton.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							skeleton2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							skeleton.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							skeleton2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(skeleton);
 							punch.world.addEntity(skeleton2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -790,8 +796,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SpiderEntity spider = new SpiderEntity(EntityType.SPIDER, punch.world);
 							SpiderEntity spider2 = new SpiderEntity(EntityType.SPIDER, punch.world);
-							spider.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							spider2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							spider.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							spider2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(spider);
 							punch.world.addEntity(spider2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -802,8 +808,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SheepEntity sheep = new SheepEntity(EntityType.SHEEP, punch.world);
 							SheepEntity sheep2 = new SheepEntity(EntityType.SHEEP, punch.world);
-							sheep.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							sheep2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							sheep.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							sheep2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(sheep);
 							punch.world.addEntity(sheep2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -814,8 +820,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							CowEntity cow = new CowEntity(EntityType.COW, punch.world);
 							CowEntity cow2 = new CowEntity(EntityType.COW, punch.world);
-							cow.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							cow2.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							cow.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							cow2.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(cow);
 							punch.world.addEntity(cow2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -826,8 +832,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							RabbitEntity rabbit = new RabbitEntity(EntityType.RABBIT, punch.world);
 							RabbitEntity rabbit2 = new RabbitEntity(EntityType.RABBIT, punch.world);
-							rabbit.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							rabbit2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							rabbit.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							rabbit2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(rabbit);
 							punch.world.addEntity(rabbit2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -838,8 +844,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							BlazeEntity blaze = new BlazeEntity(EntityType.BLAZE, punch.world);
 							BlazeEntity blaze2 = new BlazeEntity(EntityType.BLAZE, punch.world);
-							blaze.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							blaze2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							blaze.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							blaze2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(blaze);
 							punch.world.addEntity(blaze2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -850,8 +856,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							MagmaCubeEntity magma = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
 							MagmaCubeEntity magma2 = new MagmaCubeEntity(EntityType.MAGMA_CUBE, punch.world);
-							magma.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							magma2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							magma.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							magma2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(magma);
 							punch.world.addEntity(magma2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -862,8 +868,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							ZombiePigmanEntity zombiepig = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
 							ZombiePigmanEntity zombiepig2 = new ZombiePigmanEntity(EntityType.ZOMBIE_PIGMAN, punch.world);
-							zombiepig.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							zombiepig2.setPosition(punch.getxTile() + 0.5f, (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							zombiepig.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							zombiepig2.setPosition(punch.getXTile() + 0.5f, (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(zombiepig);
 							punch.world.addEntity(zombiepig2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -874,8 +880,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, punch.world);
 							ShulkerEntity shulker2 = new ShulkerEntity(EntityType.SHULKER, punch.world);
-							shulker.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							shulker2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							shulker.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							shulker2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(shulker);
 							punch.world.addEntity(shulker2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -886,8 +892,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							HuskEntity husk = new HuskEntity(EntityType.HUSK, punch.world);
 							HuskEntity husk2 = new HuskEntity(EntityType.HUSK, punch.world);
-							husk.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							husk2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							husk.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							husk2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(husk);
 							punch.world.addEntity(husk2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -897,7 +903,7 @@ public abstract class StandPunchEffects {
 						if (block == Blocks.BEACON) {
 							props.addTransformed(2);
 							WitherEntity wither = new WitherEntity(EntityType.WITHER, punch.world);
-							wither.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							wither.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(wither);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 							punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -906,7 +912,7 @@ public abstract class StandPunchEffects {
 						if (block == Blocks.SPONGE || block == Blocks.WET_SPONGE) {
 							props.addTransformed(2);
 							ElderGuardianEntity elderGuardian = new ElderGuardianEntity(EntityType.ELDER_GUARDIAN, punch.world);
-							elderGuardian.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							elderGuardian.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(elderGuardian);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 							punch.world.playSound(null, punch.getPosX(), punch.getPosY(), punch.getPosZ(), SoundInit.TRANSMUTE.get(), SoundCategory.NEUTRAL, 4.0f, 1.0f);
@@ -916,8 +922,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							WitherSkeletonEntity witherSkeleton = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, punch.world);
 							WitherSkeletonEntity witherSkeleton2 = new WitherSkeletonEntity(EntityType.WITHER_SKELETON, punch.world);
-							witherSkeleton.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							witherSkeleton2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							witherSkeleton.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							witherSkeleton2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(witherSkeleton);
 							punch.world.addEntity(witherSkeleton2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -928,8 +934,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							SalmonEntity salmon = new SalmonEntity(EntityType.SALMON, punch.world);
 							SalmonEntity salmon2 = new SalmonEntity(EntityType.SALMON, punch.world);
-							salmon.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							salmon2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							salmon.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							salmon2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(salmon);
 							punch.world.addEntity(salmon2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -940,8 +946,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							GuardianEntity guardian = new GuardianEntity(EntityType.GUARDIAN, punch.world);
 							GuardianEntity guardian2 = new GuardianEntity(EntityType.GUARDIAN, punch.world);
-							guardian.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							guardian2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							guardian.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							guardian2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(guardian);
 							punch.world.addEntity(guardian2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -952,8 +958,8 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							DolphinEntity dolphin = new DolphinEntity(EntityType.DOLPHIN, punch.world);
 							DolphinEntity dolphin2 = new DolphinEntity(EntityType.DOLPHIN, punch.world);
-							dolphin.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
-							dolphin2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							dolphin.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
+							dolphin2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(dolphin);
 							punch.world.addEntity(dolphin2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -964,9 +970,9 @@ public abstract class StandPunchEffects {
 							props.addTransformed(1);
 							TurtleEntity turtle = new TurtleEntity(EntityType.TURTLE, punch.world);
 							TurtleEntity turtle2 = new TurtleEntity(EntityType.TURTLE, punch.world);
-							turtle.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							turtle.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							turtle.setCustomName(new StringTextComponent("Jean Pierre Polnareff"));
-							turtle2.setPosition((punch.getxTile() + 0.5f), (punch.getyTile() + 0.5f), (punch.getzTile() + 0.5f));
+							turtle2.setPosition((punch.getXTile() + 0.5f), (punch.getYTile() + 0.5f), (punch.getZTile() + 0.5f));
 							punch.world.addEntity(turtle);
 							punch.world.addEntity(turtle2);
 							punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
@@ -1008,7 +1014,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(bullet, result, livingEntity))) return;
 			final Block block = bullet.getInTile();
-			final BlockPos blockPos = new BlockPos(bullet.getxTile(), bullet.getyTile(), bullet.getzTile());
+			final BlockPos blockPos = new BlockPos(bullet.getXTile(), bullet.getYTile(), bullet.getZTile());
 			final BlockState blockState = bullet.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(bullet.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1040,7 +1046,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1068,7 +1074,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1138,7 +1144,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1184,7 +1190,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1223,7 +1229,7 @@ public abstract class StandPunchEffects {
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			final Block block = punch.getInTile();
-			final BlockPos blockPos = new BlockPos(punch.getxTile(), punch.getyTile(), punch.getzTile());
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
@@ -1231,6 +1237,37 @@ public abstract class StandPunchEffects {
 					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 				}
+			}
+		}
+		punch.remove();
+	}
+
+	public static void theWorld(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
+			final float p = 0.2f;
+			final float p2 = 0.4f;
+			if (punch.shootingStand.orarush)
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.5f);
+			else
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 3.0f);
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+			} else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 4.0f) {
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 			}
 		}
 		punch.remove();

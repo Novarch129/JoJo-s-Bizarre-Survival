@@ -13,6 +13,7 @@
   "item.jojomod.summon_the_emperor": "The Emperor",
   "item.jojomod.summon_whitesnake": "Whitesnake",
   "item.jojomod.summon_cmoon": "C-Moon",
+  "item.jojomod.summon_the_world": "The World",
 
   "item.jojomod.the_emperor": "The Emperor",
   "item.jojomod.remove_stand": "Remove Stand",
@@ -52,6 +53,8 @@
   "entity.jojomod.whitesnake_punch" : "Whitesnake's punch",
   "entity.jojomod.cmoon" : "C-Moon",
   "entity.jojomod.cmoon_punch" : "C-Moon's punch",
+  "entity.jojomod.the_world" : "The World",
+  "entity.jojomod.the_world_punch" : "The World's punch",
 
   "msg.jojomod.standalready.txt": "You already have a Stand!",
 

@@ -123,5 +123,17 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_cmoon", "stream": false}]
+    },
+
+    "spawn_the_world":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_the_world", "stream": false}]
+    },
+
+    "stoptime":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:stoptime", "stream": false}]
     }
 }

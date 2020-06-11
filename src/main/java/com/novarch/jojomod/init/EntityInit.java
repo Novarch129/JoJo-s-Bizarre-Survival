@@ -15,6 +15,7 @@ import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
+import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
 import net.minecraft.client.Minecraft;
@@ -188,4 +189,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.cMoon>create(EntityStandPunch.cMoon::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityTheWorld>> THE_WORLD = ENTITY_TYPES
+			.register("the_world",
+					() -> EntityType.Builder.<EntityTheWorld>create(EntityTheWorld::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.theWorld>> THE_WORLD_PUNCH = ENTITY_TYPES
+			.register("the_world_punch",
+					() -> EntityType.Builder.<EntityStandPunch.theWorld>create(EntityStandPunch.theWorld::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world_punch").toString()));
 }

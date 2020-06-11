@@ -41,6 +41,6 @@ public class ItemRemoveStand extends Item
         if(worldIn.isRemote)
             return new ActionResult<>(ActionResultType.FAIL, stack);
         JojoProvider.getLazyOptional(playerIn).ifPresent(IStand::removeStand);
-        return new ActionResult<>(ActionResultType.PASS, stack);
+        return new ActionResult<>(ActionResultType.CONSUME, stack);
     }
 }

@@ -1,9 +1,11 @@
 package com.novarch.jojomod.util;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
 
+@MethodsReturnNonnullByDefault
 public class ValueTextComponent extends TextComponent {
     private final Object msg;
 

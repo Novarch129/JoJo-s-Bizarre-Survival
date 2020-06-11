@@ -5,6 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
 
+import javax.annotation.Nullable;
+
 /**
  * StandEvent is fired when an event involving {@link EntityStandBase} occurs.
  */
@@ -28,11 +30,12 @@ public class StandEvent extends PlayerEvent {
     /**
      * Fired when {@link com.novarch.jojomod.capabilities.stand.IStand} standOn is set to false.
      * This Event is fired from {@link EntityStandBase} right before it's removed from the world.
-     * This event does not have a result.
+     * You should not attempt to use the {@link EntityStandBase} provided in this event as it's most likely removed.
+     * This Event does not have a result.
      */
-    public static class StandUnsummonedEvent extends PlayerEvent {
-        public StandUnsummonedEvent(PlayerEntity player, EntityStandBase stand) {
-            super(player);
+    public static class StandUnsummonedEvent extends StandEvent {
+        public StandUnsummonedEvent(PlayerEntity player, @Nullable EntityStandBase stand) {
+            super(player, stand);
         }
     }
 
@@ -41,12 +44,23 @@ public class StandEvent extends PlayerEvent {
      * This Event is fired from {@link EntityStandBase} when it's added to the world
      * This Event is {@link Cancelable}.
      * If this Event is cancelled the Stand will not be summoned.
-     * This event does not have a result.
+     * This Event does not have a result.
      */
     @Cancelable
-    public static class StandSummonedEvent extends PlayerEvent {
+    public static class StandSummonedEvent extends StandEvent {
         public StandSummonedEvent(PlayerEntity player, EntityStandBase stand) {
-            super(player);
+            super(player, stand);
+        }
+    }
+
+    /**
+     * Fired when an {@link EntityStandBase} ticks, this Event will not be fired if the Stand's master is <code>null</code>.
+     * This Event is fired from tick in {@link EntityStandBase}.
+     * This Event does not have a result.
+     */
+    public static class StandTickEvent extends StandEvent {
+        public StandTickEvent(PlayerEntity player, EntityStandBase stand) {
+            super(player, stand);
         }
     }
 }

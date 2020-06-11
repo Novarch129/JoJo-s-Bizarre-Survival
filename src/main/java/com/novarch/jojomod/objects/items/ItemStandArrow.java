@@ -18,7 +18,6 @@ import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -68,7 +67,7 @@ public class ItemStandArrow extends Item
 	{
 		PlayerEntity player = (PlayerEntity)entity;
 		JojoProvider.getLazyOptional(player).ifPresent(props -> {
-			final int random = world.rand.nextInt(JojoLibs.numberOfStands);
+			final int random = world.rand.nextInt(JojoLibs.StandID.numberOfStands);
 			int newStandID;
 			if(standID == 0)
 				newStandID = JojoLibs.StandID.stands[random];

@@ -1,5 +1,6 @@
 package com.novarch.jojomod.objects.items;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
@@ -10,18 +11,17 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
+@MethodsReturnNonnullByDefault
 public class ItemCanzoniPreferite extends MusicDiscItem
 {
-    public ItemCanzoniPreferite(int p_i230071_1_, Supplier<SoundEvent> p_i230071_2_, Properties p_i230071_3_)
+    public ItemCanzoniPreferite(int comparatorValue, Supplier<SoundEvent> soundSupplier, Properties builder)
     {
-        super(p_i230071_1_, p_i230071_2_, p_i230071_3_);
+        super(comparatorValue, soundSupplier, builder);
     }
 
     @Override

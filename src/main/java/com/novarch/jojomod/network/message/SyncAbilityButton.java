@@ -3,10 +3,13 @@ package com.novarch.jojomod.network.message;
 import com.novarch.jojomod.capabilities.stand.JojoProvider;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
+import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -53,31 +56,26 @@ public class SyncAbilityButton {
                 fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
                 props.setAbility(!props.getAbility());
 
-                if (props.getAbility()) {
-                    AbilityEvent.AbilityActivated event = new AbilityEvent.AbilityActivated(player);
-                    MinecraftForge.EVENT_BUS.post(event);
-                }
+                if (props.getAbility())
+                    MinecraftForge.EVENT_BUS.post(new AbilityEvent.AbilityActivated(player));
 
-                if (!props.getAbility()) {
-                    AbilityEvent.AbilityDeactivated event = new AbilityEvent.AbilityDeactivated(player);
-                    MinecraftForge.EVENT_BUS.post(event);
-                }
+                if (!props.getAbility())
+                    MinecraftForge.EVENT_BUS.post(new AbilityEvent.AbilityDeactivated(player));
 
-                if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
+                if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience)
                     player.sendMessage(new StringTextComponent("Mode: Normal"));
-                }
 
-                if (props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience) {
+                if (props.getAbility() && props.getStandID() == JojoLibs.StandID.goldExperience)
                     player.sendMessage(new StringTextComponent("Mode: Lifegiver"));
-                }
 
-                if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
+                if (!props.getAbility() && props.getStandID() == JojoLibs.StandID.GER)
                     player.sendMessage(new StringTextComponent("Mode: Normal"));
-                }
 
-                if (props.getAbility() && props.getStandID() == JojoLibs.StandID.GER) {
+                if (props.getAbility() && props.getStandID() == JojoLibs.StandID.GER)
                     player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
-                }
+
+                if(props.getAbility() && props.getStandID() == JojoLibs.StandID.theWorld)
+                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.STOP_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
 
                 if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.theEmperor) {
                     if (props.getStandID() != JojoLibs.StandID.madeInHeaven || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() != 0))
