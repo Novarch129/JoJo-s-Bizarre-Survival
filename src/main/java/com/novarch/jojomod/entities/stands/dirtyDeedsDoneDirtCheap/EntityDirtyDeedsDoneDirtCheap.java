@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
@@ -72,7 +72,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 		this.fallDistance = 0.0F;
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				//Cooldown handler
 				if (props.getCooldown() > 0)
 					props.subtractCooldown(1);
@@ -93,7 +93,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 
 							world.getPlayers()
 									.stream()
-									.filter(playerEntity -> JojoProvider.getCapabilityFromPlayer(playerEntity).getStandID() != JojoLibs.StandID.GER)
+									.filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != JojoLibs.StandID.GER)
 									.filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
 									.forEach(this::changePlayerDimension);
 

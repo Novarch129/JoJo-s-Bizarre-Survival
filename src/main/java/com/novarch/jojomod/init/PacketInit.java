@@ -1,30 +1,39 @@
 package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.network.message.*;
+import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
+import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
+import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
+import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import com.novarch.jojomod.network.message.server.STimestopPacket;
 
 public class PacketInit {
     public static void register() {
         int networkId = 0;
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SyncStandSummonButton.class,
-                SyncStandSummonButton::encode,
-                SyncStandSummonButton::decode,
-                SyncStandSummonButton::handle);
+                CSyncStandSummonPacket.class,
+                CSyncStandSummonPacket::encode,
+                CSyncStandSummonPacket::decode,
+                CSyncStandSummonPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SyncPlayerAttackMessage.class,
-                SyncPlayerAttackMessage::encode,
-                SyncPlayerAttackMessage::decode,
-                SyncPlayerAttackMessage::handle);
+                CSyncPlayerAttackPacket.class,
+                CSyncPlayerAttackPacket::encode,
+                CSyncPlayerAttackPacket::decode,
+                CSyncPlayerAttackPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SyncAbilityButton.class,
-                SyncAbilityButton::encode,
-                SyncAbilityButton::decode,
-                SyncAbilityButton::handle);
+                CSyncAbilityPacket.class,
+                CSyncAbilityPacket::encode,
+                CSyncAbilityPacket::decode,
+                CSyncAbilityPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SyncStandCapability.class,
-                SyncStandCapability::encode,
-                SyncStandCapability::decode,
-                SyncStandCapability::handle);
+                SSyncStandCapabilityPacket.class,
+                SSyncStandCapabilityPacket::encode,
+                SSyncStandCapabilityPacket::decode,
+                SSyncStandCapabilityPacket::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                STimestopPacket.class,
+                STimestopPacket::encode,
+                STimestopPacket::decode,
+                STimestopPacket::handle);
     }
 }

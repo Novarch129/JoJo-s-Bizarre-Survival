@@ -1,6 +1,6 @@
 package com.novarch.jojomod.gui.overlay;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
@@ -51,7 +51,7 @@ public class StandGUI extends AbstractGui
     public void render()
     {
         assert Minecraft.getInstance().player != null;
-        JojoProvider.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
             int transformed = props.getTransformed();

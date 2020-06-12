@@ -1,6 +1,6 @@
 package com.novarch.jojomod.effects;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +25,7 @@ public class CrimsonEffect extends Effect
     {
         if(Minecraft.getInstance().player==null)
             return;
-        JojoProvider.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             if(!props.getStandOn()) {
                 if(props.getStandID() == JojoLibs.StandID.kingCrimson)
                     entityLivingBaseIn.removePotionEffect(this);

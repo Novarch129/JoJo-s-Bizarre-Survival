@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
@@ -122,7 +122,7 @@ public abstract class EntityStandBase extends MobEntity {
                 setAir(60);
 
             clearActivePotions();
-            JojoProvider.getLazyOptional(getMaster()).ifPresent(props -> {
+            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
                 standOn = props.getStandOn();
 
                 if (!props.getStandOn()) {

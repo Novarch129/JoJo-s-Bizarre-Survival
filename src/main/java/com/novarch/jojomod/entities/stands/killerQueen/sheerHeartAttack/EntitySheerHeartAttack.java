@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack;
 
 import com.novarch.jojomod.ai.goals.SheerHeartAttackSwellGoal;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
@@ -92,7 +92,7 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
             if(masterStand != null) {
                 master = masterStand.getMaster();
                 if (master != null) {
-                    JojoProvider.getLazyOptional(master).ifPresent(props -> {
+                    Stand.getLazyOptional(master).ifPresent(props -> {
                         if (!props.getStandOn()) {
                             if (getAttackTarget() == this && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
                                 remove();
@@ -120,7 +120,7 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
 
                 damageSource.ifPresent(damageSourceEntity -> {
                     if (damageSourceEntity instanceof PlayerEntity)
-                        JojoProvider.getLazyOptional((PlayerEntity) damageSourceEntity).ifPresent(props -> {
+                        Stand.getLazyOptional((PlayerEntity) damageSourceEntity).ifPresent(props -> {
                             if (props.getStandID() == JojoLibs.StandID.GER)
                                 remove();
                         });

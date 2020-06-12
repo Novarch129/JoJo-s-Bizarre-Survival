@@ -1,7 +1,7 @@
 package com.novarch.jojomod.util.handlers;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,10 +19,9 @@ public class CapabilityHandler
     {
         if (event.getObject() == null)
             return;
-        if(event.getObject() instanceof PlayerEntity) {
-            final PlayerEntity player = (PlayerEntity) event.getObject();
-            event.addCapability(this.JOJO_CAP, new JojoProvider(player));
-        }
+        if(event.getObject() instanceof PlayerEntity)
+            event.addCapability(this.JOJO_CAP, new Stand((PlayerEntity) event.getObject()));
+
        event.addCapability(this.TIMESTOP_CAP, new Timestop(event.getObject()));
     }
 }

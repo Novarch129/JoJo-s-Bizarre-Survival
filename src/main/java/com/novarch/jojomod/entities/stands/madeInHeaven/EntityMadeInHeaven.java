@@ -1,7 +1,7 @@
 package com.novarch.jojomod.entities.stands.madeInHeaven;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
@@ -77,7 +77,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				props.setTimeLeft(heaventickr - 1200);
 				if (props.getAct() == 1) {
 					remove();
@@ -129,7 +129,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 			}
 
 			if (heaventickr <= 0) {
-				world.getPlayers().forEach(entity -> JojoProvider.getLazyOptional(entity).ifPresent(prps -> {
+				world.getPlayers().forEach(entity -> Stand.getLazyOptional(entity).ifPresent(prps -> {
 					if (prps.getStandID() != JojoLibs.StandID.GER) {
 						entity.inventory.clear();
 						entity.getInventoryEnderChest().clear();

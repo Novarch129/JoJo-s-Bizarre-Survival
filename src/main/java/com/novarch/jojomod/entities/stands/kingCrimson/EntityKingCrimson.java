@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.kingCrimson;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
@@ -80,7 +80,7 @@ public class EntityKingCrimson extends EntityStandBase {
 			setRotation(player.rotationYaw, player.rotationPitch);
 
 			player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = !(props.getCooldown() > 0);
 
 				if (!props.getAbility()) {
@@ -115,7 +115,7 @@ public class EntityKingCrimson extends EntityStandBase {
 									}
 
 									if (entity instanceof PlayerEntity)
-										JojoProvider.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
+										Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
 											if (entity != player && prs.getStandID() != JojoLibs.StandID.GER) {
 												if (prs.getStandID() == JojoLibs.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
 													return;

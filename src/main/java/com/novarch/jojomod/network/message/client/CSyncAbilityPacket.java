@@ -1,6 +1,6 @@
-package com.novarch.jojomod.network.message;
+package com.novarch.jojomod.network.message.client;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.init.SoundInit;
@@ -16,25 +16,25 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncAbilityButton {
+public class CSyncAbilityPacket {
     public boolean ability;
 
-    public SyncAbilityButton() {
+    public CSyncAbilityPacket() {
     }
 
-    public SyncAbilityButton(boolean value) {
+    public CSyncAbilityPacket(boolean value) {
         this.ability = value;
     }
 
-    public static void encode(SyncAbilityButton msg, PacketBuffer buffer) {
+    public static void encode(CSyncAbilityPacket msg, PacketBuffer buffer) {
         buffer.writeBoolean(msg.ability);
     }
 
-    public static SyncAbilityButton decode(PacketBuffer buffer) {
-        return new SyncAbilityButton(buffer.readBoolean());
+    public static CSyncAbilityPacket decode(PacketBuffer buffer) {
+        return new CSyncAbilityPacket(buffer.readBoolean());
     }
 
-    public static void handle(SyncAbilityButton msg, Supplier<NetworkEvent.Context> supplier) {
+    public static void handle(CSyncAbilityPacket msg, Supplier<NetworkEvent.Context> supplier) {
         final NetworkEvent.Context ctx = supplier.get();
         if (ctx.getDirection().getReceptionSide().isServer()) {
             ctx.enqueueWork(() ->
@@ -50,7 +50,7 @@ public class SyncAbilityButton {
 
     protected static void abilityToggle(PlayerEntity player) {
         if (player != null) {
-            JojoProvider.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(player).ifPresent(props -> {
 
                 FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
                 fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());

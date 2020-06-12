@@ -1,18 +1,11 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.Explosion;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -20,10 +13,6 @@ import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-
-import java.lang.reflect.Field;
-import java.time.chrono.MinguoEra;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventAbilityGER
@@ -33,7 +22,7 @@ public class EventAbilityGER
     {
         if(event.getEntity() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntity();
-            JojoProvider.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(player).ifPresent(props -> {
                 if (props.getStandID() == JojoLibs.StandID.GER) {
                 event.setCanceled(true);
                 if (event.getSource().getTrueSource() instanceof PlayerEntity) {
@@ -55,7 +44,7 @@ public class EventAbilityGER
     {
         PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
         if(player != null)
-            JojoProvider.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(player).ifPresent(props -> {
                 if (props.getStandID() == JojoLibs.StandID.GER)
                     if (event.getExplosion().getPosition().distanceTo(player.getPositionVec()) < 30.0f)
                         event.setCanceled(true);
@@ -66,7 +55,7 @@ public class EventAbilityGER
     public static void stopKnockback(LivingKnockBackEvent event)
     {
         if(event.getEntity() instanceof PlayerEntity)
-            JojoProvider.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
+            Stand.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
                 if(props.getStandID() == JojoLibs.StandID.GER) {
                     event.setCanceled(true);
                 }
@@ -76,7 +65,7 @@ public class EventAbilityGER
     @SubscribeEvent
     public static void noClip(LivingEvent.LivingUpdateEvent event) {
         if (event.getEntity() instanceof PlayerEntity)
-            JojoProvider.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
+            Stand.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
                 PlayerEntity player = (PlayerEntity) event.getEntity();
                 if (props.getNoClip()) {
                     player.noClip = true;

@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.theWorld;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -69,7 +69,7 @@ public class EntityTheWorld extends EntityStandBase {
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			JojoProvider.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
+			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
 			if(ability) {
 				timestopTick++;

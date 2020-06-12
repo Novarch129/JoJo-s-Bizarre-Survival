@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.weatherReport;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EffectInit;
@@ -82,7 +82,7 @@ public class EntityWeatherReport extends EntityStandBase {
             PlayerEntity player = getMaster();
             setRotationYawHead(player.rotationYaw);
             setRotation(player.rotationYaw, player.rotationPitch);
-            JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
+            Stand.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
             if (KeyHandler.keys[2].isPressed())
                 weatherTick++;

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
@@ -65,7 +65,7 @@ public class ItemStandArrow extends Item
 	public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft)
 	{
 		PlayerEntity player = (PlayerEntity)entity;
-		JojoProvider.getLazyOptional(player).ifPresent(props -> {
+		Stand.getLazyOptional(player).ifPresent(props -> {
 			final int random = world.rand.nextInt(JojoLibs.StandID.numberOfStands);
 			int newStandID;
 			if(standID == 0)
@@ -126,7 +126,7 @@ public class ItemStandArrow extends Item
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn)
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
-            IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
+            IStand props = Stand.getCapabilityFromPlayer(playerIn);
         	if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience) {
         		playerIn.setActiveHand(handIn);
         		return new ActionResult<>(ActionResultType.SUCCESS, stack);

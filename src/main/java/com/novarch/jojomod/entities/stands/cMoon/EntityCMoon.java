@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.cMoon;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
@@ -71,7 +71,7 @@ public class EntityCMoon extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 				if((props.getStandID() == JojoLibs.StandID.cMoon && props.getAct() == 1) || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() == 2)) {
 					remove();

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.objects.items.stands;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
@@ -29,7 +29,7 @@ public class ItemEmperor extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStack = playerIn.getHeldItem(handIn);
         if (!playerIn.world.isRemote) {
-            IStand props = JojoProvider.getCapabilityFromPlayer(playerIn);
+            IStand props = Stand.getCapabilityFromPlayer(playerIn);
             if (props.getStandID() != JojoLibs.StandID.theEmperor)
                 itemStack.shrink(1);
             if (props.getCooldown() <= 0) {
@@ -51,7 +51,7 @@ public class ItemEmperor extends Item {
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(entityIn instanceof PlayerEntity)
-            JojoProvider.getLazyOptional((PlayerEntity) entityIn).ifPresent(props -> {
+            Stand.getLazyOptional((PlayerEntity) entityIn).ifPresent(props -> {
                 props.setAbility(false);
                 if(!isSelected) {
                     props.setStandOn(false);

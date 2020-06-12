@@ -1,49 +1,48 @@
 package com.novarch.jojomod.capabilities.stand;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.network.message.SyncStandCapability;
-import net.minecraft.client.Minecraft;
+import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
+import static com.novarch.jojomod.util.JojoLibs.Null;
 import static com.novarch.jojomod.util.JojoLibs.StandID.cMoon;
 import static com.novarch.jojomod.util.JojoLibs.StandID.madeInHeaven;
 
 /**
  * The {@link Capability} used for storing the player's Stand ability.
  */
-public class StandCapability implements IStand {
+@ParametersAreNonnullByDefault
+public class Stand implements IStand, ICapabilitySerializable<INBT> {
 	private final PlayerEntity player;
-
 	private int standID = 0;
-
 	private int standAct = 0;
-
 	private boolean standOn = false;
-
 	private double cooldown = 0;
-
 	private double timeleft = 1000;
-
 	private String diavolo = "";
-
-	private String playerStandName = "";
-
 	private boolean ability = true;
-
 	private int transformed = 0;
-
 	private boolean noClip = false;
 
-	public StandCapability(@Nonnull PlayerEntity player) {
+	@CapabilityInject(IStand.class)
+	public static final Capability<IStand> STAND = Null();
+	private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
+
+	public Stand(@Nonnull PlayerEntity player) {
 		this.player = player;
 	}
 
@@ -52,9 +51,20 @@ public class StandCapability implements IStand {
 		return this.player;
 	}
 
+	@Override
+	public int getStandID() {
+		return this.standID;
+	}
+
+	@Override
 	public void setStandID(int value) {
 		this.standID = value;
 		onDataUpdated();
+	}
+
+	@Override
+	public int getAct() {
+		return this.standAct;
 	}
 
 	@Override
@@ -89,36 +99,14 @@ public class StandCapability implements IStand {
 		return 0;
 	}
 
-	public void setStandOn(boolean value) {
-		this.standOn = value;
-		onDataUpdated();
-	}
-
-	public void setPlayerStandName(String value) {
-		this.playerStandName = value;
-		onDataUpdated();
-	}
-
-	public int getStandID() {
-		return this.standID;
-	}
-
 	@Override
-	public int getAct() {
-		return this.standAct;
-	}
-
 	public boolean getStandOn() {
 		return this.standOn;
 	}
 
-	public String getPlayerStandName() {
-		return this.playerStandName;
-	}
-
 	@Override
-	public void setCooldown(double cooldown) {
-		this.cooldown = cooldown;
+	public void setStandOn(boolean value) {
+		this.standOn = value;
 		onDataUpdated();
 	}
 
@@ -128,20 +116,26 @@ public class StandCapability implements IStand {
 	}
 
 	@Override
+	public void setCooldown(double cooldown) {
+		this.cooldown = cooldown;
+		onDataUpdated();
+	}
+
+	@Override
 	public void subtractCooldown(double subtraction) {
 		this.cooldown -= subtraction;
 		onDataUpdated();
 	}
 
 	@Override
-	public void setTimeLeft(double timeleft) {
-		this.timeleft = timeleft;
-		onDataUpdated();
+	public double getTimeLeft() {
+		return this.timeleft;
 	}
 
 	@Override
-	public double getTimeLeft() {
-		return this.timeleft;
+	public void setTimeLeft(double timeleft) {
+		this.timeleft = timeleft;
+		onDataUpdated();
 	}
 
 	@Override
@@ -157,14 +151,14 @@ public class StandCapability implements IStand {
 	}
 
 	@Override
-	public void setDiavolo(String truth) {
-		this.diavolo = truth;
-		onDataUpdated();
+	public String getDiavolo() {
+		return this.diavolo;
 	}
 
 	@Override
-	public String getDiavolo() {
-		return this.diavolo;
+	public void setDiavolo(String truth) {
+		this.diavolo = truth;
+		onDataUpdated();
 	}
 
 	@Override
@@ -192,6 +186,17 @@ public class StandCapability implements IStand {
 	@Override
 	public void addTransformed(int addition) {
 		this.transformed += addition;
+		onDataUpdated();
+	}
+
+	@Override
+	public boolean getNoClip() {
+		return noClip;
+	}
+
+	@Override
+	public void setNoClip(boolean noClip) {
+		this.noClip = noClip;
 		onDataUpdated();
 	}
 
@@ -236,35 +241,14 @@ public class StandCapability implements IStand {
 	}
 
 	@Override
-	public void setNoClip(boolean noClip) {
-		this.noClip = noClip;
-		onDataUpdated();
-	}
-
-	@Override
-	public boolean getNoClip() {
-		return noClip;
-	}
-
-	@Override
 	public void putNoClip(boolean noClip) {
 		this.noClip = noClip;
-	}
-
-	/**
-	 * Called to update the {@link Capability} to the client.
-	 */
-	private void onDataUpdated() {
-		if (player != null)
-			if (!player.world.isRemote)
-				JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SyncStandCapability(this));
 	}
 
 	public void clone(IStand props) {
 		setStandID(props.getStandID());
 		setAct(props.getAct());
 		setStandOn(false);
-		setPlayerStandName(props.getPlayerStandName());
 		setCooldown(props.getCooldown());
 		setTimeLeft(props.getTimeLeft());
 		setTransformed(props.getTransformed());
@@ -277,13 +261,46 @@ public class StandCapability implements IStand {
 		setStandOn(false);
 		setAct(0);
 		setStandID(0);
-		setPlayerStandName("");
 		setCooldown(0);
 		setTimeLeft(0);
 		setTransformed(0);
 		setDiavolo("");
 		setAbility(true);
 		setNoClip(false);
+	}
+
+	/**
+	 * Called to update the {@link Capability} to the client.
+	 */
+	@Override
+	public void onDataUpdated() {
+		if (!player.world.isRemote)
+			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SSyncStandCapabilityPacket(this));
+	}
+
+
+	@Nonnull
+	@Override
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
+		return capability == Stand.STAND ? holder.cast() : LazyOptional.empty();
+	}
+
+	@Override
+	public INBT serializeNBT() {
+		return Stand.STAND.getStorage().writeNBT(Stand.STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
+	}
+
+	@Override
+	public void deserializeNBT(INBT nbt) {
+		Stand.STAND.getStorage().readNBT(Stand.STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
+	}
+
+	public static IStand getCapabilityFromPlayer(PlayerEntity player) {
+		return player.getCapability(STAND, null).orElse(new Stand(player));
+	}
+
+	public static LazyOptional<IStand> getLazyOptional(PlayerEntity player) {
+		return player.getCapability(STAND, null);
 	}
 
 	public static void register() {
@@ -317,6 +334,6 @@ public class StandCapability implements IStand {
 				instance.putDiavolo(propertyData.getString("Diavolo"));
 				instance.putNoClip(propertyData.getBoolean("NoClip"));
 			}
-		}, () -> new StandCapability(Minecraft.getInstance().player));
+		}, () -> new Stand(Null()));
 	}
 }

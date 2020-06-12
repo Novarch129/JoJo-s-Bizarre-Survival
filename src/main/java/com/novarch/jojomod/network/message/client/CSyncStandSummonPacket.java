@@ -1,15 +1,14 @@
-package com.novarch.jojomod.network.message;
+package com.novarch.jojomod.network.message.client;
 
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
 
 import java.util.function.Supplier;
 
-import com.novarch.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -21,25 +20,25 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 @SuppressWarnings("unused")
-public class SyncStandSummonButton {
+public class CSyncStandSummonPacket {
 	public int entityID;
 
-	public SyncStandSummonButton() {
+	public CSyncStandSummonPacket() {
 	}
 
-	public SyncStandSummonButton(int entityId) {
+	public CSyncStandSummonPacket(int entityId) {
 		this.entityID = entityId;
 	}
 
-	public static void encode(SyncStandSummonButton msg, PacketBuffer buffer) {
+	public static void encode(CSyncStandSummonPacket msg, PacketBuffer buffer) {
 		buffer.writeInt(msg.entityID);
 	}
 
-	public static SyncStandSummonButton decode(PacketBuffer buffer) {
-		return new SyncStandSummonButton(buffer.readInt());
+	public static CSyncStandSummonPacket decode(PacketBuffer buffer) {
+		return new CSyncStandSummonPacket(buffer.readInt());
 	}
 
-	public static void handle(SyncStandSummonButton msg, Supplier<NetworkEvent.Context> supplier) {
+	public static void handle(CSyncStandSummonPacket msg, Supplier<NetworkEvent.Context> supplier) {
 		final NetworkEvent.Context ctx = supplier.get();
 		if (ctx.getDirection().getReceptionSide().isServer()) {
 			ctx.enqueueWork(() ->
@@ -53,12 +52,12 @@ public class SyncStandSummonButton {
 		ctx.setPacketHandled(true);
 	}
 
-	public static void summonPlayerStand(SyncStandSummonButton message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity player) {
+	public static void summonPlayerStand(CSyncStandSummonPacket message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity player) {
 		FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
 		fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
 		World world = player.world;
 		if (!world.isRemote) {
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				int delay = 0;
 				for (int i = 0; i < 20; i++) {
 					delay++;
@@ -75,7 +74,7 @@ public class SyncStandSummonButton {
 								return;
 							}
 							if(!player.isSpectator())
-								SyncStandSummonButton.summonStand(player, fakePlayer);
+								CSyncStandSummonPacket.summonStand(player, fakePlayer);
 							return;
 						}
 					}
@@ -85,7 +84,7 @@ public class SyncStandSummonButton {
 	}
 
 	public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer) {
-		JojoProvider.getLazyOptional(player).ifPresent(props -> {
+		Stand.getLazyOptional(player).ifPresent(props -> {
 			if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.theEmperor) {
 				EntityStandBase stand = JojoLibs.getStand(props.getStandID(), player.world);
 

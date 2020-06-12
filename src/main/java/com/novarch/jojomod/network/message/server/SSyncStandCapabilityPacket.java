@@ -1,8 +1,8 @@
-package com.novarch.jojomod.network.message;
+package com.novarch.jojomod.network.message.server;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -12,16 +12,16 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class SyncStandCapability
+public class SSyncStandCapabilityPacket
 {
     private INBT data;
 
-    public SyncStandCapability() {}
+    public SSyncStandCapabilityPacket() {}
 
-    public SyncStandCapability(IStand props)
+    public SSyncStandCapabilityPacket(IStand props)
     {
         this.data = new CompoundNBT();
-        this.data = JojoProvider.STAND.getStorage().writeNBT(JojoProvider.STAND, props, null);
+        this.data = Stand.STAND.getStorage().writeNBT(Stand.STAND, props, null);
     }
 
     public void encode(PacketBuffer buffer)
@@ -29,14 +29,14 @@ public class SyncStandCapability
         buffer.writeCompoundTag((CompoundNBT) data);
     }
 
-    public static SyncStandCapability decode(PacketBuffer buffer)
+    public static SSyncStandCapabilityPacket decode(PacketBuffer buffer)
     {
-        SyncStandCapability msg = new SyncStandCapability();
+        SSyncStandCapabilityPacket msg = new SSyncStandCapabilityPacket();
         msg.data = buffer.readCompoundTag();
         return msg;
     }
 
-    public static void handle(SyncStandCapability message, Supplier<NetworkEvent.Context> ctx)
+    public static void handle(SSyncStandCapabilityPacket message, Supplier<NetworkEvent.Context> ctx)
     {
         if(ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT)
         {
@@ -44,9 +44,9 @@ public class SyncStandCapability
             {
                 PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 assert player != null;
-                IStand props = JojoProvider.getCapabilityFromPlayer(player);
+                IStand props = Stand.getCapabilityFromPlayer(player);
                 assert props != null;
-                JojoProvider.STAND.getStorage().readNBT(JojoProvider.STAND, props, null, message.data);
+                Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, message.data);
             });
         }
         ctx.get().setPacketHandled(true);

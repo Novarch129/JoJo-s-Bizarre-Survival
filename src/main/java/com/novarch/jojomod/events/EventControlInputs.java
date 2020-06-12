@@ -1,15 +1,11 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
-import com.novarch.jojomod.network.message.SyncAbilityButton;
-import com.novarch.jojomod.network.message.SyncPlayerAttackMessage;
-import com.novarch.jojomod.network.message.SyncStandSummonButton;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
+import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
+import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,19 +20,19 @@ public class EventControlInputs
 		 if (KeyHandler.keys[0].isPressed())
 		 {
 			 if (Minecraft.getInstance().player != null)
-				 JojoBizarreSurvival.INSTANCE.sendToServer(new SyncStandSummonButton());
+				 JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandSummonPacket());
 		 }
 
 		 if(KeyHandler.keys[1].isPressed())
 		 {
 			 if (Minecraft.getInstance().player != null)
-				 JojoBizarreSurvival.INSTANCE.sendToServer(new SyncAbilityButton());
+				 JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAbilityPacket());
 		 }
 	    
 		 if (Minecraft.getInstance().gameSettings.keyBindAttack.isKeyDown())
 		 {
 			 if (Minecraft.getInstance().player != null)
-				 JojoBizarreSurvival.INSTANCE.sendToServer(new SyncPlayerAttackMessage());
+				 JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncPlayerAttackPacket());
 		 }
 	 }
 }

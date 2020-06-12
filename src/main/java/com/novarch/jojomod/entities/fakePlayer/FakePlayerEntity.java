@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.fakePlayer;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.EventHandleStandAbilities;
 import com.novarch.jojomod.init.EntityInit;
 import mcp.MethodsReturnNonnullByDefault;
@@ -78,7 +78,7 @@ public class FakePlayerEntity extends MobEntity {
             if (!this.parent.isAlive())
                 EventHandleStandAbilities.removalQueue.add(this);
 
-            JojoProvider.getLazyOptional(this.parent).ifPresent(props -> {
+            Stand.getLazyOptional(this.parent).ifPresent(props -> {
                 if (!props.getAbility())
                     EventHandleStandAbilities.removalQueue.add(this);
                 if (!props.getStandOn())

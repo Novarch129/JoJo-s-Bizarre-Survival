@@ -1,7 +1,7 @@
 package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +28,7 @@ public class ItemStandDisc extends Item {
         if (!player.world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
             CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
-            IStand props = JojoProvider.getCapabilityFromPlayer(player);
+            IStand props = Stand.getCapabilityFromPlayer(player);
             if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") == 0) {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();
@@ -48,10 +48,10 @@ public class ItemStandDisc extends Item {
     public boolean hitEntity(ItemStack stack, LivingEntity livingEntityIn, LivingEntity attacker) {
         CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
         if (livingEntityIn instanceof PlayerEntity) {
-            JojoProvider.getLazyOptional((PlayerEntity) livingEntityIn).ifPresent(props -> {
+            Stand.getLazyOptional((PlayerEntity) livingEntityIn).ifPresent(props -> {
                 if (attacker instanceof PlayerEntity) {
-                    final int standID = JojoProvider.getCapabilityFromPlayer(((PlayerEntity) attacker)).getStandID();
-                    final int standAct = JojoProvider.getCapabilityFromPlayer(((PlayerEntity) attacker)).getAct();
+                    final int standID = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getStandID();
+                    final int standAct = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getAct();
                     if(standID == JojoLibs.StandID.whitesnake || (standID == JojoLibs.StandID.madeInHeaven && standAct == 2)) {
                         if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
                             nbt.putInt("StandID", props.getStandID());

@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
@@ -173,10 +173,10 @@ public abstract class StandPunchEffects {
 	}
 
 	public static void madeInHeaven(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
-		if(JojoProvider.getCapabilityFromPlayer(punch.standMaster).getAct() == 2) {
+		if(Stand.getCapabilityFromPlayer(punch.standMaster).getAct() == 2) {
 			whitesnake(result, livingEntity, punch, isEntity);
 			return;
-		} else if(JojoProvider.getCapabilityFromPlayer(punch.standMaster).getAct() == 1) {
+		} else if(Stand.getCapabilityFromPlayer(punch.standMaster).getAct() == 1) {
 			cMoon(result, livingEntity, punch, isEntity);
 			return;
 		}
@@ -276,7 +276,7 @@ public abstract class StandPunchEffects {
 			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
-			JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
+			Stand.getLazyOptional(punch.standMaster).ifPresent(props -> {
 				if (punch.shootingStand.ability && block != Blocks.AIR) {
 					if (hardness <= 15.0f) {
 						if (props.getTransformed() == 0) {
@@ -654,7 +654,7 @@ public abstract class StandPunchEffects {
 			final Block block = punch.getInTile();
 			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			final BlockState blockState = punch.world.getBlockState(blockPos);
-			JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
+			Stand.getLazyOptional(punch.standMaster).ifPresent(props -> {
 				if (punch.shootingStand.ability && block != Blocks.AIR) {
 					if (props.getTransformed() < 2) {
 						if (block == Blocks.GRASS || block == Blocks.GRASS_BLOCK || block == Blocks.NETHERRACK) {
@@ -1166,7 +1166,7 @@ public abstract class StandPunchEffects {
 			final float p2 = 0.4f;
 			if (punch.shootingStand.ability)
 				if(livingEntity instanceof PlayerEntity)
-					JojoProvider.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
+					Stand.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
 						if(props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && livingEntity.getHealth() == livingEntity.getMaxHealth() / 2) {
 							ItemStack itemStack = new ItemStack(ItemInit.stand_disc.get());
 							CompoundNBT nbt = itemStack.getTag() == null ? new CompoundNBT() : itemStack.getTag();
@@ -1204,7 +1204,7 @@ public abstract class StandPunchEffects {
 	}
 
 	public static void cMoon(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
-		JojoProvider.getLazyOptional(punch.standMaster).ifPresent(props -> {
+		Stand.getLazyOptional(punch.standMaster).ifPresent(props -> {
 			if(props.getAct() == 1 && props.getStandID() == JojoLibs.StandID.cMoon) {
 				whitesnake(result, livingEntity, punch, isEntity);
 			}

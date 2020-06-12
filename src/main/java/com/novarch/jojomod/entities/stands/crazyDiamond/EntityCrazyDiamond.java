@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.crazyDiamond;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -84,7 +84,7 @@ public class EntityCrazyDiamond extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				this.ability = props.getAbility();
 
 				//Crazy Diamond's ability

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
@@ -43,7 +43,7 @@ public class EventHandleStandAbilities
         if(!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
             player.setGlowing(false);
 
-        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(props -> {
             if(props.getCooldown() == 0.5)
                 props.setTimeLeft(1000);
 
@@ -116,7 +116,7 @@ public class EventHandleStandAbilities
 
         PlayerEntity player = Minecraft.getInstance().player;
 
-        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(props -> {
             if (!props.getStandOn()) {
                 if (!player.isSpectator())
                     Minecraft.getInstance().setRenderViewEntity(player);
@@ -214,14 +214,14 @@ public class EventHandleStandAbilities
     {
         if(event.getEntityItem().getItem().getItem() == ItemInit.the_emperor.get()) {
             event.setCanceled(true);
-            JojoProvider.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
+            Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }
     }
 
     @SubscribeEvent
     public static void standUnsummoned(StandEvent.StandUnsummonedEvent event) {
         PlayerEntity player = event.getPlayer();
-        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(props -> {
             player.setInvulnerable(false);
             player.setNoGravity(false);
             if(!player.isCreative() && !player.isSpectator())
@@ -257,7 +257,7 @@ public class EventHandleStandAbilities
     public static void abilityOff(AbilityEvent.AbilityDeactivated event) {
         PlayerEntity player = Minecraft.getInstance().player;
         assert player != null;
-        JojoProvider.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(props -> {
             if(props.getStandID() == JojoLibs.StandID.aerosmith)
                 if(!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
                     Minecraft.getInstance().setRenderViewEntity(player);

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +40,7 @@ public class ItemRemoveStand extends Item
         ItemStack stack = playerIn.getHeldItem(handIn);
         if(worldIn.isRemote)
             return new ActionResult<>(ActionResultType.FAIL, stack);
-        JojoProvider.getLazyOptional(playerIn).ifPresent(IStand::removeStand);
+        Stand.getLazyOptional(playerIn).ifPresent(IStand::removeStand);
         return new ActionResult<>(ActionResultType.CONSUME, stack);
     }
 }

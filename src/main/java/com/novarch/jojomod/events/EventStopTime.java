@@ -1,11 +1,12 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
+import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -40,7 +42,7 @@ public class EventStopTime {
                             .filter(entity -> !(entity instanceof EntityGoldExperienceRequiem))
                             .forEach(entity -> {
                                 if(entity instanceof PlayerEntity)
-                                    if(JojoProvider.getCapabilityFromPlayer((PlayerEntity) entity).getStandID() == JojoLibs.StandID.GER)
+                                    if(Stand.getCapabilityFromPlayer((PlayerEntity) entity).getStandID() == JojoLibs.StandID.GER)
                                         return;
                                 if(entity instanceof MobEntity)
                                     if(((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
@@ -56,6 +58,8 @@ public class EventStopTime {
                                         props.setFire(entity.getFireTimer());
                                         if(entity instanceof TNTEntity)
                                             props.setFuse(((TNTEntity) entity).getFuse());
+                                        if(!entity.world.isRemote)
+                                            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                     });
                                 } else {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {

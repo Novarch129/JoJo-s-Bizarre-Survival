@@ -1,11 +1,12 @@
 package com.novarch.jojomod.events.custom;
 
+import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
 /**
  * {@link AbilityEvent} if fired when the value of {@link com.novarch.jojomod.capabilities.stand.IStand} ability is changed.
- * This event is fired from {@link com.novarch.jojomod.network.message.SyncAbilityButton} and has two child events.
+ * This event is fired from {@link CSyncAbilityPacket} and has two child events.
  */
 public class AbilityEvent extends PlayerEvent {
     public AbilityEvent(PlayerEntity player) {

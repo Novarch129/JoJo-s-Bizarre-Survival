@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.killerQueen;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
@@ -87,7 +87,7 @@ public class EntityKillerQueen extends EntityStandBase {
 			PlayerEntity player = getMaster();
 
 			//Killer Queen's ability
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				props.setAbility(false);
 				if (detonate.isPressed() && props.getCooldown() <= 0) {
 					if (this.bombEntity != null) {
@@ -100,7 +100,7 @@ public class EntityKillerQueen extends EntityStandBase {
 								this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
 								bombEntity.remove();
 							} else if (bombEntity instanceof PlayerEntity) {
-								JojoProvider.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
+								Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
 									if (bombProps.getStandID() != JojoLibs.StandID.GER) {
 										Explosion explosion = new Explosion(bombEntity.world, player, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										((PlayerEntity) bombEntity).spawnSweepParticles();

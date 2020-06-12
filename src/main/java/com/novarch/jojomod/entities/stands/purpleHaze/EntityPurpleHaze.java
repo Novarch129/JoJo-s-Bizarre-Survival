@@ -1,6 +1,6 @@
 package com.novarch.jojomod.entities.stands.purpleHaze;
 
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EffectInit;
@@ -76,7 +76,7 @@ public class EntityPurpleHaze extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
-			JojoProvider.getLazyOptional(player).ifPresent(props -> {
+			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 
 				if (props.getCooldown() > 0 && ability)

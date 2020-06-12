@@ -2,7 +2,7 @@ package com.novarch.jojomod.gui.overlay;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public class CarbonDioxideRadarGUI extends AbstractGui
         int posX = mc.getMainWindow().getScaledWidth() - 180, posY = (mc.getMainWindow().getScaledHeight() - 256) / 2;
 
         assert player != null;
-        JojoProvider.getLazyOptional(player).ifPresent(props ->{
+        Stand.getLazyOptional(player).ifPresent(props ->{
             if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
             {
                 GlStateManager.pushMatrix();

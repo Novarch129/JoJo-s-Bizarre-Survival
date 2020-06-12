@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.aerosmith;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.capabilities.stand.JojoProvider;
+import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -19,8 +18,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 @MethodsReturnNonnullByDefault
 public class EntityAerosmith extends EntityStandBase {
@@ -97,7 +94,7 @@ public class EntityAerosmith extends EntityStandBase {
 
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
-            JojoProvider.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
+            Stand.getLazyOptional(player).ifPresent(props -> this.ability = props.getAbility());
 
             if (this.ability) {
                 if(world.isRemote)
@@ -139,7 +136,7 @@ public class EntityAerosmith extends EntityStandBase {
                     this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
 
                 //Bomb
-                JojoProvider.getLazyOptional(player).ifPresent(props -> {
+                Stand.getLazyOptional(player).ifPresent(props -> {
                     if (props.getAbility()) {
                         if (props.getCooldown() > 0)
                             props.subtractCooldown(1);
