@@ -2,9 +2,11 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
+import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,6 +14,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
+
+import static com.novarch.jojomod.util.JojoLibs.StandID.theWorld;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -67,6 +71,17 @@ public class EventSyncCapability
                         .filter(entity -> entity instanceof EntitySheerHeartAttack)
                         .filter(entity -> ((EntitySheerHeartAttack) entity).getMaster() == player)
                         .forEach(Entity::remove);
+                if(props.getStandID() == theWorld)
+                    player.getServerWorld().getEntities()
+                        .forEach(entity -> {
+                                    Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                        if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    });
+                                    if(entity instanceof EntityTheWorld)
+                                        if(entity == EventStopTime.theWorld)
+                                            EventStopTime.theWorld=null;
+                                });
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));
             }
         });

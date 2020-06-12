@@ -1,6 +1,7 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -8,9 +9,13 @@ import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.ValueTextComponent;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,28 +32,39 @@ public class EventStopTime {
         PlayerEntity player = event.getPlayer();
         if (event.getStand() instanceof EntityTheWorld) {
             theWorld = (EntityTheWorld) event.getStand();
-            if (theWorld.ability) {
-                if (!theWorld.world.isRemote) {
-                    if (theWorld.timestopTick == 1) {
-                        dayTime = theWorld.world.getDayTime();
-                        gameTime = theWorld.world.getGameTime();
-                    } else {
+            if (theWorld.ability && theWorld.isAlive()) {
+                if(theWorld.timestopTick > 1) {
+                    if(theWorld.world.isRemote) {
                         theWorld.world.setDayTime(dayTime);
                         theWorld.world.setGameTime(gameTime);
+                    }
+                    if(player.isCrouching())
+                        player.sendMessage(new ValueTextComponent(gameTime));
+                }
+                if (!theWorld.world.isRemote) {
+                    if (theWorld.timestopTick == 1 || dayTime == 0 || gameTime == 0) {
+                        dayTime = theWorld.world.getDayTime();
+                        gameTime = theWorld.world.getGameTime();
                     }
                     theWorld.world.getServer().getWorld(theWorld.dimension).getEntities()
                             .filter(entity -> entity != theWorld)
                             .filter(entity -> entity != player)
                             .filter(entity -> !(entity instanceof EntityGoldExperienceRequiem))
                             .forEach(entity -> {
-                                if(entity instanceof PlayerEntity)
-                                    if(Stand.getCapabilityFromPlayer((PlayerEntity) entity).getStandID() == JojoLibs.StandID.GER)
+                                if(entity instanceof PlayerEntity) {
+                                    IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
+                                    if (props.getStandID() == JojoLibs.StandID.GER)
                                         return;
-                                if(entity instanceof MobEntity)
-                                    if(((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                    if(props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+                                        return;
+                                }
+                                if(entity instanceof MobEntity) {
+                                    if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
                                         ((MobEntity) entity).setAttackTarget(null);
                                         ((MobEntity) entity).setRevengeTarget(null);
                                     }
+                                    ((MobEntity) entity).setNoAI(true);
+                                }
                                 if (theWorld.timestopTick == 1) {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
                                         props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -65,7 +81,13 @@ public class EventStopTime {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
                                         if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
                                             entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
-                                            entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                                            if(!(entity instanceof IProjectile) && !(entity instanceof ItemEntity) && !(entity instanceof DamagingProjectileEntity))
+                                                entity.setMotion(0, 0, 0);
+                                            else {
+                                                entity.setNoGravity(true);
+                                                entity.setMotion(0, 0, 0);
+                                                entity.velocityChanged = true;
+                                            }
                                             entity.rotationYaw = props.getRotationYaw();
                                             entity.rotationPitch = props.getRotationPitch();
                                             entity.setRotationYawHead(props.getRotationYawHead());
@@ -73,6 +95,7 @@ public class EventStopTime {
                                             entity.setFireTimer(props.getFire());
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
+                                            entity.velocityChanged = true;
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
@@ -92,6 +115,15 @@ public class EventStopTime {
                             .filter(entity -> entity != theWorld)
                             .filter(entity -> entity != player)
                             .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+                                if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
+                                    entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                                    entity.setNoGravity(false);
+                                    entity.velocityChanged = true;
+                                } else {
+                                    if(props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                        entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                                } if(entity instanceof MobEntity)
+                                    ((MobEntity) entity).setNoAI(false);
                                 entity.fallDistance = props.getFallDistance();
                                 props.clear();
                             }));
@@ -102,7 +134,9 @@ public class EventStopTime {
 
     @SubscribeEvent
     public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-        event.setCanceled(true);
+        if(theWorld != null)
+            if(theWorld.ability)
+                event.setCanceled(true);
     }
 
     @SubscribeEvent

@@ -14,17 +14,26 @@ import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.entity.projectile.FireballEntity;
+import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +66,8 @@ public class EventHandleStandAbilities
 
                 if(props.getTimeLeft() < 1000)
                     props.addTimeLeft(0.5);
+
+                player.setInvulnerable(false);
             }
 
             else if(props.getStandOn() && !props.getAbility())
@@ -242,14 +253,28 @@ public class EventHandleStandAbilities
                 }
             }
 
-            if(props.getStandID() == JojoLibs.StandID.theWorld)
-                if(!player.world.isRemote)
+            if(props.getStandID() == JojoLibs.StandID.theWorld) {
+                if(event.getStand() == EventStopTime.theWorld)
+                    EventStopTime.theWorld=null;
+                if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
-                        .filter(entity -> entity != player)
-                        .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props2 -> {
-                            entity.fallDistance = props2.getFallDistance();
-                            props2.clear();
-                        }));
+                            .filter(entity -> entity != player)
+                            .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    entity.setNoGravity(false);
+                                    entity.velocityChanged = true;
+                                } else {
+                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                }
+                                if (entity instanceof MobEntity)
+                                    ((MobEntity) entity).setNoAI(false);
+                                entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                entity.fallDistance = props2.getFallDistance();
+                                props2.clear();
+                            }));
+            }
         });
     }
 
@@ -276,5 +301,34 @@ public class EventHandleStandAbilities
     public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
         if(!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer(RenderWorldLastEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+        EntityRendererManager manager = mc.getRenderManager();
+        if(player != null) {
+            Stand.getLazyOptional(player).ifPresent(props -> {
+                if(props.getStandID() == JojoLibs.StandID.aerosmith &&
+                        props.getStandOn() &&
+                        props.getAbility()) {
+                    float partialTicks = event.getPartialTicks();
+                    assert mc.player != null;
+                    double x = mc.player.getPosX();
+                    double y = mc.player.getPosX();
+                    double z = mc.player.getPosX();
+                    float yaw = mc.player.rotationYaw;
+                    manager.renderEntityStatic(
+                            player,
+                            x, y, z,
+                            yaw, partialTicks,
+                            event.getMatrixStack(),
+                            mc.getRenderTypeBuffers().getBufferSource(),
+                            manager.getPackedLight(player, partialTicks)
+                    );
+                }
+            });
+        }
     }
 }
