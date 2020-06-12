@@ -256,6 +256,8 @@ public class EventHandleStandAbilities
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
                 if(event.getStand() == EventStopTime.theWorld)
                     EventStopTime.theWorld=null;
+                EventStopTime.dayTime = -1;
+                EventStopTime.gameTime = -1;
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)

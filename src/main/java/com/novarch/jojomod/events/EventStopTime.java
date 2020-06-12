@@ -16,6 +16,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,8 +25,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
     static EntityTheWorld theWorld;
-    static long dayTime = 0;
-    static long gameTime = 0;
+    static long dayTime = -1;
+    static long gameTime = -1;
 
     @SubscribeEvent
     public static void stopTime(StandEvent.StandTickEvent event) {
@@ -33,16 +34,8 @@ public class EventStopTime {
         if (event.getStand() instanceof EntityTheWorld) {
             theWorld = (EntityTheWorld) event.getStand();
             if (theWorld.ability && theWorld.isAlive()) {
-                if(theWorld.timestopTick > 1) {
-                    if(theWorld.world.isRemote) {
-                        theWorld.world.setDayTime(dayTime);
-                        theWorld.world.setGameTime(gameTime);
-                    }
-                    if(player.isCrouching())
-                        player.sendMessage(new ValueTextComponent(gameTime));
-                }
                 if (!theWorld.world.isRemote) {
-                    if (theWorld.timestopTick == 1 || dayTime == 0 || gameTime == 0) {
+                    if (theWorld.timestopTick == 1 || dayTime == -1 || gameTime == -1) {
                         dayTime = theWorld.world.getDayTime();
                         gameTime = theWorld.world.getGameTime();
                     }
@@ -125,6 +118,8 @@ public class EventStopTime {
                                 } if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.fallDistance = props.getFallDistance();
+                                dayTime = -1;
+                                gameTime = -1;
                                 props.clear();
                             }));
                 }
@@ -153,6 +148,18 @@ public class EventStopTime {
                 event.setCanceled(true);
     }
 
+    @SubscribeEvent
+    public static void worldTick(TickEvent.WorldTickEvent event) {
+        if(theWorld != null)
+            if(theWorld.ability)
+                if(dayTime != -1 && gameTime != -1) {
+                    event.world.setDayTime(dayTime);
+                    event.world.setGameTime(gameTime);
+                } else {
+                    dayTime = event.world.getDayTime();
+                    gameTime = event.world.getGameTime();
+                }
+    }
 //    @SubscribeEvent
 //    public static void soundPlaceEvent(PlaySoundEvent event) {
 //        if(theWorld != null)
