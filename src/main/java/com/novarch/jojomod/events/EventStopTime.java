@@ -59,7 +59,7 @@ public class EventStopTime {
                                         if(entity instanceof TNTEntity)
                                             props.setFuse(((TNTEntity) entity).getFuse());
                                         if(!entity.world.isRemote)
-                                            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
+                                            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entity.getUniqueID(), entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                     });
                                 } else {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
