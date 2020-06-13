@@ -85,7 +85,7 @@ public class EventStopTime {
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                             entity.setInvulnerable(true);
-                                            int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
+                                            int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
                                             if(!entity.world.isRemote)
                                                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                         } else {
@@ -116,7 +116,7 @@ public class EventStopTime {
                                 }
                                 if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
-                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
+                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
                                 if(!entity.world.isRemote)
                                     JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                 entity.fallDistance = props.getFallDistance();

@@ -42,8 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.novarch.jojomod.events.EventStopTime.dayTime;
-import static com.novarch.jojomod.events.EventStopTime.gameTime;
+import static com.novarch.jojomod.events.EventStopTime.*;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
@@ -277,10 +276,7 @@ public class EventHandleStandAbilities
                                 }
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
-                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
-                                double[] velocitiesX = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getX()).mapToDouble(i->i).toArray();
-                                double[] velocitiesY = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getY()).mapToDouble(i->i).toArray();
-                                double[] velocitiesZ = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getZ()).mapToDouble(i->i).toArray();
+                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
                                 if(!entity.world.isRemote)
                                     JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
