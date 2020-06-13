@@ -24,6 +24,7 @@ import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -37,6 +38,9 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.novarch.jojomod.events.EventStopTime.dayTime;
+import static com.novarch.jojomod.events.EventStopTime.gameTime;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
@@ -235,24 +239,23 @@ public class EventHandleStandAbilities
         Stand.getLazyOptional(player).ifPresent(props -> {
             player.setInvulnerable(false);
             player.setNoGravity(false);
-            if(!player.isCreative() && !player.isSpectator())
+            if (!player.isCreative() && !player.isSpectator())
                 player.setGameType(GameType.SURVIVAL);
-            if(player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            if(!player.world.isRemote) {
+            if (!player.world.isRemote) {
                 player.world.getServer().getWorld(player.dimension).getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)
                         .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
                         .forEach(Entity::remove);
             }
-            if(player.world.isRemote) {
-                if(props.getStandID() == JojoLibs.StandID.aerosmith)
-                    if(!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
+            if (player.world.isRemote) {
+                if (props.getStandID() == JojoLibs.StandID.aerosmith)
+                    if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
                         Minecraft.getInstance().setRenderViewEntity(player);
                         Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                }
+                    }
             }
-
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
                 if(event.getStand() == EventStopTime.theWorld)
                     EventStopTime.theWorld=null;
@@ -274,6 +277,7 @@ public class EventHandleStandAbilities
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.fallDistance = props2.getFallDistance();
+                                entity.setInvulnerable(false);
                                 props2.clear();
                             }));
             }

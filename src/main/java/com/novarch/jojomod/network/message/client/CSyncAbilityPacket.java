@@ -84,8 +84,6 @@ public class CSyncAbilityPacket {
                         player.sendMessage(new StringTextComponent("Ability: ON"));
                     if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
                         player.world.addEntity(fakePlayer);
-                    if(props.getStandID() == JojoLibs.StandID.theWorld && props.getStandOn())
-                        player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.STOP_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 }
             });
         }

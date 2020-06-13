@@ -7,26 +7,24 @@ import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
-import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
-    static EntityTheWorld theWorld;
-    static long dayTime = -1;
-    static long gameTime = -1;
+    public static EntityTheWorld theWorld;
+    public static long dayTime = -1;
+    public static long gameTime = -1;
 
     @SubscribeEvent
     public static void stopTime(StandEvent.StandTickEvent event) {
@@ -67,27 +65,24 @@ public class EventStopTime {
                                         props.setFire(entity.getFireTimer());
                                         if(entity instanceof TNTEntity)
                                             props.setFuse(((TNTEntity) entity).getFuse());
-                                        if(!entity.world.isRemote)
-                                            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entity.getUniqueID(), entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                     });
                                 } else {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
                                         if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
                                             entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
-                                            if(!(entity instanceof IProjectile) && !(entity instanceof ItemEntity) && !(entity instanceof DamagingProjectileEntity))
-                                                entity.setMotion(0, 0, 0);
-                                            else {
+                                            if((entity instanceof IProjectile) || (entity instanceof ItemEntity) || (entity instanceof DamagingProjectileEntity))
                                                 entity.setNoGravity(true);
-                                                entity.setMotion(0, 0, 0);
-                                                entity.velocityChanged = true;
+                                            else {
+                                                entity.rotationYaw = props.getRotationYaw();
+                                                entity.rotationPitch = props.getRotationPitch();
+                                                entity.setRotationYawHead(props.getRotationYawHead());
                                             }
-                                            entity.rotationYaw = props.getRotationYaw();
-                                            entity.rotationPitch = props.getRotationPitch();
-                                            entity.setRotationYawHead(props.getRotationYawHead());
+                                            entity.setMotion(0, 0, 0);
                                             entity.fallDistance = props.getFallDistance();
                                             entity.setFireTimer(props.getFire());
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
+                                            entity.setInvulnerable(true);
                                             entity.velocityChanged = true;
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -115,9 +110,11 @@ public class EventStopTime {
                                 } else {
                                     if(props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-                                } if(entity instanceof MobEntity)
+                                }
+                                if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.fallDistance = props.getFallDistance();
+                                entity.setInvulnerable(false);
                                 dayTime = -1;
                                 gameTime = -1;
                                 props.clear();

@@ -116,8 +116,7 @@ public abstract class StandPunchEffects {
 	public static void kingCrimson(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			if (punch.shootingStand.orarush)
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.5f);
 			else
@@ -125,9 +124,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
@@ -147,15 +146,14 @@ public abstract class StandPunchEffects {
 	public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 2.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
@@ -194,16 +192,15 @@ public abstract class StandPunchEffects {
 				livingEntity.setMotion(livingEntity.getMotion().getX(), 0, livingEntity.getMotion().getZ());
 			} else {
 				if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
-				final float p = 0.2f;
-				final float p2 = 0.4f;
+				
 				if (livingEntity instanceof WitherEntity) {
 					livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 15.0f);
 					livingEntity.hurtResistantTime = 0;
 					livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 					if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-						livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+						livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 					} else {
-						livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+						livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 					}
 					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 					punch.remove();
@@ -216,9 +213,9 @@ public abstract class StandPunchEffects {
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 				} else {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 				}
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
@@ -257,15 +254,14 @@ public abstract class StandPunchEffects {
 					((PlayerEntity) livingEntity).jump();
 				}
 			} else {
-				final float p = 0.2f;
-				final float p2 = 0.4f;
+				
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.5f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 				} else {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 				}
 				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 				punch.remove();
@@ -636,15 +632,14 @@ public abstract class StandPunchEffects {
 					((PlayerEntity) livingEntity).jump();
 				}
 			} else {
-				final float p = 0.2f;
-				final float p2 = 0.4f;
+				
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 5.0f);
 				livingEntity.hurtResistantTime = 0;
 				livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 				if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 				} else {
-					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+					livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 				}
 				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 				punch.remove();
@@ -1060,16 +1055,15 @@ public abstract class StandPunchEffects {
 	public static void killerQueen(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			((EntityKillerQueen) punch.shootingStand).setBombEntity(livingEntity);
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 0.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
@@ -1088,8 +1082,7 @@ public abstract class StandPunchEffects {
 	public static void crazyDiamond(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			if (punch.shootingStand.ability)
 				livingEntity.addPotionEffect(new EffectInstance(Effects.INSTANT_HEALTH, 20, 2));
 			else
@@ -1097,9 +1090,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
@@ -1123,8 +1116,7 @@ public abstract class StandPunchEffects {
 	public static void purpleHaze(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			if (!punch.world.isRemote) {
 				punch.world.getServer().getWorld(punch.dimension).getEntities()
 						.filter(entity -> entity instanceof MobEntity)
@@ -1137,9 +1129,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
@@ -1162,8 +1154,7 @@ public abstract class StandPunchEffects {
 	public static void whitesnake(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			if (punch.shootingStand.ability)
 				if(livingEntity instanceof PlayerEntity)
 					Stand.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
@@ -1183,9 +1174,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
@@ -1211,8 +1202,7 @@ public abstract class StandPunchEffects {
 		});
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
+			
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), livingEntity.getHealth() / 2 + 0.0001f);
 			if(punch.shootingStand.ability) {
 				livingEntity.setCustomName(new StringTextComponent("Dinnerbone"));
@@ -1222,9 +1212,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
@@ -1245,8 +1235,6 @@ public abstract class StandPunchEffects {
 	public static void theWorld(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
-			final float p = 0.2f;
-			final float p2 = 0.4f;
 			if (punch.shootingStand.orarush)
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.5f);
 			else
@@ -1254,9 +1242,9 @@ public abstract class StandPunchEffects {
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p2, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
 			} else {
-				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - p, livingEntity.getMotion().getZ());
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
