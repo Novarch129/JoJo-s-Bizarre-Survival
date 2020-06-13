@@ -7,18 +7,20 @@ import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
+import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.util.JojoLibs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -83,7 +85,9 @@ public class EventStopTime {
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                             entity.setInvulnerable(true);
-                                            entity.velocityChanged = true;
+                                            int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
+                                            if(!entity.world.isRemote)
+                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
@@ -106,13 +110,15 @@ public class EventStopTime {
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                     entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                     entity.setNoGravity(false);
-                                    entity.velocityChanged = true;
                                 } else {
                                     if(props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                 }
                                 if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
+                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
+                                if(!entity.world.isRemote)
+                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                 entity.fallDistance = props.getFallDistance();
                                 entity.setInvulnerable(false);
                                 dayTime = -1;

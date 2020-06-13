@@ -11,6 +11,7 @@ import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
+import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
@@ -25,6 +26,7 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -34,6 +36,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
@@ -268,13 +271,18 @@ public class EventHandleStandAbilities
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);
-                                    entity.velocityChanged = true;
                                 } else {
                                     if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
                                         entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 }
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
+                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
+                                double[] velocitiesX = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getX()).mapToDouble(i->i).toArray();
+                                double[] velocitiesY = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getY()).mapToDouble(i->i).toArray();
+                                double[] velocitiesZ = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getZ()).mapToDouble(i->i).toArray();
+                                if(!entity.world.isRemote)
+                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
