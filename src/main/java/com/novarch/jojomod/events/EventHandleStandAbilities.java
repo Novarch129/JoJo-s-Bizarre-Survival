@@ -282,7 +282,7 @@ public class EventHandleStandAbilities
                                 double[] velocitiesY = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getY()).mapToDouble(i->i).toArray();
                                 double[] velocitiesZ = entity.world.getServer().getWorld(entity.dimension).getEntities().map(entity1 -> entity1.getMotion().getZ()).mapToDouble(i->i).toArray();
                                 if(!entity.world.isRemote)
-                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
+                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);

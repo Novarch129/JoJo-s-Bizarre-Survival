@@ -87,7 +87,7 @@ public class EventStopTime {
                                             entity.setInvulnerable(true);
                                             int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
                                             if(!entity.world.isRemote)
-                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
+                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
@@ -118,7 +118,7 @@ public class EventStopTime {
                                     ((MobEntity) entity).setNoAI(false);
                                 int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().map(Entity::getEntityId).mapToInt(i->i).toArray();
                                 if(!entity.world.isRemote)
-                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids, entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ()));
+                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
                                 entity.fallDistance = props.getFallDistance();
                                 entity.setInvulnerable(false);
                                 dayTime = -1;

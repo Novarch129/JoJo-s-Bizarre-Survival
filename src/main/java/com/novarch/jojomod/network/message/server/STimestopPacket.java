@@ -1,5 +1,6 @@
 package com.novarch.jojomod.network.message.server;
 
+import com.novarch.jojomod.capabilities.timestop.Timestop;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -11,35 +12,23 @@ import java.util.function.Supplier;
 public class STimestopPacket
 {
     private int[] entity;
-    private double velocityX;
-    private double velocityY;
-    private double velocityZ;
 
     public STimestopPacket() {}
 
-    public STimestopPacket(int[] entity, double velocityX, double velocityY, double velocityZ)
+    public STimestopPacket(int[] entity)
     {
         this.entity = entity;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
-        this.velocityZ = velocityZ;
     }
 
     public void encode(PacketBuffer buffer)
     {
         buffer.writeVarIntArray(entity);
-        buffer.writeDouble(velocityX);
-        buffer.writeDouble(velocityY);
-        buffer.writeDouble(velocityZ);
     }
 
     public static STimestopPacket decode(PacketBuffer buffer)
     {
         STimestopPacket msg = new STimestopPacket();
         msg.entity = buffer.readVarIntArray();
-        msg.velocityX = buffer.readDouble();
-        msg.velocityY = buffer.readDouble();
-        msg.velocityZ = buffer.readDouble();
         return msg;
     }
 
@@ -51,7 +40,7 @@ public class STimestopPacket
                 for (int id : msg.entity) {
                     Entity entity = Minecraft.getInstance().world.getEntityByID(id);
                     if (entity != null)
-                        entity.setVelocity(msg.velocityX, msg.velocityY, msg.velocityZ);
+                        Timestop.getLazyOptional(entity).ifPresent(props -> entity.setVelocity(props.getMotionX(), props.getMotionY(), props.getMotionZ()));
                 }
             });
             ctx.get().setPacketHandled(true);

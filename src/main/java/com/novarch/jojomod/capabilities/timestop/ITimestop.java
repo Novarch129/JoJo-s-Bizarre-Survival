@@ -31,5 +31,9 @@ public interface ITimestop {
     void putRotationYaw(float rotationYaw);
     void putRotationPitch(float rotationPitch);
     void putRotationYawHead(float rotationYawHead);
+    void putFallDistance(float fallDistance);
+    void putFuse(int fuse);
+    void putFire(int fire);
+    void onDataUpdated();
     void clear();
 }

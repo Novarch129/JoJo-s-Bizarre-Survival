@@ -1,5 +1,7 @@
 package com.novarch.jojomod.capabilities.timestop;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -9,6 +11,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,7 +37,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     private int fire = 0;
 
     @CapabilityInject(ITimestop.class)
-    public static final Capability<ITimestop> CAPABILITY = Null();
+    public static final Capability<ITimestop> TIMESTOP = Null();
     private LazyOptional<ITimestop> holder = LazyOptional.of(() -> new Timestop(entity));
 
     public Timestop(Entity entity) {
@@ -66,6 +69,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.posX = posX;
         this.posY = posY;
         this.posZ = posZ;
+        onDataUpdated();
     }
 
     @Override
@@ -88,6 +92,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.motionX = motionX;
         this.motionY = motionY;
         this.motionZ = motionZ;
+        onDataUpdated();
     }
 
     @Override
@@ -110,6 +115,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.rotationYaw = rotationYaw;
         this.rotationPitch = rotationPitch;
         this.rotationYawHead = rotationYawHead;
+        onDataUpdated();
     }
 
     @Override
@@ -120,6 +126,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void setFallDistance(float fallDistance) {
         this.fallDistance = fallDistance;
+        onDataUpdated();
     }
 
     @Override
@@ -130,6 +137,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void setFuse(int fuse) {
         this.fuse = fuse;
+        onDataUpdated();
     }
 
     @Override
@@ -140,6 +148,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void setFire(int fire) {
         this.fire = fire;
+        onDataUpdated();
     }
 
     @Override
@@ -188,6 +197,28 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public void putFallDistance(float fallDistance) {
+        this.fallDistance = fallDistance;
+    }
+
+    @Override
+    public void putFuse(int fuse) {
+        this.fuse = fuse;
+    }
+
+    @Override
+    public void putFire(int fire) {
+        this.fire = fire;
+    }
+
+    @Override
+    public void onDataUpdated() {
+        if(entity != null)
+            if(!entity.world.isRemote)
+                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SSyncTimestopCapabilityPacket(this));
+    }
+
+    @Override
     public void clear() {
         this.posX = 0;
         this.posY = 0;
@@ -206,25 +237,25 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-        return capability == CAPABILITY ? holder.cast() : LazyOptional.empty();
+        return capability == TIMESTOP ? holder.cast() : LazyOptional.empty();
     }
 
     @Override
     public INBT serializeNBT() {
-        return CAPABILITY.getStorage().writeNBT(CAPABILITY, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
+        return TIMESTOP.getStorage().writeNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
     }
 
     @Override
     public void deserializeNBT(INBT nbt) {
-        CAPABILITY.getStorage().readNBT(CAPABILITY, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
+        TIMESTOP.getStorage().readNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
     }
 
     public static ITimestop getCapabilityFromEntity(Entity entity) {
-        return entity.getCapability(CAPABILITY, null).orElse(new Timestop(entity));
+        return entity.getCapability(TIMESTOP, null).orElse(new Timestop(entity));
     }
 
     public static LazyOptional<ITimestop> getLazyOptional(Entity entity) {
-        return entity.getCapability(CAPABILITY, null);
+        return entity.getCapability(TIMESTOP, null);
     }
 
     public static void register() {
@@ -259,9 +290,9 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putRotationYaw(compoundNBT.getFloat("rotationYaw"));
                 instance.putRotationPitch(compoundNBT.getFloat("rotationPitch"));
                 instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
-                instance.setFallDistance(compoundNBT.getInt("fallDistance"));
-                instance.setFuse(compoundNBT.getInt("fuse"));
-                instance.setFire(compoundNBT.getInt("fire"));
+                instance.putFallDistance(compoundNBT.getInt("fallDistance"));
+                instance.putFuse(compoundNBT.getInt("fuse"));
+                instance.putFire(compoundNBT.getInt("fire"));
             }
         }, () -> new Timestop(Null()));
     }

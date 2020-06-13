@@ -5,6 +5,7 @@ import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
 import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
 import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import com.novarch.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
 import com.novarch.jojomod.network.message.server.STimestopPacket;
 
 public class PacketInit {
@@ -35,5 +36,10 @@ public class PacketInit {
                 STimestopPacket::encode,
                 STimestopPacket::decode,
                 STimestopPacket::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                SSyncTimestopCapabilityPacket.class,
+                SSyncTimestopCapabilityPacket::encode,
+                SSyncTimestopCapabilityPacket::decode,
+                SSyncTimestopCapabilityPacket::handle);
     }
 }
