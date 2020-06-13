@@ -85,9 +85,7 @@ public class EventStopTime {
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                             entity.setInvulnerable(true);
-                                            int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
-                                            if(!entity.world.isRemote)
-                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
+                                            entity.velocityChanged = true;
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
@@ -116,9 +114,7 @@ public class EventStopTime {
                                 }
                                 if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
-                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
-                                if(!entity.world.isRemote)
-                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
+                                entity.velocityChanged = true;
                                 entity.fallDistance = props.getFallDistance();
                                 entity.setInvulnerable(false);
                                 dayTime = -1;

@@ -276,9 +276,7 @@ public class EventHandleStandAbilities
                                 }
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
-                                int[] ids = entity.world.getServer().getWorld(entity.dimension).getEntities().filter(entity1 -> entity1 != player && entity1 != theWorld).map(Entity::getEntityId).mapToInt(i->i).toArray();
-                                if(!entity.world.isRemote)
-                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(ids));
+                                entity.velocityChanged = true;
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
