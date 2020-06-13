@@ -12,7 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RenderTheWorld extends MobRenderer<EntityTheWorld, ModelTheWorld<EntityTheWorld>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world.png");
 
 	public RenderTheWorld(EntityRendererManager renderManagerIn)
 	{

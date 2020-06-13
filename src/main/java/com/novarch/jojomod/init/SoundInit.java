@@ -36,4 +36,5 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> SPAWN_CMOON = SOUNDS.register("spawn_cmoon", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_cmoon")));
 	public static final RegistryObject<SoundEvent> SPAWN_THE_WORLD = SOUNDS.register("spawn_the_world", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_world")));
 	public static final RegistryObject<SoundEvent> STOP_TIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
+	public static final RegistryObject<SoundEvent> MUDARUSH = SOUNDS.register("mudarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudarush")));
 }

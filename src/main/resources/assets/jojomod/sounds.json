@@ -135,5 +135,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:stoptime", "stream": false}]
+    },
+
+    "mudarush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:mudarush", "stream": false}]
     }
 }

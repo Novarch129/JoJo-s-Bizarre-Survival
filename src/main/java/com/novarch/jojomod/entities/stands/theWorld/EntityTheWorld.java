@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class EntityTheWorld extends EntityStandBase {
@@ -53,19 +54,19 @@ public class EntityTheWorld extends EntityStandBase {
 
 	public EntityTheWorld(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		this.spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		this.standID = JojoLibs.StandID.theWorld;
+		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
+		standID = JojoLibs.StandID.theWorld;
 	}
 
 	public EntityTheWorld(World world) {
 		super(EntityInit.THE_WORLD.get(), world);
-		this.spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		this.standID = JojoLibs.StandID.theWorld;
+		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
+		standID = JojoLibs.StandID.theWorld;
 	}
 
 	public void tick() {
 		super.tick();
-		this.fallDistance = 0.0f;
+		fallDistance = 0.0f;
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
@@ -74,6 +75,9 @@ public class EntityTheWorld extends EntityStandBase {
 			if(ability) {
 				timestopTick++;
 				player.setInvulnerable(true);
+				if(timestopTick == 1)
+					world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
+
 			} else {
 				timestopTick = 0;
 				player.setInvulnerable(false);
@@ -87,44 +91,43 @@ public class EntityTheWorld extends EntityStandBase {
 				remove();
 			if (player.isSprinting()) {
 				if (attackSwing(player))
-					this.oratick++;
-				if (this.oratick == 1) {
-					if (!player.isCreative())
-						player.getFoodStats().addStats(0, 0.0F);
-					if (!this.world.isRemote)
-						this.orarush = true;
+					oratick++;
+				if (oratick == 1) {
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.MUDARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+					if (!world.isRemote)
+						orarush = true;
 				}
 			} else if (attackSwing(getMaster())) {
-				if (!this.world.isRemote) {
-					this.oratick++;
-					if (this.oratick == 1) {
-						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.theWorld theWorld = new EntityStandPunch.theWorld(this.world, this, player);
+				if (!world.isRemote) {
+					oratick++;
+					if (oratick == 1) {
+						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
+						EntityStandPunch.theWorld theWorld = new EntityStandPunch.theWorld(world, this, player);
 						theWorld.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
-						this.world.addEntity(theWorld);
+						world.addEntity(theWorld);
 					}
 				}
 			}
 			if (player.swingProgressInt == 0)
-				this.oratick = 0;
-			if (this.orarush) {
+				oratick = 0;
+			if (orarush) {
 				player.setSprinting(false);
-				this.oratickr++;
-				if (this.oratickr >= 10)
-					if (!this.world.isRemote) {
+				oratickr++;
+				if (oratickr >= 10)
+					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.theWorld theWorld1 = new EntityStandPunch.theWorld(this.world, this, player);
+						EntityStandPunch.theWorld theWorld1 = new EntityStandPunch.theWorld(world, this, player);
 						theWorld1.setRandomPositions();
 						theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
-						this.world.addEntity(theWorld1);
-						EntityStandPunch.theWorld theWorld2 = new EntityStandPunch.theWorld(this.world, this, player);
+						world.addEntity(theWorld1);
+						EntityStandPunch.theWorld theWorld2 = new EntityStandPunch.theWorld(world, this, player);
 						theWorld2.setRandomPositions();
 						theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
-						this.world.addEntity(theWorld2);
+						world.addEntity(theWorld2);
 					}
-				if (this.oratickr >= 80) {
-					this.orarush = false;
-					this.oratickr = 0;
+				if (oratickr >= 80) {
+					orarush = false;
+					oratickr = 0;
 				}
 			}
 		}
@@ -133,11 +136,6 @@ public class EntityTheWorld extends EntityStandBase {
 	@Override
 	public boolean isEntityInsideOpaqueBlock() {
 		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
 	}
 
 	@Override

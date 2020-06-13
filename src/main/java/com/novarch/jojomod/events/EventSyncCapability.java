@@ -9,7 +9,11 @@ import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySh
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -75,8 +79,21 @@ public class EventSyncCapability
                     player.getServerWorld().getEntities()
                         .forEach(entity -> {
                                     Timestop.getLazyOptional(entity).ifPresent(props2 -> {
-                                        if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                        if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                             entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                            entity.setNoGravity(false);
+                                        } else {
+                                            if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                                entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                        }
+                                        if (entity instanceof MobEntity)
+                                            ((MobEntity) entity).setNoAI(false);
+                                        entity.velocityChanged = true;
+                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                        entity.fallDistance = props2.getFallDistance();
+                                        entity.setInvulnerable(false);
+                                        props2.clear();
+
                                     });
                                     if(entity instanceof EntityTheWorld)
                                         if(entity == EventStopTime.theWorld)

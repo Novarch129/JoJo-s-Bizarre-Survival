@@ -108,6 +108,7 @@ public abstract class EntityStandBase extends MobEntity {
         fallDistance = 0.0f;
         if (!world.isRemote) {
             if (getMaster() == null) {
+                MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
                 remove();
                 return;
             }
@@ -115,7 +116,13 @@ public abstract class EntityStandBase extends MobEntity {
             MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this));
             dodgeAttacks();
 
-            if (!getMaster().isAlive() || getMaster().isSpectator())
+            if (!getMaster().isAlive()) {
+                MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
+                MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
+                remove();
+            }
+
+            if(getMaster().isSpectator())
                 remove();
 
             if (getAir() < 20)
@@ -126,8 +133,8 @@ public abstract class EntityStandBase extends MobEntity {
                 standOn = props.getStandOn();
 
                 if (!props.getStandOn()) {
-                    StandEvent.StandUnsummonedEvent event = new StandEvent.StandUnsummonedEvent(getMaster(), this);
-                    MinecraftForge.EVENT_BUS.post(event);
+                    MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
+                    MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(getMaster(), this));
                     remove();
                 }
             });

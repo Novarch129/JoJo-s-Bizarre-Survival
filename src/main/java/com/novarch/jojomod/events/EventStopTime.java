@@ -7,20 +7,19 @@ import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.StandEvent;
-import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -84,7 +83,6 @@ public class EventStopTime {
                                             entity.setFireTimer(props.getFire());
                                             if(entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
-                                            entity.setInvulnerable(true);
                                             entity.velocityChanged = true;
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -115,8 +113,8 @@ public class EventStopTime {
                                 if(entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.velocityChanged = true;
-                                entity.fallDistance = props.getFallDistance();
-                                entity.setInvulnerable(false);
+                                if(props.getFallDistance() != 0)
+                                    entity.fallDistance = props.getFallDistance();
                                 dayTime = -1;
                                 gameTime = -1;
                                 props.clear();
@@ -149,15 +147,41 @@ public class EventStopTime {
 
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        if(theWorld != null)
-            if(theWorld.ability)
-                if(dayTime != -1 && gameTime != -1) {
-                    event.world.setDayTime(dayTime);
-                    event.world.setGameTime(gameTime);
+        World world = event.world;
+        if(theWorld != null) {
+            if (theWorld.ability)
+                if (dayTime != -1 && gameTime != -1) {
+                    world.setDayTime(dayTime);
+                    world.setGameTime(gameTime);
                 } else {
-                    dayTime = event.world.getDayTime();
-                    gameTime = event.world.getGameTime();
+                    dayTime = world.getDayTime();
+                    gameTime = world.getGameTime();
                 }
+        }
+    }
+
+    @SubscribeEvent
+    public static void standRemoved(StandEvent.StandTickEvent.StandRemovedEvent event) {
+        if(event.getStand() instanceof EntityTheWorld)
+            if(!event.getStand().world.isRemote)
+                event.getStand().world.getServer().getWorld(event.getStand().dimension).getEntities()
+                        .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+                            if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
+                                entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                                entity.setNoGravity(false);
+                            } else {
+                                if(props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                    entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+                            }
+                            if(entity instanceof MobEntity)
+                                ((MobEntity) entity).setNoAI(false);
+                            entity.velocityChanged = true;
+                            if(props.getFallDistance() != 0)
+                                entity.fallDistance = props.getFallDistance();
+                            dayTime = -1;
+                            gameTime = -1;
+                            props.clear();
+                        }));
     }
 //    @SubscribeEvent
 //    public static void soundPlaceEvent(PlaySoundEvent event) {

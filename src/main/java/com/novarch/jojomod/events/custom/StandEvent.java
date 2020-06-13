@@ -30,7 +30,7 @@ public class StandEvent extends PlayerEvent {
     /**
      * Fired when {@link com.novarch.jojomod.capabilities.stand.IStand} standOn is set to false.
      * This Event is fired from {@link EntityStandBase} right before it's removed from the world.
-     * You should not attempt to use the {@link EntityStandBase} provided in this event as it's most likely removed.
+     * You should check if the {@link EntityStandBase} provided in this event is <code>null</code> as it can be dead.
      * This Event does not have a result.
      */
     public static class StandUnsummonedEvent extends StandEvent {
@@ -49,6 +49,29 @@ public class StandEvent extends PlayerEvent {
     @Cancelable
     public static class StandSummonedEvent extends StandEvent {
         public StandSummonedEvent(PlayerEntity player, EntityStandBase stand) {
+            super(player, stand);
+        }
+    }
+
+    /**
+     * Fired when an {@link EntityStandBase}'s master dies.
+     * This Event is fired from {@link EntityStandBase} right before it's removed from the world.
+     * You should check if the {@link EntityStandBase} provided in this event is <code>null</code> as it can be dead.
+     * This Event does not have a result.
+     */
+    public static class MasterDeathEvent extends StandEvent {
+        public MasterDeathEvent(PlayerEntity player, @Nullable EntityStandBase stand) {
+            super(player, stand);
+        }
+    }
+
+    /**
+     * Fired when an {@link EntityStandBase} is removed from the {@link net.minecraft.world.World}.
+     * You should check if the {@link EntityStandBase} provided in this event is <code>null</code> as it can be dead.
+     * This Event does not have a result.
+     */
+    public static class StandRemovedEvent extends StandEvent {
+        public StandRemovedEvent(PlayerEntity player, @Nullable EntityStandBase stand) {
             super(player, stand);
         }
     }

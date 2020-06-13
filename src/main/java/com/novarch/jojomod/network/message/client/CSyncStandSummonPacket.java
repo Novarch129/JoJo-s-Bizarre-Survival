@@ -3,6 +3,7 @@ package com.novarch.jojomod.network.message.client;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -17,6 +18,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 @SuppressWarnings("unused")
@@ -99,8 +101,10 @@ public class CSyncStandSummonPacket {
 						player.world.addEntity(stand);
 						stand.spawnSound();
 					} else {
-						if (!stand.hasAct())
+						if (!stand.hasAct()) {
+							MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
 							stand.remove();
+						}
 						else
 							stand.changeAct();
 					}
