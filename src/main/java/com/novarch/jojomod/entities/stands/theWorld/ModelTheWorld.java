@@ -94,8 +94,8 @@ public class ModelTheWorld<T extends EntityTheWorld> extends EntityModel<T> {
 		Eyes = new ModelRenderer(this);
 		Eyes.setRotationPoint(0.0F, 0.0F, -0.225F);
 		Head.addChild(Eyes);
-		Eyes.setTextureOffset(0, 0).addBox(-3.0F, -7.1F, -4.225F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-		Eyes.setTextureOffset(0, 0).addBox(1.0F, -7.1F, -4.225F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		Eyes.setTextureOffset(0, 0).addBox(-3.0F, -7.1F, -3.9F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+		Eyes.setTextureOffset(0, 0).addBox(1.0F, -7.1F, -3.9F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
 		Helmet = new ModelRenderer(this);
 		Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -109,10 +109,10 @@ public class ModelTheWorld<T extends EntityTheWorld> extends EntityModel<T> {
 		Helmet.setTextureOffset(42, 118).addBox(-4.0F, -11.375F, -5.25F, 8.0F, 1.0F, 9.0F, 0.0F, false);
 		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.125F, -5.25F, 8.0F, 4.0F, 1.0F, 0.0F, false);
 		Helmet.setTextureOffset(110, 123).addBox(-1.0F, -8.025F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(109, 125).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(110, 125).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-		Helmet.setTextureOffset(107, 125).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(109, 104).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(110, 123).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
+		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
 
 		Mask = new ModelRenderer(this);
 		Mask.setRotationPoint(-3.5F, -2.25F, -0.3F);
@@ -123,13 +123,13 @@ public class ModelTheWorld<T extends EntityTheWorld> extends EntityModel<T> {
 		Mask1 = new ModelRenderer(this);
 		Mask1.setRotationPoint(0.0F, 0.0F, 0.0F);
 		Mask.addChild(Mask1);
-		Mask1.setTextureOffset(112, 124).addBox(-0.9293F, -4.9293F, -4.94F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+		Mask1.setTextureOffset(110, 123).addBox(-0.9293F, -4.9293F, -4.94F, 2.0F, 1.0F, 2.0F, 0.0F, false);
 
 		Mask2 = new ModelRenderer(this);
 		Mask2.setRotationPoint(0.0F, -4.5F, -4.5F);
 		Mask.addChild(Mask2);
 		setRotationAngle(Mask2, 0.0F, 0.0F, 1.5708F);
-		Mask2.setTextureOffset(112, 124).addBox(-1.4293F, -1.0707F, -0.44F, 2.0F, 1.0F, 2.0F, 0.0F, false);
+		Mask2.setTextureOffset(110, 123).addBox(-1.4293F, -1.0707F, -0.44F, 2.0F, 1.0F, 2.0F, 0.0F, false);
 
 		Tubes = new ModelRenderer(this);
 		Tubes.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -213,7 +213,7 @@ public class ModelTheWorld<T extends EntityTheWorld> extends EntityModel<T> {
 		Tube11.setTextureOffset(110, 123).addBox(-1.2421F, 1.0997F, -1.7946F, 1.0F, 4.0F, 1.0F, 0.0F, false);
 
 		Heart = new ModelRenderer(this);
-		Heart.setRotationPoint(-0.25F, 15.275F, 0.6F);
+		Heart.setRotationPoint(-0.25F, 15.65F, 0.6F);
 		Head.addChild(Heart);
 		
 

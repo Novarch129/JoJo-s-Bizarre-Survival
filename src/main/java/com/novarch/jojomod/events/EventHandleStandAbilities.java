@@ -11,6 +11,7 @@ import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
+import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
@@ -34,6 +35,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -270,8 +272,8 @@ public class EventHandleStandAbilities
                                 }
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
-                                entity.velocityChanged = true;
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                entity.velocityChanged = true;
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
                                 props2.clear();

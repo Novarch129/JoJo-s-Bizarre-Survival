@@ -16,10 +16,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventStopTime {
@@ -71,7 +72,7 @@ public class EventStopTime {
                                     Timestop.getLazyOptional(entity).ifPresent(props -> {
                                         if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
                                             entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
-                                            if((entity instanceof IProjectile) || (entity instanceof ItemEntity) || (entity instanceof DamagingProjectileEntity))
+                                            if ((entity instanceof IProjectile) || (entity instanceof ItemEntity) || (entity instanceof DamagingProjectileEntity))
                                                 entity.setNoGravity(true);
                                             else {
                                                 entity.rotationYaw = props.getRotationYaw();
@@ -79,11 +80,27 @@ public class EventStopTime {
                                                 entity.setRotationYawHead(props.getRotationYawHead());
                                             }
                                             entity.setMotion(0, 0, 0);
+
                                             entity.fallDistance = props.getFallDistance();
                                             entity.setFireTimer(props.getFire());
-                                            if(entity instanceof TNTEntity)
+                                            if (entity instanceof TNTEntity)
                                                 ((TNTEntity) entity).setFuse(props.getFuse());
                                             entity.velocityChanged = true;
+//                                            if(!entity.world.isRemote) {
+//                                                int[] entities = entity.world.getServer().getWorld(entity.dimension).getEntities().mapToInt(Entity::getEntityId).toArray();
+//                                                int[] velocities = new int[entities.length * 3];
+//                                                entity.world.getServer().getWorld(entity.dimension).getEntities()
+//                                                        .filter(entity1 -> entity1 != theWorld && entity1 != player)
+//                                                        .map(Entity::getMotion)
+//                                                        .forEach(i -> {
+//                                                            for(int i1 = 0; i1 < velocities.length; i1+=3) {
+//                                                                velocities[i1] = (int) (i.getX() * 100);
+//                                                                velocities[i1+1] = (int) (i.getY() * 100);
+//                                                                velocities[i1+2] = (int) (i.getZ() * 100);
+//                                                            }
+//                                                        });
+//                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entities, velocities));
+//                                            }
                                         } else {
                                             props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
                                             props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
@@ -135,14 +152,16 @@ public class EventStopTime {
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
         if(theWorld != null)
             if(theWorld.ability)
-                event.setCanceled(true);
+                if(event.getPlayer() != theWorld.getMaster())
+                    event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
         if(theWorld != null)
             if(theWorld.ability)
-                event.setCanceled(true);
+                if(event.getEntity() != theWorld.getMaster())
+                    event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -183,11 +202,50 @@ public class EventStopTime {
                             props.clear();
                         }));
     }
-//    @SubscribeEvent
-//    public static void soundPlaceEvent(PlaySoundEvent event) {
-//        if(theWorld != null)
-//            if(theWorld.ability)
-//                if(event.getSound().getSoundLocation() == SoundInit.STOP_TIME.get().getName())
-//                    event.setCanceled(true);
-//    }
+
+    @SubscribeEvent
+    public static void pistonEvent(PistonEvent.Pre event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void playerInteract1(PlayerInteractEvent.EntityInteractSpecific event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                if(event.getPlayer() != theWorld.getMaster())
+                    event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void playerInteract2(PlayerInteractEvent.EntityInteract event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                if(event.getPlayer() != theWorld.getMaster())
+                    event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                if(event.getPlayer() != theWorld.getMaster())
+                    event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
+        if(theWorld!=null)
+            if(theWorld.ability)
+                if(event.getPlayer() != theWorld.getMaster())
+                    event.setCanceled(true);
+    }
 }
