@@ -13,5 +13,6 @@ public class EventInit
         bus.register(EventAbilityGER.class);
         bus.register(EventHandleStandAbilities.class);
         bus.register(EventStopTime.class);
+        bus.register(ClientEvents.class);
     }
 }

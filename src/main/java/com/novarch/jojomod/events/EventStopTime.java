@@ -14,6 +14,7 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -28,7 +29,6 @@ public class EventStopTime {
     public static long dayTime = -1;
     public static long gameTime = -1;
 
-    @SubscribeEvent
     public static void stopTime(StandEvent.StandTickEvent event) {
         PlayerEntity player = event.getPlayer();
         if (event.getStand() instanceof EntityTheWorld) {
@@ -168,7 +168,7 @@ public class EventStopTime {
     public static void worldTick(TickEvent.WorldTickEvent event) {
         World world = event.world;
         if(theWorld != null) {
-            if (theWorld.ability)
+            if (theWorld.ability) {
                 if (dayTime != -1 && gameTime != -1) {
                     world.setDayTime(dayTime);
                     world.setGameTime(gameTime);
@@ -176,14 +176,11 @@ public class EventStopTime {
                     dayTime = world.getDayTime();
                     gameTime = world.getGameTime();
                 }
-        }
-    }
-
-    @SubscribeEvent
-    public static void standRemoved(StandEvent.StandTickEvent.StandRemovedEvent event) {
-        if(event.getStand() instanceof EntityTheWorld)
-            if(!event.getStand().world.isRemote)
-                event.getStand().world.getServer().getWorld(event.getStand().dimension).getEntities()
+            }
+        } else {
+            if(!world.isRemote) {
+                world.getServer().getWorld(world.dimension.getType()).getEntities()
+                        .filter(entity -> !(entity instanceof PlayerEntity))
                         .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                             if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                 entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
@@ -201,6 +198,8 @@ public class EventStopTime {
                             gameTime = -1;
                             props.clear();
                         }));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -230,14 +229,15 @@ public class EventStopTime {
     public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
         if(theWorld!=null)
             if(theWorld.ability)
-                event.setCanceled(true);
+                if(event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
+                    event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
         if(theWorld!=null)
             if(theWorld.ability)
-                if(event.getPlayer() != theWorld.getMaster())
+                if(event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
                     event.setCanceled(true);
     }
 
@@ -245,7 +245,9 @@ public class EventStopTime {
     public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
         if(theWorld!=null)
             if(theWorld.ability)
-                if(event.getPlayer() != theWorld.getMaster())
+                if(event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID()) {
                     event.setCanceled(true);
+                    theWorld.getMaster().sendMessage(new StringTextComponent("leftclickblock"));
+                }
     }
 }

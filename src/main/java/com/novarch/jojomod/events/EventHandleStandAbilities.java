@@ -255,8 +255,7 @@ public class EventHandleStandAbilities
                     }
             }
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
-                if(event.getStand() == EventStopTime.theWorld)
-                    EventStopTime.theWorld=null;
+                EventStopTime.theWorld=null;
                 EventStopTime.dayTime = -1;
                 EventStopTime.gameTime = -1;
                 if (!player.world.isRemote)
@@ -305,34 +304,5 @@ public class EventHandleStandAbilities
     public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
         if(!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void renderPlayer(RenderWorldLastEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
-        EntityRendererManager manager = mc.getRenderManager();
-        if(player != null) {
-            Stand.getLazyOptional(player).ifPresent(props -> {
-                if(props.getStandID() == JojoLibs.StandID.aerosmith &&
-                        props.getStandOn() &&
-                        props.getAbility()) {
-                    float partialTicks = event.getPartialTicks();
-                    assert mc.player != null;
-                    double x = mc.player.getPosX();
-                    double y = mc.player.getPosX();
-                    double z = mc.player.getPosX();
-                    float yaw = mc.player.rotationYaw;
-                    manager.renderEntityStatic(
-                            player,
-                            x, y, z,
-                            yaw, partialTicks,
-                            event.getMatrixStack(),
-                            mc.getRenderTypeBuffers().getBufferSource(),
-                            manager.getPackedLight(player, partialTicks)
-                    );
-                }
-            });
-        }
     }
 }
