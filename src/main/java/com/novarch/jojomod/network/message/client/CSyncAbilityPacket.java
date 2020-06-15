@@ -77,13 +77,15 @@ public class CSyncAbilityPacket {
                 if (!props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.theEmperor) {
                     if (props.getStandID() != JojoLibs.StandID.madeInHeaven || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() != 0))
                         player.sendMessage(new StringTextComponent("Ability: OFF"));
+                    if(props.getStandID() == JojoLibs.StandID.theWorld && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
+                        player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 }
 
                 if (props.getAbility() && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER && props.getStandID() != JojoLibs.StandID.killerQueen && props.getStandID() != JojoLibs.StandID.theEmperor) {
                     if (props.getStandID() != JojoLibs.StandID.madeInHeaven || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() != 0))
                         player.sendMessage(new StringTextComponent("Ability: ON"));
-//                    if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
-//                        player.world.addEntity(fakePlayer);
+                    if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
+                        player.world.addEntity(fakePlayer);
                 }
             });
         }

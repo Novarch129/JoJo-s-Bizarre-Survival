@@ -245,9 +245,7 @@ public class EventStopTime {
     public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
         if(theWorld!=null)
             if(theWorld.ability)
-                if(event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID()) {
+                if(event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
                     event.setCanceled(true);
-                    theWorld.getMaster().sendMessage(new StringTextComponent("leftclickblock"));
-                }
     }
 }

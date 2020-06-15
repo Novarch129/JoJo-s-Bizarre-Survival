@@ -262,7 +262,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 		setAct(0);
 		setStandID(0);
 		setCooldown(0);
-		setTimeLeft(0);
+		setTimeLeft(1000);
 		setTransformed(0);
 		setDiavolo("");
 		setAbility(true);

@@ -14,6 +14,7 @@ public class JojoBizarreSurvivalConfig
         public final ForgeConfigSpec.BooleanValue madeInHeavenAbilityAccelerating;
         public final ForgeConfigSpec.BooleanValue standPunchDamage;
         public final ForgeConfigSpec.BooleanValue standPunchBlockBreaking;
+        public final ForgeConfigSpec.BooleanValue infiniteTimestop;
 
         Common(final ForgeConfigSpec.Builder builder)
         {
@@ -38,6 +39,10 @@ public class JojoBizarreSurvivalConfig
             standPunchBlockBreaking = builder
                     .comment("Toggle Stand punches breaking blocks, like the MobGriefing gamerule.")
                     .define("standPunchBlockBreaking", true);
+
+            infiniteTimestop = builder
+                    .comment("Toggle The World's timestop no having a time limit.")
+                    .define("infiniteTimestop", false);
 
             builder.pop();
         }

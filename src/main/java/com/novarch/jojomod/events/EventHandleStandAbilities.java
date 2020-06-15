@@ -11,6 +11,7 @@ import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
+import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
@@ -23,6 +24,8 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -255,6 +258,8 @@ public class EventHandleStandAbilities
                     }
             }
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
+                if(props.getAbility() && props.getTimeLeft() > 780)
+                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
                 EventStopTime.theWorld=null;
                 EventStopTime.dayTime = -1;
                 EventStopTime.gameTime = -1;

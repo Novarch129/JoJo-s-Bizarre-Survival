@@ -4,6 +4,7 @@ import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.ITimestop;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -64,6 +65,14 @@ public class EntityTheWorld extends EntityStandBase {
 		return super.createSpawnPacket();
 	}
 
+	@Override
+	public void spawnSound() {
+		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+			if(!props.getAbility())
+				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 1.0f, 1.0f);
+		});
+	}
+
 	public EntityTheWorld(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
@@ -82,85 +91,44 @@ public class EntityTheWorld extends EntityStandBase {
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
+			Stand.getLazyOptional(player).ifPresent(props2 -> {
+				ability = props2.getAbility();
 
-			if (this.ability) {
-				Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
-				timestopTick++;
-				player.setInvulnerable(true);
-				if (timestopTick == 1)
-					world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
-				theWorld = this;
+				if (ability && props2.getTimeLeft() > 780) {
+					props2.subtractTimeLeft(1);
+					Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
+					timestopTick++;
+					player.setInvulnerable(true);
+					if (timestopTick == 1 && props2.getCooldown() <= 0)
+						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
+					theWorld = this;
 
-				if (!this.world.isRemote) {
-					if (this.timestopTick == 1 || dayTime == -1 || gameTime == -1) {
-						dayTime = this.world.getDayTime();
-						gameTime = this.world.getGameTime();
-					}
-					this.world.getServer().getWorld(this.dimension).getEntities()
-							.filter(entity -> entity != this)
-							.filter(entity -> entity != player)
-							.filter(entity -> !(entity instanceof EntityGoldExperienceRequiem))
-							.forEach(entity -> {
-								if (entity instanceof PlayerEntity) {
-									IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
-									if (props.getStandID() == JojoLibs.StandID.GER)
-										return;
-									if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
-										return;
-								}
-								if (entity instanceof MobEntity) {
-									if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
-										((MobEntity) entity).setAttackTarget(null);
-										((MobEntity) entity).setRevengeTarget(null);
+					if (!world.isRemote) {
+						if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
+							dayTime = world.getDayTime();
+							gameTime = world.getGameTime();
+						}
+						world.getServer().getWorld(dimension).getEntities()
+								.filter(entity -> entity != this)
+								.filter(entity -> entity != player)
+								.filter(entity -> !(entity instanceof EntityGoldExperienceRequiem))
+								.forEach(entity -> {
+									if (entity instanceof PlayerEntity) {
+										IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
+										if (props.getStandID() == JojoLibs.StandID.GER)
+											return;
+										if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+											return;
 									}
-									((MobEntity) entity).setNoAI(true);
-								}
-								if (this.timestopTick == 1) {
-									Timestop.getLazyOptional(entity).ifPresent(props -> {
-										props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-										props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
-										props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
-										props.setFallDistance(entity.fallDistance);
-										props.setFire(entity.getFireTimer());
-										if (entity instanceof TNTEntity)
-											props.setFuse(((TNTEntity) entity).getFuse());
-									});
-								} else {
-									Timestop.getLazyOptional(entity).ifPresent(props -> {
-										if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
-											entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
-											if ((entity instanceof IProjectile) || (entity instanceof ItemEntity) || (entity instanceof DamagingProjectileEntity))
-												entity.setNoGravity(true);
-											else {
-												entity.rotationYaw = props.getRotationYaw();
-												entity.rotationPitch = props.getRotationPitch();
-												entity.setRotationYawHead(props.getRotationYawHead());
-											}
-											entity.setMotion(0, 0, 0);
-
-											entity.fallDistance = props.getFallDistance();
-											entity.setFireTimer(props.getFire());
-											if (entity instanceof TNTEntity)
-												((TNTEntity) entity).setFuse(props.getFuse());
-											entity.velocityChanged = true;
-//                                            if(!entity.world.isRemote) {
-//												final Stream<Entity> entityStream = entity.world.getServer().getWorld(entity.dimension).getEntities();
-//                                                int[] entities = entityStream.mapToInt(Entity::getEntityId).toArray();
-//                                                int[] velocities = new int[entities.length * 3];
-//                                                entityStream
-//														.filter(entity1 -> entity1 != this && entity1 != player)
-//                                                        .map(Entity::getMotion)
-//                                                        .forEach(i -> {
-//                                                            for(int i1 = 0; i1 < velocities.length; i1++) {
-//                                                                velocities[i1*3] = (int) (i.getX() * 100);
-//                                                                velocities[i1*3+1] = (int) (i.getY() * 100);
-//                                                                velocities[i1*3+2] = (int) (i.getZ() * 100);
-//                                                            }
-//                                                        });
-//                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entities, velocities));
-//                                            }
-										} else {
+									if (entity instanceof MobEntity) {
+										if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+											((MobEntity) entity).setAttackTarget(null);
+											((MobEntity) entity).setRevengeTarget(null);
+										}
+										((MobEntity) entity).setNoAI(true);
+									}
+									if (this.timestopTick == 1) {
+										Timestop.getLazyOptional(entity).ifPresent(props -> {
 											props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
 											props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
 											props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
@@ -168,38 +136,103 @@ public class EntityTheWorld extends EntityStandBase {
 											props.setFire(entity.getFireTimer());
 											if (entity instanceof TNTEntity)
 												props.setFuse(((TNTEntity) entity).getFuse());
-										}
-									});
-								}
-							});
-				}
-			} else {
-				timestopTick = 0;
-				player.setInvulnerable(false);
-				theWorld = null;
-				if (!this.world.isRemote) {
-					this.world.getServer().getWorld(this.dimension).getEntities()
-							.filter(entity -> entity != this)
-							.filter(entity -> entity != player)
-							.forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
-								if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
-									entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-									entity.setNoGravity(false);
-								} else {
-									if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+										});
+									} else {
+										Timestop.getLazyOptional(entity).ifPresent(props -> {
+											if (props.getPosX() != 0 && props.getPosY() != 0 && props.getPosZ() != 0) {
+												entity.setPosition(props.getPosX(), props.getPosY(), props.getPosZ());
+												if ((entity instanceof IProjectile) || (entity instanceof ItemEntity) || (entity instanceof DamagingProjectileEntity))
+													entity.setNoGravity(true);
+												else {
+													entity.rotationYaw = props.getRotationYaw();
+													entity.rotationPitch = props.getRotationPitch();
+													entity.setRotationYawHead(props.getRotationYawHead());
+												}
+												entity.setMotion(0, 0, 0);
+
+												entity.fallDistance = props.getFallDistance();
+												entity.setFireTimer(props.getFire());
+												if (entity instanceof TNTEntity)
+													((TNTEntity) entity).setFuse(props.getFuse());
+												entity.velocityChanged = true;
+//                                            if(!entity.world.isRemote) {
+//                                            	final List<Entity> entityList = entity.world.getServer().getWorld(entity.dimension).getEntities().collect(Collectors.toList());
+//                                                int[] entities = entityList.stream().mapToInt(Entity::getEntityId).toArray();
+//                                                int[] velocities = new int[entities.length * 3];
+//												entityList
+//														.stream()
+//														.filter(entity1 -> entity1 != this && entity1 != player)
+//                                                        .map(Entity::getMotion)
+//                                                        .forEach(i -> {
+//                                                            for(int i1 = 0; i1 < velocities.length; i1+=3) {
+//                                                                velocities[i1] = (int) (i.getX() * 100);
+//                                                                velocities[i1+1] = (int) (i.getY() * 100);
+//                                                                velocities[i1+2] = (int) (i.getZ() * 100);
+//                                                            }
+//                                                        });
+//                                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> entity.dimension), new STimestopPacket(entities, velocities));
+//                                            }
+											} else {
+												props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
+												props.setMotion(entity.getMotion().getX(), entity.getMotion().getY(), entity.getMotion().getZ());
+												props.setRotation(entity.rotationYaw, entity.rotationPitch, entity.getRotationYawHead());
+												props.setFallDistance(entity.fallDistance);
+												props.setFire(entity.getFireTimer());
+												if (entity instanceof TNTEntity)
+													props.setFuse(((TNTEntity) entity).getFuse());
+											}
+										});
+									}
+								});
+					}
+				} else if(!ability || props2.getTimeLeft() <= 780) {
+					timestopTick = 0;
+					player.setInvulnerable(false);
+					theWorld = null;
+					if (!this.world.isRemote) {
+						this.world.getServer().getWorld(this.dimension).getEntities()
+								.filter(entity -> entity != this)
+								.filter(entity -> entity != player)
+								.forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+									if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
 										entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-								}
-								if (entity instanceof MobEntity)
-									((MobEntity) entity).setNoAI(false);
-								entity.velocityChanged = true;
-								if (props.getFallDistance() != 0)
-									entity.fallDistance = props.getFallDistance();
-								dayTime = -1;
-								gameTime = -1;
-								props.clear();
-							}));
+										entity.setNoGravity(false);
+									} else {
+										if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+											entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+									}
+									if (entity instanceof MobEntity)
+										((MobEntity) entity).setNoAI(false);
+									entity.velocityChanged = true;
+									if (props.getFallDistance() != 0)
+										entity.fallDistance = props.getFallDistance();
+									dayTime = -1;
+									gameTime = -1;
+									props.clear();
+								}));
+					}
 				}
-			}
+
+				if(JojoBizarreSurvivalConfig.COMMON.infiniteTimestop.get())
+					props2.setTimeLeft(1000);
+
+				if(props2.getTimeLeft() == 781)
+					props2.setCooldown(201);
+
+				if(props2.getTimeLeft() == 831)
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.RESUME_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
+
+				if(props2.getCooldown() > 0)
+					props2.subtractCooldown(1);
+
+				if(props2.getCooldown() == 1)
+					props2.setTimeLeft(1000);
+
+				if(!ability && props2.getTimeLeft() < 1000)
+					props2.addTimeLeft(1);
+			});
+
+
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);

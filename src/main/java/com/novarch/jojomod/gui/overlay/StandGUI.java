@@ -72,6 +72,13 @@ public class StandGUI extends AbstractGui
                     if(timeLeft > 800 && cooldown == 0)
                         renderTimeLeft(timeLeft - 800);
                 }
+
+                //The World
+                else if(props.getStandID() == JojoLibs.StandID.theWorld)
+                {
+                    if(timeLeft > 800 && cooldown == 0)
+                        renderTimeLeft(timeLeft - 780);
+                }
             }
             if(props.getStandID() != JojoLibs.StandID.madeInHeaven && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
                 if(cooldown > 0)

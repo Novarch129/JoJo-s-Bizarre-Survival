@@ -137,6 +137,12 @@
         "sounds": [{"name": "jojomod:stoptime", "stream": false}]
     },
 
+    "resumetime":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:resumetime", "stream": false}]
+    },
+
     "mudarush":
     {
         "category": "neutral",
