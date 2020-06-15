@@ -1,12 +1,12 @@
 package com.novarch.jojomod.entities.stands.madeInHeaven;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.cMoon.EntityCMoon;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
+import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -136,7 +136,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 						EventD4CTeleportProcessor.madeInHeaven.add(entity);
 						entity.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 99));
 						entity.fallDistance = 0;
-						entity.setSpawnDimenion(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE));
+						entity.setSpawnDimenion(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE));
 						prps.removeStand();
 						entity.setInvulnerable(false);
 					}

@@ -20,8 +20,6 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * @author Novarch
@@ -40,10 +38,6 @@ public class JojoBizarreSurvival
         PROTOCOL_VERSION::equals,
         PROTOCOL_VERSION::equals
     );
-    public static final ResourceLocation D4C_DIMENSION_TYPE = new ResourceLocation(MOD_ID, "d4c_dimension_overworld");
-    public static final ResourceLocation D4C_DIMENSION_TYPE_NETHER = new ResourceLocation(MOD_ID, "d4c_dimension_nether");
-    public static final ResourceLocation D4C_DIMENSION_TYPE_END = new ResourceLocation(MOD_ID, "d4c_dimension_end");
-    public static final ResourceLocation MADE_IN_HEAVEN_DIMENSION_TYPE = new ResourceLocation(MOD_ID, "made_in_heaven_dimension");
 
     public JojoBizarreSurvival()
     {

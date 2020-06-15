@@ -16,16 +16,16 @@ public class ForgeEventBusSubscriber
     @SubscribeEvent
     public static void registerDimensions(final RegisterDimensionsEvent event)
     {
-        if (DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE) == null)
-            DimensionManager.registerDimension(JojoBizarreSurvival.D4C_DIMENSION_TYPE, DimensionInit.D4C_DIMENSION.get(), null, true);
+        if (DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE) == null)
+            DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE, DimensionInit.D4C_DIMENSION.get(), null, true);
 
-        if(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER) == null)
-            DimensionManager.registerDimension(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER, DimensionInit.D4C_DIMENSION_NETHER.get(), null, false);
+        if(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER) == null)
+            DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE_NETHER, DimensionInit.D4C_DIMENSION_NETHER.get(), null, false);
 
-        if(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END) == null)
-            DimensionManager.registerDimension(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END, DimensionInit.D4C_DIMENSION_END.get(), null, false);
+        if(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END) == null)
+            DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE_END, DimensionInit.D4C_DIMENSION_END.get(), null, false);
 
-        if(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE) == null)
-            DimensionManager.registerDimension(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE, DimensionInit.MADE_IN_HEAVEN_DIMENSION.get(), null, true);
+        if(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE) == null)
+            DimensionManager.registerDimension(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE, DimensionInit.MADE_IN_HEAVEN_DIMENSION.get(), null, true);
     }
 }

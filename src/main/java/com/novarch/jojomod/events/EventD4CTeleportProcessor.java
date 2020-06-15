@@ -1,6 +1,7 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.dimension.DimensionType;
@@ -35,7 +36,7 @@ public class EventD4CTeleportProcessor {
         madeInHeaven.forEach(passenger -> {
             Random rand = passenger.world.rand;
             passenger.changeDimension(
-                    Objects.requireNonNull(DimensionType.byName(JojoBizarreSurvival.MADE_IN_HEAVEN_DIMENSION_TYPE)),
+                    Objects.requireNonNull(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE)),
                     new DimensionHopTeleporter(
                             (ServerWorld) passenger.getEntityWorld(),
                             passenger.getPosX(),

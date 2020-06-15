@@ -112,7 +112,7 @@ public class ModelTheWorld<T extends EntityTheWorld> extends EntityModel<T> {
 		Helmet.setTextureOffset(110, 123).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
 		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
 		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
+		Helmet.setTextureOffset(109, 104).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
 
 		Mask = new ModelRenderer(this);
 		Mask.setRotationPoint(-3.5F, -2.25F, -0.3F);

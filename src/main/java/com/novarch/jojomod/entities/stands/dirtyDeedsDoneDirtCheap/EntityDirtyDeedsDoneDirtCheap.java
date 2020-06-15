@@ -1,10 +1,10 @@
 package com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
+import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
@@ -164,31 +164,31 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 
 	private void transportEntity(Entity entity) {
 		if (entity.world.getDimension().getType() == DimensionType.OVERWORLD)
-			changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
 			changeDimension(DimensionType.OVERWORLD, entity);
 		else if (entity.world.getDimension().getType() == DimensionType.THE_NETHER)
-			changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
 			changeDimension(DimensionType.THE_NETHER, entity);
 		else if (entity.world.getDimension().getType() == DimensionType.THE_END)
-			changeDimension(DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
 			changeDimension(DimensionType.THE_END, entity);
 	}
 
 	private void changePlayerDimension(PlayerEntity player) {
 		if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE));
-		else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
 			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.OVERWORLD);
 		else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER));
-		else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_NETHER))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
 			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_NETHER);
 		else if (player.world.getDimension().getType() == DimensionType.THE_END)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END));
-		else if (player.world.getDimension().getType() == DimensionType.byName(JojoBizarreSurvival.D4C_DIMENSION_TYPE_END))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
 			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_END);
 	}
 
