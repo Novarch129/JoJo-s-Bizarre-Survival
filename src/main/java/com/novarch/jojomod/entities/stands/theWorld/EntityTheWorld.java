@@ -235,15 +235,11 @@ public class EntityTheWorld extends EntityStandBase {
 				if (!ability && props2.getTimeLeft() < 1000)
 					props2.addTimeLeft(1);
 
-				if (player.isCrouching())
-					player.sendMessage(new ValueTextComponent(cooldown));
-
 				if (!ability) {
 					timestopTick = 0;
 					player.setInvulnerable(false);
 				}
 			});
-
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
