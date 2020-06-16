@@ -24,8 +24,8 @@
 - [x] Killer Queen
 - [ ] The Hand
 - [ ] Echoes
-- [ ] 「THE WORLD」
-- [ ] Star Platinum
+- [x] 「THE WORLD」
+- [x] Star Platinum
 - [ ] Magician's Red
 - [ ] Hierophant Green
 - [ ] Silver Chariot
