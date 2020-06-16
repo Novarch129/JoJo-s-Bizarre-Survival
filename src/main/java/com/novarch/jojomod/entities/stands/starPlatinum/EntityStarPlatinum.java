@@ -14,7 +14,6 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -22,8 +21,6 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -54,39 +51,6 @@ public class EntityStarPlatinum extends EntityStandBase {
 
 	public static long gameTime = -1;
 
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
-	@Override
-	public void spawnSound() {
-		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-			if (!props.getAbility())
-				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
-		});
-	}
-
 	public EntityStarPlatinum(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
@@ -99,6 +63,15 @@ public class EntityStarPlatinum extends EntityStandBase {
 		standID = JojoLibs.StandID.starPlatinum;
 	}
 
+	@Override
+	public void spawnSound() {
+		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+			if (!props.getAbility())
+				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
+		});
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		fallDistance = 0.0f;
@@ -286,17 +259,6 @@ public class EntityStarPlatinum extends EntityStandBase {
 	}
 
 	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public void applyEntityCollision(Entity entityIn) {
-		if (entityIn instanceof EntityStandBase || entityIn instanceof EntityStandPunch)
-			super.applyEntityCollision(entityIn);
-	}
-
-	@Override
 	public void onRemovedFromWorld() {
 		super.onRemovedFromWorld();
 		ability = false;
@@ -323,29 +285,6 @@ public class EntityStarPlatinum extends EntityStandBase {
 								entity.setInvulnerable(false);
 								props2.clear();
 							}));
-	}
-
-	@SubscribeEvent
-	public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-		if (starPlatinum != null)
-			if (starPlatinum.ability && !starPlatinum.cooldown)
-				event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void blockBreakEvent(BlockEvent.BreakEvent event) {
-		if (starPlatinum != null)
-			if (starPlatinum.ability && !starPlatinum.cooldown)
-				if (event.getPlayer() != starPlatinum.getMaster())
-					event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-		if (starPlatinum != null)
-			if (starPlatinum.ability && !starPlatinum.cooldown)
-				if (event.getEntity() != starPlatinum.getMaster())
-					event.setCanceled(true);
 	}
 
 	@SubscribeEvent
@@ -384,6 +323,29 @@ public class EntityStarPlatinum extends EntityStandBase {
 						}));
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockBreakEvent(BlockEvent.BreakEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer() != starPlatinum.getMaster())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getEntity() != starPlatinum.getMaster())
+					event.setCanceled(true);
 	}
 
 	@SubscribeEvent

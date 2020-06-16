@@ -9,15 +9,13 @@ import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+@SuppressWarnings({"ConstantConditions", "unused"})
 @MethodsReturnNonnullByDefault
-@SuppressWarnings("unused")
 public class EntityGoldExperience extends EntityStandBase {
 	private int oratick = 0;
 
@@ -26,6 +24,18 @@ public class EntityGoldExperience extends EntityStandBase {
 	private boolean transforming = false;
 
 	private int transformTick = 0;
+
+	public EntityGoldExperience(EntityType<? extends EntityStandBase> type, World world) {
+		super(type, world);
+		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
+		this.standID = JojoLibs.StandID.goldExperience;
+	}
+
+	public EntityGoldExperience(World world) {
+		super(EntityInit.GOLD_EXPERIENCE.get(), world);
+		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
+		this.standID = JojoLibs.StandID.goldExperience;
+	}
 
 	public boolean isTransforming() {
 		return transforming;
@@ -44,42 +54,6 @@ public class EntityGoldExperience extends EntityStandBase {
 	}
 
 	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT nbttagcompound) {
-		super.readAdditional(nbttagcompound);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT nbttagcompound) {
-		super.writeAdditional(nbttagcompound);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
-	public EntityGoldExperience(EntityType<? extends EntityStandBase> type, World world) {
-		super(type, world);
-		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
-		this.standID = JojoLibs.StandID.goldExperience;
-	}
-
-	public EntityGoldExperience(World world) {
-		super(EntityInit.GOLD_EXPERIENCE.get(), world);
-		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
-		this.standID = JojoLibs.StandID.goldExperience;
-	}
-
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
@@ -152,14 +126,5 @@ public class EntityGoldExperience extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return false;
 	}
 }

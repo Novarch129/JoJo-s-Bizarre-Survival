@@ -15,13 +15,16 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityGoldExperienceRequiem extends EntityStandBase {
 	private int oratick = 0;
 
@@ -37,21 +40,6 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 
 	private boolean flightBool = false;
 
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
 	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_GER.get();
@@ -64,6 +52,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 		this.standID = JojoLibs.StandID.GER;
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
@@ -196,15 +185,5 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return false;
 	}
 }

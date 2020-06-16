@@ -11,52 +11,16 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 public class EntityPurpleHaze extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	protected void registerGoals() {
-		//goalSelector.addGoal(10, new StandFollowMasterGoal(this, navigator));
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
-	@Override
-	public void spawnSound() {
-		this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 2.0f, 1.0f);
-	}
 
 	public EntityPurpleHaze(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -70,6 +34,21 @@ public class EntityPurpleHaze extends EntityStandBase {
 		this.standID = JojoLibs.StandID.purpleHaze;
 	}
 
+	public void burstCapsule() {
+		if (!world.isRemote)
+			world.getServer().getWorld(dimension).getEntities()
+					.filter(entity -> entity instanceof LivingEntity)
+					.filter(entity -> !(entity instanceof EntityStandBase))
+					.filter(entity -> entity.getDistance(this) < 80)
+					.forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
+	}
+
+	@Override
+	public void spawnSound() {
+		this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 2.0f, 1.0f);
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0f;
@@ -133,23 +112,5 @@ public class EntityPurpleHaze extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	public void burstCapsule() {
-		if (!world.isRemote)
-			world.getServer().getWorld(dimension).getEntities()
-					.filter(entity -> entity instanceof LivingEntity)
-					.filter(entity -> !(entity instanceof EntityStandBase))
-					.filter(entity -> entity.getDistance(this) < 80)
-					.forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
-	}
-
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
 	}
 }

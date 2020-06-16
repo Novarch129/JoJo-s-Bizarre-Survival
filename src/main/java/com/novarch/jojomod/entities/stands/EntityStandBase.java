@@ -10,6 +10,7 @@ import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
@@ -21,14 +22,13 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "ConstantConditions"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class EntityStandBase extends MobEntity {
     private PlayerEntity master;
     protected boolean standOn;
     private int act;
-    protected int tick;
     public boolean orarush;
     protected SoundEvent spawnSound;
     public int longTick;
@@ -36,7 +36,6 @@ public abstract class EntityStandBase extends MobEntity {
     boolean jumpCheck;
     boolean attack;
     public UUID masterUUID;
-    public int hungerTimer;
     public boolean ability;
 
     public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn) {
@@ -46,8 +45,6 @@ public abstract class EntityStandBase extends MobEntity {
         this.orarush = false;
         this.spawnSound = null;
         this.longTick = 2;
-        this.tick = 0;
-        this.hungerTimer = 0;
         this.ability = true;
     }
 
@@ -63,12 +60,8 @@ public abstract class EntityStandBase extends MobEntity {
         return this.standID;
     }
 
-    public boolean attackSwing(final PlayerEntity player) {
-        if (player.isSwingInProgress && this.getAttackTrue()) {
-            this.setAttackTrue(false);
-            return true;
-        }
-        return false;
+    public boolean attackSwing(PlayerEntity player) {
+        return (player.isSwingInProgress && getAttack()) && !setAttack(false);
     }
 
     @Override
@@ -76,11 +69,11 @@ public abstract class EntityStandBase extends MobEntity {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
-    public void setAttackTrue(final boolean value) {
-        this.attack = value;
+    public boolean setAttack(boolean attack) {
+        return this.attack = attack;
     }
 
-    public boolean getAttackTrue() {
+    public boolean getAttack() {
         return this.attack;
     }
 
@@ -108,7 +101,6 @@ public abstract class EntityStandBase extends MobEntity {
         fallDistance = 0.0f;
         if (!world.isRemote) {
             if (getMaster() == null) {
-                MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
                 remove();
                 return;
             }
@@ -117,7 +109,6 @@ public abstract class EntityStandBase extends MobEntity {
             dodgeAttacks();
 
             if (!getMaster().isAlive()) {
-                MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
                 remove();
             }
@@ -133,7 +124,6 @@ public abstract class EntityStandBase extends MobEntity {
                 standOn = props.getStandOn();
 
                 if (!props.getStandOn()) {
-                    MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
                     MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(getMaster(), this));
                     remove();
                 }
@@ -193,7 +183,6 @@ public abstract class EntityStandBase extends MobEntity {
             return false;
         if (damageSource == DamageSource.CACTUS)
             return false;
-        assert getMaster() != null;
         getMaster().attackEntityFrom(damageSource, damage * 0.5f);
         return false;
     }
@@ -216,15 +205,12 @@ public abstract class EntityStandBase extends MobEntity {
                     if (entity1 != null)
                         playerEntity = entity1;
 
-                    assert playerEntity != null;
-                    assert getMaster() != null;
                     final double distance = playerEntity.getDistance(getMaster());
                     final double distance2 = Math.PI * 2 * 2 * 2;
 
                     entity = playerEntity;
 
                     if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
-
                         final double distanceX = getPosX() - entity.getPosX();
                         final double distanceY = getPosY() - entity.getPosY();
                         final double distanceZ = getPosZ() - entity.getPosZ();
@@ -248,7 +234,7 @@ public abstract class EntityStandBase extends MobEntity {
 
     @Override
     public void applyEntityCollision(Entity entityIn) {
-        if(entityIn instanceof EntityStandBase)
+        if(entityIn instanceof EntityStandBase || entityIn instanceof EntityStandPunch)
             super.applyEntityCollision(entityIn);
     }
 
@@ -256,5 +242,38 @@ public abstract class EntityStandBase extends MobEntity {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putUniqueId("MasterUUID", getMasterUUID());
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setMasterUUID(compound.getUniqueId("MasterUUID"));
+    }
+
+    @Override
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    @Override
+    public boolean isAIDisabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEntityInsideOpaqueBlock() {
+        return false;
     }
 }

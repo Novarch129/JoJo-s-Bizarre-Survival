@@ -8,13 +8,12 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
@@ -22,6 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityKillerQueen extends EntityStandBase {
 	private int oratick = 0;
 
@@ -35,39 +39,6 @@ public class EntityKillerQueen extends EntityStandBase {
 
 	private int shaCount = 0;
 
-	public LivingEntity getBombEntity() {
-		return bombEntity;
-	}
-
-	public void setBombEntity(LivingEntity bombEntity) {
-		this.bombEntity = bombEntity;
-	}
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
 	public EntityKillerQueen(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
@@ -80,6 +51,15 @@ public class EntityKillerQueen extends EntityStandBase {
 		this.standID = JojoLibs.StandID.killerQueen;
 	}
 
+	public LivingEntity getBombEntity() {
+		return bombEntity;
+	}
+
+	public void setBombEntity(LivingEntity bombEntity) {
+		this.bombEntity = bombEntity;
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
@@ -192,15 +172,5 @@ public class EntityKillerQueen extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
 	}
 }

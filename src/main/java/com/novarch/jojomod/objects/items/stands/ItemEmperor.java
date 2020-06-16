@@ -36,7 +36,7 @@ public class ItemEmperor extends Item {
                 EntityEmperorBullet bullet = new EntityEmperorBullet(playerIn, worldIn);
                 bullet.setSilent(true);
                 bullet.setPositionAndRotation(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), playerIn.rotationYaw, playerIn.rotationPitch);
-                bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0, 20.0f, 0.001f);
+                bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 20.0f, 0.001f);
                 playerIn.world.addEntity(bullet);
                 if(!playerIn.isCreative() && !playerIn.isSpectator())
                     playerIn.getFoodStats().addStats(2, 0);

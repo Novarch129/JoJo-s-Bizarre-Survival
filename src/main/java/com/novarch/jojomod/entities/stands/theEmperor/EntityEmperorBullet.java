@@ -8,7 +8,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -23,8 +22,6 @@ import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.World;
@@ -34,11 +31,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+@SuppressWarnings("ALL")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class EntityEmperorBullet extends Entity implements IProjectile {
@@ -66,7 +61,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
     }
 
     public EntityEmperorBullet(LivingEntity shooter, World worldIn) {
-        this(shooter.getPosX(), shooter.getPosYEye() - (double)0.1F, shooter.getPosZ(), worldIn);
+        this(shooter.getPosX(), shooter.getPosYEye() - 0.1F, shooter.getPosZ(), worldIn);
         this.setShooter(shooter);
         if (shooter instanceof PlayerEntity) {
             this.pickupStatus = EntityEmperorBullet.PickupStatus.ALLOWED;
@@ -87,7 +82,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
             inBlockState = blockstate;
             Vec3d vec3d = blockraytraceresult.getHitVec().subtract(getPosX(), getPosY(), getPosZ());
             setMotion(vec3d);
-            Vec3d vec3d1 = vec3d.normalize().scale((double)0.05F);
+            Vec3d vec3d1 = vec3d.normalize().scale(0.05F);
             setRawPosition(getPosX() - vec3d1.x, getPosY() - vec3d1.y, getPosZ() - vec3d1.z);
             inGround = true;
             arrowShake = 7;
@@ -112,7 +107,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
 
 
     public double getDamage() {
-        return world.getPlayerByUuid(shootingEntity) == null ? damage : world.getPlayerByUuid(shootingEntity).getHealth() / 2.5;
+        return world.getPlayerByUuid(shootingEntity) == null ? damage : Objects.requireNonNull(world.getPlayerByUuid(shootingEntity), "Null entity on getDamage in EmperorBullet").getHealth() / 2.5;
     }
 
     public boolean isInRangeToRenderDist(double distance) {
@@ -131,11 +126,11 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         this.dataManager.register(PIERCE_LEVEL, (byte)0);
     }
 
-    public void shoot(Entity shooter, float pitch, float yaw, float p_184547_4_, float velocity, float inaccuracy) {
+    public void shoot(Entity shooter, float pitch, float yaw, float velocity, float inaccuracy) {
         float f = -MathHelper.sin(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
         float f1 = -MathHelper.sin(pitch * ((float)Math.PI / 180F));
         float f2 = MathHelper.cos(yaw * ((float)Math.PI / 180F)) * MathHelper.cos(pitch * ((float)Math.PI / 180F));
-        this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
+        this.shoot(f, f1, f2, velocity, inaccuracy);
         this.setMotion(this.getMotion().add(shooter.getMotion().x, shooter.onGround ? 0.0D : shooter.getMotion().y, shooter.getMotion().z));
     }
 
@@ -143,11 +138,11 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
      * Similar to setArrowHeading, it's point the throwable entity to a x, y, z direction.
      */
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy, this.rand.nextGaussian() * (double)0.0075F * (double)inaccuracy).scale((double)velocity);
+        Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(this.rand.nextGaussian() * 0.0075F * inaccuracy, this.rand.nextGaussian() * 0.0075F * inaccuracy, this.rand.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
         this.setMotion(vec3d);
         float f = MathHelper.sqrt(horizontalMag(vec3d));
-        this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
-        this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)f) * (double)(180F / (float)Math.PI));
+        this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
+        this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, f) * (180F / (float)Math.PI));
         this.prevRotationYaw = this.rotationYaw;
         this.prevRotationPitch = this.rotationPitch;
         this.ticksInGround = 0;
@@ -170,8 +165,8 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         this.setMotion(x, y, z);
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(x * x + z * z);
-            this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * (double)(180F / (float)Math.PI));
-            this.rotationYaw = (float)(MathHelper.atan2(x, z) * (double)(180F / (float)Math.PI));
+            this.rotationPitch = (float)(MathHelper.atan2(y, f) * (180F / (float)Math.PI));
+            this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180F / (float)Math.PI));
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
@@ -189,8 +184,8 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         Vec3d vec3d = this.getMotion();
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F) {
             float f = MathHelper.sqrt(horizontalMag(vec3d));
-            this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (double)(180F / (float)Math.PI));
-            this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, (double)f) * (double)(180F / (float)Math.PI));
+            this.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
+            this.rotationPitch = (float)(MathHelper.atan2(vec3d.y, f) * (180F / (float)Math.PI));
             this.prevRotationYaw = this.rotationYaw;
             this.prevRotationPitch = this.rotationPitch;
         }
@@ -222,7 +217,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         if (this.inGround && !flag) {
             if (this.inBlockState != blockstate && this.world.hasNoCollisions(this.getBoundingBox().grow(0.06D))) {
                 this.inGround = false;
-                this.setMotion(vec3d.mul((double)(this.rand.nextFloat() * 0.2F), (double)(this.rand.nextFloat() * 0.2F), (double)(this.rand.nextFloat() * 0.2F)));
+                this.setMotion(vec3d.mul((this.rand.nextFloat() * 0.2F), (this.rand.nextFloat() * 0.2F), (this.rand.nextFloat() * 0.2F)));
                 this.ticksInGround = 0;
                 this.ticksInAir = 0;
             } else if (!this.world.isRemote) {
@@ -240,13 +235,14 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
                 vec3d3 = raytraceresult.getHitVec();
             }
 
-            while(!this.removed) {
+            while(isAlive()) {
                 EntityRayTraceResult entityraytraceresult = this.rayTraceEntities(vec3d2, vec3d3);
                 if (entityraytraceresult != null) {
                     raytraceresult = entityraytraceresult;
                 }
 
                 if (raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.ENTITY) {
+                    assert raytraceresult instanceof EntityRayTraceResult;
                     Entity entity = ((EntityRayTraceResult)raytraceresult).getEntity();
                     Entity entity1 = this.getShooter();
                     if (entity instanceof PlayerEntity && entity1 instanceof PlayerEntity && !((PlayerEntity)entity1).canAttackPlayer((PlayerEntity)entity)) {
@@ -273,22 +269,17 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
             double d0 = vec3d.z;
             if (this.getIsCritical()) {
                 for(int i = 0; i < 4; ++i) {
-                    this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + d3 * (double)i / 4.0D, this.getPosY() + d4 * (double)i / 4.0D, this.getPosZ() + d0 * (double)i / 4.0D, -d3, -d4 + 0.2D, -d0);
+                    this.world.addParticle(ParticleTypes.CRIT, this.getPosX() + d3 * i / 4.0D, this.getPosY() + d4 * i / 4.0D, this.getPosZ() + d0 * i / 4.0D, -d3, -d4 + 0.2D, -d0);
                 }
             }
 
             double d5 = this.getPosX() + d3;
             double d1 = this.getPosY() + d4;
             double d2 = this.getPosZ() + d0;
-            float f1 = MathHelper.sqrt(horizontalMag(vec3d));
             if (flag) {
-                this.rotationYaw = (float)(MathHelper.atan2(-d3, -d0) * (double)(180F / (float)Math.PI));
+                this.rotationYaw = (float)(MathHelper.atan2(-d3, -d0) * (180F / (float)Math.PI));
             } else {
-                this.rotationYaw = (float)(MathHelper.atan2(d3, d0) * (double)(180F / (float)Math.PI));
-            }
-
-            for(this.rotationPitch = (float)(MathHelper.atan2(d4, (double)f1) * (double)(180F / (float)Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F) {
-                ;
+                this.rotationYaw = (float)(MathHelper.atan2(d3, d0) * (180F / (float)Math.PI));
             }
 
             while(this.rotationPitch - this.prevRotationPitch >= 180.0F) {
@@ -306,20 +297,18 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
             this.rotationPitch = MathHelper.lerp(0.2F, this.prevRotationPitch, this.rotationPitch);
             this.rotationYaw = MathHelper.lerp(0.2F, this.prevRotationYaw, this.rotationYaw);
             float f2 = 0.99F;
-            float f3 = 0.05F;
             if (this.isInWater()) {
                 for(int j = 0; j < 4; ++j) {
-                    float f4 = 0.25F;
                     this.world.addParticle(ParticleTypes.BUBBLE, d5 - d3 * 0.25D, d1 - d4 * 0.25D, d2 - d0 * 0.25D, d3, d4, d0);
                 }
 
                 f2 = this.getWaterDrag();
             }
 
-            this.setMotion(vec3d.scale((double)f2));
+            this.setMotion(vec3d.scale(f2));
             if (!this.hasNoGravity() && !flag) {
                 Vec3d vec3d4 = this.getMotion();
-                this.setMotion(vec3d4.x, vec3d4.y - (double)0.05F, vec3d4.z);
+                this.setMotion(vec3d4.x, vec3d4.y - 0.05F, vec3d4.z);
             }
 
             this.setPosition(d5, d1, d2);
@@ -341,7 +330,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
     protected void onEntityHit(EntityRayTraceResult p_213868_1_) {
         Entity entity = p_213868_1_.getEntity();
         float f = (float)this.getMotion().length();
-        int i = MathHelper.ceil(Math.max((double)f * this.damage, 0.0D));
+        int i = MathHelper.ceil(Math.max(f * this.damage, 0.0D));
         if (this.getPierceLevel() > 0) {
             if (this.piercedEntities == null) {
                 this.piercedEntities = new IntOpenHashSet(5);
@@ -392,7 +381,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
                 }
 
                 if (this.knockbackStrength > 0) {
-                    Vec3d vec3d = this.getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale((double)this.knockbackStrength * 0.6D);
+                    Vec3d vec3d = this.getMotion().mul(1.0D, 0.0D, 1.0D).normalize().scale(this.knockbackStrength * 0.6D);
                     if (vec3d.lengthSquared() > 0.0D) {
                         livingentity.addVelocity(vec3d.x, 0.1D, vec3d.z);
                     }
@@ -402,8 +391,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
                     EnchantmentHelper.applyThornEnchantments(livingentity, entity1);
                     EnchantmentHelper.applyArthropodEnchantments((LivingEntity)entity1, livingentity);
                 }
-
-                this.arrowHit(livingentity);
+                
                 if (entity1 != null && livingentity != entity1 && livingentity instanceof PlayerEntity && entity1 instanceof ServerPlayerEntity) {
                     ((ServerPlayerEntity)entity1).connection.sendPacket(new SChangeGameStatePacket(6, 0.0F));
                 }
@@ -437,16 +425,6 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
             }
         }
 
-    }
-
-    /**
-     * The sound made when an entity is hit by this projectile
-     */
-    protected SoundEvent getHitEntitySound() {
-        return SoundEvents.ENTITY_ARROW_HIT;
-    }
-
-    protected void arrowHit(LivingEntity living) {
     }
 
     /**
@@ -538,18 +516,6 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         return false;
     }
 
-    public void setDamage(double damageIn) {
-        this.damage = damageIn;
-    }
-
-
-    /**
-     * Sets the amount of knockback the arrow applies when it hits a mob.
-     */
-    public void setKnockbackStrength(int knockbackStrengthIn) {
-        this.knockbackStrength = knockbackStrengthIn;
-    }
-
     /**
      * Returns true if it's possible to attack this entity with an item.
      */
@@ -602,34 +568,8 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         return this.dataManager.get(PIERCE_LEVEL);
     }
 
-    public void setEnchantmentEffectsFromEntity(LivingEntity p_190547_1_, float p_190547_2_) {
-        int i = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, p_190547_1_);
-        int j = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, p_190547_1_);
-        this.setDamage((double)(p_190547_2_ * 2.0F) + this.rand.nextGaussian() * 0.25D + (double)((float)this.world.getDifficulty().getId() * 0.11F));
-        if (i > 0) {
-            this.setDamage(this.getDamage() + (double)i * 0.5D + 0.5D);
-        }
-
-        if (j > 0) {
-            this.setKnockbackStrength(j);
-        }
-
-        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, p_190547_1_) > 0) {
-            this.setFire(100);
-        }
-
-    }
-
     protected float getWaterDrag() {
         return 0.6F;
-    }
-
-    /**
-     * Sets if this arrow can noClip
-     */
-    public void setNoClip(boolean noClipIn) {
-        this.noClip = noClipIn;
-        this.setArrowFlag(2, noClipIn);
     }
 
     /**
@@ -655,7 +595,7 @@ public class EntityEmperorBullet extends Entity implements IProjectile {
         return new SSpawnObjectPacket(this, entity == null ? 0 : entity.getEntityId());
     }
 
-    public static enum PickupStatus {
+    public enum PickupStatus {
         DISALLOWED,
         ALLOWED,
         CREATIVE_ONLY;

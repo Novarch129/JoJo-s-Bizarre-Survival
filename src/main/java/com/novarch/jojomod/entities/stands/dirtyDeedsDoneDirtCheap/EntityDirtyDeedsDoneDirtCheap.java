@@ -15,8 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -24,36 +22,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT nbttagcompound) {
-		super.readAdditional(nbttagcompound);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT nbttagcompound) {
-		super.writeAdditional(nbttagcompound);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
 
 	public EntityDirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -67,13 +44,53 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 		this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
 	}
 
+	/**
+	 * Used to shorten the code of the method below, removing the need to make a <code>new</code> {@link DimensionHopTeleporter} every time {@link Entity}# changeDimension is called.
+	 *
+	 * @param entity The {@link Entity} that will be transported.
+	 * @param type The {@link DimensionType} the entity will be transported to.
+	 */
+	private void changeDimension(DimensionType type, Entity entity) {
+		entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ()));
+	}
+
+	private void transportEntity(Entity entity) {
+		if (entity.world.getDimension().getType() == DimensionType.OVERWORLD)
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
+			changeDimension(DimensionType.OVERWORLD, entity);
+		else if (entity.world.getDimension().getType() == DimensionType.THE_NETHER)
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
+			changeDimension(DimensionType.THE_NETHER, entity);
+		else if (entity.world.getDimension().getType() == DimensionType.THE_END)
+			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END), entity);
+		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
+			changeDimension(DimensionType.THE_END, entity);
+	}
+
+	private void changePlayerDimension(PlayerEntity player) {
+		if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.OVERWORLD);
+		else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_NETHER);
+		else if (player.world.getDimension().getType() == DimensionType.THE_END)
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END));
+		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
+			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_END);
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 			Stand.getLazyOptional(player).ifPresent(props -> {
-				//Cooldown handler
 				if (props.getCooldown() > 0)
 					props.subtractCooldown(1);
 
@@ -156,49 +173,5 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	private void changeDimension(DimensionType type, Entity entity) {
-		entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ()));
-	}
-
-	private void transportEntity(Entity entity) {
-		if (entity.world.getDimension().getType() == DimensionType.OVERWORLD)
-			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
-			changeDimension(DimensionType.OVERWORLD, entity);
-		else if (entity.world.getDimension().getType() == DimensionType.THE_NETHER)
-			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
-			changeDimension(DimensionType.THE_NETHER, entity);
-		else if (entity.world.getDimension().getType() == DimensionType.THE_END)
-			changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END), entity);
-		else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
-			changeDimension(DimensionType.THE_END, entity);
-	}
-
-	private void changePlayerDimension(PlayerEntity player) {
-		if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE));
-		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.OVERWORLD);
-		else if (player.world.getDimension().getType() == DimensionType.THE_NETHER)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER));
-		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER))
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_NETHER);
-		else if (player.world.getDimension().getType() == DimensionType.THE_END)
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END));
-		else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
-			EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_END);
-	}
-
-	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
 	}
 }

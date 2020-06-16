@@ -9,6 +9,7 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IChargeableMob;
@@ -32,11 +33,15 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 
 /**
  * 99% same as {@link CreeperEntity}, but doesn't extend it due to some private methods getting in the way
  */
+@SuppressWarnings("ConstantConditions")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntitySheerHeartAttack extends MonsterEntity implements IChargeableMob
 {
     private EntityKillerQueen masterStand;

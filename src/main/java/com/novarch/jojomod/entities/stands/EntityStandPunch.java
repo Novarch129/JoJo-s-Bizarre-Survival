@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.util.JojoLibs;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -20,8 +21,12 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+@SuppressWarnings({"ConstantConditions", "unused", "UnusedAssignment"})
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class EntityStandPunch extends Entity implements IProjectile {
   public int xTile;
 
@@ -190,7 +195,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
       vec3d = new Vec3d(this.getPosX() + this.getMotion().x, this.getPosY() + this.getMotion().y, this.getPosZ() + this.getMotion().z);
       if (raytraceresult != null)
         vec3d = new Vec3d(raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
-      Entity entity = findEntityOnPath(vec3d1, vec3d);
+      Entity entity = findEntityOnPath(vec3d1);
       if (entity != null) {
         entityRayTraceResult = new EntityRayTraceResult(entity);
         if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof EntityStandPunch) {
@@ -320,7 +325,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
   }
 
   @Nullable
-  protected Entity findEntityOnPath(Vec3d start, Vec3d end) {
+  protected Entity findEntityOnPath(Vec3d start) {
     Entity entity = null;
     List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0d), JojoLibs.Predicates.STAND_PUNCH_TARGET);
     double d0 = 0.0d;
@@ -657,6 +662,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public starPlatinum(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
+  public static class silverChariot extends EntityStandPunch {
+    public silverChariot(World worldIn) {
+      super(EntityInit.SILVER_CHARIOT_SWORD.get(), worldIn);
+    }
+
+    public silverChariot(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public silverChariot(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.SILVER_CHARIOT_SWORD.get(), worldIn, shooter, player);
     }
 
     @Override

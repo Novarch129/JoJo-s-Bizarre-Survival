@@ -14,6 +14,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySh
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
@@ -214,4 +215,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.starPlatinum>create(EntityStandPunch.starPlatinum::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntitySilverChariot>> SILVER_CHARIOT = ENTITY_TYPES
+			.register("silver_chariot",
+					() -> EntityType.Builder.<EntitySilverChariot>create(EntitySilverChariot::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.silverChariot>> SILVER_CHARIOT_SWORD = ENTITY_TYPES
+			.register("silver_chariot_sword",
+					() -> EntityType.Builder.<EntityStandPunch.silverChariot>create(EntityStandPunch.silverChariot::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_sword").toString()));
 }

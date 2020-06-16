@@ -8,53 +8,27 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
 import com.novarch.jojomod.util.handlers.KeyHandler;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityWeatherReport extends EntityStandBase {
     private int oratick = 0;
 
     private int oratickr = 0;
 
     private int weatherTick = 0;
-
-    @Override
-    public boolean canDespawn(double p_213397_1_) {
-        return false;
-    }
-
-    @Override
-    public boolean isAIDisabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isEntityInsideOpaqueBlock() {
-        return false;
-    }
-
-    @Override
-    public void writeAdditional(CompoundNBT p_213281_1_) {
-        super.writeAdditional(p_213281_1_);
-    }
-
-    @Override
-    public void readAdditional(CompoundNBT p_70037_1_) {
-        super.readAdditional(p_70037_1_);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return super.createSpawnPacket();
-    }
 
     public EntityWeatherReport(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);

@@ -14,8 +14,6 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -26,38 +24,17 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityMadeInHeaven extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
 
 	public int heaventickr = 3600;
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
 
 	public EntityMadeInHeaven(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -71,6 +48,12 @@ public class EntityMadeInHeaven extends EntityStandBase {
 		this.standID = JojoLibs.StandID.madeInHeaven;
 	}
 
+	@Override
+	public boolean hasAct() {
+		return true;
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
@@ -192,20 +175,5 @@ public class EntityMadeInHeaven extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
-	}
-
-	@Override
-	public boolean hasAct() {
-		return true;
 	}
 }

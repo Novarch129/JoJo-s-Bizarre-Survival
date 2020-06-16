@@ -56,39 +56,6 @@ public class EntityTheWorld extends EntityStandBase {
 
 	public static EntityTheWorld theWorld;
 
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
-	@Override
-	public void spawnSound() {
-		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-			if (!props.getAbility())
-				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 5.0f, 1.0f);
-		});
-	}
-
 	public EntityTheWorld(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
@@ -101,6 +68,15 @@ public class EntityTheWorld extends EntityStandBase {
 		standID = JojoLibs.StandID.theWorld;
 	}
 
+	@Override
+	public void spawnSound() {
+		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+			if (!props.getAbility())
+				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 5.0f, 1.0f);
+		});
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		fallDistance = 0.0f;
@@ -292,17 +268,6 @@ public class EntityTheWorld extends EntityStandBase {
 	}
 
 	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public void applyEntityCollision(Entity entityIn) {
-		if (entityIn instanceof EntityStandBase || entityIn instanceof EntityStandPunch)
-			super.applyEntityCollision(entityIn);
-	}
-
-	@Override
 	public void onRemovedFromWorld() {
 		super.onRemovedFromWorld();
 		ability = false;
@@ -329,30 +294,6 @@ public class EntityTheWorld extends EntityStandBase {
 								entity.setInvulnerable(false);
 								props2.clear();
 							}));
-	}
-
-	@SubscribeEvent
-	public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-		if (theWorld != null)
-			if (theWorld.ability && !theWorld.cooldown)
-				event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void blockBreakEvent(BlockEvent.BreakEvent event) {
-		if (theWorld != null)
-			if (theWorld.ability && !theWorld.cooldown)
-				if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-					event.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-		if (theWorld != null)
-			if (theWorld.ability && !theWorld.cooldown)
-				if (event.getEntity() != null)
-					if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
-						event.setCanceled(true);
 	}
 
 	@SubscribeEvent
@@ -391,6 +332,30 @@ public class EntityTheWorld extends EntityStandBase {
 						}));
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
+		if (theWorld != null)
+			if (theWorld.ability && !theWorld.cooldown)
+				event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockBreakEvent(BlockEvent.BreakEvent event) {
+		if (theWorld != null)
+			if (theWorld.ability && !theWorld.cooldown)
+				if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+		if (theWorld != null)
+			if (theWorld.ability && !theWorld.cooldown)
+				if (event.getEntity() != null)
+					if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
+						event.setCanceled(true);
 	}
 
 	@SubscribeEvent

@@ -10,17 +10,15 @@ import com.novarch.jojomod.util.handlers.KeyHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.WeakHashMap;
 
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class EntityCrazyDiamond extends EntityStandBase {
@@ -31,40 +29,6 @@ public class EntityCrazyDiamond extends EntityStandBase {
 	private KeyBinding repair = KeyHandler.keys[2];
 
 	private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
-
-	public void putRepairBlock(BlockPos blockPos, BlockState state) {
-		repairBlocks.put(blockPos, state);
-	}
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
-
-	@Override
-	public void spawnSound() {
-		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
-	}
 
 	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -78,6 +42,16 @@ public class EntityCrazyDiamond extends EntityStandBase {
 		this.standID = JojoLibs.StandID.crazyDiamond;
 	}
 
+	public void putRepairBlock(BlockPos blockPos, BlockState state) {
+		repairBlocks.put(blockPos, state);
+	}
+
+	@Override
+	public void spawnSound() {
+		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0f;
@@ -93,10 +67,9 @@ public class EntityCrazyDiamond extends EntityStandBase {
 						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
 						props.setCooldown(100);
 					}
-					repairBlocks.forEach(this::setBlockState);
+					repairBlocks.forEach(world::setBlockState);
 					repairBlocks.clear();
 				}
-
 
 				if (props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);
@@ -154,23 +127,5 @@ public class EntityCrazyDiamond extends EntityStandBase {
 				}
 			}
 		}
-	}
-
-	private void setBlockState(BlockPos pos, BlockState state) {
-		world.setBlockState(pos, state);
-	}
-
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return false;
-	}
-
-	@Override
-	public void applyEntityCollision(Entity entityIn) {
-		super.applyEntityCollision(entityIn);
 	}
 }

@@ -13,54 +13,21 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityAerosmith extends EntityStandBase {
     private int oratick = 0;
 
     private int oratickr = 0;
 
     boolean shouldFall = false;
-
-    @Override
-    public boolean canDespawn(double p_213397_1_) {
-        return false;
-    }
-
-    @Override
-    public boolean isAIDisabled() {
-        return false;
-    }
-
-    @Override
-    public boolean isEntityInsideOpaqueBlock() {
-        return false;
-    }
-
-    @Override
-    public void writeAdditional(CompoundNBT p_213281_1_) {
-        super.writeAdditional(p_213281_1_);
-    }
-
-    @Override
-    public void readAdditional(CompoundNBT p_70037_1_) {
-        super.readAdditional(p_70037_1_);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return super.createSpawnPacket();
-    }
-
-    @Override
-    public void spawnSound() {
-        this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 3.0f, 1.0f);
-    }
 
     public EntityAerosmith(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
@@ -74,6 +41,12 @@ public class EntityAerosmith extends EntityStandBase {
         this.standID = JojoLibs.StandID.aerosmith;
     }
 
+    @Override
+    public void spawnSound() {
+        this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 3.0f, 1.0f);
+    }
+
+    @Override
     public void tick() {
         super.tick();
         this.fallDistance = 0.0f;

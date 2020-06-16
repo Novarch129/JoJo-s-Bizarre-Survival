@@ -14,8 +14,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
@@ -23,39 +21,18 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 /**
  * You shouldn't be surprised if you're confused by this code, even I can barely read it now.
  */
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class EntityKingCrimson extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
-
-	@Override
-	public boolean canDespawn(double distanceToClosestPlayer) {
-		return false;
-	}
-
-	@Override
-	public boolean isAIDisabled() {
-		return false;
-	}
-
-	@Override
-	public void readAdditional(CompoundNBT compoundNBT) {
-		super.readAdditional(compoundNBT);
-	}
-
-	@Override
-	public void writeAdditional(CompoundNBT compoundNBT) {
-		super.writeAdditional(compoundNBT);
-	}
-
-	@Override
-	public IPacket<?> createSpawnPacket() {
-		return super.createSpawnPacket();
-	}
 
 	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -69,6 +46,7 @@ public class EntityKingCrimson extends EntityStandBase {
 		this.standID = JojoLibs.StandID.kingCrimson;
 	}
 
+	@Override
 	public void tick() {
 		super.tick();
 		this.fallDistance = 0.0F;
@@ -199,15 +177,5 @@ public class EntityKingCrimson extends EntityStandBase {
 				}
 			});
 		}
-	}
-
-
-	public boolean isEntityInsideOpaqueBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean canBeCollidedWith() {
-		return super.canBeCollidedWith();
 	}
 }

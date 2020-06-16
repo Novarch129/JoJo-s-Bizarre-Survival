@@ -12,6 +12,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
@@ -108,8 +109,6 @@ public class JojoLibs
 
     public static class StandID
     {
-        public static final int nullStand = 0;
-
         public static final int kingCrimson = 1;
 
         public static final int dirtyDeedsDoneDirtCheap = 2;
@@ -140,7 +139,23 @@ public class JojoLibs
 
         public static final int starPlatinum = 15;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake, theWorld, starPlatinum};
+        public static final int silverChariot = 16;
+
+        public static int[] stands = {
+                kingCrimson,
+                dirtyDeedsDoneDirtCheap,
+                goldExperience,
+                aerosmith,
+                weatherReport,
+                killerQueen,
+                crazyDiamond,
+                purpleHaze,
+                theEmperor,
+                whitesnake,
+                theWorld,
+                starPlatinum,
+                silverChariot
+        };
 
         public static int numberOfStands = stands.length;
     }
@@ -186,6 +201,8 @@ public class JojoLibs
                 return new EntityTheWorld(world);
             case StandID.starPlatinum:
                 return new EntityStarPlatinum(world);
+            case StandID.silverChariot:
+                return new EntitySilverChariot(world);
         }
     }
 }

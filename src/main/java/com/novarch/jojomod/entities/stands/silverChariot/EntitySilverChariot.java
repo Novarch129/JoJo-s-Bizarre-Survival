@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.whitesnake;
+package com.novarch.jojomod.entities.stands.silverChariot;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
@@ -17,27 +17,26 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class EntityWhitesnake extends EntityStandBase {
+public class EntitySilverChariot extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
 
-	public EntityWhitesnake(EntityType<? extends EntityStandBase> type, World world) {
+	public EntitySilverChariot(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		this.spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-		this.standID = JojoLibs.StandID.whitesnake;
+		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		this.standID = JojoLibs.StandID.silverChariot;
 	}
 
-	public EntityWhitesnake(World world) {
-		super(EntityInit.WHITESNAKE.get(), world);
-		this.spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-		this.standID = JojoLibs.StandID.whitesnake;
+	public EntitySilverChariot(World world) {
+		super(EntityInit.SILVER_CHARIOT.get(), world);
+		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		this.standID = JojoLibs.StandID.silverChariot;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		this.fallDistance = 0.0F;
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
@@ -48,8 +47,6 @@ public class EntityWhitesnake extends EntityStandBase {
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
 
-			if (!player.isAlive())
-				remove();
 			if (player.isSprinting()) {
 				if (attackSwing(player))
 					this.oratick++;
@@ -64,9 +61,9 @@ public class EntityWhitesnake extends EntityStandBase {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.whitesnake whitesnake = new EntityStandPunch.whitesnake(this.world, this, player);
-						whitesnake.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.2f);
-						this.world.addEntity(whitesnake);
+						EntityStandPunch.silverChariot silverChariot = new EntityStandPunch.silverChariot(this.world, this, player);
+						silverChariot.shoot(player, player.rotationPitch, player.rotationYaw, 4.0f, 0.001f);
+						this.world.addEntity(silverChariot);
 					}
 				}
 			}
@@ -78,14 +75,14 @@ public class EntityWhitesnake extends EntityStandBase {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.whitesnake whitesnake1 = new EntityStandPunch.whitesnake(this.world, this, player);
-						whitesnake1.setRandomPositions();
-						whitesnake1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
-						this.world.addEntity(whitesnake1);
-						EntityStandPunch.whitesnake whitesnake2 = new EntityStandPunch.whitesnake(this.world, this, player);
-						whitesnake2.setRandomPositions();
-						whitesnake2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
-						this.world.addEntity(whitesnake2);
+						EntityStandPunch.silverChariot silverChariot1 = new EntityStandPunch.silverChariot(this.world, this, player);
+						silverChariot1.setRandomPositions();
+						silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.05f);
+						this.world.addEntity(silverChariot1);
+						EntityStandPunch.silverChariot silverChariot2 = new EntityStandPunch.silverChariot(this.world, this, player);
+						silverChariot2.setRandomPositions();
+						silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.05f);
+						this.world.addEntity(silverChariot2);
 					}
 				if (this.oratickr >= 80) {
 					this.orarush = false;
