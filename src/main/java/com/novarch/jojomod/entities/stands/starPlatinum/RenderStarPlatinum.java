@@ -12,7 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RenderStarPlatinum extends MobRenderer<EntityStarPlatinum, ModelStarPlatinum<EntityStarPlatinum>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/star_platinum.png");
 
 	public RenderStarPlatinum(EntityRendererManager renderManagerIn)
 	{

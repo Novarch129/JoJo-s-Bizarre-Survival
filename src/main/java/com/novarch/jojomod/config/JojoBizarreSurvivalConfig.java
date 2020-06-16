@@ -41,7 +41,7 @@ public class JojoBizarreSurvivalConfig
                     .define("standPunchBlockBreaking", true);
 
             infiniteTimestop = builder
-                    .comment("Toggle The World's timestop no having a time limit.")
+                    .comment("Toggle The World's and Star Platinum's timestop not having a time limit.")
                     .define("infiniteTimestop", false);
 
             builder.pop();

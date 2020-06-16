@@ -6,6 +6,8 @@ import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
+import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
@@ -212,6 +214,10 @@ public class EventHandleStandAbilities
                     standName = "The World";
                     break;
                 }
+                case JojoLibs.StandID.starPlatinum: {
+                    standName = "Star Platinum";
+                    break;
+                }
             }
         if(event.getItemStack().getItem() instanceof ItemStandDisc)
             if(!standName.equals(""))
@@ -252,10 +258,35 @@ public class EventHandleStandAbilities
             }
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
                 if(props.getAbility() && props.getTimeLeft() > 780)
-                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                EventTheWorldStopTime.theWorld=null;
-                EventTheWorldStopTime.dayTime = -1;
-                EventTheWorldStopTime.gameTime = -1;
+                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                EntityTheWorld.theWorld=null;
+                EntityTheWorld.dayTime = -1;
+                EntityTheWorld.gameTime = -1;
+                if (!player.world.isRemote)
+                    player.world.getServer().getWorld(player.dimension).getEntities()
+                            .filter(entity -> entity != player)
+                            .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    entity.setNoGravity(false);
+                                } else {
+                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                }
+                                if (entity instanceof MobEntity)
+                                    ((MobEntity) entity).setNoAI(false);
+                                entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                entity.velocityChanged = true;
+                                entity.fallDistance = props2.getFallDistance();
+                                entity.setInvulnerable(false);
+                                props2.clear();
+                            }));
+            } else if(props.getStandID() == JojoLibs.StandID.starPlatinum) {
+                if(props.getAbility() && props.getTimeLeft() > 900)
+                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                EntityStarPlatinum.starPlatinum=null;
+                EntityStarPlatinum.dayTime = -1;
+                EntityStarPlatinum.gameTime = -1;
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)

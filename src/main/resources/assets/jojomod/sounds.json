@@ -147,5 +147,29 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:mudarush", "stream": false}]
+    },
+
+    "spawn_star_platinum":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_star_platinum", "stream": false}]
+    },
+
+    "orarush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:orarush", "stream": false}]
+    },
+
+    "star_platinum_the_world":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:star_platinum_the_world", "stream": false}]
+    },
+
+    "time_resume_star_platinum":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:time_resume_star_platinum", "stream": false}]
     }
 }

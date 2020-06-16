@@ -74,6 +74,7 @@ public class EntityCMoon extends EntityStandBase {
 			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 				if((props.getStandID() == JojoLibs.StandID.cMoon && props.getAct() == 1) || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() == 2)) {
+					player.setNoGravity(false);
 					remove();
 					EntityWhitesnake whitesnake = new EntityWhitesnake(world);
 					whitesnake.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);

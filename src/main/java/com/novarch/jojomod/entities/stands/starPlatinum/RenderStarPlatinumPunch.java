@@ -18,7 +18,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.starPlatinum>
 {
 	protected ModelStarPlatinumPunch<EntityStandPunch.starPlatinum> punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/star_platinum_punch.png");
 
 	public RenderStarPlatinumPunch(EntityRendererManager renderManagerIn)
 	{

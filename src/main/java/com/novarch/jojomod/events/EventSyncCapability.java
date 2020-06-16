@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -65,8 +66,7 @@ public class EventSyncCapability
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> {
             props.putStandOn(false);
-            if (!player.world.isRemote)
-            {
+            if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)
                         .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
@@ -75,30 +75,55 @@ public class EventSyncCapability
                         .filter(entity -> entity instanceof EntitySheerHeartAttack)
                         .filter(entity -> ((EntitySheerHeartAttack) entity).getMaster() == player)
                         .forEach(Entity::remove);
-                if(props.getStandID() == theWorld)
+                if (props.getStandID() == theWorld) {
                     player.getServerWorld().getEntities()
-                        .forEach(entity -> {
-                                    Timestop.getLazyOptional(entity).ifPresent(props2 -> {
-                                        if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
-                                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                            entity.setNoGravity(false);
-                                        } else {
-                                            if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                                entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                        }
-                                        if (entity instanceof MobEntity)
-                                            ((MobEntity) entity).setNoAI(false);
-                                        entity.velocityChanged = true;
+                            .forEach(entity -> {
+                                Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                    if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                         entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                        entity.fallDistance = props2.getFallDistance();
-                                        entity.setInvulnerable(false);
-                                        props2.clear();
+                                        entity.setNoGravity(false);
+                                    } else {
+                                        if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    }
+                                    if (entity instanceof MobEntity)
+                                        ((MobEntity) entity).setNoAI(false);
+                                    entity.velocityChanged = true;
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    entity.fallDistance = props2.getFallDistance();
+                                    entity.setInvulnerable(false);
+                                    props2.clear();
 
-                                    });
-                                    if(entity instanceof EntityTheWorld)
-                                        if(entity == EventTheWorldStopTime.theWorld)
-                                            EventTheWorldStopTime.theWorld=null;
                                 });
+                                if (entity instanceof EntityTheWorld)
+                                    if (entity == EntityTheWorld.theWorld)
+                                        EntityTheWorld.theWorld = null;
+                            });
+                } else if(props.getStandID() == JojoLibs.StandID.starPlatinum) {
+                    player.getServerWorld().getEntities()
+                            .forEach(entity -> {
+                                Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                    if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
+                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                        entity.setNoGravity(false);
+                                    } else {
+                                        if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    }
+                                    if (entity instanceof MobEntity)
+                                        ((MobEntity) entity).setNoAI(false);
+                                    entity.velocityChanged = true;
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                                    entity.fallDistance = props2.getFallDistance();
+                                    entity.setInvulnerable(false);
+                                    props2.clear();
+
+                                });
+                                if (entity instanceof EntityTheWorld)
+                                    if (entity == EntityTheWorld.theWorld)
+                                        EntityTheWorld.theWorld = null;
+                            });
+                }
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));
             }
         });

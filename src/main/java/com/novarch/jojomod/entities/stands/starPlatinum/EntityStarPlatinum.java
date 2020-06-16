@@ -1,5 +1,6 @@
 package com.novarch.jojomod.entities.stands.starPlatinum;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.ITimestop;
@@ -8,8 +9,7 @@ import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
-import com.novarch.jojomod.events.EventStarPlatinumStopTime;
-import com.novarch.jojomod.events.EventTheWorldStopTime;
+import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
@@ -26,14 +26,19 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.PistonEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
-import static com.novarch.jojomod.events.EventTheWorldStopTime.*;
 
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
+@Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EntityStarPlatinum extends EntityStandBase {
 	private int oratick = 0;
 
@@ -42,6 +47,12 @@ public class EntityStarPlatinum extends EntityStandBase {
 	public int timestopTick = 0;
 
 	public boolean cooldown = false;
+
+	public static EntityStarPlatinum starPlatinum;
+
+	public static long dayTime = -1;
+
+	public static long gameTime = -1;
 
 	@Override
 	public boolean canDespawn(double distanceToClosestPlayer) {
@@ -71,20 +82,20 @@ public class EntityStarPlatinum extends EntityStandBase {
 	@Override
 	public void spawnSound() {
 		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-			if(!props.getAbility())
-				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 1.0f, 1.0f);
+			if (!props.getAbility())
+				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
 		});
 	}
 
 	public EntityStarPlatinum(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
+		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
 		standID = JojoLibs.StandID.starPlatinum;
 	}
 
 	public EntityStarPlatinum(World world) {
 		super(EntityInit.STAR_PLATINUM.get(), world);
-		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
+		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
 		standID = JojoLibs.StandID.starPlatinum;
 	}
 
@@ -103,8 +114,8 @@ public class EntityStarPlatinum extends EntityStandBase {
 					timestopTick++;
 					player.setInvulnerable(true);
 					if (timestopTick == 1 && props2.getCooldown() <= 0)
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
-					EventStarPlatinumStopTime.starPlatinum = this;
+						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 1.0f, 1.0f);
+					starPlatinum = this;
 
 					if (!world.isRemote) {
 						if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -119,6 +130,8 @@ public class EntityStarPlatinum extends EntityStandBase {
 									if (entity instanceof PlayerEntity) {
 										IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
 										if (props.getStandID() == JojoLibs.StandID.GER)
+											return;
+										if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
 										if (props.getStandID() == JojoLibs.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
@@ -171,10 +184,10 @@ public class EntityStarPlatinum extends EntityStandBase {
 									}
 								});
 					}
-				} else if(!ability || props2.getTimeLeft() <= 900) {
+				} else if (!ability || props2.getTimeLeft() <= 900) {
 					timestopTick = 0;
 					player.setInvulnerable(false);
-					EventStarPlatinumStopTime.starPlatinum = null;
+					starPlatinum = null;
 					if (!this.world.isRemote) {
 						this.world.getServer().getWorld(this.dimension).getEntities()
 								.filter(entity -> entity != this)
@@ -199,27 +212,28 @@ public class EntityStarPlatinum extends EntityStandBase {
 					}
 				}
 
-				if(JojoBizarreSurvivalConfig.COMMON.infiniteTimestop.get())
+				if (JojoBizarreSurvivalConfig.COMMON.infiniteTimestop.get())
 					props2.setTimeLeft(1000);
 
-				if(props2.getTimeLeft() == 901) {
+				if (props2.getTimeLeft() == 901) {
 					props2.setCooldown(201);
 					cooldown = true;
 				}
 
-				if(props2.getCooldown() > 0)
+				if (props2.getTimeLeft() == 960)
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
+
+				if (props2.getCooldown() > 0)
 					props2.subtractCooldown(1);
 
-				if(props2.getCooldown() == 1) {
+				if (props2.getCooldown() == 1) {
 					props2.setTimeLeft(1000);
 					cooldown = false;
 				}
 
-				if(!ability && props2.getTimeLeft() < 1000)
+				if (!ability && props2.getTimeLeft() < 1000)
 					props2.addTimeLeft(1);
 			});
-
-
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
@@ -231,7 +245,7 @@ public class EntityStarPlatinum extends EntityStandBase {
 				if (attackSwing(player))
 					oratick++;
 				if (oratick == 1) {
-					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.MUDARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.ORARUSH.get(), getSoundCategory(), 5.0f, 1.0f);
 					if (!world.isRemote)
 						orarush = true;
 				}
@@ -241,7 +255,7 @@ public class EntityStarPlatinum extends EntityStandBase {
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
 						EntityStandPunch.starPlatinum starPlatinum = new EntityStandPunch.starPlatinum(world, this, player);
-						starPlatinum.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
+						starPlatinum.shoot(player, player.rotationPitch, player.rotationYaw, 2.9f, 0.12f);
 						world.addEntity(starPlatinum);
 					}
 				}
@@ -256,14 +270,14 @@ public class EntityStarPlatinum extends EntityStandBase {
 						player.setSprinting(false);
 						EntityStandPunch.starPlatinum starPlatinum1 = new EntityStandPunch.starPlatinum(world, this, player);
 						starPlatinum1.setRandomPositions();
-						starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+						starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
 						world.addEntity(starPlatinum1);
 						EntityStandPunch.starPlatinum starPlatinum2 = new EntityStandPunch.starPlatinum(world, this, player);
 						starPlatinum2.setRandomPositions();
-						starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+						starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
 						world.addEntity(starPlatinum2);
 					}
-				if (oratickr >= 80) {
+				if (oratickr >= 160) {
 					orarush = false;
 					oratickr = 0;
 				}
@@ -286,9 +300,9 @@ public class EntityStarPlatinum extends EntityStandBase {
 	public void onRemovedFromWorld() {
 		super.onRemovedFromWorld();
 		ability = false;
-		EventStarPlatinumStopTime.starPlatinum = null;
-		EventTheWorldStopTime.dayTime = -1;
-		EventTheWorldStopTime.gameTime = -1;
+		starPlatinum = null;
+		dayTime = -1;
+		gameTime = -1;
 		if (!this.world.isRemote)
 			this.world.getServer().getWorld(this.dimension).getEntities()
 					.filter(entity -> entity != this)
@@ -309,5 +323,113 @@ public class EntityStarPlatinum extends EntityStandBase {
 								entity.setInvulnerable(false);
 								props2.clear();
 							}));
+	}
+
+	@SubscribeEvent
+	public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockBreakEvent(BlockEvent.BreakEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer() != starPlatinum.getMaster())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getEntity() != starPlatinum.getMaster())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void worldTick(TickEvent.WorldTickEvent event) {
+		World world = event.world;
+		if (starPlatinum != null) {
+			if (starPlatinum.ability && !starPlatinum.cooldown) {
+				if (dayTime != -1 && gameTime != -1) {
+					world.setDayTime(dayTime);
+					world.setGameTime(gameTime);
+				} else {
+					dayTime = world.getDayTime();
+					gameTime = world.getGameTime();
+				}
+			}
+		} else if (starPlatinum == null && EntityTheWorld.theWorld == null) {
+			if (!world.isRemote) {
+				world.getServer().getWorld(world.dimension.getType()).getEntities()
+						.filter(entity -> !(entity instanceof PlayerEntity))
+						.forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+							if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
+								entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+								entity.setNoGravity(false);
+							} else {
+								if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+									entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
+							}
+							if (entity instanceof MobEntity)
+								((MobEntity) entity).setNoAI(false);
+							entity.velocityChanged = true;
+							if (props.getFallDistance() != 0)
+								entity.fallDistance = props.getFallDistance();
+							dayTime = -1;
+							gameTime = -1;
+							props.clear();
+						}));
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void pistonEvent(PistonEvent.Pre event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void playerInteract1(PlayerInteractEvent.EntityInteractSpecific event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer() != starPlatinum.getMaster())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void playerInteract2(PlayerInteractEvent.EntityInteract event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer() != starPlatinum.getMaster())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
+					event.setCanceled(true);
+	}
+
+	@SubscribeEvent
+	public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
+		if (starPlatinum != null)
+			if (starPlatinum.ability && !starPlatinum.cooldown)
+				if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
+					event.setCanceled(true);
 	}
 }

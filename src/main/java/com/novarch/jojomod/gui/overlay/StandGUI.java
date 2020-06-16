@@ -52,43 +52,56 @@ public class StandGUI extends AbstractGui
     {
         assert Minecraft.getInstance().player != null;
         Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+            int standID = props.getStandID();
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
             int transformed = props.getTransformed();
             if (props.getStandOn())
             {
-                //Made in Heaven
-                if (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() == 0)
-                {
-                    if (timeLeft > 0 && cooldown <= 0)
-                        renderTimeValue(timeLeft);
-                    else
-                        drawString(mc.fontRenderer, "\"Heaven\" has begun!", 4, 4, 0xFFFFFF);
-                }
-
-                //King Crimson
-                else if(props.getStandID() == JojoLibs.StandID.kingCrimson)
-                {
-                    if(timeLeft > 800 && cooldown == 0)
-                        renderTimeLeft(timeLeft - 800);
-                }
-
-                //The World
-                else if(props.getStandID() == JojoLibs.StandID.theWorld)
-                {
-                    if(timeLeft > 800 && cooldown == 0)
-                        renderTimeLeft(timeLeft - 780);
+                switch(standID) {
+                    case(JojoLibs.StandID.madeInHeaven): {
+                        if(props.getAct() == 0) {
+                            if (timeLeft > 0 && cooldown <= 0)
+                                renderTimeValue(timeLeft);
+                            else
+                                drawString(mc.fontRenderer, "\"Heaven\" has begun!", 4, 4, 0xFFFFFF);
+                        }
+                        break;
+                    }
+                    case(JojoLibs.StandID.kingCrimson): {
+                        if(timeLeft > 800 && cooldown == 0)
+                            renderTimeLeft(timeLeft - 800);
+                        break;
+                    }
+                    case(JojoLibs.StandID.theWorld): {
+                        if(timeLeft > 780 && cooldown == 0)
+                            renderTimeLeft(timeLeft - 780);
+                        break;
+                    }
+                    case(JojoLibs.StandID.starPlatinum): {
+                        if(timeLeft > 900 && cooldown == 0)
+                            renderTimeLeft(timeLeft - 900);
+                        break;
+                    }
                 }
             }
-            if(props.getStandID() != JojoLibs.StandID.madeInHeaven && props.getStandID() != JojoLibs.StandID.goldExperience && props.getStandID() != JojoLibs.StandID.GER) {
-                if(cooldown > 0)
-                    renderCooldown(cooldown);
-            } else if(props.getStandID() == JojoLibs.StandID.goldExperience) {
-                if(cooldown > 0 && transformed > 0)
-                    renderCooldown(cooldown);
-            } else if(props.getStandID() == JojoLibs.StandID.GER) {
-                if(cooldown > 0 && transformed > 1)
-                    renderCooldown(cooldown);
+            switch(standID) {
+                default: {
+                    if(standID != JojoLibs.StandID.madeInHeaven)
+                        if(cooldown > 0)
+                            renderCooldown(cooldown);
+                    break;
+                }
+                case(JojoLibs.StandID.goldExperience): {
+                    if(cooldown > 0 && transformed > 0)
+                        renderCooldown(cooldown);
+                    break;
+                }
+                case(JojoLibs.StandID.GER): {
+                    if(cooldown > 0 && transformed > 1)
+                        renderCooldown(cooldown);
+                    break;
+                }
             }
         });
     }
