@@ -23,6 +23,8 @@ import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHaze;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHazePunch;
+import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinum;
+import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinumPunch;
 import com.novarch.jojomod.entities.stands.theEmperor.RenderEmperorBullet;
 import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorld;
 import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorldPunch;
@@ -31,7 +33,6 @@ import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunc
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnake;
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnakePunch;
 import com.novarch.jojomod.init.EntityInit;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -39,7 +40,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber
 {
@@ -90,5 +90,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_WORLD.get(), RenderTheWorld::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_WORLD_PUNCH.get(), RenderTheWorldPunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.STAR_PLATINUM.get(), RenderStarPlatinum::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.STAR_PLATINUM_PUNCH.get(), RenderStarPlatinumPunch::new);
 	}
 }

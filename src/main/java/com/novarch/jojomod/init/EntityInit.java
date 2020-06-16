@@ -14,6 +14,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySh
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
@@ -201,4 +202,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.theWorld>create(EntityStandPunch.theWorld::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world_punch").toString()));
+
+	public static final RegistryObject<EntityType<EntityStarPlatinum>> STAR_PLATINUM = ENTITY_TYPES
+			.register("star_platinum",
+					() -> EntityType.Builder.<EntityStarPlatinum>create(EntityStarPlatinum::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.starPlatinum>> STAR_PLATINUM_PUNCH = ENTITY_TYPES
+			.register("star_platinum_punch",
+					() -> EntityType.Builder.<EntityStandPunch.starPlatinum>create(EntityStandPunch.starPlatinum::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_punch").toString()));
 }

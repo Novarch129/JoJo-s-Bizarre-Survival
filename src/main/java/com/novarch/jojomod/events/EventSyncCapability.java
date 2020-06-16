@@ -96,8 +96,8 @@ public class EventSyncCapability
 
                                     });
                                     if(entity instanceof EntityTheWorld)
-                                        if(entity == EventStopTime.theWorld)
-                                            EventStopTime.theWorld=null;
+                                        if(entity == EventTheWorldStopTime.theWorld)
+                                            EventTheWorldStopTime.theWorld=null;
                                 });
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));
             }

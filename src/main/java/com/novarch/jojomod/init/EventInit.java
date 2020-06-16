@@ -12,6 +12,6 @@ public class EventInit
         bus.register(EventSyncCapability.class);
         bus.register(EventAbilityGER.class);
         bus.register(EventHandleStandAbilities.class);
-        bus.register(EventStopTime.class);
+        bus.register(EventTheWorldStopTime.class);
     }
 }

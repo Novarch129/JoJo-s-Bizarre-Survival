@@ -95,6 +95,10 @@ public abstract class StandPunchEffects {
 				theWorld(result, entityIn, punch, isEntity);
 				break;
 			}
+			case JojoLibs.StandID.starPlatinum: {
+				starPlatinum(result, entityIn, punch, isEntity);
+				break;
+			}
 			default: {
 				basicDefault(result, entityIn, punch, isEntity);
 				break;
@@ -1239,6 +1243,35 @@ public abstract class StandPunchEffects {
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.5f);
 			else
 				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 3.0f);
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
+			} else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
+			final Block block = punch.getInTile();
+			final BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
+			final BlockState blockState = punch.world.getBlockState(blockPos);
+			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 4.0f) {
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
+			}
+		}
+		punch.remove();
+	}
+
+	public static void starPlatinum(RayTraceResult result, final LivingEntity livingEntity, final EntityStandPunch punch, final boolean isEntity) {
+		if (isEntity) {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
+			if (punch.shootingStand.orarush)
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.4f);
+			else
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 2.9f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {

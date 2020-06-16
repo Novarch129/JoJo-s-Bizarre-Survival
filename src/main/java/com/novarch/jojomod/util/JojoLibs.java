@@ -12,6 +12,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
+import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
@@ -137,7 +138,9 @@ public class JojoLibs
 
         public static final int theWorld = 14;
 
-        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake, theWorld};
+        public static final int starPlatinum = 15;
+
+        public static int[] stands = {kingCrimson, dirtyDeedsDoneDirtCheap, goldExperience, aerosmith, weatherReport, killerQueen, crazyDiamond, purpleHaze, theEmperor, whitesnake, theWorld, starPlatinum};
 
         public static int numberOfStands = stands.length;
     }
@@ -153,7 +156,7 @@ public class JojoLibs
     public static EntityStandBase getStand(int standID, World world)
     {
         switch (standID) {
-            case StandID.nullStand:
+            default:
                 return null;
             case StandID.kingCrimson:
                 return new EntityKingCrimson(world);
@@ -181,7 +184,8 @@ public class JojoLibs
                 return new EntityCMoon(world);
             case StandID.theWorld:
                 return new EntityTheWorld(world);
+            case StandID.starPlatinum:
+                return new EntityStarPlatinum(world);
         }
-        return null;
     }
 }

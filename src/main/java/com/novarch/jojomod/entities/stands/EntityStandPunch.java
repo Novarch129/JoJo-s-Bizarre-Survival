@@ -646,6 +646,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     }
   }
 
+  public static class starPlatinum extends EntityStandPunch {
+    public starPlatinum(World worldIn) {
+      super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn);
+    }
+
+    public starPlatinum(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public starPlatinum(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
   @Override
   protected void registerData() {
 

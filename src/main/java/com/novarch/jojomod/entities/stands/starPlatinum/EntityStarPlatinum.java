@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.theWorld;
+package com.novarch.jojomod.entities.stands.starPlatinum;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
@@ -8,11 +8,11 @@ import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
+import com.novarch.jojomod.events.EventStarPlatinumStopTime;
 import com.novarch.jojomod.events.EventTheWorldStopTime;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.ValueTextComponent;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -34,7 +34,7 @@ import static com.novarch.jojomod.events.EventTheWorldStopTime.*;
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class EntityTheWorld extends EntityStandBase {
+public class EntityStarPlatinum extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
@@ -76,16 +76,16 @@ public class EntityTheWorld extends EntityStandBase {
 		});
 	}
 
-	public EntityTheWorld(EntityType<? extends EntityStandBase> type, World world) {
+	public EntityStarPlatinum(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		standID = JojoLibs.StandID.theWorld;
+		standID = JojoLibs.StandID.starPlatinum;
 	}
 
-	public EntityTheWorld(World world) {
-		super(EntityInit.THE_WORLD.get(), world);
+	public EntityStarPlatinum(World world) {
+		super(EntityInit.STAR_PLATINUM.get(), world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		standID = JojoLibs.StandID.theWorld;
+		standID = JojoLibs.StandID.starPlatinum;
 	}
 
 	public void tick() {
@@ -97,14 +97,14 @@ public class EntityTheWorld extends EntityStandBase {
 			Stand.getLazyOptional(player).ifPresent(props2 -> {
 				ability = props2.getAbility();
 
-				if (ability && props2.getTimeLeft() > 780) {
+				if (ability && props2.getTimeLeft() > 900) {
 					props2.subtractTimeLeft(1);
 					Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
 					timestopTick++;
 					player.setInvulnerable(true);
 					if (timestopTick == 1 && props2.getCooldown() <= 0)
 						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
-					theWorld = this;
+					EventStarPlatinumStopTime.starPlatinum = this;
 
 					if (!world.isRemote) {
 						if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -120,7 +120,7 @@ public class EntityTheWorld extends EntityStandBase {
 										IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
 										if (props.getStandID() == JojoLibs.StandID.GER)
 											return;
-										if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+										if (props.getStandID() == JojoLibs.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
 									}
 									if (entity instanceof MobEntity) {
@@ -152,6 +152,7 @@ public class EntityTheWorld extends EntityStandBase {
 													entity.setRotationYawHead(props.getRotationYawHead());
 												}
 												entity.setMotion(0, 0, 0);
+
 												entity.fallDistance = props.getFallDistance();
 												entity.setFireTimer(props.getFire());
 												if (entity instanceof TNTEntity)
@@ -170,10 +171,10 @@ public class EntityTheWorld extends EntityStandBase {
 									}
 								});
 					}
-				} else if(!ability || props2.getTimeLeft() <= 780) {
+				} else if(!ability || props2.getTimeLeft() <= 900) {
 					timestopTick = 0;
 					player.setInvulnerable(false);
-					theWorld = null;
+					EventStarPlatinumStopTime.starPlatinum = null;
 					if (!this.world.isRemote) {
 						this.world.getServer().getWorld(this.dimension).getEntities()
 								.filter(entity -> entity != this)
@@ -201,13 +202,10 @@ public class EntityTheWorld extends EntityStandBase {
 				if(JojoBizarreSurvivalConfig.COMMON.infiniteTimestop.get())
 					props2.setTimeLeft(1000);
 
-				if(props2.getTimeLeft() == 781) {
+				if(props2.getTimeLeft() == 901) {
 					props2.setCooldown(201);
 					cooldown = true;
 				}
-
-				if(props2.getTimeLeft() == 831)
-					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.RESUME_TIME.get(), getSoundCategory(), 1.0f, 1.0f);
 
 				if(props2.getCooldown() > 0)
 					props2.subtractCooldown(1);
@@ -219,14 +217,6 @@ public class EntityTheWorld extends EntityStandBase {
 
 				if(!ability && props2.getTimeLeft() < 1000)
 					props2.addTimeLeft(1);
-
-				if(player.isCrouching())
-					player.sendMessage(new ValueTextComponent(cooldown));
-
-				if(!ability) {
-					timestopTick = 0;
-					player.setInvulnerable(false);
-				}
 			});
 
 
@@ -250,9 +240,9 @@ public class EntityTheWorld extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						EntityStandPunch.theWorld theWorld = new EntityStandPunch.theWorld(world, this, player);
-						theWorld.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
-						world.addEntity(theWorld);
+						EntityStandPunch.starPlatinum starPlatinum = new EntityStandPunch.starPlatinum(world, this, player);
+						starPlatinum.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
+						world.addEntity(starPlatinum);
 					}
 				}
 			}
@@ -264,14 +254,14 @@ public class EntityTheWorld extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.theWorld theWorld1 = new EntityStandPunch.theWorld(world, this, player);
-						theWorld1.setRandomPositions();
-						theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
-						world.addEntity(theWorld1);
-						EntityStandPunch.theWorld theWorld2 = new EntityStandPunch.theWorld(world, this, player);
-						theWorld2.setRandomPositions();
-						theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
-						world.addEntity(theWorld2);
+						EntityStandPunch.starPlatinum starPlatinum1 = new EntityStandPunch.starPlatinum(world, this, player);
+						starPlatinum1.setRandomPositions();
+						starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+						world.addEntity(starPlatinum1);
+						EntityStandPunch.starPlatinum starPlatinum2 = new EntityStandPunch.starPlatinum(world, this, player);
+						starPlatinum2.setRandomPositions();
+						starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+						world.addEntity(starPlatinum2);
 					}
 				if (oratickr >= 80) {
 					orarush = false;
@@ -296,7 +286,7 @@ public class EntityTheWorld extends EntityStandBase {
 	public void onRemovedFromWorld() {
 		super.onRemovedFromWorld();
 		ability = false;
-		EventTheWorldStopTime.theWorld = null;
+		EventStarPlatinumStopTime.starPlatinum = null;
 		EventTheWorldStopTime.dayTime = -1;
 		EventTheWorldStopTime.gameTime = -1;
 		if (!this.world.isRemote)

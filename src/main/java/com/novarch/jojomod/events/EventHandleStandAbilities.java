@@ -12,11 +12,9 @@ import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.server.STimestopPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -28,17 +26,12 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -260,9 +253,9 @@ public class EventHandleStandAbilities
             if(props.getStandID() == JojoLibs.StandID.theWorld) {
                 if(props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-                EventStopTime.theWorld=null;
-                EventStopTime.dayTime = -1;
-                EventStopTime.gameTime = -1;
+                EventTheWorldStopTime.theWorld=null;
+                EventTheWorldStopTime.dayTime = -1;
+                EventTheWorldStopTime.gameTime = -1;
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)
