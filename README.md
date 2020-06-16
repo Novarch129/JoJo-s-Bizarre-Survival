@@ -31,5 +31,4 @@
 - [ ] Silver Chariot
 - [x] The Emperor
 
-This list is NOT a list of all Stands that will be added, it is a list of Stands currently being worked on!
-
+Mod is almost ready for release, expect first release this month!
