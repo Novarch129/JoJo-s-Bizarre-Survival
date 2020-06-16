@@ -65,7 +65,7 @@ public class EventSyncCapability
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> {
-//            props.putStandOn(false);
+            props.putStandOn(false);
             if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)

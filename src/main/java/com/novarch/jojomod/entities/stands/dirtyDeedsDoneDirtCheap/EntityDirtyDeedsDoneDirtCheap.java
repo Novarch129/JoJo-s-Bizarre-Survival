@@ -47,8 +47,8 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 	/**
 	 * Used to shorten the code of the method below, removing the need to make a <code>new</code> {@link DimensionHopTeleporter} every time {@link Entity}# changeDimension is called.
 	 *
-	 * @param entity The {@link Entity} that will be transported.
-	 * @param type The {@link DimensionType} the entity will be transported to.
+	 * @param entity	The {@link Entity} that will be transported.
+	 * @param type		The {@link DimensionType} the entity will be transported to.
 	 */
 	private void changeDimension(DimensionType type, Entity entity) {
 		entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld(), entity.getPosX(), entity.getPosY(), entity.getPosZ()));

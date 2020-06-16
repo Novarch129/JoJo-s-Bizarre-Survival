@@ -40,7 +40,6 @@ public class EntitySilverChariot extends EntityStandBase {
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-
 			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
 			followMaster();

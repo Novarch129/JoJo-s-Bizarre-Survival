@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.UUID;
 
@@ -26,33 +27,35 @@ import java.util.UUID;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class EntityStandBase extends MobEntity {
-    private PlayerEntity master;
-    protected boolean standOn;
-    private int act;
-    public boolean orarush;
-    protected SoundEvent spawnSound;
-    public int longTick;
-    public int standID;
+    private PlayerEntity master = null;
+    protected boolean standOn = true;
+    private int act = 0;
+    public boolean orarush = false;
+    protected SoundEvent spawnSound = null;
+    public int longTick = 2;
+    public int standID = 0;
     boolean jumpCheck;
     boolean attack;
     public UUID masterUUID;
-    public boolean ability;
+    public boolean ability = true;
 
     public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
-        this.master = null;
-        this.standOn = true;
-        this.orarush = false;
-        this.spawnSound = null;
-        this.longTick = 2;
-        this.ability = true;
     }
 
+    /**
+     * @return  Returns a {@link SoundEvent}, the Stand's spawn sound.
+     */
     public SoundEvent getSpawnSound() {
         return this.spawnSound;
     }
 
-    public void setMaster(PlayerEntity playerEntity) {
+    /**
+     * Sets the Stand's master, should never be <code>null</code> as it would most likely crash the game.
+     *
+     * @param playerEntity  The {@link PlayerEntity} that will be set as the Stand's master.
+     */
+    public void setMaster(@Nonnull PlayerEntity playerEntity) {
         this.master = playerEntity;
     }
 
@@ -60,13 +63,15 @@ public abstract class EntityStandBase extends MobEntity {
         return this.standID;
     }
 
+    /**
+     * Used to check if the Stand's master has swung their hand, used to summon {@link EntityStandPunch}.
+     *
+     * @param player    The player who's swing is checked.
+     *
+     * @return  Returns whether or not the swing was successful.
+     */
     public boolean attackSwing(PlayerEntity player) {
         return (player.isSwingInProgress && getAttack()) && !setAttack(false);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public boolean setAttack(boolean attack) {
@@ -81,18 +86,122 @@ public abstract class EntityStandBase extends MobEntity {
         return this.master;
     }
 
-    @Override
-    public boolean canBeCollidedWith() {
-        return false;
-    }
-
-    public void setMasterUUID(final UUID masterUUID) {
+    public void setMasterUUID(UUID masterUUID) {
         if (!this.world.isRemote)
             this.masterUUID = masterUUID;
     }
 
     public UUID getMasterUUID() {
         return masterUUID;
+    }
+
+    /**
+     *  Plays the Stand's spawn sound.
+     */
+    public void spawnSound() {
+        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 1.0f, 1.0f);
+    }
+
+    /**
+     *  Makes the Stand follow it's master, follow speed is based on distance from it's master.
+     */
+    protected void followMaster() {
+        PlayerEntity player = getMaster();
+        double distance = player.getDistance(this);
+        double minimum = 0.5;
+        double maximum = 3.0;
+
+        if (distance < minimum)
+            moveStand(distance, player);
+
+        else if (distance > minimum) {
+            if (distance < maximum && distance > minimum + 0.3)
+                moveStand(distance, player);
+
+            else if (distance > maximum && !world.isRemote)
+                setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
+        }
+    }
+
+    /**
+     *  Used in followMaster() to shorten code, moves the Stand based on the,
+     *  @param distance The Stand's distance from it's master.
+     *  @param player   The Stand's master, used for some distance calculations.
+     */
+    public void moveStand(double distance, PlayerEntity player) {
+        double distanceX = getPosX() - player.getPosX();
+        double distanceY = getPosY() - player.getPosY();
+        double distanceZ = getPosZ() - player.getPosZ();
+        float speed = (float) distance / 45.0f;
+
+        if (distance < 0.5)
+            speed = -0.1f;
+        if (distanceX > 0.0)
+            moveForward += -speed;
+        if (distanceX < 0.0)
+            moveForward += speed;
+        if (distanceY > 0.0)
+            moveVertical += -speed;
+        if (distanceY < 0.0)
+            moveVertical += speed;
+        if (distanceZ > 0.0)
+            moveStrafing += -speed;
+        if (distanceZ < 0.0)
+            moveStrafing += speed;
+    }
+
+    /**
+     * @return  Returns whether the Stand has acts, used to determine if it should be removed from the {@link World}.
+     */
+    public boolean hasAct() {
+        return false;
+    }
+
+    /**
+     * Changes the Stand's act, <code>overridden</code> in Stands that have acts.
+     */
+    public void changeAct() {
+        act++;
+    }
+
+    /**
+     * Makes the Stand dodge oncoming attacks, such as TNT, arrows and falling blocks.
+     */
+    private void dodgeAttacks() {
+        if (this.world != null) {
+            if (!world.isRemote)
+                world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
+                    Entity entity;
+                    Entity playerEntity = null;
+
+                    if (entity1 != null)
+                        playerEntity = entity1;
+
+                    final double distance = playerEntity.getDistance(getMaster());
+                    final double distance2 = Math.PI * 2 * 2 * 2;
+
+                    entity = playerEntity;
+
+                    if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
+                        final double distanceX = getPosX() - entity.getPosX();
+                        final double distanceY = getPosY() - entity.getPosY();
+                        final double distanceZ = getPosZ() - entity.getPosZ();
+
+                        if (distanceX > 0.0)
+                            moveForward += -0.3;
+                        if (distanceX < 0.0)
+                            moveForward += 0.3;
+                        if (distanceY > 0.0)
+                            moveVertical += -0.3;
+                        if (distanceY < 0.0)
+                            moveVertical += 0.3;
+                        if (distanceZ > 0.0)
+                            moveStrafing += -0.3;
+                        if (distanceZ < 0.0)
+                            moveStrafing += 0.3;
+                    }
+                });
+        }
     }
 
     @Override
@@ -131,52 +240,15 @@ public abstract class EntityStandBase extends MobEntity {
         }
     }
 
-    public void spawnSound() {
-        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 1.0f, 1.0f);
-    }
-
-    protected void followMaster() {
-        final PlayerEntity entity = getMaster();
-        final double distance = entity.getDistance(this);
-        final double minimum = 0.5;
-        final double maximum = 3.0;
-
-        if (distance < minimum)
-            moveStand(distance, entity);
-
-        else if (distance > minimum) {
-            if (distance < maximum && distance > minimum + 0.3)
-                moveStand(distance, entity);
-
-            else if (distance > maximum && !world.isRemote)
-                setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
-        }
-    }
-
-    public void moveStand(final double distance, final Entity entity) {
-        final double distanceX = getPosX() - entity.getPosX();
-        final double distanceY = getPosY() - entity.getPosY();
-        final double distanceZ = getPosZ() - entity.getPosZ();
-        float speed = (float) distance / 45.0f;
-
-        if (distance < 0.5)
-            speed = -0.1f;
-        if (distanceX > 0.0)
-            moveForward += -speed;
-        if (distanceX < 0.0)
-            moveForward += speed;
-        if (distanceY > 0.0)
-            moveVertical += -speed;
-        if (distanceY < 0.0)
-            moveVertical += speed;
-        if (distanceZ > 0.0)
-            moveStrafing += -speed;
-        if (distanceZ < 0.0)
-            moveStrafing += speed;
-    }
-
+    /**
+     * Redirects attacks from the Stand to it's master.
+     *
+     * @param damageSource  The {@link DamageSource} damaging the Stand.
+     * @param damage    The amount of damage taken.
+     * @return  Always returns <code>false</code> to prevent the Stand from taking damage, and because I'm paranoid.
+     */
     @Override
-    public boolean attackEntityFrom(final DamageSource damageSource, final float damage) {
+    public boolean attackEntityFrom(DamageSource damageSource, float damage) {
         if (!standOn)
             return false;
         if (damageSource.getTrueSource() == getMaster())
@@ -187,51 +259,11 @@ public abstract class EntityStandBase extends MobEntity {
         return false;
     }
 
-    public boolean hasAct() {
-        return false;
-    }
-
-    public void changeAct() {
-        act++;
-    }
-
-    private void dodgeAttacks() {
-        if (this.world != null) {
-            if (!world.isRemote)
-                world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
-                    Entity entity;
-                    Entity playerEntity = null;
-
-                    if (entity1 != null)
-                        playerEntity = entity1;
-
-                    final double distance = playerEntity.getDistance(getMaster());
-                    final double distance2 = Math.PI * 2 * 2 * 2;
-
-                    entity = playerEntity;
-
-                    if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
-                        final double distanceX = getPosX() - entity.getPosX();
-                        final double distanceY = getPosY() - entity.getPosY();
-                        final double distanceZ = getPosZ() - entity.getPosZ();
-
-                        if (distanceX > 0.0)
-                            moveForward += -0.3;
-                        if (distanceX < 0.0)
-                            moveForward += 0.3;
-                        if (distanceY > 0.0)
-                            moveVertical += -0.3;
-                        if (distanceY < 0.0)
-                            moveVertical += 0.3;
-                        if (distanceZ > 0.0)
-                            moveStrafing += -0.3;
-                        if (distanceZ < 0.0)
-                            moveStrafing += 0.3;
-                    }
-                });
-        }
-    }
-
+    /**
+     * Makes Stand's phase through non Stand entities.
+     *
+     * @param entityIn  The {@link Entity} being collided with.
+     */
     @Override
     public void applyEntityCollision(Entity entityIn) {
         if(entityIn instanceof EntityStandBase || entityIn instanceof EntityStandPunch)
@@ -275,5 +307,18 @@ public abstract class EntityStandBase extends MobEntity {
     @Override
     public boolean isEntityInsideOpaqueBlock() {
         return false;
+    }
+
+    @Override
+    public boolean canBeCollidedWith() {
+        return false;
+    }
+
+    /**
+     * Very important for custom entities, if not implemented the game will crash with a {@link NullPointerException}.
+     */
+    @Override
+    public IPacket<?> createSpawnPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

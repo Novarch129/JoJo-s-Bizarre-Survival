@@ -40,7 +40,16 @@ import javax.annotation.Nullable;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class StandPunchEffects {
-	public static void getStandSpecific(final RayTraceResult result, @Nullable final LivingEntity entityIn, final EntityStandPunch punch, final boolean isEntity, final int standID) {
+	/**
+	 * Gets the appropriate effect for an {@link EntityStandPunch} based on it's {@link com.novarch.jojomod.util.JojoLibs.StandID}.
+	 *
+	 * @param result	The {@link RayTraceResult} of the {@link EntityStandPunch}.
+	 * @param entityIn	The {@link LivingEntity} that the {@link EntityStandPunch} has hit, {@link Nullable}.
+	 * @param punch		The {@link EntityStandPunch} that called the method
+	 * @param isEntity	A <code>boolean</code> that defines whether the punch hit a {@link LivingEntity} or a {@link Block}.
+	 * @param standID	The {@link com.novarch.jojomod.util.JojoLibs.StandID} of the {@link EntityStandPunch} that called the method, used to determine what effect the punch will have.
+	 */
+	public static void getStandSpecific(RayTraceResult result, @Nullable LivingEntity entityIn, EntityStandPunch punch, boolean isEntity, int standID) {
 		if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent(punch, result, entityIn, isEntity))) return;
 		switch (standID) {
 			case JojoLibs.StandID.kingCrimson: {
@@ -1316,8 +1325,8 @@ public abstract class StandPunchEffects {
 			final BlockState blockState = punch.world.getBlockState(blockPos);
 			final float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
-				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
+				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 			}
 		}
 		punch.remove();

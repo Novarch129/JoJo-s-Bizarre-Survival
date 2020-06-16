@@ -46,10 +46,15 @@ public class EntityKingCrimson extends EntityStandBase {
 		this.standID = JojoLibs.StandID.kingCrimson;
 	}
 
+	/**
+	 *	Gets all entities in the {@link net.minecraft.world.server.ServerWorld} using {@link net.minecraft.world.server.ServerWorld}#getAllEntities,
+	 *	then applies the {@link com.novarch.jojomod.effects.CrimsonEffect} to them to make them glow.
+	 *	Also applies the {@link com.novarch.jojomod.effects.CrimsonEffectUser} to it's user, impairing his vision.
+	 */
 	@Override
 	public void tick() {
 		super.tick();
-		this.fallDistance = 0.0F;
+
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
