@@ -171,5 +171,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:time_resume_star_platinum", "stream": false}]
+    },
+
+    "spawn_silver_chariot":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_silver_chariot", "stream": false}]
     }
 }

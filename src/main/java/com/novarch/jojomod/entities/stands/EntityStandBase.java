@@ -125,6 +125,7 @@ public abstract class EntityStandBase extends MobEntity {
 
     /**
      *  Used in followMaster() to shorten code, moves the Stand based on the,
+     *
      *  @param distance The Stand's distance from it's master.
      *  @param player   The Stand's master, used for some distance calculations.
      */

@@ -1171,7 +1171,7 @@ public abstract class StandPunchEffects {
 			if (punch.shootingStand.ability)
 				if(livingEntity instanceof PlayerEntity)
 					Stand.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
-						if(props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && livingEntity.getHealth() == livingEntity.getMaxHealth() / 2) {
+						if(props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && livingEntity.getHealth() <= livingEntity.getMaxHealth() / 2) {
 							ItemStack itemStack = new ItemStack(ItemInit.stand_disc.get());
 							CompoundNBT nbt = itemStack.getTag() == null ? new CompoundNBT() : itemStack.getTag();
 							if (punch.standMaster.inventory.getStackInSlot(punch.standMaster.inventory.getBestHotbarSlot()).isEmpty()) {
