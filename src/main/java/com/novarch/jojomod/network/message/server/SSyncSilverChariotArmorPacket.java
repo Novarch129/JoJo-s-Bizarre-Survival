@@ -36,7 +36,7 @@ public class SSyncSilverChariotArmorPacket
                 assert Minecraft.getInstance().world != null;
                 Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
                     if(entity instanceof EntitySilverChariot)
-                        ((EntitySilverChariot) entity).putHasNoArmor(message.hasArmor);
+                        ((EntitySilverChariot) entity).putHasArmor(message.hasArmor);
                 });
             });
         }

@@ -150,7 +150,7 @@ public class ModelSilverChariot<T extends EntitySilverChariot> extends EntityMod
 		ShoulderPad1.setRotationPoint(11.1206F, -1.2485F, 0.6555F);
 		ShoulderPads.addChild(ShoulderPad1);
 		setRotationAngle(ShoulderPad1, 0.0F, 0.0F, -0.1265F);
-		ShoulderPad1.setTextureOffset(115, 13).addBox(-0.8775F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, false);
+		ShoulderPad1.setTextureOffset(113, 13).addBox(-0.8775F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, false);
 		ShoulderPad1.setTextureOffset(98, 11).addBox(-0.6275F, -4.2125F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, false);
 		ShoulderPad1.setTextureOffset(115, 13).addBox(-0.8775F, -0.4625F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, false);
 
@@ -192,7 +192,7 @@ public class ModelSilverChariot<T extends EntitySilverChariot> extends EntityMod
 		ShoulderPad2.setRotationPoint(-11.1206F, -1.2485F, 0.6555F);
 		ShoulderPads.addChild(ShoulderPad2);
 		setRotationAngle(ShoulderPad2, 0.0F, 0.0F, 0.1265F);
-		ShoulderPad2.setTextureOffset(115, 13).addBox(-0.1225F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, true);
+		ShoulderPad2.setTextureOffset(113, 13).addBox(-0.1225F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, true);
 		ShoulderPad2.setTextureOffset(98, 11).addBox(-0.3725F, -4.2125F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, true);
 		ShoulderPad2.setTextureOffset(115, 13).addBox(-0.1225F, -0.4625F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, true);
 
@@ -362,7 +362,7 @@ public class ModelSilverChariot<T extends EntitySilverChariot> extends EntityMod
 
 	@Override
 	public void setLivingAnimations(T entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
-		if(entityIn.hasNoArmor()) {
+		if(!entityIn.hasArmor()) {
 			Removable.showModel = false;
 			ChestPads.showModel = false;
 			ShoulderPads.showModel = false;

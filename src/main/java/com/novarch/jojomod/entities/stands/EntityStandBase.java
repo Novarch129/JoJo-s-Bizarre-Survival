@@ -12,12 +12,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -53,10 +55,10 @@ public abstract class EntityStandBase extends MobEntity {
     /**
      * Sets the Stand's master, should never be <code>null</code> as it would most likely crash the game.
      *
-     * @param playerEntity  The {@link PlayerEntity} that will be set as the Stand's master.
+     * @param master  The {@link PlayerEntity} that will be set as the Stand's master.
      */
-    public void setMaster(@Nonnull PlayerEntity playerEntity) {
-        this.master = playerEntity;
+    public void setMaster(@Nonnull PlayerEntity master) {
+        this.master = master;
     }
 
     public int getStandID() {

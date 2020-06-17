@@ -4,10 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
 import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
 import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
-import com.novarch.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
-import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
-import com.novarch.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
-import com.novarch.jojomod.network.message.server.STimestopPacket;
+import com.novarch.jojomod.network.message.server.*;
 
 public class PacketInit {
     public static void register() {

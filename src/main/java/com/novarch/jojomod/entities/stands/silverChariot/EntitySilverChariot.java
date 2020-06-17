@@ -8,7 +8,6 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.ValueTextComponent;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,7 +45,7 @@ public class EntitySilverChariot extends EntityStandBase {
 		standID = JojoLibs.StandID.silverChariot;
 	}
 
-	public boolean hasNoArmor() {
+	public boolean hasArmor() {
 		return hasArmor;
 	}
 
@@ -55,13 +54,13 @@ public class EntitySilverChariot extends EntityStandBase {
 	 *
 	 * @param hasArmor	Simply says if Silver Chariot should have his armor or not.
 	 */
-	public void setHasNoArmor(boolean hasArmor) {
+	public void setHasArmor(boolean hasArmor) {
 		this.hasArmor = hasArmor;
 		if(!world.isRemote)
-			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncSilverChariotArmorPacket(hasNoArmor()));
+			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncSilverChariotArmorPacket(hasArmor()));
 	}
 
-	public void putHasNoArmor(boolean hasArmor) {
+	public void putHasArmor(boolean hasArmor) {
 		this.hasArmor = hasArmor;
 	}
 
@@ -80,8 +79,20 @@ public class EntitySilverChariot extends EntityStandBase {
 			return false;
 		if (damageSource == DamageSource.CACTUS)
 			return false;
-		getMaster().attackEntityFrom(damageSource, hasNoArmor() ? damage * 2 : damage * 0.5f);
+		getMaster().attackEntityFrom(damageSource, hasArmor() ? damage * 0.5f :  damage * 2);
 		return false;
+	}
+
+	/**
+	 * Removes the speed {@link net.minecraft.potion.Effect} from the Stand's master when it's unsummoned.
+	 */
+	@Override
+	public void onRemovedFromWorld() {
+		super.onRemovedFromWorld();
+		if(ability)
+			if(getMaster() != null)
+				if(getMaster().isPotionActive(Effects.SPEED))
+					getMaster().removePotionEffect(Effects.SPEED);
 	}
 
 	@Override
@@ -93,33 +104,37 @@ public class EntitySilverChariot extends EntityStandBase {
 			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
 
-				if(hasNoArmor()) {
-					props.subtractTimeLeft(1);
-					if(props.getTimeLeft() % 20 == 0)
-						player.getFoodStats().addStats(-1, 0);
-					if(props.getTimeLeft() == 998) {
-						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, getSoundCategory(), 1.0f, 1.0f);
-						player.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 19));
+				if(props.getTimeLeft() > 800 && props.getCooldown() <= 0) {
+					if(ability == hasArmor()) {
+						setHasArmor(!ability);
+
+						if(!hasArmor()) {
+							if(props.getTimeLeft() % 20 == 0 && !player.isCreative())
+								player.getFoodStats().addStats(-1, 0);
+							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, getSoundCategory(), 2.0f, 1.0f);
+							for(int i = 0; i < 5; i++)
+								spawnExplosionParticle();
+							player.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 4));
+						} else {
+							if (player.isPotionActive(Effects.SPEED))
+								player.removePotionEffect(Effects.SPEED);
+						}
 					}
-					if(props.getTimeLeft() > 989 && props.getTimeLeft() < 999)
-						spawnExplosionParticle();
 				}
+
+				if(!hasArmor())
+					props.subtractTimeLeft(1);
 				if(props.getCooldown() > 0)
-					setHasNoArmor(false);
+					setHasArmor(true);
 				if(props.getTimeLeft() == 800) {
-					setHasNoArmor(false);
+					setHasArmor(true);
 					props.setCooldown(200);
 				}
-				if(props.getTimeLeft() > 800 && props.getCooldown() <= 0)
-					setHasNoArmor(ability);
 				if(props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);
 				if(props.getCooldown() == 1)
 					props.setTimeLeft(1000);
 			});
-
-			if(player.isCrouching())
-				player.sendMessage(new ValueTextComponent(hasNoArmor()));
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
@@ -139,7 +154,7 @@ public class EntitySilverChariot extends EntityStandBase {
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 						EntityStandPunch.silverChariot silverChariot = new EntityStandPunch.silverChariot(world, this, player);
-						silverChariot.shoot(player, player.rotationPitch, player.rotationYaw, hasNoArmor() ? 10.0f : 4.0f, hasNoArmor() ? Float.MIN_VALUE : 0.001f);
+						silverChariot.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 4.0f : 10.0f, hasArmor() ? 0.001f : Float.MIN_VALUE);
 						world.addEntity(silverChariot);
 					}
 				}
@@ -154,11 +169,11 @@ public class EntitySilverChariot extends EntityStandBase {
 						player.setSprinting(false);
 						EntityStandPunch.silverChariot silverChariot1 = new EntityStandPunch.silverChariot(world, this, player);
 						silverChariot1.setRandomPositions();
-						silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, hasNoArmor() ? 6.0f : 3.0f, hasNoArmor() ? 0.0001f : 0.05f);
+						silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot1);
 						EntityStandPunch.silverChariot silverChariot2 = new EntityStandPunch.silverChariot(world, this, player);
 						silverChariot2.setRandomPositions();
-						silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, hasNoArmor() ? 6.0f : 3.0f, hasNoArmor() ? 0.0001f : 0.05f);
+						silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot2);
 					}
 				if (oratickr >= 80) {

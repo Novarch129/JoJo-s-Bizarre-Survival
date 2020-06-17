@@ -6,12 +6,13 @@ import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
 import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
 import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-@Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE)
+@Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class EventControlInputs
 {
 	 @SubscribeEvent
