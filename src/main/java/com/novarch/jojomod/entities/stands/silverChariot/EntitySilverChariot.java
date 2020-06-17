@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -96,9 +97,11 @@ public class EntitySilverChariot extends EntityStandBase {
 					props.subtractTimeLeft(1);
 					if(props.getTimeLeft() % 20 == 0)
 						player.getFoodStats().addStats(-1, 0);
-					if(props.getTimeLeft() == 999)
+					if(props.getTimeLeft() == 998) {
+						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, getSoundCategory(), 1.0f, 1.0f);
 						player.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 19));
-					if(props.getTimeLeft() > 990)
+					}
+					if(props.getTimeLeft() > 989 && props.getTimeLeft() < 999)
 						spawnExplosionParticle();
 				}
 				if(props.getCooldown() > 0)
@@ -126,6 +129,7 @@ public class EntitySilverChariot extends EntityStandBase {
 				if (attackSwing(player))
 					oratick++;
 				if (oratick == 1) {
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SILVER_CHARIOT_RUSH.get(), getSoundCategory(), 1.0f, 1.0f);
 					if (!world.isRemote)
 						orarush = true;
 				}

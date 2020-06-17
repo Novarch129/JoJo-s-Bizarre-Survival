@@ -177,5 +177,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_silver_chariot", "stream": false}]
+    },
+
+    "silver_chariot_rush":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:silver_chariot_rush", "stream": false}]
     }
 }

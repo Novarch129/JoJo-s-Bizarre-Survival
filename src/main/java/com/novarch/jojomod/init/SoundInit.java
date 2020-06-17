@@ -43,4 +43,5 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> STAR_PLATINUM_THE_WORLD = SOUNDS.register("star_platinum_the_world", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_the_world")));
 	public static final RegistryObject<SoundEvent> TIME_RESUME_STAR_PLATINUM = SOUNDS.register("time_resume_star_platinum", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "time_resume_star_platinum")));
 	public static final RegistryObject<SoundEvent> SPAWN_SILVER_CHARIOT = SOUNDS.register("spawn_silver_chariot", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_silver_chariot")));
+	public static final RegistryObject<SoundEvent> SILVER_CHARIOT_RUSH = SOUNDS.register("silver_chariot_rush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_rush")));
 }
