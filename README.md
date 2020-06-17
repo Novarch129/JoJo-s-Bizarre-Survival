@@ -28,7 +28,7 @@
 - [x] Star Platinum
 - [ ] Magician's Red
 - [ ] Hierophant Green
-- [ ] Silver Chariot
+- [x] Silver Chariot
 - [x] The Emperor
 
 Mod is almost ready for release, expect first release this month!

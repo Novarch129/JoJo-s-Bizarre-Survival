@@ -3,6 +3,7 @@ package com.novarch.jojomod.entities.stands.silverChariot;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -14,11 +15,12 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class RenderSilverChariotSword extends EntityRenderer<EntityStandPunch.silverChariot>
 {
 	protected ModelSilverChariotSword<EntityStandPunch.silverChariot> punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot_sword.png");
 
 	public RenderSilverChariotSword(EntityRendererManager renderManagerIn)
 	{

@@ -225,6 +225,6 @@ public class EntityInit
 	public static final RegistryObject<EntityType<EntityStandPunch.silverChariot>> SILVER_CHARIOT_SWORD = ENTITY_TYPES
 			.register("silver_chariot_sword",
 					() -> EntityType.Builder.<EntityStandPunch.silverChariot>create(EntityStandPunch.silverChariot::new, EntityClassification.MISC)
-							.size(0.2f, 0.2f)
+							.size(0.3f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_sword").toString()));
 }

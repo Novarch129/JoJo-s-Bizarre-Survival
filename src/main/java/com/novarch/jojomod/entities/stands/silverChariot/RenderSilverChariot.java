@@ -12,7 +12,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 public class RenderSilverChariot extends MobRenderer<EntitySilverChariot, ModelSilverChariot<EntitySilverChariot>>
 {
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot.png");
 
 	public RenderSilverChariot(EntityRendererManager renderManagerIn)
 	{

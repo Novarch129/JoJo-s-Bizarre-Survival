@@ -12,15 +12,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class ModelSilverChariotSword<T extends EntityStandPunch.silverChariot> extends EntityModel<T> {
-	private final ModelRenderer Punch;
+	private final ModelRenderer Sword;
 
 	public ModelSilverChariotSword() {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		Punch = new ModelRenderer(this);
-		Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
-		Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
+		Sword = new ModelRenderer(this);
+		Sword.setRotationPoint(0.0F, 24.0F, 1.0F);
+		Sword.setTextureOffset(0, 0).addBox(-0.5F, -2.0F, 3.0F, 1.0F, 1.0F, 4.0F, 0.0F, false);
+		Sword.setTextureOffset(0, 0).addBox(-0.5F, -2.0F, -16.0F, 1.0F, 1.0F, 18.0F, 0.0F, false);
+		Sword.setTextureOffset(0, 8).addBox(-1.5F, -3.0F, 2.0F, 3.0F, 3.0F, 1.0F, 0.0F, false);
 	}
 
 	@Override
@@ -29,11 +31,11 @@ public class ModelSilverChariotSword<T extends EntityStandPunch.silverChariot> e
 
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
+		Sword.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay) {
-		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
+		Sword.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

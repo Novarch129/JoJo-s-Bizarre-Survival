@@ -68,7 +68,8 @@ public class StandGUI extends AbstractGui
                         }
                         break;
                     }
-                    case(JojoLibs.StandID.kingCrimson): {
+                    case(JojoLibs.StandID.kingCrimson):
+                    case(JojoLibs.StandID.silverChariot): {
                         if(timeLeft > 800 && cooldown == 0)
                             renderTimeLeft(timeLeft - 800);
                         break;

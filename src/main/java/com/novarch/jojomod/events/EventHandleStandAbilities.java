@@ -75,7 +75,7 @@ public class EventHandleStandAbilities
                 if(props.getCooldown() > 0)
                     props.subtractCooldown(0.5);
 
-                if(props.getTimeLeft() < 100)
+                if(props.getTimeLeft() < 1000)
                     props.addTimeLeft(0.5);
             }
 
