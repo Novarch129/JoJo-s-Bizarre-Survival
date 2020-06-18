@@ -5,7 +5,6 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
@@ -15,6 +14,7 @@ import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.client.CSyncAerosmithRotationPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
@@ -35,7 +35,6 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,11 +142,18 @@ public class EventHandleStandAbilities
                         }
             }
         });
-        assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if(entity instanceof EntityStandBase)
-                if (((EntityStandBase) entity).getMaster() != null)
-                    LogManager.getLogger().debug(((EntityStandBase) entity).getMaster().getName());
+            if(entity instanceof EntityAerosmith)
+                if(player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
+                    float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
+                    float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
+                    if(pitch > 89.0f)
+                        pitch = 89.0f;
+                    else if(pitch < -89.0f)
+                        pitch = -89.0f;
+                    if(entity.rotationYaw != yaw || entity.rotationPitch != pitch)
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithRotationPacket(yaw, pitch));
+                }
         });
     }
 

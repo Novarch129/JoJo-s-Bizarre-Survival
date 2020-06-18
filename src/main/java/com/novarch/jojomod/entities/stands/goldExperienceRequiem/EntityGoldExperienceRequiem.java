@@ -54,8 +54,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 
 	@Override
 	public void tick() {
-		super.tick();
-		this.fallDistance = 0.0F;
+		super.tick(); //TODO make packet for keybinds
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();

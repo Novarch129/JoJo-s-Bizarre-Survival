@@ -165,7 +165,7 @@ public class JojoLibs
         public static String summonStand = KeyHandler.keys[0].getLocalizedName().toUpperCase();
         public static String abilityToggle = KeyHandler.keys[1].getLocalizedName().toUpperCase();
         public static String ability1 = KeyHandler.keys[2].getLocalizedName().toUpperCase();
-        public static String ability2 = KeyHandler.keys[10].getLocalizedName().toUpperCase();
+        public static String ability2 = KeyHandler.keys[3].getLocalizedName().toUpperCase();
     }
 
     public static EntityStandBase getStand(int standID, World world)

@@ -2,7 +2,6 @@ package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -10,7 +9,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.function.Supplier;
 
@@ -19,33 +17,25 @@ public class CSyncAerosmithKeybindsPacket {
 	private int action;
 	private int direction;
 	private boolean sprint;
-	private double yaw;
-	private double pitch;
 
 
-	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint, double yaw, double pitch) {
+	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
-		this.yaw = yaw;
-		this.pitch = pitch;
 	}
 
 	public static void encode(CSyncAerosmithKeybindsPacket msg, PacketBuffer buffer) {
 		buffer.writeInt(msg.action);
 		buffer.writeInt(msg.direction);
 		buffer.writeBoolean(msg.sprint);
-		buffer.writeDouble(msg.yaw);
-		buffer.writeDouble(msg.pitch);
 	}
 
 	public static CSyncAerosmithKeybindsPacket decode(PacketBuffer buffer) {
 		return new CSyncAerosmithKeybindsPacket(
 				buffer.readInt(),
 				buffer.readInt(),
-				buffer.readBoolean(),
-				buffer.readDouble(),
-				buffer.readDouble()
+				buffer.readBoolean()
 		);
 	}
 
@@ -57,25 +47,14 @@ public class CSyncAerosmithKeybindsPacket {
 				World world = player.world;
 				if (world != null)
 					if (!world.isRemote) {
-						LogManager.getLogger().debug("server world");
 						world.getServer().getWorld(player.dimension).getEntities()
 								.filter(entity -> entity instanceof EntityAerosmith)
 								.forEach(entity -> {
-									float yaw = (float) message.yaw;
-									float pitch = (float) message.pitch;
-
-									if (pitch > 89.0f)
-										pitch = 89.0f;
-									else if (pitch < -89.0f)
-										pitch = -89.0f;
-
-									entity.rotationYaw = yaw;
-									entity.rotationPitch = pitch;
-
-									float f = 1.0f;
-									double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
-									double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
-									double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * f);
+									float yaw = entity.rotationYaw;
+									float pitch = entity.rotationPitch;
+									double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
+									double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
+									double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
 									switch (message.action) {
 										//Movement
 										case 1: {
@@ -86,6 +65,7 @@ public class CSyncAerosmithKeybindsPacket {
 														entity.setVelocity(motionX, motionY, motionZ);
 													else
 														entity.setVelocity(motionX * 0.5, entity.getMotion().getY(), motionZ * 0.5);
+													break;
 												}
 												//Backwards
 												case 2: {
@@ -105,33 +85,31 @@ public class CSyncAerosmithKeybindsPacket {
 												//Up
 												case 5: {
 													entity.addVelocity(0, 0.35, 0);
+													break;
 												}
 												//Down
 												case 6: {
 													((EntityAerosmith) entity).shouldFall = true;
 													entity.addVelocity(0, -0.2, 0);
+													break;
 												}
 												default:
 													break;
 											}
+											break;
 										}
 										//Bomb
 										case 2: {
 											Stand.getLazyOptional(player).ifPresent(props -> {
-												if (props.getAbility()) {
-													if (props.getCooldown() > 0)
-														props.subtractCooldown(1);
-												}
 												if (props.getCooldown() <= 0) {
-													if (KeyHandler.keys[2].isPressed()) {
-														TNTEntity tnt = new TNTEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), player);
-														tnt.setVelocity(entity.getLookVec().getX(), entity.getLookVec().getY(), entity.getLookVec().getZ());
-														entity.world.addEntity(tnt);
-														props.setCooldown(200);
-													}
+													TNTEntity tnt = new TNTEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), player);
+													tnt.setVelocity(entity.getLookVec().getX(), entity.getLookVec().getY(), entity.getLookVec().getZ());
+													entity.world.addEntity(tnt);
+													props.setCooldown(200);
 												}
 											});
 										}
+										break;
 									}
 								});
 					}
