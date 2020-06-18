@@ -12,30 +12,61 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings({"unused", "ConstantConditions"})
+@SuppressWarnings("ConstantConditions")
 public class CSyncAerosmithKeybindsPacket {
 	private int action;
 	private int direction;
 	private boolean sprint;
+	private float yaw;
+	private float pitch;
 
+	public CSyncAerosmithKeybindsPacket(float yaw, float pitch) {
+		this.action = 3;
+		this.yaw = yaw;
+		this.pitch = pitch;
+		this.direction = 0;
+		this.sprint = false;
+	}
+
+	public CSyncAerosmithKeybindsPacket(int action, int direction) {
+		this.action = action;
+		this.direction = direction;
+		this.sprint = false;
+		this.yaw = 0f;
+		this.pitch = 0f;
+	}
 
 	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
+		this.yaw = 0f;
+		this.pitch = 0f;
+	}
+
+	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint, float yaw, float pitch) {
+		this.action = action;
+		this.direction = direction;
+		this.sprint = sprint;
+		this.yaw = yaw;
+		this.pitch = pitch;
 	}
 
 	public static void encode(CSyncAerosmithKeybindsPacket msg, PacketBuffer buffer) {
 		buffer.writeInt(msg.action);
 		buffer.writeInt(msg.direction);
 		buffer.writeBoolean(msg.sprint);
+		buffer.writeFloat(msg.yaw);
+		buffer.writeFloat(msg.pitch);
 	}
 
 	public static CSyncAerosmithKeybindsPacket decode(PacketBuffer buffer) {
 		return new CSyncAerosmithKeybindsPacket(
 				buffer.readInt(),
 				buffer.readInt(),
-				buffer.readBoolean()
+				buffer.readBoolean(),
+				buffer.readFloat(),
+				buffer.readFloat()
 		);
 	}
 
@@ -49,6 +80,7 @@ public class CSyncAerosmithKeybindsPacket {
 					if (!world.isRemote) {
 						world.getServer().getWorld(player.dimension).getEntities()
 								.filter(entity -> entity instanceof EntityAerosmith)
+								.filter(entity -> ((EntityAerosmith) entity).getMaster().getEntityId() == player.getEntityId())
 								.forEach(entity -> {
 									float yaw = entity.rotationYaw;
 									float pitch = entity.rotationPitch;
@@ -108,8 +140,15 @@ public class CSyncAerosmithKeybindsPacket {
 													props.setCooldown(200);
 												}
 											});
+											break;
 										}
-										break;
+										//Rotation
+										case 3: {
+											entity.rotationYaw = message.yaw;
+											entity.rotationPitch = message.pitch;
+											entity.setRotationYawHead(message.yaw);
+											break;
+										}
 									}
 								});
 					}

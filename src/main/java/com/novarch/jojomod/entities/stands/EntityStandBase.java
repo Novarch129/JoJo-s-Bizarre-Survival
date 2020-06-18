@@ -279,7 +279,8 @@ public abstract class EntityStandBase extends MobEntity {
         super.onAddedToWorld();
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
         if(!world.isRemote)
-            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(this.getEntityId(), getMaster().getEntityId()));
+            if(getMaster() != null)
+                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(this.getEntityId(), getMaster().getEntityId()));
     }
 
     @Override

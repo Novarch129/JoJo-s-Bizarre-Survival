@@ -94,19 +94,19 @@ public class EntityKillerQueen extends EntityStandBase {
 	public void toggleSheerHeartAttack() {
 		if (getMaster() != null)
 			Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-				if (shaCount == 0) {
+				if (shaCount <= 0) {
 					sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
-					shaCount++;
 					world.addEntity(sheerHeartAttack);
+					shaCount++;
 					props.setCooldown(300);
 				} else {
 					if (!world.isRemote)
 						world.getServer().getWorld(dimension).getEntities()
 								.filter(entity -> entity instanceof EntitySheerHeartAttack)
-								.filter(entity -> ((EntitySheerHeartAttack) entity).getMasterStand() == this)
+								.filter(entity -> ((EntitySheerHeartAttack) entity).getMaster().getEntityId() == getMaster().getEntityId())
 								.forEach(entity -> {
 									entity.remove();
-									shaCount = 0;
+									shaCount--;
 								});
 				}
 			});
@@ -118,8 +118,6 @@ public class EntityKillerQueen extends EntityStandBase {
 		fallDistance = 0.0F;
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
-
-			//Killer Queen's ability
 			Stand.getLazyOptional(player).ifPresent(props -> props.setAbility(false));
 
 			if (standOn) {

@@ -14,7 +14,7 @@ import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.network.message.client.CSyncAerosmithRotationPacket;
+import com.novarch.jojomod.network.message.client.CSyncAerosmithKeybindsPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.client.Minecraft;
@@ -29,6 +29,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
@@ -125,6 +126,8 @@ public class EventHandleStandAbilities
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null)
             return;
+        if(event.phase == TickEvent.Phase.START)
+            return;
 
         PlayerEntity player = Minecraft.getInstance().player;
 
@@ -142,18 +145,20 @@ public class EventHandleStandAbilities
                         }
             }
         });
+        assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if(entity instanceof EntityAerosmith)
-                if(player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
+            if(entity instanceof EntityAerosmith) {
+                if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
                     float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
                     float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
-                    if(pitch > 89.0f)
+                    if (pitch > 89.0f)
                         pitch = 89.0f;
-                    else if(pitch < -89.0f)
+                    else if (pitch < -89.0f)
                         pitch = -89.0f;
-                    if(entity.rotationYaw != yaw || entity.rotationPitch != pitch)
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithRotationPacket(yaw, pitch));
+                    if (entity.rotationYaw != yaw || entity.rotationPitch != pitch)
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(yaw, pitch));
                 }
+            }
         });
     }
 
@@ -351,5 +356,13 @@ public class EventHandleStandAbilities
     public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
         if(!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer(RenderPlayerEvent.Pre event) {
+        Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
+            if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn() && props.getAbility())
+                event.setCanceled(true);
+        });
     }
 }

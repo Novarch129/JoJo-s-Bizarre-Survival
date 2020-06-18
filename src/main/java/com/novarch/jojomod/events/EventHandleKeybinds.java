@@ -32,17 +32,17 @@ public class EventHandleKeybinds {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 1, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));
 						if (Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 2, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 2));
 						if (Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 3, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 3));
 						if (Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 4, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 4));
 						if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 5, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 5));
 						if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 6, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 6));
 						if (KeyHandler.keys[2].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(2, 0, false));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(2, 0));
 					}
 				} else if(props.getStandID() == JojoLibs.StandID.killerQueen) {
 					if(props.getStandOn()) {

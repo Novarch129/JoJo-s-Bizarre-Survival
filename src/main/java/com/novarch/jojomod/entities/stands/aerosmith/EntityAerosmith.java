@@ -6,21 +6,16 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-/**
- * TODO, Fix this pile of junk.
- */
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -52,18 +47,15 @@ public class EntityAerosmith extends EntityStandBase {
     public void tick() {
         super.tick();
 
-        if(!shouldFall)
-            setMotion(getMotion().getX(), 0, getMotion().getZ());
-        shouldFall = false;
+        setMotion(getMotion().getX(), 0, getMotion().getZ());
 
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
-            if (ability) {
+            if (ability)
                 if(world.isRemote)
                     Minecraft.getInstance().setRenderViewEntity(this);
-            }
 
             if (!player.isSprinting()) {
                 if (attackSwing(player)) {
@@ -74,7 +66,7 @@ public class EntityAerosmith extends EntityStandBase {
                         world.addEntity(aerosmithBullet);
                     }
                 }
-            } else if (player.isSprinting() || Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()) { //TODO Fix
+            } else if (player.isSprinting()) { //TODO Fix
                 if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
                     if (player.getFoodStats().getFoodLevel() > 6) {
                         world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.VOLARUSH.get(), getSoundCategory(), 4.05f, 1.0f);
