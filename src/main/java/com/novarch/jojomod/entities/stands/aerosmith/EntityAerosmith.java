@@ -30,7 +30,7 @@ public class EntityAerosmith extends EntityStandBase {
 
     private int oratickr = 0;
 
-    boolean shouldFall = false;
+    public boolean shouldFall = false;
 
     public EntityAerosmith(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
@@ -52,18 +52,14 @@ public class EntityAerosmith extends EntityStandBase {
     @Override
     public void tick() {
         super.tick();
-        this.fallDistance = 0.0f;
 
-        float yaw1 = (float) Minecraft.getInstance().mouseHelper.getMouseX();
-        float pitch1 = (float) Minecraft.getInstance().mouseHelper.getMouseY();
+        shouldFall = false;
+//        float yaw1 = (float) Minecraft.getInstance().mouseHelper.getMouseX();
+//        float pitch1 = (float) Minecraft.getInstance().mouseHelper.getMouseY();
 
-        if (pitch1 > 89.0f)
-            pitch1 = 89.0f;
 
-        else if (pitch1 < -89.0f)
-            pitch1 = -89.0f;
 
-        this.setRotation(yaw1, pitch1);
+//        this.setRotation(yaw1, pitch1);
 
         if (!this.shouldFall)
             this.setMotion(this.getMotion().getX(), 0, this.getMotion().getZ());
@@ -75,57 +71,57 @@ public class EntityAerosmith extends EntityStandBase {
             if (this.ability) {
                 if(world.isRemote)
                     Minecraft.getInstance().setRenderViewEntity(this);
-                if (!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-                    this.shouldFall = false;
+//                if (!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
+//                    this.shouldFall = false;
 
-                float yaw = this.rotationYaw;
-                float pitch = this.rotationPitch;
-                float f = 1.0f;
-                double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
-                double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
-                double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * f);
-
-                //Motion X
-                if (Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown() && this.getMotion().getX() < 0.6)
-                    this.setVelocity(-motionZ * 0.5, this.getMotion().getY(), motionX * 0.5);
-
-                else if (Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown() && this.getMotion().getX() > -0.6)
-                    this.setVelocity(motionZ * 0.5, this.getMotion().getY(), -motionX * 0.5);
-
-                //Motion Y
-                if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && this.getMotion().getY() < 0.6)
-                    this.addVelocity(0, 0.35, 0);
-
-                else if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown() && this.getMotion().getY() > -0.6) {
-                    this.shouldFall = true;
-                    this.addVelocity(0, -0.2, 0);
-                }
-
-                //Motion Z
-                if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown() && this.getMotion().getZ() < 0.6)
-                    if (Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown())
-                        this.setVelocity(motionX, motionY, motionZ);
-                    else
-                        this.setVelocity(motionX * 0.5, this.getMotion().getY(), motionZ * 0.5);
-
-                else if (Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown() && this.getMotion().getZ() > -0.6)
-                    this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
-
-                //Bomb
-                Stand.getLazyOptional(player).ifPresent(props -> {
-                    if (props.getAbility()) {
-                        if (props.getCooldown() > 0)
-                            props.subtractCooldown(1);
-                    }
-                    if (props.getCooldown() <= 0) {
-                        if (KeyHandler.keys[2].isPressed()) {
-                            TNTEntity tnt = new TNTEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), player);
-                            tnt.setVelocity(this.getLookVec().getX(), this.getLookVec().getY(), this.getLookVec().getZ());
-                            this.world.addEntity(tnt);
-                            props.setCooldown(200);
-                        }
-                    }
-                });
+//                float yaw = this.rotationYaw;
+//                float pitch = this.rotationPitch;
+//                float f = 1.0f;
+//                double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
+//                double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * f);
+//                double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * f);
+//
+//                //Motion X
+//                if (Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown() && this.getMotion().getX() < 0.6)
+//                    this.setVelocity(-motionZ * 0.5, this.getMotion().getY(), motionX * 0.5);
+//
+//                else if (Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown() && this.getMotion().getX() > -0.6)
+//                    this.setVelocity(motionZ * 0.5, this.getMotion().getY(), -motionX * 0.5);
+//
+//                //Motion Y
+//                if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown() && this.getMotion().getY() < 0.6)
+//                    this.addVelocity(0, 0.35, 0);
+//
+//                else if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown() && this.getMotion().getY() > -0.6) {
+//                    this.shouldFall = true;
+//                    this.addVelocity(0, -0.2, 0);
+//                }
+//
+//                //Motion Z
+//                if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown() && this.getMotion().getZ() < 0.6)
+//                    if (Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown())
+//                        this.setVelocity(motionX, motionY, motionZ);
+//                    else
+//                        this.setVelocity(motionX * 0.5, this.getMotion().getY(), motionZ * 0.5);
+//
+//                else if (Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown() && this.getMotion().getZ() > -0.6)
+//                    this.setVelocity(-motionX * 0.6, this.getMotion().getY(), -motionZ * 0.6);
+//
+//                //Bomb
+//                Stand.getLazyOptional(player).ifPresent(props -> {
+//                    if (props.getAbility()) {
+//                        if (props.getCooldown() > 0)
+//                            props.subtractCooldown(1);
+//                    }
+//                    if (props.getCooldown() <= 0) {
+//                        if (KeyHandler.keys[2].isPressed()) {
+//                            TNTEntity tnt = new TNTEntity(this.world, this.getPosX(), this.getPosY(), this.getPosZ(), player);
+//                            tnt.setVelocity(this.getLookVec().getX(), this.getLookVec().getY(), this.getLookVec().getZ());
+//                            this.world.addEntity(tnt);
+//                            props.setCooldown(200);
+//                        }
+//                    }
+//                });
             } else {
                 if (!Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
                     this.shouldFall = false;

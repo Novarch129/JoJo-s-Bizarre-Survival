@@ -9,7 +9,7 @@ public class EventInit
 {
     public static void register(IEventBus bus)
     {
-        bus.register(EventControlInputs.class);
+        bus.register(EventHandleKeybinds.class);
         bus.register(EventD4CTeleportProcessor.class);
         bus.register(EventSyncCapability.class);
         bus.register(EventAbilityGER.class);

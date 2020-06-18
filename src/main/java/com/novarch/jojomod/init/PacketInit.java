@@ -1,11 +1,13 @@
 package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
+import com.novarch.jojomod.network.message.client.CSyncAerosmithKeybindsPacket;
 import com.novarch.jojomod.network.message.client.CSyncAbilityPacket;
 import com.novarch.jojomod.network.message.client.CSyncPlayerAttackPacket;
 import com.novarch.jojomod.network.message.client.CSyncStandSummonPacket;
 import com.novarch.jojomod.network.message.server.*;
 
+@SuppressWarnings("ALL")
 public class PacketInit {
     public static void register() {
         int networkId = 0;
@@ -49,5 +51,10 @@ public class PacketInit {
                 SSyncStandMasterPacket::encode,
                 SSyncStandMasterPacket::decode,
                 SSyncStandMasterPacket::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                CSyncAerosmithKeybindsPacket.class,
+                CSyncAerosmithKeybindsPacket::encode,
+                CSyncAerosmithKeybindsPacket::decode,
+                CSyncAerosmithKeybindsPacket::handle);
     }
 }
