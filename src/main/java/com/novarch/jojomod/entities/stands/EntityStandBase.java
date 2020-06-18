@@ -1,7 +1,9 @@
 package com.novarch.jojomod.entities.stands;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
+import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,14 +14,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkHooks;
-import org.apache.logging.log4j.LogManager;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -277,6 +278,8 @@ public abstract class EntityStandBase extends MobEntity {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
+        if(!world.isRemote)
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(this.getEntityId(), getMaster().getEntityId()));
     }
 
     @Override

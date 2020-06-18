@@ -143,6 +143,12 @@ public class EventHandleStandAbilities
                         }
             }
         });
+        assert Minecraft.getInstance().world != null;
+        Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
+            if(entity instanceof EntityStandBase)
+                if (((EntityStandBase) entity).getMaster() != null)
+                    LogManager.getLogger().debug(((EntityStandBase) entity).getMaster().getName());
+        });
     }
 
     @SubscribeEvent

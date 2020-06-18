@@ -44,5 +44,10 @@ public class PacketInit {
                 SSyncSilverChariotArmorPacket::encode,
                 SSyncSilverChariotArmorPacket::decode,
                 SSyncSilverChariotArmorPacket::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                SSyncStandMasterPacket.class,
+                SSyncStandMasterPacket::encode,
+                SSyncStandMasterPacket::decode,
+                SSyncStandMasterPacket::handle);
     }
 }

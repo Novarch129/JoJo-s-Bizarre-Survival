@@ -16,7 +16,7 @@ public class SSyncStandCapabilityPacket
 {
     private INBT data;
 
-    public SSyncStandCapabilityPacket() {}
+    private SSyncStandCapabilityPacket() {}
 
     public SSyncStandCapabilityPacket(IStand props)
     {
@@ -44,9 +44,8 @@ public class SSyncStandCapabilityPacket
             {
                 PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 assert player != null;
-                IStand props = Stand.getCapabilityFromPlayer(player);
-                assert props != null;
-                Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, message.data);
+                Stand.getLazyOptional(player).ifPresent(props ->
+                        Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, message.data));
             });
         }
         ctx.get().setPacketHandled(true);
