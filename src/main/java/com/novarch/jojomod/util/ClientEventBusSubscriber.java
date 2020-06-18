@@ -21,6 +21,8 @@ import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
 import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
 import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
+import com.novarch.jojomod.entities.stands.magiciansRed.RenderMagiciansRed;
+import com.novarch.jojomod.entities.stands.magiciansRed.RenderMagiciansRedFlames;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHaze;
 import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHazePunch;
 import com.novarch.jojomod.entities.stands.silverChariot.RenderSilverChariot;
@@ -98,5 +100,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.SILVER_CHARIOT.get(), RenderSilverChariot::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.SILVER_CHARIOT_SWORD.get(), RenderSilverChariotSword::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MAGICIANS_RED.get(), RenderMagiciansRed::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MAGICIANS_RED_FLAMES.get(), RenderMagiciansRedFlames::new);
 	}
 }

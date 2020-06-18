@@ -689,6 +689,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     }
   }
 
+  public static class magiciansRed extends EntityStandPunch {
+    public magiciansRed(World worldIn) {
+      super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn);
+    }
+
+    public magiciansRed(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public magiciansRed(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn, shooter, player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket() {
+      return NetworkHooks.getEntitySpawningPacket(this);
+    }
+  }
+
   @Override
   protected void registerData() {
 

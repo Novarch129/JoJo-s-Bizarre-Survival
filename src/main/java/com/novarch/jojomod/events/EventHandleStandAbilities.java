@@ -227,6 +227,10 @@ public class EventHandleStandAbilities
                     standName = "Silver Chariot";
                     break;
                 }
+                case JojoLibs.StandID.magiciansRed: {
+                    standName = "Magician's Red";
+                    break;
+                }
             }
         if(event.getItemStack().getItem() instanceof ItemStandDisc)
             if(!standName.equals(""))

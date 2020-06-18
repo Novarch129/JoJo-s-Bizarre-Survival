@@ -108,6 +108,10 @@ public abstract class StandPunchEffects {
 				starPlatinum(result, entityIn, punch, isEntity);
 				break;
 			}
+			case JojoLibs.StandID.magiciansRed: {
+				magiciansRed(result, entityIn, punch, isEntity);
+				break;
+			}
 			default: {
 				basicDefault(result, entityIn, punch, isEntity);
 				break;
@@ -1327,6 +1331,39 @@ public abstract class StandPunchEffects {
 			if (hardness != -1.0f && hardness < 3.0f) {
 				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+			}
+		}
+		punch.remove();
+	}
+
+	public static void magiciansRed(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+		if (isEntity) {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
+			if (punch.shootingStand.orarush) {
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 0.5f);
+				livingEntity.setFire(5);
+			}
+			else {
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 0.75f);
+				livingEntity.setFire(2);
+			}
+			livingEntity.hurtResistantTime = 0;
+			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
+			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.4f, livingEntity.getMotion().getZ());
+			} else {
+				livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY() - 0.2f, livingEntity.getMotion().getZ());
+			}
+			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
+		} else {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
+			Block block = punch.getInTile();
+			BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
+			BlockState blockState = punch.world.getBlockState(blockPos);
+			float hardness = blockState.getBlockHardness(punch.world, blockPos);
+			if (hardness != -1.0f && hardness < 3.0f) {
+				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
+				punch.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
 			}
 		}
 		punch.remove();

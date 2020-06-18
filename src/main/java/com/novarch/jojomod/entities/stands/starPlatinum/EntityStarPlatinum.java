@@ -206,6 +206,11 @@ public class EntityStarPlatinum extends EntityStandBase {
 
 				if (!ability && props2.getTimeLeft() < 1000)
 					props2.addTimeLeft(1);
+
+				if (!ability) {
+					timestopTick = 0;
+					player.setInvulnerable(false);
+				}
 			});
 
 			followMaster();

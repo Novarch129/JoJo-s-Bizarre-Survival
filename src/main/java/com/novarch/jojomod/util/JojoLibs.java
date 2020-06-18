@@ -11,6 +11,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.magiciansRed.EntityMagiciansRed;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
@@ -141,6 +142,8 @@ public class JojoLibs
 
         public static final int silverChariot = 16;
 
+        public static final int magiciansRed = 17;
+
         public static int[] stands = {
                 kingCrimson,
                 dirtyDeedsDoneDirtCheap,
@@ -154,7 +157,8 @@ public class JojoLibs
                 whitesnake,
                 theWorld,
                 starPlatinum,
-                silverChariot
+                silverChariot,
+                magiciansRed
         };
 
         public static int numberOfStands = stands.length;
@@ -203,6 +207,8 @@ public class JojoLibs
                 return new EntityStarPlatinum(world);
             case StandID.silverChariot:
                 return new EntitySilverChariot(world);
+            case StandID.magiciansRed:
+                return new EntityMagiciansRed(world);
         }
     }
 }

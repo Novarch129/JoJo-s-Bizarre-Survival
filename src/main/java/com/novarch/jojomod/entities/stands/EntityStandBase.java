@@ -70,7 +70,6 @@ public abstract class EntityStandBase extends MobEntity {
      * Used to check if the Stand's master has swung their hand, used to summon {@link EntityStandPunch}.
      *
      * @param player    The player who's swing is checked.
-     *
      * @return  Returns whether or not the swing was successful.
      */
     public boolean attackSwing(PlayerEntity player) {
@@ -303,6 +302,16 @@ public abstract class EntityStandBase extends MobEntity {
 
     @Override
     public boolean canDespawn(double distanceToClosestPlayer) {
+        return false;
+    }
+
+    /**
+     * Makes the Stand not render flames when it's on fire as it looks stupid.
+     *
+     * @return  Whether the entity should render as on fire.
+     */
+    @Override
+    public boolean canRenderOnFire() {
         return false;
     }
 

@@ -13,6 +13,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
 import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
+import com.novarch.jojomod.entities.stands.magiciansRed.EntityMagiciansRed;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
@@ -227,4 +228,16 @@ public class EntityInit
 					() -> EntityType.Builder.<EntityStandPunch.silverChariot>create(EntityStandPunch.silverChariot::new, EntityClassification.MISC)
 							.size(0.3f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_sword").toString()));
+
+	public static final RegistryObject<EntityType<EntityMagiciansRed>> MAGICIANS_RED = ENTITY_TYPES
+			.register("magicians_red",
+					() -> EntityType.Builder.<EntityMagiciansRed>create(EntityMagiciansRed::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "magicians_red").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.magiciansRed>> MAGICIANS_RED_FLAMES = ENTITY_TYPES
+			.register("magicians_red_flames",
+					() -> EntityType.Builder.<EntityStandPunch.magiciansRed>create(EntityStandPunch.magiciansRed::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "magicians_red_flames").toString()));
 }

@@ -31,8 +31,6 @@ public class EntitySilverChariot extends EntityStandBase {
 
 	private boolean hasArmor = true;
 
-	private int armorTick = 0;
-
 	public EntitySilverChariot(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_SILVER_CHARIOT.get();
