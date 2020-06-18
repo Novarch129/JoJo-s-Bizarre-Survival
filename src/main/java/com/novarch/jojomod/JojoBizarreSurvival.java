@@ -45,7 +45,6 @@ public class JojoBizarreSurvival {
 
         KeyHandler.addKeys();
         EventInit.register(MinecraftForge.EVENT_BUS);
-
         ItemInit.ITEMS.register(eventBus);
         EntityInit.ENTITY_TYPES.register(eventBus);
         SoundInit.SOUNDS.register(eventBus);

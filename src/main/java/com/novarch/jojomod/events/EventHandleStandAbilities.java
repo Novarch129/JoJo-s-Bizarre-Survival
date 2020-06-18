@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities
 {
@@ -126,7 +127,7 @@ public class EventHandleStandAbilities
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null)
             return;
-        if(event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START)
             return;
 
         PlayerEntity player = Minecraft.getInstance().player;
@@ -147,18 +148,20 @@ public class EventHandleStandAbilities
         });
         assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if(entity instanceof EntityAerosmith) {
-                if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
-                    float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
-                    float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
-                    if (pitch > 89.0f)
-                        pitch = 89.0f;
-                    else if (pitch < -89.0f)
-                        pitch = -89.0f;
-                    if (entity.rotationYaw != yaw || entity.rotationPitch != pitch)
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(yaw, pitch));
-                }
-            }
+            if (entity instanceof EntityAerosmith)
+                if (((EntityAerosmith) entity).getMaster() != null)
+                    if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
+                        float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
+                        float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
+
+                        if (pitch > 89.0f)
+                            pitch = 89.0f;
+                        else if (pitch < -89.0f)
+                            pitch = -89.0f;
+
+                        if (entity.rotationYaw != yaw && entity.rotationPitch != pitch)
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(yaw, pitch));
+                    }
         });
     }
 

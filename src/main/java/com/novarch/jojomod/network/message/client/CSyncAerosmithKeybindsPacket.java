@@ -116,13 +116,13 @@ public class CSyncAerosmithKeybindsPacket {
 												}
 												//Up
 												case 5: {
-													entity.addVelocity(0, 0.35, 0);
+													entity.addVelocity(0, 0.5, 0);
 													break;
 												}
 												//Down
 												case 6: {
 													((EntityAerosmith) entity).shouldFall = true;
-													entity.addVelocity(0, -0.2, 0);
+													entity.addVelocity(0, -0.3, 0);
 													break;
 												}
 												default:
@@ -149,6 +149,8 @@ public class CSyncAerosmithKeybindsPacket {
 											entity.setRotationYawHead(message.yaw);
 											break;
 										}
+										default:
+											break;
 									}
 								});
 					}
