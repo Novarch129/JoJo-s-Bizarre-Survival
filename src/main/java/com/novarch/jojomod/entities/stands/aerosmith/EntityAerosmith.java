@@ -26,6 +26,10 @@ public class EntityAerosmith extends EntityStandBase {
 
     private int oratickr = 0;
 
+    public float yaw = 0;
+
+    public float pitch = 0;
+
     public EntityAerosmith(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();
@@ -52,12 +56,13 @@ public class EntityAerosmith extends EntityStandBase {
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
-                if(ability != props.getAbility()) {
-                    if(!ability)
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
+                if(ability != props.getAbility())
                     ability = props.getAbility();
-                }
             });
+
+            setRotation(yaw, pitch);
+            if(getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
+                setRotationYawHead(yaw);
 
             if (!player.isSprinting()) {
                 if (attackSwing(player)) {
@@ -107,7 +112,15 @@ public class EntityAerosmith extends EntityStandBase {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if(ability)
-            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
+        if(getMaster() != null)
+            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+                if(props.getAbility())
+                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
+            });
+    }
+
+    @Override
+    public void setRotation(float yaw, float pitch) {
+        super.setRotation(yaw, pitch);
     }
 }

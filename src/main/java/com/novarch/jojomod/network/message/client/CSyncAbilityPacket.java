@@ -5,7 +5,6 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -18,10 +17,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class CSyncAbilityPacket {
-
-    public CSyncAbilityPacket() {
-    }
-
 
     public static void encode(CSyncAbilityPacket msg, PacketBuffer buffer) { }
 

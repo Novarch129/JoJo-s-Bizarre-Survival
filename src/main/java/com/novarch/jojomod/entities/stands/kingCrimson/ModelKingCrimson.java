@@ -1,13 +1,15 @@
-package com.novarch.jojomod.entities.stands.kingCrimson;// Made with Blockbench 3.5.2
-// Exported for Minecraft version 1.15
-// Paste this class into your mod and generate all required imports
-
+package com.novarch.jojomod.entities.stands.kingCrimson;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ModelKingCrimson<T extends EntityKingCrimson> extends EntityModel<T> {
 	private final ModelRenderer HeadBase;
 	private final ModelRenderer Head;
@@ -372,7 +374,6 @@ public class ModelKingCrimson<T extends EntityKingCrimson> extends EntityModel<T
 
 	@Override
 	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
 	}
 
 	@Override

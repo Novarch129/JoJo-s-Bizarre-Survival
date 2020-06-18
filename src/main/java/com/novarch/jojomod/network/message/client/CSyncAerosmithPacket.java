@@ -152,9 +152,8 @@ public class CSyncAerosmithPacket {
 										}
 										//Rotation
 										case 3: {
-											entity.rotationYaw = message.yaw;
-											entity.rotationPitch = message.pitch;
-											entity.setRotationYawHead(message.yaw);
+											((EntityAerosmith) entity).yaw = message.yaw;
+											((EntityAerosmith) entity).pitch = message.pitch;
 											break;
 										}
 										//Set RenderViewEntity
