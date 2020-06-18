@@ -1,10 +1,12 @@
 package com.novarch.jojomod.entities.stands.aerosmith;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
@@ -51,11 +53,13 @@ public class EntityAerosmith extends EntityStandBase {
 
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
-
-            if (ability)
-                if(world.isRemote)
-                    Minecraft.getInstance().setRenderViewEntity(this);
+            Stand.getLazyOptional(player).ifPresent(props -> {
+                if(ability != props.getAbility()) {
+                    if(!ability)
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
+                    ability = props.getAbility();
+                }
+            });
 
             if (!player.isSprinting()) {
                 if (attackSwing(player)) {
@@ -100,5 +104,12 @@ public class EntityAerosmith extends EntityStandBase {
                 }
             }
         }
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if(ability)
+            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
     }
 }

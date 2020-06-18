@@ -2,6 +2,7 @@ package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -13,14 +14,22 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ConstantConditions")
-public class CSyncAerosmithKeybindsPacket {
+public class CSyncAerosmithPacket {
 	private int action;
 	private int direction;
 	private boolean sprint;
 	private float yaw;
 	private float pitch;
 
-	public CSyncAerosmithKeybindsPacket(float yaw, float pitch) {
+	public CSyncAerosmithPacket(int action) {
+		this.action = action;
+		this.direction = 0;
+		this.sprint = false;
+		this.yaw = 0f;
+		this.pitch = 0f;
+	}
+
+	public CSyncAerosmithPacket(float yaw, float pitch) {
 		this.action = 3;
 		this.yaw = yaw;
 		this.pitch = pitch;
@@ -28,7 +37,7 @@ public class CSyncAerosmithKeybindsPacket {
 		this.sprint = false;
 	}
 
-	public CSyncAerosmithKeybindsPacket(int action, int direction) {
+	public CSyncAerosmithPacket(int action, int direction) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = false;
@@ -36,7 +45,7 @@ public class CSyncAerosmithKeybindsPacket {
 		this.pitch = 0f;
 	}
 
-	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint) {
+	public CSyncAerosmithPacket(int action, int direction, boolean sprint) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
@@ -44,7 +53,7 @@ public class CSyncAerosmithKeybindsPacket {
 		this.pitch = 0f;
 	}
 
-	public CSyncAerosmithKeybindsPacket(int action, int direction, boolean sprint, float yaw, float pitch) {
+	public CSyncAerosmithPacket(int action, int direction, boolean sprint, float yaw, float pitch) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
@@ -52,7 +61,7 @@ public class CSyncAerosmithKeybindsPacket {
 		this.pitch = pitch;
 	}
 
-	public static void encode(CSyncAerosmithKeybindsPacket msg, PacketBuffer buffer) {
+	public static void encode(CSyncAerosmithPacket msg, PacketBuffer buffer) {
 		buffer.writeInt(msg.action);
 		buffer.writeInt(msg.direction);
 		buffer.writeBoolean(msg.sprint);
@@ -60,8 +69,8 @@ public class CSyncAerosmithKeybindsPacket {
 		buffer.writeFloat(msg.pitch);
 	}
 
-	public static CSyncAerosmithKeybindsPacket decode(PacketBuffer buffer) {
-		return new CSyncAerosmithKeybindsPacket(
+	public static CSyncAerosmithPacket decode(PacketBuffer buffer) {
+		return new CSyncAerosmithPacket(
 				buffer.readInt(),
 				buffer.readInt(),
 				buffer.readBoolean(),
@@ -70,7 +79,7 @@ public class CSyncAerosmithKeybindsPacket {
 		);
 	}
 
-	public static void handle(CSyncAerosmithKeybindsPacket message, Supplier<Context> ctx) {
+	public static void handle(CSyncAerosmithPacket message, Supplier<Context> ctx) {
 		if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
 			ctx.get().enqueueWork(() -> {
 				PlayerEntity player = ctx.get().getSender();
@@ -147,6 +156,17 @@ public class CSyncAerosmithKeybindsPacket {
 											entity.rotationYaw = message.yaw;
 											entity.rotationPitch = message.pitch;
 											entity.setRotationYawHead(message.yaw);
+											break;
+										}
+										//Set RenderViewEntity
+										case 4: {
+											if(message.direction == 0) {
+												Minecraft.getInstance().setRenderViewEntity(entity);
+												Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+											} else {
+												Minecraft.getInstance().setRenderViewEntity(player);
+												Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+											}
 											break;
 										}
 										default:

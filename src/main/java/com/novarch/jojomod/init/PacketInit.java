@@ -49,10 +49,10 @@ public class PacketInit {
                 SSyncStandMasterPacket::decode,
                 SSyncStandMasterPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                CSyncAerosmithKeybindsPacket.class,
-                CSyncAerosmithKeybindsPacket::encode,
-                CSyncAerosmithKeybindsPacket::decode,
-                CSyncAerosmithKeybindsPacket::handle);
+                CSyncAerosmithPacket.class,
+                CSyncAerosmithPacket::encode,
+                CSyncAerosmithPacket::decode,
+                CSyncAerosmithPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
                 CSyncKillerQueenAbilityPacket.class,
                 CSyncKillerQueenAbilityPacket::encode,

@@ -30,19 +30,19 @@ public class EventHandleKeybinds {
 				if (props.getStandID() == JojoLibs.StandID.aerosmith) {
 					if (props.getStandOn() && props.getAbility()) {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 1, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 1, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));
 						if (Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 2));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 2));
 						if (Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 3));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 3));
 						if (Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 4));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 4));
 						if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 5));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 5));
 						if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(1, 6));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 6));
 						if (KeyHandler.keys[2].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithKeybindsPacket(2, 0));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(2));
 					}
 				} else if(props.getStandID() == JojoLibs.StandID.killerQueen) {
 					if(props.getStandOn()) {
