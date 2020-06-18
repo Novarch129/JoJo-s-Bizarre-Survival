@@ -130,7 +130,6 @@ public class CSyncAerosmithPacket {
 												}
 												//Down
 												case 6: {
-													((EntityAerosmith) entity).shouldFall = true;
 													entity.addVelocity(0, -0.3, 0);
 													break;
 												}

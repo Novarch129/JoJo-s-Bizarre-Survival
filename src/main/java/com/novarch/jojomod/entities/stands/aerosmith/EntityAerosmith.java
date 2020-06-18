@@ -26,8 +26,6 @@ public class EntityAerosmith extends EntityStandBase {
 
     private int oratickr = 0;
 
-    public boolean shouldFall = false;
-
     public EntityAerosmith(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();

@@ -54,9 +54,9 @@ public class PacketInit {
                 CSyncAerosmithPacket::decode,
                 CSyncAerosmithPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                CSyncKillerQueenAbilityPacket.class,
-                CSyncKillerQueenAbilityPacket::encode,
-                CSyncKillerQueenAbilityPacket::decode,
-                CSyncKillerQueenAbilityPacket::handle);
+                CSyncStandAbilitiesPacket.class,
+                CSyncStandAbilitiesPacket::encode,
+                CSyncStandAbilitiesPacket::decode,
+                CSyncStandAbilitiesPacket::handle);
     }
 }

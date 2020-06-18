@@ -6,9 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -32,13 +30,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 
 	private StringTextComponent truthname = new StringTextComponent("You will never reach the truth.");
 
-	private KeyBinding abilityKey = KeyHandler.keys[2];
-
-	private KeyBinding fly = KeyHandler.keys[10];
-
 	private boolean truth = false;
-
-	private boolean flightBool = false;
 
 	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
@@ -52,9 +44,18 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 		this.standID = JojoLibs.StandID.GER;
 	}
 
+	public void toggleFlight() {
+		if (getMaster() != null)
+			getMaster().setNoGravity(!getMaster().hasNoGravity());
+	}
+
+	public void toggleTruth() {
+		truth = !truth;
+	}
+
 	@Override
 	public void tick() {
-		super.tick(); //TODO make packet for keybinds
+		super.tick();
 
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
@@ -73,20 +74,9 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 
 				player.getFoodStats().addStats(20, 20.0f);
 
-				if (fly.isPressed())
-					flightBool = !flightBool;
-
-				if (flightBool)
-					player.setNoGravity(true);
-				else
-					player.setNoGravity(false);
-
 				//Gold Experience Requiem's ability
 				if (ability) {
 					if (player.getLastAttackedEntity() != null) {
-						if (abilityKey.isPressed())
-							truth = !truth;
-
 						if (truth)
 							player.getLastAttackedEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 3.0f);
 

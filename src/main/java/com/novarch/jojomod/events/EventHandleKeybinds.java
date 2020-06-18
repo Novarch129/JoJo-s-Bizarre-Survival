@@ -27,6 +27,13 @@ public class EventHandleKeybinds {
 				JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncPlayerAttackPacket());
 
 			Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+				if(props.getStandOn()) {
+					if (KeyHandler.keys[2].isPressed())
+						JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(1));
+					if (KeyHandler.keys[3].isPressed())
+						JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(2));
+				}
+
 				if (props.getStandID() == JojoLibs.StandID.aerosmith) {
 					if (props.getStandOn() && props.getAbility()) {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
@@ -43,13 +50,6 @@ public class EventHandleKeybinds {
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 6));
 						if (KeyHandler.keys[2].isPressed())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(2));
-					}
-				} else if(props.getStandID() == JojoLibs.StandID.killerQueen) {
-					if(props.getStandOn()) {
-						if(KeyHandler.keys[2].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncKillerQueenAbilityPacket(1));
-						if(KeyHandler.keys[3].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncKillerQueenAbilityPacket(2));
 					}
 				}
 			});
