@@ -1281,10 +1281,15 @@ public abstract class StandPunchEffects {
 	public static void starPlatinum(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
+			if(livingEntity instanceof DolphinEntity) {
+				if(!punch.standMaster.isCreative())
+					punch.standMaster.attackEntityFrom(DamageSource.causeMobDamage(punch.shootingStand), 1.5f);
+				return;
+			}
 			if (punch.shootingStand.orarush)
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.4f);
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), punch.standMaster.isPotionActive(Effects.DOLPHINS_GRACE) ? 2.0f : 1.4f);
 			else
-				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 2.9f);
+				livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), punch.standMaster.isPotionActive(Effects.DOLPHINS_GRACE) ? 3.5f : 2.9f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
 			if (livingEntity.getPosY() > punch.shootingStand.getPosY() + 3.0) {
