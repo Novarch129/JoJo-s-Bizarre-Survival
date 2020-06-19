@@ -105,8 +105,6 @@ public class CSyncStandSummonPacket {
 							MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
 							stand.remove();
 						}
-						else
-							stand.changeAct();
 					}
 				}
 			} else if(props.getStandID() == JojoLibs.StandID.theEmperor) {

@@ -161,13 +161,6 @@ public abstract class EntityStandBase extends MobEntity {
     }
 
     /**
-     * Changes the Stand's act, <code>overridden</code> in Stands that have acts.
-     */
-    public void changeAct() {
-        act++;
-    }
-
-    /**
      * Makes the Stand dodge oncoming attacks, such as TNT, arrows and falling blocks.
      */
     private void dodgeAttacks() {
@@ -279,7 +272,7 @@ public abstract class EntityStandBase extends MobEntity {
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
         if(!world.isRemote)
             if(getMaster() != null)
-                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(this.getEntityId(), getMaster().getEntityId()));
+                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
     @Override

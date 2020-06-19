@@ -13,31 +13,55 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 
+/**
+ * Controls Aerosmith's actions through keybinds,
+ *
+ * @variable action	 Defines the action Aerosmith will perform, the following are the possible values:
+ * 1 Movement
+ * 2 Bomb
+ * 3 Rotation
+ * 4 Set to renderViewEntity
+ * 5 Attack
+ *
+ * @variable direction	Defines the direction Aerosmith should go in if <code>action == Action#MOVEMENT</code>:
+ * 1 Forwards
+ * 2 Backwards
+ * 3 Right
+ * 4 Left
+ * 5 Up
+ * 6 Down
+ *
+ * @variable sprint  Defines whether or not Aerosmith should sprint(if <code>Minecraft#gameSetting#keyBindSprint#isKeyDown</code>).
+ *
+ * @variable yaw, pitch  Define Aerosmith's rotation relative to the mouse position(<code>Minecarft#mouseHelper#getMouseX/getMouseY</code>).
+ */
 @SuppressWarnings("ConstantConditions")
 public class CSyncAerosmithPacket {
-	private int action;
-	private int direction;
+	public enum Action {MOVE, BOMB, ROTATE, RENDER, ATTACK};
+	public enum Direction {FORWARDS, BACKWARDS, RIGHT, LEFT, UP, DOWN};
+	private Action action;
+	private Direction direction;
 	private boolean sprint;
 	private float yaw;
 	private float pitch;
 
-	public CSyncAerosmithPacket(int action) {
+	public CSyncAerosmithPacket(Action action) {
 		this.action = action;
-		this.direction = 0;
+		this.direction = Direction.FORWARDS;
 		this.sprint = false;
 		this.yaw = 0f;
 		this.pitch = 0f;
 	}
 
 	public CSyncAerosmithPacket(float yaw, float pitch) {
-		this.action = 3;
+		this.action = Action.ROTATE;
 		this.yaw = yaw;
 		this.pitch = pitch;
-		this.direction = 0;
+		this.direction = Direction.FORWARDS;
 		this.sprint = false;
 	}
 
-	public CSyncAerosmithPacket(int action, int direction) {
+	public CSyncAerosmithPacket(Action action, Direction direction) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = false;
@@ -45,7 +69,7 @@ public class CSyncAerosmithPacket {
 		this.pitch = 0f;
 	}
 
-	public CSyncAerosmithPacket(int action, int direction, boolean sprint) {
+	public CSyncAerosmithPacket(Action action, Direction direction, boolean sprint) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
@@ -53,7 +77,7 @@ public class CSyncAerosmithPacket {
 		this.pitch = 0f;
 	}
 
-	public CSyncAerosmithPacket(int action, int direction, boolean sprint, float yaw, float pitch) {
+	public CSyncAerosmithPacket(Action action, Direction direction, boolean sprint, float yaw, float pitch) {
 		this.action = action;
 		this.direction = direction;
 		this.sprint = sprint;
@@ -62,8 +86,8 @@ public class CSyncAerosmithPacket {
 	}
 
 	public static void encode(CSyncAerosmithPacket msg, PacketBuffer buffer) {
-		buffer.writeInt(msg.action);
-		buffer.writeInt(msg.direction);
+		buffer.writeEnumValue(msg.action);
+		buffer.writeEnumValue(msg.direction);
 		buffer.writeBoolean(msg.sprint);
 		buffer.writeFloat(msg.yaw);
 		buffer.writeFloat(msg.pitch);
@@ -71,8 +95,8 @@ public class CSyncAerosmithPacket {
 
 	public static CSyncAerosmithPacket decode(PacketBuffer buffer) {
 		return new CSyncAerosmithPacket(
-				buffer.readInt(),
-				buffer.readInt(),
+				buffer.readEnumValue(Action.class),
+				buffer.readEnumValue(Direction.class),
 				buffer.readBoolean(),
 				buffer.readFloat(),
 				buffer.readFloat()
@@ -98,38 +122,39 @@ public class CSyncAerosmithPacket {
 									double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
 									switch (message.action) {
 										//Movement
-										case 1: {
+										case MOVE: {
 											switch (message.direction) {
 												//Forwards
-												case 1: {
-													if (message.sprint)
+												case FORWARDS: {
+													if (message.sprint) {
 														entity.setVelocity(motionX, motionY, motionZ);
-													else
+														entity.setSprinting(true);
+													} else
 														entity.setVelocity(motionX * 0.5, entity.getMotion().getY(), motionZ * 0.5);
 													break;
 												}
 												//Backwards
-												case 2: {
+												case BACKWARDS: {
 													entity.setVelocity(-motionX * 0.6, entity.getMotion().getY(), -motionZ * 0.6);
 													break;
 												}
 												//Right
-												case 3: {
+												case RIGHT: {
 													entity.setVelocity(-motionZ * 0.5, entity.getMotion().getY(), motionX * 0.5);
 													break;
 												}
 												//Left
-												case 4: {
+												case LEFT: {
 													entity.setVelocity(motionZ * 0.5, entity.getMotion().getY(), -motionX * 0.5);
 													break;
 												}
 												//Up
-												case 5: {
+												case UP: {
 													entity.addVelocity(0, 0.5, 0);
 													break;
 												}
 												//Down
-												case 6: {
+												case DOWN: {
 													entity.addVelocity(0, -0.3, 0);
 													break;
 												}
@@ -139,32 +164,41 @@ public class CSyncAerosmithPacket {
 											break;
 										}
 										//Bomb
-										case 2: {
+										case BOMB: {
 											Stand.getLazyOptional(player).ifPresent(props -> {
 												if (props.getCooldown() <= 0) {
 													TNTEntity tnt = new TNTEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), player);
 													tnt.setVelocity(entity.getLookVec().getX(), entity.getLookVec().getY(), entity.getLookVec().getZ());
-													entity.world.addEntity(tnt);
+													if(!entity.world.isRemote)
+														entity.world.addEntity(tnt);
 													props.setCooldown(200);
 												}
 											});
 											break;
 										}
 										//Rotation
-										case 3: {
+										case ROTATE: {
 											((EntityAerosmith) entity).yaw = message.yaw;
 											((EntityAerosmith) entity).pitch = message.pitch;
 											break;
 										}
 										//Set RenderViewEntity
-										case 4: {
-											if(message.direction == 0) {
+										case RENDER: {
+											if(message.direction == Direction.FORWARDS) {
 												Minecraft.getInstance().setRenderViewEntity(entity);
 												Minecraft.getInstance().gameSettings.thirdPersonView = 1;
 											} else {
 												Minecraft.getInstance().setRenderViewEntity(player);
 												Minecraft.getInstance().gameSettings.thirdPersonView = 0;
 											}
+											break;
+										}
+										//Attack
+										case ATTACK: {
+											if(message.direction == Direction.FORWARDS)
+												((EntityAerosmith) entity).swingProgressInt = 1;
+											else
+												((EntityAerosmith) entity).swingProgressInt = 0;
 											break;
 										}
 										default:

@@ -12,6 +12,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
+import static com.novarch.jojomod.network.message.client.CSyncAerosmithPacket.Action.*;
+import static com.novarch.jojomod.network.message.client.CSyncAerosmithPacket.Direction.*;
+
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class EventHandleKeybinds {
 	 @SubscribeEvent
@@ -37,19 +40,21 @@ public class EventHandleKeybinds {
 				if (props.getStandID() == JojoLibs.StandID.aerosmith) {
 					if (props.getStandOn() && props.getAbility()) {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 1, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, FORWARDS, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));
 						if (Minecraft.getInstance().gameSettings.keyBindBack.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 2));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, BACKWARDS));
 						if (Minecraft.getInstance().gameSettings.keyBindRight.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 3));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, RIGHT));
 						if (Minecraft.getInstance().gameSettings.keyBindLeft.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 4));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, LEFT));
 						if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 5));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, UP));
 						if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(1, 6));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, DOWN));
 						if (KeyHandler.keys[2].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(2));
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(BOMB));
+						if(Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
+							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(ATTACK));
 					}
 				}
 			});

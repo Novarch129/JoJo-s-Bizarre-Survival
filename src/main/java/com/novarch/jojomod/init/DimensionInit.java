@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DimensionInit
 {
-    public static final DeferredRegister<ModDimension> DIMENSIONS = new DeferredRegister<>(ForgeRegistries.MOD_DIMENSIONS, JojoBizarreSurvival.MOD_ID);
+    public static final DeferredRegister<ModDimension> DIMENSIONS = DeferredRegister.create(ForgeRegistries.MOD_DIMENSIONS, JojoBizarreSurvival.MOD_ID);
 
     public static final RegistryObject<ModDimension> D4C_DIMENSION = DIMENSIONS.register("d4c_dimension", D4CDimensionType::new);
     public static final RegistryObject<ModDimension> D4C_DIMENSION_NETHER = DIMENSIONS.register("d4c_dimension_nether", D4CDimensionTypeNether::new);

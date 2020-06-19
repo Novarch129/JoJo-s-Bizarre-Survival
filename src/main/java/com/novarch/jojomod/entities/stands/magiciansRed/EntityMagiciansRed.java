@@ -10,6 +10,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -69,10 +70,9 @@ public class EntityMagiciansRed extends EntityStandBase {
 			if (player.isSprinting()) {
 				if (attackSwing(player))
 					oratick++;
-				if (oratick == 1) {
+				if (oratick == 1)
 					if (!world.isRemote)
 						orarush = true;
-				}
 			} else if (attackSwing(player)) {
 				if (!world.isRemote) {
 					oratick++;
@@ -81,6 +81,7 @@ public class EntityMagiciansRed extends EntityStandBase {
 						EntityStandPunch.magiciansRed magiciansRed = new EntityStandPunch.magiciansRed(world, this, player);
 						magiciansRed.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.5f);
 						world.addEntity(magiciansRed);
+						world.addParticle(ParticleTypes.SMOKE, magiciansRed.getPosX(), magiciansRed.getPosY(), magiciansRed.getPosZ(), magiciansRed.getMotion().getX(), magiciansRed.getMotion().getY(), magiciansRed.getMotion().getZ());
 					}
 				}
 			}

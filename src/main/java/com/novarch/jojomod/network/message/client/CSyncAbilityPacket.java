@@ -16,6 +16,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public class CSyncAbilityPacket {
 
     public static void encode(CSyncAbilityPacket msg, PacketBuffer buffer) { }
@@ -51,6 +52,7 @@ public class CSyncAbilityPacket {
 
                 if (props.getAbility()) {
                     switch (standID) {
+                        case JojoLibs.StandID.magiciansRed:
                         case JojoLibs.StandID.killerQueen:
                         case JojoLibs.StandID.theEmperor:
                             break;
@@ -74,6 +76,7 @@ public class CSyncAbilityPacket {
                     }
                 } else {
                     switch (standID) {
+                        case JojoLibs.StandID.magiciansRed:
                         case JojoLibs.StandID.theEmperor:
                         case JojoLibs.StandID.killerQueen:
                             break;

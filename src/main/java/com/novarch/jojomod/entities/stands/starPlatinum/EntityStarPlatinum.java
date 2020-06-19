@@ -87,7 +87,7 @@ public class EntityStarPlatinum extends EntityStandBase {
 					timestopTick++;
 					player.setInvulnerable(true);
 					if (timestopTick == 1 && props2.getCooldown() <= 0)
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 1.0f, 1.0f);
+						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 2.0f, 1.0f);
 					starPlatinum = this;
 
 					if (!world.isRemote) {

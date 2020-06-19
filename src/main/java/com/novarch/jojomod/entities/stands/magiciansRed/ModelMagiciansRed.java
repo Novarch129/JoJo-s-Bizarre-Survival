@@ -13,45 +13,27 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel<T> {
 	private final ModelRenderer HeadBase;
 	private final ModelRenderer Head;
+	private final ModelRenderer Head2;
 	private final ModelRenderer Eyes;
-	private final ModelRenderer Helmet;
-	private final ModelRenderer Removable;
-	private final ModelRenderer NoArmor;
-	private final ModelRenderer Ears;
+	private final ModelRenderer Beak;
+	private final ModelRenderer bone;
+	private final ModelRenderer bone4;
+	private final ModelRenderer Hair;
+	private final ModelRenderer Strand1;
+	private final ModelRenderer Strand2;
+	private final ModelRenderer bone2;
+	private final ModelRenderer Strand4;
+	private final ModelRenderer bone3;
 	private final ModelRenderer BodyBase;
 	private final ModelRenderer Torso;
-	private final ModelRenderer ChestPads;
-	private final ModelRenderer ShoulderPads;
-	private final ModelRenderer ShoulderPad1;
-	private final ModelRenderer Spikes;
-	private final ModelRenderer Spike;
-	private final ModelRenderer Spike2;
-	private final ModelRenderer Spike3;
-	private final ModelRenderer Spike4;
-	private final ModelRenderer Spike5;
-	private final ModelRenderer ShoulderPad2;
-	private final ModelRenderer Spikes2;
-	private final ModelRenderer Spike6;
-	private final ModelRenderer Spike7;
-	private final ModelRenderer Spike8;
-	private final ModelRenderer Spike9;
-	private final ModelRenderer Spike10;
 	private final ModelRenderer Chest;
-	private final ModelRenderer NoArmorChest;
 	private final ModelRenderer Abs;
-	private final ModelRenderer Pipes;
-	private final ModelRenderer Pipe1;
-	private final ModelRenderer Pipe3;
-	private final ModelRenderer Pipe2;
-	private final ModelRenderer Pipe4;
 	private final ModelRenderer Arms;
 	private final ModelRenderer RightArm;
 	private final ModelRenderer RightHand;
-	private final ModelRenderer Sword;
 	private final ModelRenderer RightArm2;
 	private final ModelRenderer RightHand2;
 	private final ModelRenderer Crotch;
-	private final ModelRenderer Circle;
 	private final ModelRenderer Legs;
 	private final ModelRenderer RightLeg;
 	private final ModelRenderer RightFoot;
@@ -63,61 +45,83 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 		textureHeight = 128;
 
 		HeadBase = new ModelRenderer(this);
-		HeadBase.setRotationPoint(0.0F, -5.0F, 0.0F);
+		HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
+		setRotationAngle(HeadBase, 0.0F, -0.0873F, 0.0F);
 
 
 		Head = new ModelRenderer(this);
 		Head.setRotationPoint(0.0F, 0.0F, 0.0F);
 		HeadBase.addChild(Head);
-		Head.setTextureOffset(0, 0).addBox(-4.0F, -11.2F, -4.0F, 8.0F, 9.0F, 8.0F, 0.0F, false);
+		setRotationAngle(Head, 0.0F, 0.7854F, 0.0F);
+
+
+		Head2 = new ModelRenderer(this);
+		Head2.setRotationPoint(0.5F, -6.2F, -0.5F);
+		Head.addChild(Head2);
+		setRotationAngle(Head2, 0.0F, 0.8727F, 0.0F);
+		Head2.setTextureOffset(2, 0).addBox(-3.5F, -5.0F, -3.5F, 7.0F, 8.0F, 7.0F, 0.0F, false);
 
 		Eyes = new ModelRenderer(this);
-		Eyes.setRotationPoint(0.0F, 0.0F, -0.25F);
+		Eyes.setRotationPoint(2.3F, -9.75F, -2.275F);
 		Head.addChild(Eyes);
-		Eyes.setTextureOffset(0, 0).addBox(-3.0F, -7.2F, -4.1F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-		Eyes.setTextureOffset(0, 0).addBox(1.0F, -7.2F, -4.1F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		setRotationAngle(Eyes, 0.0F, -0.6981F, 0.0F);
+		Eyes.setTextureOffset(0, 0).addBox(-3.2144F, 0.5F, -1.0571F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+		Eyes.setTextureOffset(0, 0).addBox(0.5356F, 0.5F, -1.0571F, 2.0F, 1.0F, 1.0F, 0.0F, true);
 
-		Helmet = new ModelRenderer(this);
-		Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Head.addChild(Helmet);
-		Helmet.setTextureOffset(65, 90).addBox(-4.675F, -11.275F, -5.25F, 1.0F, 6.0F, 4.0F, 0.0F, true);
-		Helmet.setTextureOffset(45, 98).addBox(-4.0F, -11.375F, -5.2F, 3.0F, 3.0F, 1.0F, 0.0F, true);
-		Helmet.setTextureOffset(45, 98).addBox(1.0F, -11.375F, -5.2F, 3.0F, 3.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(65, 90).addBox(3.675F, -11.275F, -5.25F, 1.0F, 6.0F, 4.0F, 0.0F, false);
-		Helmet.setTextureOffset(81, 87).addBox(-4.0F, -11.125F, -5.25F, 8.0F, 4.0F, 2.0F, 0.0F, false);
-		Helmet.setTextureOffset(24, 106).addBox(-1.0F, -8.025F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(24, 106).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(24, 106).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-		Helmet.setTextureOffset(24, 106).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(2, 108).addBox(-3.5F, -4.275F, -5.25F, 7.0F, 2.0F, 1.0F, 0.0F, false);
-		Helmet.setTextureOffset(2, 93).addBox(-4.675F, -5.275F, -5.25F, 9.0F, 1.0F, 4.0F, 0.0F, false);
-		Helmet.setTextureOffset(2, 99).addBox(3.675F, -5.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+		Beak = new ModelRenderer(this);
+		Beak.setRotationPoint(0.2153F, -4.75F, -3.3176F);
+		Head.addChild(Beak);
+		setRotationAngle(Beak, 0.3971F, 0.8116F, 0.5236F);
 
-		Removable = new ModelRenderer(this);
-		Removable.setRotationPoint(-1.325F, 26.925F, 0.75F);
-		Helmet.addChild(Removable);
-		Removable.setTextureOffset(24, 106).addBox(5.0F, -38.3F, -6.0F, 1.0F, 1.0F, 10.0F, 0.0F, false);
-		Removable.setTextureOffset(103, 70).addBox(2.325F, -38.3F, -5.0F, 3.0F, 3.0F, 8.0F, 0.0F, false);
-		Removable.setTextureOffset(103, 70).addBox(-2.675F, -38.3F, -5.0F, 3.0F, 3.0F, 8.0F, 0.0F, false);
-		Removable.setTextureOffset(24, 106).addBox(-3.35F, -38.3F, -6.0F, 1.0F, 1.0F, 10.0F, 0.0F, true);
-		Removable.setTextureOffset(37, 96).addBox(2.325F, -38.3F, 3.0F, 3.0F, 7.0F, 1.0F, 0.0F, false);
-		Removable.setTextureOffset(37, 96).addBox(1.575F, -35.8F, 3.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-		Removable.setTextureOffset(37, 96).addBox(0.325F, -35.3F, 3.0F, 2.0F, 4.0F, 1.0F, 0.0F, true);
-		Removable.setTextureOffset(37, 96).addBox(-0.175F, -35.8F, 3.0F, 1.0F, 1.0F, 1.0F, 0.0F, true);
-		Removable.setTextureOffset(63, 88).addBox(-3.35F, -38.2F, -2.0F, 1.0F, 6.0F, 6.0F, 0.0F, true);
-		Removable.setTextureOffset(63, 88).addBox(5.0F, -38.2F, -2.0F, 1.0F, 6.0F, 6.0F, 0.0F, false);
-		Removable.setTextureOffset(37, 96).addBox(-2.675F, -38.3F, 3.0F, 3.0F, 7.0F, 1.0F, 0.0F, true);
 
-		NoArmor = new ModelRenderer(this);
-		NoArmor.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Helmet.addChild(NoArmor);
-		NoArmor.setTextureOffset(41, 19).addBox(-4.0F, -11.375F, -5.2F, 8.0F, 3.0F, 4.0F, 0.0F, false);
+		bone = new ModelRenderer(this);
+		bone.setRotationPoint(2.3655F, -0.4292F, 2.0131F);
+		Beak.addChild(bone);
+		bone.setTextureOffset(101, 3).addBox(-4.0942F, -2.1889F, -2.0996F, 6.0F, 1.0F, 4.0F, 0.0F, false);
+		bone.setTextureOffset(106, 7).addBox(-4.0942F, -2.1889F, 1.1504F, 6.0F, 1.0F, 1.0F, 0.0F, false);
 
-		Ears = new ModelRenderer(this);
-		Ears.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Head.addChild(Ears);
-		Ears.setTextureOffset(37, 0).addBox(-4.85F, -8.25F, -2.25F, 1.0F, 3.0F, 3.0F, 0.0F, false);
-		Ears.setTextureOffset(37, 0).addBox(3.85F, -8.25F, -2.25F, 1.0F, 3.0F, 3.0F, 0.0F, true);
+		bone4 = new ModelRenderer(this);
+		bone4.setRotationPoint(2.6691F, 0.7241F, 2.0226F);
+		Beak.addChild(bone4);
+		setRotationAngle(bone4, 0.0F, 0.0F, 0.0785F);
+		bone4.setTextureOffset(101, 3).addBox(-4.8918F, -2.259F, -2.0996F, 6.0F, 1.0F, 4.0F, 0.0F, false);
+		bone4.setTextureOffset(106, 7).addBox(-4.8918F, -2.259F, 1.1504F, 6.0F, 1.0F, 1.0F, 0.0F, false);
+
+		Hair = new ModelRenderer(this);
+		Hair.setRotationPoint(-0.9642F, 0.0F, 1.1491F);
+		Head.addChild(Hair);
+		setRotationAngle(Hair, 0.0F, 0.0873F, 0.0F);
+
+
+		Strand1 = new ModelRenderer(this);
+		Strand1.setRotationPoint(-0.5F, -10.5F, 0.5F);
+		Hair.addChild(Strand1);
+		setRotationAngle(Strand1, 0.0F, -0.7854F, 0.0F);
+		Strand1.setTextureOffset(99, 25).addBox(-0.5F, -1.5F, -0.5F, 1.0F, 1.0F, 1.0F, 0.0F, false);
+
+		Strand2 = new ModelRenderer(this);
+		Strand2.setRotationPoint(-0.0654F, -1.0F, 0.7471F);
+		Hair.addChild(Strand2);
+		setRotationAngle(Strand2, 0.0F, -0.7854F, 0.0F);
+
+
+		bone2 = new ModelRenderer(this);
+		bone2.setRotationPoint(-0.5F, -10.5F, 3.0F);
+		Strand2.addChild(bone2);
+		setRotationAngle(bone2, -0.3316F, 0.0F, 0.0F);
+		bone2.setTextureOffset(99, 25).addBox(-0.4821F, -0.3764F, -3.3467F, 1.0F, 1.0F, 6.0F, 0.0F, false);
+
+		Strand4 = new ModelRenderer(this);
+		Strand4.setRotationPoint(0.8988F, -1.0F, -0.4019F);
+		Head.addChild(Strand4);
+		setRotationAngle(Strand4, 0.0F, -0.6981F, 0.0F);
+
+
+		bone3 = new ModelRenderer(this);
+		bone3.setRotationPoint(-0.7615F, -10.5F, 0.0114F);
+		Strand4.addChild(bone3);
+		setRotationAngle(bone3, 0.5323F, 0.0F, 0.0F);
+		bone3.setTextureOffset(100, 37).addBox(-0.0237F, -0.9533F, -2.9729F, 1.0F, 1.0F, 8.0F, 0.0F, false);
 
 		BodyBase = new ModelRenderer(this);
 		BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -129,153 +133,17 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 		setRotationAngle(Torso, -0.2443F, 0.0F, 0.0F);
 		Torso.setTextureOffset(26, 18).addBox(-10.0F, -5.8469F, -2.8038F, 20.0F, 5.0F, 6.0F, 0.0F, false);
 
-		ChestPads = new ModelRenderer(this);
-		ChestPads.setRotationPoint(0.0F, 25.5F, 1.0F);
-		Torso.addChild(ChestPads);
-		ChestPads.setTextureOffset(111, 0).addBox(-6.25F, -30.5888F, -4.6503F, 6.0F, 5.0F, 1.0F, 0.0F, true);
-		ChestPads.setTextureOffset(26, 18).addBox(-6.25F, -25.5888F, -4.6503F, 3.0F, 1.0F, 1.0F, 0.0F, true);
-		ChestPads.setTextureOffset(111, 0).addBox(0.5F, -30.5888F, -4.6503F, 6.0F, 5.0F, 1.0F, 0.0F, false);
-		ChestPads.setTextureOffset(26, 18).addBox(3.5F, -25.5888F, -4.6503F, 3.0F, 1.0F, 1.0F, 0.0F, false);
-		ChestPads.setTextureOffset(111, 0).addBox(-6.25F, -31.3388F, 2.1665F, 6.0F, 5.0F, 1.0F, 0.0F, true);
-		ChestPads.setTextureOffset(111, 0).addBox(0.25F, -31.3388F, 2.1665F, 6.0F, 5.0F, 1.0F, 0.0F, false);
-		ChestPads.setTextureOffset(26, 18).addBox(3.25F, -26.3388F, 2.1665F, 3.0F, 1.0F, 1.0F, 0.0F, false);
-		ChestPads.setTextureOffset(26, 18).addBox(-6.25F, -26.3388F, 2.1665F, 3.0F, 1.0F, 1.0F, 0.0F, true);
-
-		ShoulderPads = new ModelRenderer(this);
-		ShoulderPads.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Torso.addChild(ShoulderPads);
-
-
-		ShoulderPad1 = new ModelRenderer(this);
-		ShoulderPad1.setRotationPoint(11.1206F, -1.2485F, 0.6555F);
-		ShoulderPads.addChild(ShoulderPad1);
-		setRotationAngle(ShoulderPad1, 0.0F, 0.0F, -0.1265F);
-		ShoulderPad1.setTextureOffset(113, 13).addBox(-0.8775F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, false);
-		ShoulderPad1.setTextureOffset(98, 11).addBox(-0.6275F, -4.2125F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, false);
-		ShoulderPad1.setTextureOffset(115, 13).addBox(-0.8775F, -0.4625F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, false);
-
-		Spikes = new ModelRenderer(this);
-		Spikes.setRotationPoint(0.0F, 0.0F, 0.0F);
-		ShoulderPad1.addChild(Spikes);
-
-
-		Spike = new ModelRenderer(this);
-		Spike.setRotationPoint(-0.3918F, -8.7548F, 2.1824F);
-		Spikes.addChild(Spike);
-		Spike.setTextureOffset(115, 13).addBox(-0.4858F, 0.5422F, -2.9243F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		Spike2 = new ModelRenderer(this);
-		Spike2.setRotationPoint(-0.4777F, -4.9613F, 3.4419F);
-		Spikes.addChild(Spike2);
-		setRotationAngle(Spike2, -0.7854F, 0.0F, 0.0F);
-		Spike2.setTextureOffset(115, 13).addBox(-0.3775F, -1.7596F, -1.3517F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		Spike3 = new ModelRenderer(this);
-		Spike3.setRotationPoint(-0.4554F, -4.9194F, -3.3098F);
-		Spikes.addChild(Spike3);
-		setRotationAngle(Spike3, 0.7854F, 0.0F, 0.0F);
-		Spike3.setTextureOffset(115, 13).addBox(-0.3775F, -2.1017F, 0.0096F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		Spike4 = new ModelRenderer(this);
-		Spike4.setRotationPoint(-0.5521F, -1.8522F, -4.2437F);
-		Spikes.addChild(Spike4);
-		setRotationAngle(Spike4, 1.5708F, 0.0F, 0.0F);
-		Spike4.setTextureOffset(115, 13).addBox(-0.3775F, -1.4919F, 0.4625F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		Spike5 = new ModelRenderer(this);
-		Spike5.setRotationPoint(-0.5521F, -2.0336F, 4.205F);
-		Spikes.addChild(Spike5);
-		setRotationAngle(Spike5, -1.5708F, 0.0F, 0.0F);
-		Spike5.setTextureOffset(115, 13).addBox(-0.3275F, -1.0081F, -1.4625F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		ShoulderPad2 = new ModelRenderer(this);
-		ShoulderPad2.setRotationPoint(-11.1206F, -1.2485F, 0.6555F);
-		ShoulderPads.addChild(ShoulderPad2);
-		setRotationAngle(ShoulderPad2, 0.0F, 0.0F, 0.1265F);
-		ShoulderPad2.setTextureOffset(113, 13).addBox(-0.1225F, -5.4625F, -3.2419F, 1.0F, 5.0F, 6.0F, 0.0F, true);
-		ShoulderPad2.setTextureOffset(98, 11).addBox(-0.3725F, -4.2125F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, true);
-		ShoulderPad2.setTextureOffset(115, 13).addBox(-0.1225F, -0.4625F, -1.7419F, 1.0F, 3.0F, 3.0F, 0.0F, true);
-
-		Spikes2 = new ModelRenderer(this);
-		Spikes2.setRotationPoint(0.0F, 0.0F, 0.0F);
-		ShoulderPad2.addChild(Spikes2);
-
-
-		Spike6 = new ModelRenderer(this);
-		Spike6.setRotationPoint(0.3918F, -8.7548F, 2.1824F);
-		Spikes2.addChild(Spike6);
-		Spike6.setTextureOffset(115, 13).addBox(-0.5142F, 0.5422F, -2.9243F, 1.0F, 3.0F, 1.0F, 0.0F, true);
-
-		Spike7 = new ModelRenderer(this);
-		Spike7.setRotationPoint(0.4777F, -4.9613F, 3.4419F);
-		Spikes2.addChild(Spike7);
-		setRotationAngle(Spike7, -0.7854F, 0.0F, 0.0F);
-		Spike7.setTextureOffset(115, 13).addBox(-0.6225F, -1.7596F, -1.3517F, 1.0F, 3.0F, 1.0F, 0.0F, true);
-
-		Spike8 = new ModelRenderer(this);
-		Spike8.setRotationPoint(0.4554F, -4.9194F, -3.3098F);
-		Spikes2.addChild(Spike8);
-		setRotationAngle(Spike8, 0.7854F, 0.0F, 0.0F);
-		Spike8.setTextureOffset(115, 13).addBox(-0.6225F, -2.1017F, 0.0096F, 1.0F, 3.0F, 1.0F, 0.0F, true);
-
-		Spike9 = new ModelRenderer(this);
-		Spike9.setRotationPoint(0.5521F, -1.8522F, -4.2437F);
-		Spikes2.addChild(Spike9);
-		setRotationAngle(Spike9, 1.5708F, 0.0F, 0.0F);
-		Spike9.setTextureOffset(115, 13).addBox(-0.6225F, -1.4919F, 0.4625F, 1.0F, 3.0F, 1.0F, 0.0F, true);
-
-		Spike10 = new ModelRenderer(this);
-		Spike10.setRotationPoint(0.5521F, -2.0336F, 4.205F);
-		Spikes2.addChild(Spike10);
-		setRotationAngle(Spike10, -1.5708F, 0.0F, 0.0F);
-		Spike10.setTextureOffset(115, 13).addBox(-0.6725F, -1.0081F, -1.4625F, 1.0F, 3.0F, 1.0F, 0.0F, true);
-
 		Chest = new ModelRenderer(this);
 		Chest.setRotationPoint(0.0F, -3.0F, -1.5F);
 		BodyBase.addChild(Chest);
 		setRotationAngle(Chest, -0.3229F, 0.0F, 0.0F);
 		Chest.setTextureOffset(45, 31).addBox(-5.5F, -26.7153F, -10.0414F, 11.0F, 6.0F, 5.0F, 0.0F, false);
 
-		NoArmorChest = new ModelRenderer(this);
-		NoArmorChest.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Chest.addChild(NoArmorChest);
-		NoArmorChest.setTextureOffset(96, 57).addBox(-5.5F, -26.398F, -10.9897F, 11.0F, 6.0F, 5.0F, 0.0F, false);
-
 		Abs = new ModelRenderer(this);
 		Abs.setRotationPoint(3.0F, -14.0F, -3.0F);
 		BodyBase.addChild(Abs);
 		setRotationAngle(Abs, 0.0087F, 0.0F, 0.0F);
-		Abs.setTextureOffset(0, 39).addBox(-6.5F, -12.2058F, -0.6383F, 7.0F, 5.0F, 4.0F, 0.0F, false);
-		Abs.setTextureOffset(0, 69).addBox(-4.5F, -7.9515F, -0.1579F, 3.0F, 5.0F, 3.0F, 0.0F, false);
-
-		Pipes = new ModelRenderer(this);
-		Pipes.setRotationPoint(0.0F, 0.0F, 0.5F);
-		Abs.addChild(Pipes);
-
-
-		Pipe1 = new ModelRenderer(this);
-		Pipe1.setRotationPoint(-1.0F, -6.4515F, 1.3421F);
-		Pipes.addChild(Pipe1);
-		setRotationAngle(Pipe1, -0.1745F, 0.0F, -0.6109F);
-		Pipe1.setTextureOffset(66, 70).addBox(-0.5F, -1.5F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
-
-		Pipe3 = new ModelRenderer(this);
-		Pipe3.setRotationPoint(-5.0F, -6.4515F, 1.3421F);
-		Pipes.addChild(Pipe3);
-		setRotationAngle(Pipe3, -0.1745F, 0.0F, 0.6109F);
-		Pipe3.setTextureOffset(66, 70).addBox(-0.5F, -1.5F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, true);
-
-		Pipe2 = new ModelRenderer(this);
-		Pipe2.setRotationPoint(-0.4351F, -5.6433F, 1.1755F);
-		Pipes.addChild(Pipe2);
-		setRotationAngle(Pipe2, -0.6981F, 0.0F, -0.6109F);
-		Pipe2.setTextureOffset(66, 70).addBox(-0.4992F, -0.6794F, -0.8231F, 1.0F, 3.0F, 1.0F, 0.0F, false);
-
-		Pipe4 = new ModelRenderer(this);
-		Pipe4.setRotationPoint(-5.5649F, -5.6433F, 1.1755F);
-		Pipes.addChild(Pipe4);
-		setRotationAngle(Pipe4, -0.6981F, 0.0F, 0.6109F);
-		Pipe4.setTextureOffset(66, 70).addBox(-0.5008F, -0.6794F, -0.8231F, 1.0F, 3.0F, 1.0F, 0.0F, true);
+		Abs.setTextureOffset(0, 39).addBox(-6.5F, -12.2058F, -0.6383F, 7.0F, 8.0F, 4.0F, 0.0F, false);
 
 		Arms = new ModelRenderer(this);
 		Arms.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -285,7 +153,7 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 		RightArm = new ModelRenderer(this);
 		RightArm.setRotationPoint(-7.15F, -28.3015F, -1.3061F);
 		Arms.addChild(RightArm);
-		setRotationAngle(RightArm, -0.4363F, 0.0F, 0.2618F);
+		setRotationAngle(RightArm, -0.2618F, 0.0F, 0.2618F);
 		RightArm.setTextureOffset(27, 32).addBox(-1.9824F, 0.7955F, -0.983F, 4.0F, 6.0F, 4.0F, 0.0F, false);
 
 		RightHand = new ModelRenderer(this);
@@ -293,14 +161,6 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 		RightArm.addChild(RightHand);
 		setRotationAngle(RightHand, -0.1134F, 0.0F, -0.1134F);
 		RightHand.setTextureOffset(0, 53).addBox(-2.8117F, -0.4396F, -2.8423F, 4.0F, 6.0F, 4.0F, 0.0F, false);
-
-		Sword = new ModelRenderer(this);
-		Sword.setRotationPoint(0.0F, 0.0F, 0.0F);
-		RightHand.addChild(Sword);
-		Sword.setTextureOffset(110, 99).addBox(-1.4016F, 3.3281F, -4.6066F, 1.0F, 1.0F, 8.0F, 0.0F, false);
-		Sword.setTextureOffset(92, 110).addBox(-1.4016F, 3.3281F, -6.6066F, 1.0F, 1.0F, 2.0F, 0.0F, false);
-		Sword.setTextureOffset(92, 110).addBox(-1.4016F, 3.3281F, -23.6066F, 1.0F, 1.0F, 17.0F, 0.0F, false);
-		Sword.setTextureOffset(82, 109).addBox(-2.4016F, 2.3281F, -5.6066F, 3.0F, 3.0F, 1.0F, 0.0F, false);
 
 		RightArm2 = new ModelRenderer(this);
 		RightArm2.setRotationPoint(8.3F, -26.9765F, -1.3061F);
@@ -317,14 +177,7 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 		Crotch = new ModelRenderer(this);
 		Crotch.setRotationPoint(0.0F, 0.0F, 0.0F);
 		BodyBase.addChild(Crotch);
-		Crotch.setTextureOffset(32, 68).addBox(-4.5F, -18.9558F, -4.347F, 9.0F, 2.0F, 5.0F, 0.0F, false);
-		Crotch.setTextureOffset(32, 68).addBox(-3.5F, -16.9558F, -4.347F, 7.0F, 2.0F, 5.0F, 0.0F, false);
-
-		Circle = new ModelRenderer(this);
-		Circle.setRotationPoint(0.0F, 0.0F, 0.0F);
-		Crotch.addChild(Circle);
-		setRotationAngle(Circle, -0.0873F, 0.0F, 0.0F);
-
+		Crotch.setTextureOffset(32, 68).addBox(-4.5F, -20.2058F, -4.347F, 9.0F, 5.0F, 5.0F, 0.0F, false);
 
 		Legs = new ModelRenderer(this);
 		Legs.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -332,28 +185,28 @@ public class ModelMagiciansRed<T extends EntityMagiciansRed> extends EntityModel
 
 
 		RightLeg = new ModelRenderer(this);
-		RightLeg.setRotationPoint(-1.75F, -14.2F, -2.2125F);
+		RightLeg.setRotationPoint(-2.3F, -15.425F, -2.2125F);
 		Legs.addChild(RightLeg);
-		setRotationAngle(RightLeg, 0.1353F, 0.2618F, 0.1876F);
-		RightLeg.setTextureOffset(80, 24).addBox(-2.3299F, -1.5715F, -1.5112F, 4.0F, 9.0F, 4.0F, 0.0F, true);
+		setRotationAngle(RightLeg, 0.1353F, 0.2618F, 0.0436F);
+		RightLeg.setTextureOffset(80, 24).addBox(-1.9891F, -2.1044F, -1.2641F, 4.0F, 9.0F, 4.0F, 0.0F, true);
 
 		RightFoot = new ModelRenderer(this);
 		RightFoot.setRotationPoint(0.14F, 14.3142F, 2.0955F);
 		RightLeg.addChild(RightFoot);
-		setRotationAngle(RightFoot, 0.3971F, 0.0F, 0.0F);
-		RightFoot.setTextureOffset(59, 46).addBox(-2.4699F, -7.7447F, -0.6633F, 4.0F, 9.0F, 4.0F, 0.0F, false);
+		setRotationAngle(RightFoot, 0.2225F, 0.0F, 0.0F);
+		RightFoot.setTextureOffset(59, 46).addBox(-2.1291F, -7.9771F, -1.6395F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 
 		LeftLeg = new ModelRenderer(this);
 		LeftLeg.setRotationPoint(2.275F, -14.25F, -2.7375F);
 		Legs.addChild(LeftLeg);
 		setRotationAngle(LeftLeg, -0.1265F, 0.1396F, -0.1745F);
-		LeftLeg.setTextureOffset(80, 24).addBox(-2.0771F, -2.0776F, -1.313F, 4.0F, 9.0F, 4.0F, 0.0F, false);
+		LeftLeg.setTextureOffset(80, 24).addBox(-1.8336F, -4.1795F, -1.5458F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 
 		LeftFoot = new ModelRenderer(this);
 		LeftFoot.setRotationPoint(-0.3875F, 12.4197F, 1.0049F);
 		LeftLeg.addChild(LeftFoot);
 		setRotationAngle(LeftFoot, 0.7549F, 0.0F, 0.0873F);
-		LeftFoot.setTextureOffset(80, 41).addBox(-2.1776F, -5.7238F, 2.2021F, 4.0F, 9.0F, 4.0F, 0.0F, false);
+		LeftFoot.setTextureOffset(80, 41).addBox(-2.1184F, -7.4239F, 3.4818F, 4.0F, 9.0F, 4.0F, 0.0F, false);
 	}
 
 	@Override

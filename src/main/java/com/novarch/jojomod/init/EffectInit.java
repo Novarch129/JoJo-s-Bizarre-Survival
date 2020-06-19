@@ -15,8 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EffectInit
 {
-    public static final DeferredRegister<Effect> EFFECTS = new DeferredRegister<>(ForgeRegistries.POTIONS,
-            JojoBizarreSurvival.MOD_ID);
+    public static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, JojoBizarreSurvival.MOD_ID);
 
     public static final RegistryObject<Effect> CRIMSON_USER = EFFECTS.register("crimson_effect_user",
             () -> new CrimsonEffectUser(EffectType.NEUTRAL, 10819625, -4.0d)

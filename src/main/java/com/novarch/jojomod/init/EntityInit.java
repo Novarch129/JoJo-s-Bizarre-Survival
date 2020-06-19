@@ -37,7 +37,7 @@ public class EntityInit
 {
 	private int ID = 0;
 
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = new DeferredRegister<>(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
 	
 	public static final RegistryObject<EntityType<EntityKingCrimson>> KING_CRIMSON = ENTITY_TYPES
 			.register("king_crimson",

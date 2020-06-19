@@ -7,14 +7,15 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
+import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -56,38 +57,45 @@ public class EntityAerosmith extends EntityStandBase {
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
-                if(ability != props.getAbility())
+                if(ability != props.getAbility()) {
+                    if(!ability)
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
                     ability = props.getAbility();
+                }
             });
 
             setRotation(yaw, pitch);
             if(getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
                 setRotationYawHead(yaw);
 
-            if (!player.isSprinting()) {
-                if (attackSwing(player)) {
+            if ((!player.isSprinting() && !ability) || (!isSprinting() && ability)) {
+                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability)) {
                     oratick++;
                     if (oratick == 1) {
                         EntityStandPunch.aerosmith aerosmithBullet = new EntityStandPunch.aerosmith(world, this, player);
                         aerosmithBullet.shoot(player, rotationPitch, rotationYaw, 4.0f, 0.4f);
                         world.addEntity(aerosmithBullet);
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
                     }
                 }
-            } else if (player.isSprinting()) { //TODO Fix
-                if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
+            } else if ((player.isSprinting() && !ability) || (isSprinting() && ability)) {
+                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability))
                     if (player.getFoodStats().getFoodLevel() > 6) {
-                        world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.VOLARUSH.get(), getSoundCategory(), 4.05f, 1.0f);
                         oratick++;
                         if (oratick == 1) {
+                            world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.VOLARUSH.get(), getSoundCategory(), 4.05f, 1.0f);
                             if (!world.isRemote)
                                 orarush = true;
                         }
                     }
             }
-            if (player.swingProgressInt == 0)
+            if ((player.swingProgressInt == 0 && !ability) || (swingProgressInt == 0 && ability))
                 oratick = 0;
             if (orarush) {
-                player.setSprinting(false);
+                if(!ability)
+                    player.setSprinting(false);
+                else
+                    setSprinting(false);
                 oratickr++;
                 if (oratickr >= 10)
                     if (!world.isRemote) {
@@ -104,6 +112,7 @@ public class EntityAerosmith extends EntityStandBase {
                 if (oratickr >= 110) {
                     orarush = false;
                     oratickr = 0;
+                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
                 }
             }
         }
@@ -114,13 +123,10 @@ public class EntityAerosmith extends EntityStandBase {
         super.onAddedToWorld();
         if(getMaster() != null)
             Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if(props.getAbility())
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(4));
+                if(!world.isRemote)
+                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
+                if (props.getAbility())
+                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
             });
-    }
-
-    @Override
-    public void setRotation(float yaw, float pitch) {
-        super.setRotation(yaw, pitch);
     }
 }

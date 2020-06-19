@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class SoundInit
 {
-	public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, JojoBizarreSurvival.MOD_ID);
+	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, JojoBizarreSurvival.MOD_ID);
 
 	public static final RegistryObject<SoundEvent> CANZONI_PREFERITE = SOUNDS.register("canzoni_preferite", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "canzoni_preferite")));
 
