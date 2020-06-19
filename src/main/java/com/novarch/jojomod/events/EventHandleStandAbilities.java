@@ -119,8 +119,6 @@ public class EventHandleStandAbilities
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null)
             return;
-        if (event.phase == TickEvent.Phase.START)
-            return;
 
         PlayerEntity player = Minecraft.getInstance().player;
 

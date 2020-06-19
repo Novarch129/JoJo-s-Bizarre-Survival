@@ -164,7 +164,7 @@ public class CSyncAerosmithPacket {
 											break;
 										}
 										//Bomb
-										case BOMB: {
+										case BOMB: { //TODO Fix bomb not firing
 											Stand.getLazyOptional(player).ifPresent(props -> {
 												if (props.getCooldown() <= 0) {
 													TNTEntity tnt = new TNTEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), player);

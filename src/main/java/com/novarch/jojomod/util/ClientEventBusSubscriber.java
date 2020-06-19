@@ -37,6 +37,7 @@ import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunc
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnake;
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnakePunch;
 import com.novarch.jojomod.init.EntityInit;
+import com.novarch.jojomod.util.handlers.KeyHandler;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;

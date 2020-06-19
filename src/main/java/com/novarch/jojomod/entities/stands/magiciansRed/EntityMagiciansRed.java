@@ -27,13 +27,13 @@ public class EntityMagiciansRed extends EntityStandBase {
 
 	public EntityMagiciansRed(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
+		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
 		standID = JojoLibs.StandID.magiciansRed;
 	}
 
 	public EntityMagiciansRed(World world) {
 		super(EntityInit.MAGICIANS_RED.get(), world);
-		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
+		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
 		standID = JojoLibs.StandID.magiciansRed;
 	}
 

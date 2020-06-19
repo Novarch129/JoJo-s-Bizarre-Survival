@@ -183,5 +183,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:silver_chariot_rush", "stream": false}]
+    },
+
+    "spawn_magicians_red":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:spawn_magicians_red", "stream": false}]
     }
 }
