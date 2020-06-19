@@ -10,8 +10,14 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -20,6 +26,9 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Iterator;
 
 /**
  * @author Novarch
@@ -56,6 +65,13 @@ public class JojoBizarreSurvival {
 
     private void setup(final FMLCommonSetupEvent event) {
         CapabilityInit.register();
+//        DeferredWorkQueue.runLater(() -> {
+//            Iterator<Biome> biomes = ForgeRegistries.BIOMES.iterator();
+//            biomes.forEachRemaining(biome -> {
+//                biome.addStructure(FeatureInit.JOJO_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+//                biome.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, FeatureInit.JOJO_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+//            });
+//        });
     }
 
     public void onServerStarting(FMLServerStartingEvent event) {

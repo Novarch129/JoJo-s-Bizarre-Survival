@@ -37,8 +37,8 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("ConstantConditions")
 public class CSyncAerosmithPacket {
-	public enum Action {MOVE, BOMB, ROTATE, RENDER, ATTACK};
-	public enum Direction {FORWARDS, BACKWARDS, RIGHT, LEFT, UP, DOWN};
+	public enum Action {MOVE, BOMB, ROTATE, RENDER, ATTACK}
+	public enum Direction {FORWARDS, BACKWARDS, RIGHT, LEFT, UP, DOWN}
 	private Action action;
 	private Direction direction;
 	private boolean sprint;
