@@ -97,7 +97,7 @@ public class EntityGoldExperience extends EntityStandBase {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.goldExperience goldExperience = new EntityStandPunch.goldExperience(this.world, this, player);
+						EntityStandPunch.GoldExperience goldExperience = new EntityStandPunch.GoldExperience(this.world, this, player);
 						goldExperience.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience);
 					}
@@ -111,11 +111,11 @@ public class EntityGoldExperience extends EntityStandBase {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.goldExperience goldExperience1 = new EntityStandPunch.goldExperience(this.world, this, player);
+						EntityStandPunch.GoldExperience goldExperience1 = new EntityStandPunch.GoldExperience(this.world, this, player);
 						goldExperience1.setRandomPositions();
 						goldExperience1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience1);
-						EntityStandPunch.goldExperience goldExperience2 = new EntityStandPunch.goldExperience(this.world, this, player);
+						EntityStandPunch.GoldExperience goldExperience2 = new EntityStandPunch.GoldExperience(this.world, this, player);
 						goldExperience2.setRandomPositions();
 						goldExperience2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience2);

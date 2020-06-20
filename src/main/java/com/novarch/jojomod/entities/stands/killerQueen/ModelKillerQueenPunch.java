@@ -9,7 +9,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelKillerQueenPunch<T extends EntityStandPunch.killerQueen> extends EntityModel<T>
+public class ModelKillerQueenPunch<T extends EntityStandPunch.KillerQueen> extends EntityModel<T>
 {
 	private final ModelRenderer Punch;
 

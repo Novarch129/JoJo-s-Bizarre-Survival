@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderKillerQueenPunch extends EntityRenderer<EntityStandPunch.killerQueen>
+public class RenderKillerQueenPunch extends EntityRenderer<EntityStandPunch.KillerQueen>
 {
-	protected ModelKillerQueenPunch<EntityStandPunch.killerQueen> punch;
+	protected ModelKillerQueenPunch<EntityStandPunch.KillerQueen> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
 
 	public RenderKillerQueenPunch(EntityRendererManager renderManagerIn)
@@ -29,12 +29,12 @@ public class RenderKillerQueenPunch extends EntityRenderer<EntityStandPunch.kill
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.killerQueen entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.KillerQueen entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.killerQueen entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.KillerQueen entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderKillerQueenPunch extends EntityRenderer<EntityStandPunch.kill
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.killerQueen entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.KillerQueen entity)
 	{
 		return RenderKillerQueenPunch.texture;
 	}

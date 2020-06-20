@@ -18,9 +18,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.kingCrimson>
+public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.KingCrimson>
 {
-	protected ModelKingCrimsonPunch<EntityStandPunch.kingCrimson> punch;
+	protected ModelKingCrimsonPunch<EntityStandPunch.KingCrimson> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson_punch.png");
 
 	public RenderKingCrimsonPunch(EntityRendererManager renderManagerIn) 
@@ -30,12 +30,12 @@ public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.king
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.kingCrimson entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.KingCrimson entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.kingCrimson entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.KingCrimson entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -54,7 +54,7 @@ public class RenderKingCrimsonPunch extends EntityRenderer<EntityStandPunch.king
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.kingCrimson entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.KingCrimson entity)
 	{
 		return RenderKingCrimsonPunch.texture;
 	}

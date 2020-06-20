@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelMadeInHeavenPunch <T extends EntityStandPunch.madeInHeaven> extends EntityModel<T>
+public class ModelMadeInHeavenPunch <T extends EntityStandPunch.MadeInHeaven> extends EntityModel<T>
 {
 	 private final ModelRenderer Punch;
 

@@ -1,4 +1,4 @@
-package com.novarch.jojomod.entities.stands.whitesnake;
+package com.novarch.jojomod.entities.stands.theHand;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
@@ -7,9 +7,11 @@ import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -17,21 +19,33 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class EntityWhitesnake extends EntityStandBase {
+public class EntityTheHand extends EntityStandBase {
 	private int oratick = 0;
 
 	private int oratickr = 0;
 
-	public EntityWhitesnake(EntityType<? extends EntityStandBase> type, World world) {
+	public EntityTheHand(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-		standID = Util.StandID.whitesnake;
+		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
+		standID = Util.StandID.theHand;
 	}
 
-	public EntityWhitesnake(World world) {
-		super(EntityInit.WHITESNAKE.get(), world);
-		spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-		standID = Util.StandID.whitesnake;
+	public EntityTheHand(World world) {
+		super(EntityInit.THE_HAND.get(), world);
+		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
+		standID = Util.StandID.theHand;
+	}
+
+	public void teleportEntity(int id) {
+		Entity entity = world.getEntityByID(id);
+		if(entity != null && getMaster() != null) {
+			float yaw = getMaster().rotationYaw;
+			float pitch = getMaster().rotationPitch;
+			double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
+			double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
+			double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
+			entity.setMotion(-motionX * 2, -motionY * 2, -motionZ * 2);
+		}
 	}
 
 	@Override
@@ -60,9 +74,9 @@ public class EntityWhitesnake extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.Whitesnake whitesnake = new EntityStandPunch.Whitesnake(world, this, player);
-						whitesnake.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.2f);
-						world.addEntity(whitesnake);
+						EntityStandPunch.TheHand theHand = new EntityStandPunch.TheHand(world, this, player);
+						theHand.shoot(player, player.rotationPitch, player.rotationYaw, 0.7f, 0.4f);
+						world.addEntity(theHand);
 					}
 				}
 			}
@@ -74,14 +88,14 @@ public class EntityWhitesnake extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.Whitesnake whitesnake1 = new EntityStandPunch.Whitesnake(world, this, player);
-						whitesnake1.setRandomPositions();
-						whitesnake1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
-						world.addEntity(whitesnake1);
-						EntityStandPunch.Whitesnake whitesnake2 = new EntityStandPunch.Whitesnake(world, this, player);
-						whitesnake2.setRandomPositions();
-						whitesnake2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
-						world.addEntity(whitesnake2);
+						EntityStandPunch.TheHand theHand1 = new EntityStandPunch.TheHand(world, this, player);
+						theHand1.setRandomPositions();
+						theHand1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.5f);
+						world.addEntity(theHand1);
+						EntityStandPunch.TheHand theHand2 = new EntityStandPunch.TheHand(world, this, player);
+						theHand2.setRandomPositions();
+						theHand2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.5f);
+						world.addEntity(theHand2);
 					}
 				if (oratickr >= 80) {
 					orarush = false;

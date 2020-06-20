@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelWeatherReportPunch<T extends EntityStandPunch.weatherReport> extends EntityModel<T>
+public class ModelWeatherReportPunch<T extends EntityStandPunch.WeatherReport> extends EntityModel<T>
 {
 	private final ModelRenderer Punch;
 

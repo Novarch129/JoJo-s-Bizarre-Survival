@@ -145,7 +145,7 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.goldExperienceRequiem goldExperienceRequiem = new EntityStandPunch.goldExperienceRequiem(this.world, this, player);
+						EntityStandPunch.GoldExperienceRequiem goldExperienceRequiem = new EntityStandPunch.GoldExperienceRequiem(this.world, this, player);
 						goldExperienceRequiem.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem);
 					}
@@ -159,11 +159,11 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.goldExperienceRequiem goldExperienceRequiem1 = new EntityStandPunch.goldExperienceRequiem(this.world, this, player);
+						EntityStandPunch.GoldExperienceRequiem goldExperienceRequiem1 = new EntityStandPunch.GoldExperienceRequiem(this.world, this, player);
 						goldExperienceRequiem1.setRandomPositions();
 						goldExperienceRequiem1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem1);
-						EntityStandPunch.goldExperienceRequiem goldExperienceRequiem2 = new EntityStandPunch.goldExperienceRequiem(this.world, this, player);
+						EntityStandPunch.GoldExperienceRequiem goldExperienceRequiem2 = new EntityStandPunch.GoldExperienceRequiem(this.world, this, player);
 						goldExperienceRequiem2.setRandomPositions();
 						goldExperienceRequiem2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem2);

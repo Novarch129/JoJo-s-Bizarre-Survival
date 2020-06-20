@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderGoldExperienceRequiemPunch extends EntityRenderer<EntityStandPunch.goldExperienceRequiem>
+public class RenderGoldExperienceRequiemPunch extends EntityRenderer<EntityStandPunch.GoldExperienceRequiem>
 {
-	protected ModelGoldExperienceRequiemPunch<EntityStandPunch.goldExperienceRequiem> punch;
+	protected ModelGoldExperienceRequiemPunch<EntityStandPunch.GoldExperienceRequiem> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger_punch.png");
 
 	public RenderGoldExperienceRequiemPunch(EntityRendererManager renderManagerIn) 
@@ -29,12 +29,12 @@ public class RenderGoldExperienceRequiemPunch extends EntityRenderer<EntityStand
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.goldExperienceRequiem entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.GoldExperienceRequiem entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.goldExperienceRequiem entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.GoldExperienceRequiem entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderGoldExperienceRequiemPunch extends EntityRenderer<EntityStand
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.goldExperienceRequiem entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.GoldExperienceRequiem entity)
 	{
 		return RenderGoldExperienceRequiemPunch.texture;
 	}

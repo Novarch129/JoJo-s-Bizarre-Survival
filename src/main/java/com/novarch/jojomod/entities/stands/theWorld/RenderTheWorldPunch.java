@@ -13,12 +13,11 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Random;
 
 @ParametersAreNonnullByDefault
-public class RenderTheWorldPunch extends EntityRenderer<EntityStandPunch.theWorld>
+public class RenderTheWorldPunch extends EntityRenderer<EntityStandPunch.TheWorld>
 {
-	protected ModelTheWorldPunch<EntityStandPunch.theWorld> punch;
+	protected ModelTheWorldPunch<EntityStandPunch.TheWorld> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world_punch.png");
 
 	public RenderTheWorldPunch(EntityRendererManager renderManagerIn)
@@ -28,12 +27,12 @@ public class RenderTheWorldPunch extends EntityRenderer<EntityStandPunch.theWorl
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.theWorld entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.TheWorld entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.theWorld entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.TheWorld entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +52,7 @@ public class RenderTheWorldPunch extends EntityRenderer<EntityStandPunch.theWorl
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.theWorld entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.TheWorld entity)
 	{
 		return RenderTheWorldPunch.texture;
 	}

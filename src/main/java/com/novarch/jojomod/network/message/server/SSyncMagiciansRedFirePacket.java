@@ -1,7 +1,6 @@
 package com.novarch.jojomod.network.message.server;
 
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -40,8 +39,8 @@ public class SSyncMagiciansRedFirePacket
                 assert Minecraft.getInstance().world != null;
                 Entity entity = Minecraft.getInstance().world.getEntityByID(message.standID);
                 if(entity != null)
-                    if(entity instanceof EntityStandPunch.magiciansRed)
-                        ((EntityStandPunch.magiciansRed)entity).putExplosive(message.isExplosive);
+                    if(entity instanceof EntityStandPunch.MagiciansRed)
+                        ((EntityStandPunch.MagiciansRed)entity).putExplosive(message.isExplosive);
             });
         }
         ctx.get().setPacketHandled(true);

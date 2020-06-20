@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelCMoonPunch<T extends EntityStandPunch.cMoon> extends EntityModel<T> {
+public class ModelCMoonPunch<T extends EntityStandPunch.CMoon> extends EntityModel<T> {
 	private final ModelRenderer Punch;
 
 	public ModelCMoonPunch() {

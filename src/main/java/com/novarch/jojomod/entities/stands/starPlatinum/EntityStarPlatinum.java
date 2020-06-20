@@ -238,7 +238,7 @@ public class EntityStarPlatinum extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						EntityStandPunch.starPlatinum starPlatinum = new EntityStandPunch.starPlatinum(world, this, player);
+						EntityStandPunch.StarPlatinum starPlatinum = new EntityStandPunch.StarPlatinum(world, this, player);
 						starPlatinum.shoot(player, player.rotationPitch, player.rotationYaw, 2.9f, 0.12f);
 						world.addEntity(starPlatinum);
 					}
@@ -252,11 +252,11 @@ public class EntityStarPlatinum extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.starPlatinum starPlatinum1 = new EntityStandPunch.starPlatinum(world, this, player);
+						EntityStandPunch.StarPlatinum starPlatinum1 = new EntityStandPunch.StarPlatinum(world, this, player);
 						starPlatinum1.setRandomPositions();
 						starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
 						world.addEntity(starPlatinum1);
-						EntityStandPunch.starPlatinum starPlatinum2 = new EntityStandPunch.starPlatinum(world, this, player);
+						EntityStandPunch.StarPlatinum starPlatinum2 = new EntityStandPunch.StarPlatinum(world, this, player);
 						starPlatinum2.setRandomPositions();
 						starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
 						world.addEntity(starPlatinum2);

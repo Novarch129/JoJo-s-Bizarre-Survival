@@ -137,7 +137,7 @@ public class EntityKillerQueen extends EntityStandBase {
 						oratick++;
 						if (oratick == 1) {
 							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-							EntityStandPunch.killerQueen killerQueen = new EntityStandPunch.killerQueen(world, this, player);
+							EntityStandPunch.KillerQueen killerQueen = new EntityStandPunch.KillerQueen(world, this, player);
 							killerQueen.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen);
 						}
@@ -151,11 +151,11 @@ public class EntityKillerQueen extends EntityStandBase {
 					if (oratickr >= 10)
 						if (!world.isRemote) {
 							player.setSprinting(false);
-							EntityStandPunch.killerQueen killerQueen1 = new EntityStandPunch.killerQueen(world, this, player);
+							EntityStandPunch.KillerQueen killerQueen1 = new EntityStandPunch.KillerQueen(world, this, player);
 							killerQueen1.setRandomPositions();
 							killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen1);
-							EntityStandPunch.killerQueen killerQueen2 = new EntityStandPunch.killerQueen(world, this, player);
+							EntityStandPunch.KillerQueen killerQueen2 = new EntityStandPunch.KillerQueen(world, this, player);
 							killerQueen2.setRandomPositions();
 							killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen2);

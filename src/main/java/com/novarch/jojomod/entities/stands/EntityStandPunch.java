@@ -304,28 +304,28 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
   }
 
   public Block getInTile() {
-    return this.inTile;
+    return inTile;
   }
 
   public int getXTile() {
-    return this.xTile;
+    return xTile;
   }
 
   public int getYTile() {
-    return this.yTile;
+    return yTile;
   }
 
   public int getZTile() {
-    return this.zTile;
+    return zTile;
   }
 
   @Override
   public void move(MoverType type, Vec3d pos) {
     super.move(type, pos);
-    if (this.inGround) {
-      this.xTile = MathHelper.floor(this.getPosX());
-      this.yTile = MathHelper.floor(this.getPosY());
-      this.zTile = MathHelper.floor(this.getPosZ());
+    if (inGround) {
+      xTile = MathHelper.floor(getPosX());
+      yTile = MathHelper.floor(getPosY());
+      zTile = MathHelper.floor(getPosZ());
     }
   }
 
@@ -428,58 +428,58 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
   }
 
-  public static class kingCrimson extends EntityStandPunch {
-    public kingCrimson(World worldIn) {
+  public static class KingCrimson extends EntityStandPunch {
+    public KingCrimson(World worldIn) {
       super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn);
     }
 
-    public kingCrimson(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public KingCrimson(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public kingCrimson(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public KingCrimson(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class dirtyDeedsDoneDirtCheap extends EntityStandPunch {
-    public dirtyDeedsDoneDirtCheap(World worldIn) {
+  public static class DirtyDeedsDoneDirtCheap extends EntityStandPunch {
+    public DirtyDeedsDoneDirtCheap(World worldIn) {
       super(EntityInit.D4C_PUNCH.get(), worldIn);
     }
 
-    public dirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public DirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public dirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public DirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.D4C_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class madeInHeaven extends EntityStandPunch {
-    public madeInHeaven(World worldIn) {
+  public static class MadeInHeaven extends EntityStandPunch {
+    public MadeInHeaven(World worldIn) {
       super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn);
     }
 
-    public madeInHeaven(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public MadeInHeaven(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public madeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public MadeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class goldExperience extends EntityStandPunch {
-    public goldExperience(World worldIn) {
+  public static class GoldExperience extends EntityStandPunch {
+    public GoldExperience(World worldIn) {
       super(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), worldIn);
     }
 
-    public goldExperience(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public GoldExperience(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public goldExperience(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public GoldExperience(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.GOLD_EXPERIENCE_PUNCH.get(), worldIn, shooter, player);
     }
 
@@ -493,16 +493,16 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     }
   }
 
-  public static class goldExperienceRequiem extends EntityStandPunch {
-    public goldExperienceRequiem(World worldIn) {
+  public static class GoldExperienceRequiem extends EntityStandPunch {
+    public GoldExperienceRequiem(World worldIn) {
       super(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), worldIn);
     }
 
-    public goldExperienceRequiem(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public GoldExperienceRequiem(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public goldExperienceRequiem(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public GoldExperienceRequiem(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.GOLD_EXPERIENCE_REQUIEM_PUNCH.get(), worldIn, shooter, player);
     }
 
@@ -516,21 +516,21 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     }
   }
 
-  public static class aerosmith extends EntityStandPunch {
-    public aerosmith(World worldIn) {
+  public static class Aerosmith extends EntityStandPunch {
+    public Aerosmith(World worldIn) {
       super(EntityInit.AEROSMITH_BULLET.get(), worldIn);
     }
 
-    public aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public Aerosmith(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.AEROSMITH_BULLET.get(), worldIn, shooter, player);
     }
 
-    public aerosmith(EntityType<aerosmith> aerosmithEntityType, World world) {
+    public Aerosmith(EntityType<Aerosmith> aerosmithEntityType, World world) {
       super(aerosmithEntityType, world);
     }
   }
 
-  public static class weatherReport extends EntityStandPunch {
+  public static class WeatherReport extends EntityStandPunch {
     private boolean lightning;
 
     public boolean isLightning() {
@@ -541,15 +541,15 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
       this.lightning = lightning;
     }
 
-    public weatherReport(World worldIn) {
+    public WeatherReport(World worldIn) {
       super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn);
     }
 
-    public weatherReport(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public WeatherReport(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn, shooter, player);
     }
 
-    public weatherReport(EntityType<weatherReport> weatherReportEntityType, World world) {
+    public WeatherReport(EntityType<WeatherReport> weatherReportEntityType, World world) {
       super(weatherReportEntityType, world);
     }
 
@@ -566,119 +566,119 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     }
   }
 
-  public static class killerQueen extends EntityStandPunch {
-    public killerQueen(World worldIn) {
+  public static class KillerQueen extends EntityStandPunch {
+    public KillerQueen(World worldIn) {
       super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn);
     }
 
-    public killerQueen(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public KillerQueen(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public killerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public KillerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class crazyDiamond extends EntityStandPunch {
-    public crazyDiamond(World worldIn) {
+  public static class CrazyDiamond extends EntityStandPunch {
+    public CrazyDiamond(World worldIn) {
       super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn);
     }
 
-    public crazyDiamond(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public CrazyDiamond(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public crazyDiamond(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public CrazyDiamond(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class purpleHaze extends EntityStandPunch {
-    public purpleHaze(World worldIn) {
+  public static class PurpleHaze extends EntityStandPunch {
+    public PurpleHaze(World worldIn) {
       super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn);
     }
 
-    public purpleHaze(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public PurpleHaze(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public purpleHaze(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public PurpleHaze(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class whitesnake extends EntityStandPunch {
-    public whitesnake(World worldIn) {
+  public static class Whitesnake extends EntityStandPunch {
+    public Whitesnake(World worldIn) {
       super(EntityInit.WHITESNAKE_PUNCH.get(), worldIn);
     }
 
-    public whitesnake(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public Whitesnake(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public whitesnake(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public Whitesnake(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.WHITESNAKE_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class cMoon extends EntityStandPunch {
-    public cMoon(World worldIn) {
+  public static class CMoon extends EntityStandPunch {
+    public CMoon(World worldIn) {
       super(EntityInit.CMOON_PUNCH.get(), worldIn);
     }
 
-    public cMoon(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public CMoon(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public cMoon(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public CMoon(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.CMOON_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class theWorld extends EntityStandPunch {
-    public theWorld(World worldIn) {
+  public static class TheWorld extends EntityStandPunch {
+    public TheWorld(World worldIn) {
       super(EntityInit.THE_WORLD_PUNCH.get(), worldIn);
     }
 
-    public theWorld(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public TheWorld(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public theWorld(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public TheWorld(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.THE_WORLD_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class starPlatinum extends EntityStandPunch {
-    public starPlatinum(World worldIn) {
+  public static class StarPlatinum extends EntityStandPunch {
+    public StarPlatinum(World worldIn) {
       super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn);
     }
 
-    public starPlatinum(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public StarPlatinum(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public starPlatinum(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public StarPlatinum(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn, shooter, player);
     }
   }
 
-  public static class silverChariot extends EntityStandPunch {
-    public silverChariot(World worldIn) {
+  public static class SilverChariot extends EntityStandPunch {
+    public SilverChariot(World worldIn) {
       super(EntityInit.SILVER_CHARIOT_SWORD.get(), worldIn);
     }
 
-    public silverChariot(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public SilverChariot(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public silverChariot(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public SilverChariot(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.SILVER_CHARIOT_SWORD.get(), worldIn, shooter, player);
     }
   }
 
-  public static class magiciansRed extends EntityStandPunch {
+  public static class MagiciansRed extends EntityStandPunch {
     private boolean explosive;
 
     public void setExplosive(boolean explosive) {
@@ -695,15 +695,15 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
       return explosive;
     }
 
-    public magiciansRed(World worldIn) {
+    public MagiciansRed(World worldIn) {
       super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn);
     }
 
-    public magiciansRed(EntityType<? extends EntityStandPunch> type, World worldIn) {
+    public MagiciansRed(EntityType<? extends EntityStandPunch> type, World worldIn) {
       super(type, worldIn);
     }
 
-    public magiciansRed(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+    public MagiciansRed(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn, shooter, player);
     }
 
@@ -717,6 +717,20 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     public void readSpawnData(PacketBuffer additionalData) {
       super.readSpawnData(additionalData);
       setExplosive(additionalData.readBoolean());
+    }
+  }
+
+  public static class TheHand extends EntityStandPunch {
+    public TheHand(World worldIn) {
+      super(EntityInit.THE_HAND_PUNCH.get(), worldIn);
+    }
+
+    public TheHand(EntityType<? extends EntityStandPunch> type, World worldIn) {
+      super(type, worldIn);
+    }
+
+    public TheHand(World worldIn, EntityStandBase shooter, PlayerEntity player) {
+      super(EntityInit.THE_HAND_PUNCH.get(), worldIn, shooter, player);
     }
   }
 }

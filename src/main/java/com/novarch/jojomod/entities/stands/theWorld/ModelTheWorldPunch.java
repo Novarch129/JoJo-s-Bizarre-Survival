@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelTheWorldPunch<T extends EntityStandPunch.theWorld> extends EntityModel<T> {
+public class ModelTheWorldPunch<T extends EntityStandPunch.TheWorld> extends EntityModel<T> {
 	public final ModelRenderer Punch;
 	private final ModelRenderer ElbowPad2;
 	private final ModelRenderer Heart7;

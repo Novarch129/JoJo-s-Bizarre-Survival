@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class RenderMadeInHeavenPunch extends EntityRenderer<EntityStandPunch.madeInHeaven>
+public class RenderMadeInHeavenPunch extends EntityRenderer<EntityStandPunch.MadeInHeaven>
 {
-	protected ModelMadeInHeavenPunch<EntityStandPunch.madeInHeaven> punch;
+	protected ModelMadeInHeavenPunch<EntityStandPunch.MadeInHeaven> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/made_in_heaven_punch.png");
 
 	public RenderMadeInHeavenPunch(EntityRendererManager renderManagerIn) 
@@ -27,12 +27,12 @@ public class RenderMadeInHeavenPunch extends EntityRenderer<EntityStandPunch.mad
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.madeInHeaven entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.MadeInHeaven entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.madeInHeaven entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.MadeInHeaven entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -51,7 +51,7 @@ public class RenderMadeInHeavenPunch extends EntityRenderer<EntityStandPunch.mad
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.madeInHeaven entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.MadeInHeaven entity)
 	{
 		return RenderMadeInHeavenPunch.texture;
 	}

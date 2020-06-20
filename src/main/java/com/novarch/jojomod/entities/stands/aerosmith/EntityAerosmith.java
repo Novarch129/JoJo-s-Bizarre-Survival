@@ -87,7 +87,7 @@ public class EntityAerosmith extends EntityStandBase {
                 if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability)) {
                     oratick++;
                     if (oratick == 1) {
-                        EntityStandPunch.aerosmith aerosmithBullet = new EntityStandPunch.aerosmith(world, this, player);
+                        EntityStandPunch.Aerosmith aerosmithBullet = new EntityStandPunch.Aerosmith(world, this, player);
                         aerosmithBullet.shoot(player, rotationPitch, rotationYaw, 4.0f, 0.4f);
                         world.addEntity(aerosmithBullet);
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
@@ -115,11 +115,11 @@ public class EntityAerosmith extends EntityStandBase {
                 if (oratickr >= 10)
                     if (!world.isRemote) {
                         player.setSprinting(false);
-                        EntityStandPunch.aerosmith aerosmithBullet1 = new EntityStandPunch.aerosmith(world, this, player);
+                        EntityStandPunch.Aerosmith aerosmithBullet1 = new EntityStandPunch.Aerosmith(world, this, player);
                         aerosmithBullet1.setRandomPositions();
                         aerosmithBullet1.shoot(player, rotationPitch, rotationYaw, 4.0F, 0.3F);
                         world.addEntity(aerosmithBullet1);
-                        EntityStandPunch.aerosmith aerosmithBullet2 = new EntityStandPunch.aerosmith(world, this, player);
+                        EntityStandPunch.Aerosmith aerosmithBullet2 = new EntityStandPunch.Aerosmith(world, this, player);
                         aerosmithBullet2.setRandomPositions();
                         aerosmithBullet2.shoot(player, rotationPitch, rotationYaw, 4.0F, 0.3F);
                         world.addEntity(aerosmithBullet2);

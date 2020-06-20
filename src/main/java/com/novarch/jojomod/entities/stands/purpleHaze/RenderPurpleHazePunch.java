@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderPurpleHazePunch extends EntityRenderer<EntityStandPunch.purpleHaze>
+public class RenderPurpleHazePunch extends EntityRenderer<EntityStandPunch.PurpleHaze>
 {
-	protected ModelPurpleHazePunch<EntityStandPunch.purpleHaze> punch;
+	protected ModelPurpleHazePunch<EntityStandPunch.PurpleHaze> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze_punch.png");
 
 	public RenderPurpleHazePunch(EntityRendererManager renderManagerIn)
@@ -29,12 +29,12 @@ public class RenderPurpleHazePunch extends EntityRenderer<EntityStandPunch.purpl
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.purpleHaze entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.PurpleHaze entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.purpleHaze entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.PurpleHaze entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderPurpleHazePunch extends EntityRenderer<EntityStandPunch.purpl
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.purpleHaze entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.PurpleHaze entity)
 	{
 		return RenderPurpleHazePunch.texture;
 	}

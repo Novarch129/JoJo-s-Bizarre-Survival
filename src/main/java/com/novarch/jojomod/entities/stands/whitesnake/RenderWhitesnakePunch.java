@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class RenderWhitesnakePunch extends EntityRenderer<EntityStandPunch.whitesnake>
+public class RenderWhitesnakePunch extends EntityRenderer<EntityStandPunch.Whitesnake>
 {
-	protected ModelWhitesnakePunch<EntityStandPunch.whitesnake> punch;
+	protected ModelWhitesnakePunch<EntityStandPunch.Whitesnake> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
 
 	public RenderWhitesnakePunch(EntityRendererManager renderManagerIn)
@@ -27,12 +27,12 @@ public class RenderWhitesnakePunch extends EntityRenderer<EntityStandPunch.white
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.whitesnake entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.Whitesnake entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.whitesnake entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.Whitesnake entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -51,7 +51,7 @@ public class RenderWhitesnakePunch extends EntityRenderer<EntityStandPunch.white
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.whitesnake entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.Whitesnake entity)
 	{
 		return RenderWhitesnakePunch.texture;
 	}

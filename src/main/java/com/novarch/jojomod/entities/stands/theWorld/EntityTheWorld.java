@@ -238,7 +238,7 @@ public class EntityTheWorld extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						EntityStandPunch.theWorld theWorld = new EntityStandPunch.theWorld(world, this, player);
+						EntityStandPunch.TheWorld theWorld = new EntityStandPunch.TheWorld(world, this, player);
 						theWorld.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
 						world.addEntity(theWorld);
 					}
@@ -252,11 +252,11 @@ public class EntityTheWorld extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.theWorld theWorld1 = new EntityStandPunch.theWorld(world, this, player);
+						EntityStandPunch.TheWorld theWorld1 = new EntityStandPunch.TheWorld(world, this, player);
 						theWorld1.setRandomPositions();
 						theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
 						world.addEntity(theWorld1);
-						EntityStandPunch.theWorld theWorld2 = new EntityStandPunch.theWorld(world, this, player);
+						EntityStandPunch.TheWorld theWorld2 = new EntityStandPunch.TheWorld(world, this, player);
 						theWorld2.setRandomPositions();
 						theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
 						world.addEntity(theWorld2);

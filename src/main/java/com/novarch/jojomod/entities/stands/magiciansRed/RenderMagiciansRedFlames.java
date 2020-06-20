@@ -18,9 +18,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderMagiciansRedFlames extends EntityRenderer<EntityStandPunch.magiciansRed>
+public class RenderMagiciansRedFlames extends EntityRenderer<EntityStandPunch.MagiciansRed>
 {
-	protected ModelMagiciansRedFlames<EntityStandPunch.magiciansRed> punch;
+	protected ModelMagiciansRedFlames<EntityStandPunch.MagiciansRed> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/magicians_red_flames.png");
 
 	public RenderMagiciansRedFlames(EntityRendererManager renderManagerIn)
@@ -30,12 +30,12 @@ public class RenderMagiciansRedFlames extends EntityRenderer<EntityStandPunch.ma
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.magiciansRed entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.MagiciansRed entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.magiciansRed entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.MagiciansRed entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		if(entityIn.isExplosive()) {
 			LogManager.getLogger().debug("model good");
@@ -64,7 +64,7 @@ public class RenderMagiciansRedFlames extends EntityRenderer<EntityStandPunch.ma
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.magiciansRed entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.MagiciansRed entity)
 	{
 		return RenderMagiciansRedFlames.texture;
 	}

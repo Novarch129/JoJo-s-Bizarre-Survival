@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.starPlatinum>
+public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.StarPlatinum>
 {
-	protected ModelStarPlatinumPunch<EntityStandPunch.starPlatinum> punch;
+	protected ModelStarPlatinumPunch<EntityStandPunch.StarPlatinum> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/star_platinum_punch.png");
 
 	public RenderStarPlatinumPunch(EntityRendererManager renderManagerIn)
@@ -27,12 +27,12 @@ public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.sta
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.starPlatinum entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.StarPlatinum entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.starPlatinum entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.StarPlatinum entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -52,7 +52,7 @@ public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.sta
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.starPlatinum entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.StarPlatinum entity)
 	{
 		return RenderStarPlatinumPunch.texture;
 	}

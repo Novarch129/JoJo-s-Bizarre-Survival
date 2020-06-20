@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelDirtyDeedsDoneDirtCheapPunch <T extends EntityStandPunch.dirtyDeedsDoneDirtCheap> extends EntityModel<T>
+public class ModelDirtyDeedsDoneDirtCheapPunch <T extends EntityStandPunch.DirtyDeedsDoneDirtCheap> extends EntityModel<T>
 {
 	 private final ModelRenderer Punch;
 

@@ -18,6 +18,7 @@ import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
+import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
@@ -45,8 +46,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson").toString()));
 	
-	public static final RegistryObject<EntityType<EntityStandPunch.kingCrimson>> KING_CRIMSON_PUNCH = ENTITY_TYPES
-			.register("king_crimson_punch", () -> EntityType.Builder.<EntityStandPunch.kingCrimson>create(EntityStandPunch.kingCrimson::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.KingCrimson>> KING_CRIMSON_PUNCH = ENTITY_TYPES
+			.register("king_crimson_punch", () -> EntityType.Builder.<EntityStandPunch.KingCrimson>create(EntityStandPunch.KingCrimson::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson_punch").toString()));
 
@@ -56,8 +57,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "d4c").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.dirtyDeedsDoneDirtCheap>> D4C_PUNCH = ENTITY_TYPES
-			.register("d4c_punch", () -> EntityType.Builder.<EntityStandPunch.dirtyDeedsDoneDirtCheap>create(EntityStandPunch.dirtyDeedsDoneDirtCheap::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.DirtyDeedsDoneDirtCheap>> D4C_PUNCH = ENTITY_TYPES
+			.register("d4c_punch", () -> EntityType.Builder.<EntityStandPunch.DirtyDeedsDoneDirtCheap>create(EntityStandPunch.DirtyDeedsDoneDirtCheap::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "d4c_punch").toString()));
 
@@ -67,8 +68,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.goldExperience>> GOLD_EXPERIENCE_PUNCH = ENTITY_TYPES
-			.register("gold_experience_punch", () -> EntityType.Builder.<EntityStandPunch.goldExperience>create(EntityStandPunch.goldExperience::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.GoldExperience>> GOLD_EXPERIENCE_PUNCH = ENTITY_TYPES
+			.register("gold_experience_punch", () -> EntityType.Builder.<EntityStandPunch.GoldExperience>create(EntityStandPunch.GoldExperience::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience_punch").toString()));
 
@@ -78,8 +79,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "made_in_heaven").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.madeInHeaven>> MADE_IN_HEAVEN_PUNCH = ENTITY_TYPES
-			.register("made_in_heaven_punch", () -> EntityType.Builder.<EntityStandPunch.madeInHeaven>create(EntityStandPunch.madeInHeaven::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.MadeInHeaven>> MADE_IN_HEAVEN_PUNCH = ENTITY_TYPES
+			.register("made_in_heaven_punch", () -> EntityType.Builder.<EntityStandPunch.MadeInHeaven>create(EntityStandPunch.MadeInHeaven::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "made_in_heaven_punch").toString()));
 
@@ -89,8 +90,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience_requiem").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.goldExperienceRequiem>> GOLD_EXPERIENCE_REQUIEM_PUNCH = ENTITY_TYPES
-			.register("gold_experience_requiem_punch", () -> EntityType.Builder.<EntityStandPunch.goldExperienceRequiem>create(EntityStandPunch.goldExperienceRequiem::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.GoldExperienceRequiem>> GOLD_EXPERIENCE_REQUIEM_PUNCH = ENTITY_TYPES
+			.register("gold_experience_requiem_punch", () -> EntityType.Builder.<EntityStandPunch.GoldExperienceRequiem>create(EntityStandPunch.GoldExperienceRequiem::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience_requiem_punch").toString()));
 
@@ -100,8 +101,8 @@ public class EntityInit
 							.size(0.8f, 0.8f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.aerosmith>> AEROSMITH_BULLET = ENTITY_TYPES
-			.register("aerosmith_bullet", () -> EntityType.Builder.<EntityStandPunch.aerosmith>create(EntityStandPunch.aerosmith::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.Aerosmith>> AEROSMITH_BULLET = ENTITY_TYPES
+			.register("aerosmith_bullet", () -> EntityType.Builder.<EntityStandPunch.Aerosmith>create(EntityStandPunch.Aerosmith::new, EntityClassification.MISC)
 					.size(0.1f, 0.1f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith_bullet").toString()));
 
@@ -117,8 +118,8 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.weatherReport>> WEATHER_REPORT_PUNCH = ENTITY_TYPES
-			.register("weather_report_punch", () -> EntityType.Builder.<EntityStandPunch.weatherReport>create(EntityStandPunch.weatherReport::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<EntityStandPunch.WeatherReport>> WEATHER_REPORT_PUNCH = ENTITY_TYPES
+			.register("weather_report_punch", () -> EntityType.Builder.<EntityStandPunch.WeatherReport>create(EntityStandPunch.WeatherReport::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report_punch").toString()));
 
@@ -128,9 +129,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.killerQueen>> KILLER_QUEEN_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.KillerQueen>> KILLER_QUEEN_PUNCH = ENTITY_TYPES
 			.register("killer_queen_punch",
-					() -> EntityType.Builder.<EntityStandPunch.killerQueen>create(EntityStandPunch.killerQueen::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.KillerQueen>create(EntityStandPunch.KillerQueen::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen_punch").toString()));
 
@@ -146,9 +147,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.crazyDiamond>> CRAZY_DIAMOND_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.CrazyDiamond>> CRAZY_DIAMOND_PUNCH = ENTITY_TYPES
 			.register("crazy_diamond_punch",
-					() -> EntityType.Builder.<EntityStandPunch.crazyDiamond>create(EntityStandPunch.crazyDiamond::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.CrazyDiamond>create(EntityStandPunch.CrazyDiamond::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond_punch").toString()));
 
@@ -158,9 +159,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.purpleHaze>> PURPLE_HAZE_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.PurpleHaze>> PURPLE_HAZE_PUNCH = ENTITY_TYPES
 			.register("purple_haze_punch",
-					() -> EntityType.Builder.<EntityStandPunch.purpleHaze>create(EntityStandPunch.purpleHaze::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.PurpleHaze>create(EntityStandPunch.PurpleHaze::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_punch").toString()));
 
@@ -175,9 +176,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.whitesnake>> WHITESNAKE_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.Whitesnake>> WHITESNAKE_PUNCH = ENTITY_TYPES
 			.register("whitesnake_punch",
-					() -> EntityType.Builder.<EntityStandPunch.whitesnake>create(EntityStandPunch.whitesnake::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.Whitesnake>create(EntityStandPunch.Whitesnake::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake_punch").toString()));
 
@@ -187,9 +188,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.cMoon>> CMOON_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.CMoon>> CMOON_PUNCH = ENTITY_TYPES
 			.register("cmoon_punch",
-					() -> EntityType.Builder.<EntityStandPunch.cMoon>create(EntityStandPunch.cMoon::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.CMoon>create(EntityStandPunch.CMoon::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon_punch").toString()));
 
@@ -199,9 +200,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.theWorld>> THE_WORLD_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.TheWorld>> THE_WORLD_PUNCH = ENTITY_TYPES
 			.register("the_world_punch",
-					() -> EntityType.Builder.<EntityStandPunch.theWorld>create(EntityStandPunch.theWorld::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.TheWorld>create(EntityStandPunch.TheWorld::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world_punch").toString()));
 
@@ -211,9 +212,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.starPlatinum>> STAR_PLATINUM_PUNCH = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.StarPlatinum>> STAR_PLATINUM_PUNCH = ENTITY_TYPES
 			.register("star_platinum_punch",
-					() -> EntityType.Builder.<EntityStandPunch.starPlatinum>create(EntityStandPunch.starPlatinum::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.StarPlatinum>create(EntityStandPunch.StarPlatinum::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_punch").toString()));
 
@@ -223,9 +224,9 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.silverChariot>> SILVER_CHARIOT_SWORD = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.SilverChariot>> SILVER_CHARIOT_SWORD = ENTITY_TYPES
 			.register("silver_chariot_sword",
-					() -> EntityType.Builder.<EntityStandPunch.silverChariot>create(EntityStandPunch.silverChariot::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.SilverChariot>create(EntityStandPunch.SilverChariot::new, EntityClassification.MISC)
 							.size(0.3f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_sword").toString()));
 
@@ -235,9 +236,21 @@ public class EntityInit
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "magicians_red").toString()));
 
-	public static final RegistryObject<EntityType<EntityStandPunch.magiciansRed>> MAGICIANS_RED_FLAMES = ENTITY_TYPES
+	public static final RegistryObject<EntityType<EntityStandPunch.MagiciansRed>> MAGICIANS_RED_FLAMES = ENTITY_TYPES
 			.register("magicians_red_flames",
-					() -> EntityType.Builder.<EntityStandPunch.magiciansRed>create(EntityStandPunch.magiciansRed::new, EntityClassification.MISC)
+					() -> EntityType.Builder.<EntityStandPunch.MagiciansRed>create(EntityStandPunch.MagiciansRed::new, EntityClassification.MISC)
 							.size(0.2f, 0.2f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "magicians_red_flames").toString()));
+
+	public static final RegistryObject<EntityType<EntityTheHand>> THE_HAND = ENTITY_TYPES
+			.register("the_hand",
+					() -> EntityType.Builder.<EntityTheHand>create(EntityTheHand::new, EntityClassification.CREATURE)
+							.size(1.2f, 2.7f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand").toString()));
+
+	public static final RegistryObject<EntityType<EntityStandPunch.TheHand>> THE_HAND_PUNCH = ENTITY_TYPES
+			.register("the_hand_punch",
+					() -> EntityType.Builder.<EntityStandPunch.TheHand>create(EntityStandPunch.TheHand::new, EntityClassification.MISC)
+							.size(0.2f, 0.2f)
+							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand_punch").toString()));
 }

@@ -36,7 +36,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.MinecraftForge;
-import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
 
@@ -113,6 +112,9 @@ public abstract class StandPunchEffects {
 			case Util.StandID.magiciansRed: {
 				magiciansRed(result, entityIn, punch, isEntity);
 				break;
+			}
+			case Util.StandID.theHand: {
+				theHand(result, entityIn, punch, isEntity);
 			}
 			default: {
 				basicDefault(result, entityIn, punch, isEntity);
@@ -1064,7 +1066,7 @@ public abstract class StandPunchEffects {
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
-				if (!((EntityStandPunch.weatherReport) punch).isLightning()) {
+				if (!((EntityStandPunch.WeatherReport) punch).isLightning()) {
 					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItem(punch.standMaster.getActiveHand()));
 				} else {
@@ -1373,7 +1375,7 @@ public abstract class StandPunchEffects {
 			BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
-			if(!((EntityStandPunch.magiciansRed)punch).isExplosive()) {
+			if(!((EntityStandPunch.MagiciansRed)punch).isExplosive()) {
 				if (hardness != -1.0f && hardness < 3.0f) {
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 					punch.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
@@ -1382,5 +1384,16 @@ public abstract class StandPunchEffects {
 				punch.world.createExplosion(punch, DamageSource.IN_FIRE, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 3.0f, true, Explosion.Mode.DESTROY);
 		}
 		punch.remove();
+	}
+
+	public static void theHand(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch sword, boolean isEntity) {
+		if (isEntity) {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(sword, result, livingEntity))) return;
+			livingEntity.remove();
+		} else {
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(sword, result, livingEntity))) return;
+			sword.world.setBlockState(new BlockPos(sword.getXTile(), sword.getYTile(), sword.getZTile()), Blocks.AIR.getDefaultState());
+		}
+		sword.remove();
 	}
 }

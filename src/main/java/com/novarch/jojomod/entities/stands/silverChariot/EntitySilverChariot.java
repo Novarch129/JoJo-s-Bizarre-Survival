@@ -151,7 +151,7 @@ public class EntitySilverChariot extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						EntityStandPunch.silverChariot silverChariot = new EntityStandPunch.silverChariot(world, this, player);
+						EntityStandPunch.SilverChariot silverChariot = new EntityStandPunch.SilverChariot(world, this, player);
 						silverChariot.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 4.0f : 10.0f, hasArmor() ? 0.001f : Float.MIN_VALUE);
 						world.addEntity(silverChariot);
 					}
@@ -165,11 +165,11 @@ public class EntitySilverChariot extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.silverChariot silverChariot1 = new EntityStandPunch.silverChariot(world, this, player);
+						EntityStandPunch.SilverChariot silverChariot1 = new EntityStandPunch.SilverChariot(world, this, player);
 						silverChariot1.setRandomPositions();
 						silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot1);
-						EntityStandPunch.silverChariot silverChariot2 = new EntityStandPunch.silverChariot(world, this, player);
+						EntityStandPunch.SilverChariot silverChariot2 = new EntityStandPunch.SilverChariot(world, this, player);
 						silverChariot2.setRandomPositions();
 						silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot2);

@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderSilverChariotSword extends EntityRenderer<EntityStandPunch.silverChariot>
+public class RenderSilverChariotSword extends EntityRenderer<EntityStandPunch.SilverChariot>
 {
-	protected ModelSilverChariotSword<EntityStandPunch.silverChariot> sword;
+	protected ModelSilverChariotSword<EntityStandPunch.SilverChariot> sword;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot_sword.png");
 
 	public RenderSilverChariotSword(EntityRendererManager renderManagerIn)
@@ -29,12 +29,12 @@ public class RenderSilverChariotSword extends EntityRenderer<EntityStandPunch.si
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.silverChariot entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.SilverChariot entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.silverChariot entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.SilverChariot entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderSilverChariotSword extends EntityRenderer<EntityStandPunch.si
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.silverChariot entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.SilverChariot entity)
 	{
 		return RenderSilverChariotSword.texture;
 	}

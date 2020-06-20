@@ -1,9 +1,8 @@
-package com.novarch.jojomod.entities.stands.crazyDiamond;
+package com.novarch.jojomod.entities.stands.theHand;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
@@ -15,26 +14,25 @@ import org.lwjgl.opengl.GL11;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderCrazyDiamondPunch extends EntityRenderer<EntityStandPunch.CrazyDiamond>
+public class RenderTheHandPunch extends EntityRenderer<EntityStandPunch.TheHand>
 {
-	protected ModelCrazyDiamondPunch<EntityStandPunch.CrazyDiamond> punch;
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
+	protected ModelTheHandPunch<EntityStandPunch.TheHand> punch;
+	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
 
-	public RenderCrazyDiamondPunch(EntityRendererManager renderManagerIn)
+	public RenderTheHandPunch(EntityRendererManager renderManagerIn)
 	{
 		super(renderManagerIn);
-		this.punch = new ModelCrazyDiamondPunch<>();
+		this.punch = new ModelTheHandPunch<>();
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.CrazyDiamond entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.TheHand entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.CrazyDiamond entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.TheHand entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,9 +51,9 @@ public class RenderCrazyDiamondPunch extends EntityRenderer<EntityStandPunch.Cra
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.CrazyDiamond entity)
+	public ResourceLocation getEntityTexture(EntityStandPunch.TheHand entity)
 	{
-		return RenderCrazyDiamondPunch.texture;
+		return RenderTheHandPunch.texture;
 	}
 }
 

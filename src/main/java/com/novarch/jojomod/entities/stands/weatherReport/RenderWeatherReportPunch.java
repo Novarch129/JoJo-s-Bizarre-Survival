@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderWeatherReportPunch extends EntityRenderer<EntityStandPunch.weatherReport>
+public class RenderWeatherReportPunch extends EntityRenderer<EntityStandPunch.WeatherReport>
 {
-	protected ModelWeatherReportPunch<EntityStandPunch.weatherReport> punch;
+	protected ModelWeatherReportPunch<EntityStandPunch.WeatherReport> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report_punch.png");
 
 	public RenderWeatherReportPunch(EntityRendererManager renderManagerIn)
@@ -29,12 +29,12 @@ public class RenderWeatherReportPunch extends EntityRenderer<EntityStandPunch.we
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.weatherReport entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.WeatherReport entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.weatherReport entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.WeatherReport entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderWeatherReportPunch extends EntityRenderer<EntityStandPunch.we
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.weatherReport entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.WeatherReport entity)
 	{
 		return RenderWeatherReportPunch.texture;
 	}

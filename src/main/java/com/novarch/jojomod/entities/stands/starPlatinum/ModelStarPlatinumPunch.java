@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelStarPlatinumPunch<T extends EntityStandPunch.starPlatinum> extends EntityModel<T> {
+public class ModelStarPlatinumPunch<T extends EntityStandPunch.StarPlatinum> extends EntityModel<T> {
 	public final ModelRenderer Punch;
 	private final ModelRenderer ElbowPad2;
 

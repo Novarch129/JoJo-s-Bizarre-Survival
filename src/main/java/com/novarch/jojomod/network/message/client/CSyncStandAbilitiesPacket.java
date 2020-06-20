@@ -5,9 +5,17 @@ import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
+import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
@@ -85,6 +93,61 @@ public class CSyncStandAbilitiesPacket {
 											.filter(entity -> entity instanceof EntityWeatherReport)
 											.filter(entity -> ((EntityWeatherReport) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> ((EntityWeatherReport) entity).changeWeather());
+									break;
+								}
+								case theHand: {
+									world.getServer().getWorld(player.dimension).getEntities()
+											.filter(entity -> entity instanceof EntityTheHand)
+											.filter(entity -> ((EntityTheHand) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> {
+												Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
+												float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
+												if (entity1 != null) {
+													if (Minecraft.getInstance().world != null) {
+														Minecraft.getInstance().getProfiler().startSection("pick");
+														Minecraft.getInstance().pointedEntity = null;
+														double d0 = Minecraft.getInstance().playerController.getBlockReachDistance();
+														Minecraft.getInstance().objectMouseOver = entity1.pick(d0, partialTicks, false);
+														Vec3d vec3d = entity1.getEyePosition(partialTicks);
+														boolean flag = false;
+														double d1 = d0;
+														if (Minecraft.getInstance().playerController.extendedReach()) {
+															d1 = 6.0D;
+															d0 = d1;
+														} else {
+															if (d0 > 3.0D) {
+																flag = true;
+															}
+														}
+
+														d1 = d1 * d1;
+														if (Minecraft.getInstance().objectMouseOver != null) {
+															d1 = Minecraft.getInstance().objectMouseOver.getHitVec().squareDistanceTo(vec3d);
+														}
+
+														Vec3d vec3d1 = entity1.getLook(1.0F);
+														Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
+														AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(d0)).grow(1.0D, 1.0D, 1.0D);
+														EntityRayTraceResult entity1raytraceresult = ProjectileHelper.rayTraceEntities(entity1, vec3d, vec3d2, axisalignedbb, (p_215312_0_) -> !p_215312_0_.isSpectator() && p_215312_0_.canBeCollidedWith(), 1000);
+														if (entity1raytraceresult != null) {
+															Entity entity11 = entity1raytraceresult.getEntity();
+															Vec3d vec3d3 = entity1raytraceresult.getHitVec();
+															if(entity11 != null)
+																((EntityTheHand) entity).teleportEntity(entity11.getEntityId());
+															double d2 = vec3d.squareDistanceTo(vec3d3);
+															if (flag && d2 > 9.0D) {
+																Minecraft.getInstance().objectMouseOver = BlockRayTraceResult.createMiss(vec3d3, Direction.getFacingFromVector(vec3d1.x, vec3d1.y, vec3d1.z), new BlockPos(vec3d3));
+															} else if (d2 < d1 || Minecraft.getInstance().objectMouseOver == null) {
+																Minecraft.getInstance().objectMouseOver = entity1raytraceresult;
+																if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
+																	Minecraft.getInstance().pointedEntity = entity11;
+																}
+															}
+														}
+														Minecraft.getInstance().getProfiler().endSection();
+													}
+												}
+											});
 									break;
 								}
 								default:

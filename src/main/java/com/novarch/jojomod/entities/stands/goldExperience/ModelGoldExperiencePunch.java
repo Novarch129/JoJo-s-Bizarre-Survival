@@ -9,7 +9,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelGoldExperiencePunch<T extends EntityStandPunch.goldExperience> extends EntityModel<T> {
+public class ModelGoldExperiencePunch<T extends EntityStandPunch.GoldExperience> extends EntityModel<T> {
 	private final ModelRenderer LeftHand;
 	private final ModelRenderer Beetle2;
 	private final ModelRenderer Beetle6;

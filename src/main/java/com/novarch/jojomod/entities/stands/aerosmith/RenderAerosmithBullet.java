@@ -14,9 +14,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderAerosmithBullet extends EntityRenderer<EntityStandPunch.aerosmith>
+public class RenderAerosmithBullet extends EntityRenderer<EntityStandPunch.Aerosmith>
 {
-	protected ModelAerosmithBullet<EntityStandPunch.aerosmith> punch;
+	protected ModelAerosmithBullet<EntityStandPunch.Aerosmith> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/a_bullet.png");
 
 	public RenderAerosmithBullet(EntityRendererManager renderManagerIn)
@@ -26,14 +26,14 @@ public class RenderAerosmithBullet extends EntityRenderer<EntityStandPunch.aeros
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.aerosmith entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.Aerosmith entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.aerosmith entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.Aerosmith entity)
 	{
 		return RenderAerosmithBullet.texture;
 	}

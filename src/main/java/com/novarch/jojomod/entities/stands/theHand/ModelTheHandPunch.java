@@ -1,18 +1,20 @@
-package com.novarch.jojomod.entities.stands.kingCrimson;// Made with Blockbench 3.5.2
-// Exported for Minecraft version 1.15
-// Paste this class into your mod and generate all required imports
-
+package com.novarch.jojomod.entities.stands.theHand;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelKingCrimsonPunch<T extends EntityStandPunch.KingCrimson> extends EntityModel<T> {
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class ModelTheHandPunch<T extends EntityStandPunch.TheHand> extends EntityModel<T> {
 	private final ModelRenderer Punch;
 
-	public ModelKingCrimsonPunch() {
+	public ModelTheHandPunch() {
 		textureWidth = 64;
 		textureHeight = 32;
 
@@ -22,16 +24,15 @@ public class ModelKingCrimsonPunch<T extends EntityStandPunch.KingCrimson> exten
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay){
+	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay) {
 		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 

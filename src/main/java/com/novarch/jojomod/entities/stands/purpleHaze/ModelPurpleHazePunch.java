@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelPurpleHazePunch<T extends EntityStandPunch.purpleHaze> extends EntityModel<T> {
+public class ModelPurpleHazePunch<T extends EntityStandPunch.PurpleHaze> extends EntityModel<T> {
 	private final ModelRenderer Punch;
 	private final ModelRenderer ElbowPad;
 	private final ModelRenderer Capsules1;

@@ -92,7 +92,7 @@ public class EntityCrazyDiamond extends EntityStandBase {
 						oratick++;
 						if (oratick == 1) {
 							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-							EntityStandPunch.crazyDiamond crazyDiamond = new EntityStandPunch.crazyDiamond(world, this, player);
+							EntityStandPunch.CrazyDiamond crazyDiamond = new EntityStandPunch.CrazyDiamond(world, this, player);
 							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							world.addEntity(crazyDiamond);
 						}
@@ -106,11 +106,11 @@ public class EntityCrazyDiamond extends EntityStandBase {
 					if (oratickr >= 10)
 						if (!world.isRemote) {
 							player.setSprinting(false);
-							EntityStandPunch.crazyDiamond crazyDiamond1 = new EntityStandPunch.crazyDiamond(world, this, player);
+							EntityStandPunch.CrazyDiamond crazyDiamond1 = new EntityStandPunch.CrazyDiamond(world, this, player);
 							crazyDiamond1.setRandomPositions();
 							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							world.addEntity(crazyDiamond1);
-							EntityStandPunch.crazyDiamond crazyDiamond2 = new EntityStandPunch.crazyDiamond(world, this, player);
+							EntityStandPunch.CrazyDiamond crazyDiamond2 = new EntityStandPunch.CrazyDiamond(world, this, player);
 							crazyDiamond2.setRandomPositions();
 							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 							world.addEntity(crazyDiamond2);

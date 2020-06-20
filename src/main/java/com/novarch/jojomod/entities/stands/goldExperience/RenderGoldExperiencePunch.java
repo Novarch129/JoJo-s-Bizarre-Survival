@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderGoldExperiencePunch extends EntityRenderer<EntityStandPunch.goldExperience>
+public class RenderGoldExperiencePunch extends EntityRenderer<EntityStandPunch.GoldExperience>
 {
-	protected ModelGoldExperiencePunch<EntityStandPunch.goldExperience> punch;
+	protected ModelGoldExperiencePunch<EntityStandPunch.GoldExperience> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/gold_experience_punch.png");
 
 	public RenderGoldExperiencePunch(EntityRendererManager renderManagerIn) 
@@ -29,12 +29,12 @@ public class RenderGoldExperiencePunch extends EntityRenderer<EntityStandPunch.g
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.goldExperience entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.GoldExperience entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.goldExperience entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.GoldExperience entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderGoldExperiencePunch extends EntityRenderer<EntityStandPunch.g
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.goldExperience entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.GoldExperience entity)
 	{
 		return RenderGoldExperiencePunch.texture;
 	}

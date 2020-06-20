@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelWhitesnakePunch<T extends EntityStandPunch.whitesnake> extends EntityModel<T> {
+public class ModelWhitesnakePunch<T extends EntityStandPunch.Whitesnake> extends EntityModel<T> {
 	private final ModelRenderer Punch;
 
 	public ModelWhitesnakePunch() {

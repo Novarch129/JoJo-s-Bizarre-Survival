@@ -30,6 +30,8 @@ import com.novarch.jojomod.entities.stands.silverChariot.RenderSilverChariotSwor
 import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinum;
 import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinumPunch;
 import com.novarch.jojomod.entities.stands.theEmperor.RenderEmperorBullet;
+import com.novarch.jojomod.entities.stands.theHand.RenderTheHand;
+import com.novarch.jojomod.entities.stands.theHand.RenderTheHandPunch;
 import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorld;
 import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorldPunch;
 import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReport;
@@ -106,5 +108,8 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MAGICIANS_RED.get(), RenderMagiciansRed::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.MAGICIANS_RED_FLAMES.get(), RenderMagiciansRedFlames::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_HAND.get(), RenderTheHand::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_HAND_PUNCH.get(), RenderTheHandPunch::new);
 	}
 }

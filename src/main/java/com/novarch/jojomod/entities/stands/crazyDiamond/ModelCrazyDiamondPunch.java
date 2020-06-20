@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelCrazyDiamondPunch<T extends EntityStandPunch.crazyDiamond> extends EntityModel<T> {
+public class ModelCrazyDiamondPunch<T extends EntityStandPunch.CrazyDiamond> extends EntityModel<T> {
 	private final ModelRenderer Punch;
 
 	public ModelCrazyDiamondPunch()

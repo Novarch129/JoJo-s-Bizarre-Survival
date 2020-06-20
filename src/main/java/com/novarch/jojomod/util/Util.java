@@ -15,6 +15,7 @@ import com.novarch.jojomod.entities.stands.magiciansRed.EntityMagiciansRed;
 import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
+import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
@@ -63,6 +64,11 @@ public class Util
         }
         return new BlockPos(0, 65, 0);
     }
+
+//    @Nullable
+//    protected EntityRayTraceResult findEntityOnPath(World world, Vec3d start, Predicate<Entity> filter) {
+//        return ProjectileHelper.rayTraceEntities(world, )
+//    }
 
     public static void sendStringMessage(PlayerEntity player, String message)
     {
@@ -212,6 +218,8 @@ public class Util
                 return new EntitySilverChariot(world);
             case StandID.magiciansRed:
                 return new EntityMagiciansRed(world);
+            case StandID.theHand:
+                return new EntityTheHand(world);
         }
     }
 }

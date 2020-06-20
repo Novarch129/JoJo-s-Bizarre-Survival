@@ -9,7 +9,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class ModelAerosmithBullet<T extends EntityStandPunch.aerosmith> extends EntityModel<T> {
+public class ModelAerosmithBullet<T extends EntityStandPunch.Aerosmith> extends EntityModel<T> {
 	private final ModelRenderer Bullet;
 
 	public ModelAerosmithBullet()

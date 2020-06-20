@@ -6,13 +6,12 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
-import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class ModelMagiciansRedFlames<T extends EntityStandPunch.magiciansRed> extends EntityModel<T> {
+public class ModelMagiciansRedFlames<T extends EntityStandPunch.MagiciansRed> extends EntityModel<T> {
 	public final ModelRenderer Flames;
 	private final ModelRenderer Left;
 	private final ModelRenderer Circle2;

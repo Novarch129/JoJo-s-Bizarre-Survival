@@ -17,9 +17,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class RenderDirtyDeedsDoneDirtCheapPunch extends EntityRenderer<EntityStandPunch.dirtyDeedsDoneDirtCheap>
+public class RenderDirtyDeedsDoneDirtCheapPunch extends EntityRenderer<EntityStandPunch.DirtyDeedsDoneDirtCheap>
 {
-	protected ModelDirtyDeedsDoneDirtCheapPunch<EntityStandPunch.dirtyDeedsDoneDirtCheap> punch;
+	protected ModelDirtyDeedsDoneDirtCheapPunch<EntityStandPunch.DirtyDeedsDoneDirtCheap> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/d4c_punch.png");
 
 	public RenderDirtyDeedsDoneDirtCheapPunch(EntityRendererManager renderManagerIn) 
@@ -29,12 +29,12 @@ public class RenderDirtyDeedsDoneDirtCheapPunch extends EntityRenderer<EntitySta
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.dirtyDeedsDoneDirtCheap entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.DirtyDeedsDoneDirtCheap entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.dirtyDeedsDoneDirtCheap entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.DirtyDeedsDoneDirtCheap entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -53,7 +53,7 @@ public class RenderDirtyDeedsDoneDirtCheapPunch extends EntityRenderer<EntitySta
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.dirtyDeedsDoneDirtCheap entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.DirtyDeedsDoneDirtCheap entity)
 	{
 		return RenderDirtyDeedsDoneDirtCheapPunch.texture;
 	}

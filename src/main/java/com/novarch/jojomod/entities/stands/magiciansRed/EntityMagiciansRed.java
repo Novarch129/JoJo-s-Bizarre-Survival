@@ -85,7 +85,7 @@ public class EntityMagiciansRed extends EntityStandBase {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						EntityStandPunch.magiciansRed magiciansRed = new EntityStandPunch.magiciansRed(world, this, player);
+						EntityStandPunch.MagiciansRed magiciansRed = new EntityStandPunch.MagiciansRed(world, this, player);
 						magiciansRed.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.5f);
 						magiciansRed.setExplosive(true);
 						world.addEntity(magiciansRed);
@@ -101,11 +101,11 @@ public class EntityMagiciansRed extends EntityStandBase {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						EntityStandPunch.magiciansRed magiciansRed1 = new EntityStandPunch.magiciansRed(world, this, player);
+						EntityStandPunch.MagiciansRed magiciansRed1 = new EntityStandPunch.MagiciansRed(world, this, player);
 						magiciansRed1.setRandomPositions();
 						magiciansRed1.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.6f);
 						world.addEntity(magiciansRed1);
-						EntityStandPunch.magiciansRed magiciansRed2 = new EntityStandPunch.magiciansRed(world, this, player);
+						EntityStandPunch.MagiciansRed magiciansRed2 = new EntityStandPunch.MagiciansRed(world, this, player);
 						magiciansRed2.setRandomPositions();
 						magiciansRed2.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.6f);
 						world.addEntity(magiciansRed2);

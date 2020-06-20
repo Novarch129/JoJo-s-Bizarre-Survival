@@ -15,9 +15,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class RenderCMoonPunch extends EntityRenderer<EntityStandPunch.cMoon>
+public class RenderCMoonPunch extends EntityRenderer<EntityStandPunch.CMoon>
 {
-	protected ModelCMoonPunch<EntityStandPunch.cMoon> punch;
+	protected ModelCMoonPunch<EntityStandPunch.CMoon> punch;
 	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon_punch.png");
 
 	public RenderCMoonPunch(EntityRendererManager renderManagerIn)
@@ -27,12 +27,12 @@ public class RenderCMoonPunch extends EntityRenderer<EntityStandPunch.cMoon>
 	}
 
 	@Override
-	public void render(@Nonnull EntityStandPunch.cMoon entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void render(@Nonnull EntityStandPunch.CMoon entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		renderEntityModel(entityIn, matrixStackIn, bufferIn, packedLightIn);
 	}
 
-	public void renderEntityModel(@Nonnull EntityStandPunch.cMoon entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
+	public void renderEntityModel(@Nonnull EntityStandPunch.CMoon entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
 		this.renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
@@ -51,7 +51,7 @@ public class RenderCMoonPunch extends EntityRenderer<EntityStandPunch.cMoon>
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final EntityStandPunch.cMoon entity)
+	public ResourceLocation getEntityTexture(final EntityStandPunch.CMoon entity)
 	{
 		return RenderCMoonPunch.texture;
 	}
