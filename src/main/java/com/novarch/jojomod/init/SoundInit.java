@@ -45,4 +45,5 @@ public class SoundInit
 	public static final RegistryObject<SoundEvent> SPAWN_SILVER_CHARIOT = SOUNDS.register("spawn_silver_chariot", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_silver_chariot")));
 	public static final RegistryObject<SoundEvent> SILVER_CHARIOT_RUSH = SOUNDS.register("silver_chariot_rush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_rush")));
 	public static final RegistryObject<SoundEvent> SPAWN_MAGICIANS_RED = SOUNDS.register("spawn_magicians_red", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_magicians_red")));
+	public static final RegistryObject<SoundEvent> CROSSFIRE_HURRICANE_SPECIAL = SOUNDS.register("crossfire_hurricane_special", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crossfire_hurricane_special")));
 }

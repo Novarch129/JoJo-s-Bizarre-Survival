@@ -55,7 +55,7 @@ public class EntitySilverChariot extends EntityStandBase {
 	public void setHasArmor(boolean hasArmor) {
 		this.hasArmor = hasArmor;
 		if(!world.isRemote)
-			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncSilverChariotArmorPacket(hasArmor()));
+			JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncSilverChariotArmorPacket(getEntityId(), hasArmor()));
 	}
 
 	public void putHasArmor(boolean hasArmor) {

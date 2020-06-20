@@ -19,7 +19,7 @@ public class RenderSilverChariot extends MobRenderer<EntitySilverChariot, ModelS
 		super(renderManagerIn, new ModelSilverChariot<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final EntitySilverChariot entity)
+	public ResourceLocation getEntityTexture(EntitySilverChariot entity)
 	{
 		return RenderSilverChariot.texture;
 	}

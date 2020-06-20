@@ -189,5 +189,11 @@
     {
         "category": "neutral",
         "sounds": [{"name": "jojomod:spawn_magicians_red", "stream": false}]
+    },
+
+    "crossfire_hurricane_special":
+    {
+        "category": "neutral",
+        "sounds": [{"name": "jojomod:crossfire_hurricane_special", "stream": false}]
     }
 }

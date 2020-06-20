@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
@@ -36,6 +37,16 @@ public class RenderMagiciansRedFlames extends EntityRenderer<EntityStandPunch.ma
 
 	public void renderEntityModel(@Nonnull EntityStandPunch.magiciansRed entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
+		if(entityIn.isExplosive()) {
+			LogManager.getLogger().debug("model good");
+			punch.Flames.showModel = false;
+			punch.Flames2.showModel = true;
+		} else {
+			punch.Flames.showModel = true;
+			punch.Flames2.showModel = false;
+		}
+		entityIn.rotationYaw = entityIn.standMaster.rotationYaw;
+		entityIn.rotationPitch = entityIn.standMaster.rotationPitch;
 		renderManager.textureManager.bindTexture(texture);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());

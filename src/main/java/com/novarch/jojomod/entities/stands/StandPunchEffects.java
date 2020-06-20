@@ -1364,10 +1364,13 @@ public abstract class StandPunchEffects {
 			BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
-			if (hardness != -1.0f && hardness < 3.0f) {
-				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
-				punch.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
-			}
+			if(!((EntityStandPunch.magiciansRed)punch).isExplosive()) {
+				if (hardness != -1.0f && hardness < 3.0f) {
+					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
+					punch.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
+				}
+			} else
+				punch.world.createExplosion(punch, DamageSource.IN_FIRE, blockPos.getX(), blockPos.getY(), blockPos.getZ(), 3.0f, true, Explosion.Mode.DESTROY);
 		}
 		punch.remove();
 	}

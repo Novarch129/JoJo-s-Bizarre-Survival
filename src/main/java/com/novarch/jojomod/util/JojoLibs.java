@@ -144,6 +144,8 @@ public class JojoLibs
 
         public static final int magiciansRed = 17;
 
+        public static final int theHand = 18;
+
         public static int[] stands = {
                 kingCrimson,
                 dirtyDeedsDoneDirtCheap,
@@ -158,7 +160,8 @@ public class JojoLibs
                 theWorld,
                 starPlatinum,
                 silverChariot,
-                magiciansRed
+                magiciansRed,
+                theHand
         };
 
         public static int numberOfStands = stands.length;

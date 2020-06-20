@@ -1,9 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
-import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
@@ -18,10 +16,9 @@ import java.util.function.Supplier;
  *
  * @variable action	 Defines the action Aerosmith will perform, the following are the possible values:
  * 1 Movement
- * 2 Bomb
- * 3 Rotation
- * 4 Set to renderViewEntity
- * 5 Attack
+ * 2 Rotation
+ * 3 Set to renderViewEntity
+ * 4 Attack
  *
  * @variable direction	Defines the direction Aerosmith should go in if <code>action == Action#MOVEMENT</code>:
  * 1 Forwards
@@ -37,7 +34,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("ConstantConditions")
 public class CSyncAerosmithPacket {
-	public enum Action {MOVE, BOMB, ROTATE, RENDER, ATTACK}
+	public enum Action {MOVE, ROTATE, RENDER, ATTACK}
 	public enum Direction {FORWARDS, BACKWARDS, RIGHT, LEFT, UP, DOWN}
 	private Action action;
 	private Direction direction;
@@ -161,19 +158,6 @@ public class CSyncAerosmithPacket {
 												default:
 													break;
 											}
-											break;
-										}
-										//Bomb
-										case BOMB: { //TODO Fix bomb not firing
-											Stand.getLazyOptional(player).ifPresent(props -> {
-												if (props.getCooldown() <= 0) {
-													TNTEntity tnt = new TNTEntity(entity.world, entity.getPosX(), entity.getPosY(), entity.getPosZ(), player);
-													tnt.setVelocity(entity.getLookVec().getX(), entity.getLookVec().getY(), entity.getLookVec().getZ());
-													if(!entity.world.isRemote)
-														entity.world.addEntity(tnt);
-													props.setCooldown(200);
-												}
-											});
 											break;
 										}
 										//Rotation

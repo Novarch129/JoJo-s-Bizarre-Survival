@@ -1,39 +1,37 @@
 package com.novarch.jojomod.network.message.server;
 
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
+import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.function.Supplier;
 
-public class SSyncStandMasterPacket
+public class SSyncMagiciansRedFirePacket
 {
     private int standID;
-    private int masterID;
+    private boolean isExplosive;
 
-    public SSyncStandMasterPacket(int standID, int masterID)
-    {
+    public SSyncMagiciansRedFirePacket(int standID, boolean isExplosive) {
         this.standID = standID;
-        this.masterID = masterID;
+        this.isExplosive = isExplosive;
     }
 
     public void encode(PacketBuffer buffer)
     {
         buffer.writeInt(standID);
-        buffer.writeInt(masterID);
+        buffer.writeBoolean(isExplosive);
     }
 
-    public static SSyncStandMasterPacket decode(PacketBuffer buffer)
+    public static SSyncMagiciansRedFirePacket decode(PacketBuffer buffer)
     {
-        return new SSyncStandMasterPacket(buffer.readInt(), buffer.readInt());
+        return new SSyncMagiciansRedFirePacket(buffer.readInt(), buffer.readBoolean());
     }
 
-    public static void handle(SSyncStandMasterPacket message, Supplier<NetworkEvent.Context> ctx)
+    public static void handle(SSyncMagiciansRedFirePacket message, Supplier<NetworkEvent.Context> ctx)
     {
         if(ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT)
         {
@@ -41,11 +39,9 @@ public class SSyncStandMasterPacket
             {
                 assert Minecraft.getInstance().world != null;
                 Entity entity = Minecraft.getInstance().world.getEntityByID(message.standID);
-                Entity master = Minecraft.getInstance().world.getEntityByID(message.masterID);
                 if(entity != null)
-                    if(entity instanceof EntityStandBase)
-                        if(master != null)
-                            ((EntityStandBase) entity).setMaster((PlayerEntity) master);
+                    if(entity instanceof EntityStandPunch.magiciansRed)
+                        ((EntityStandPunch.magiciansRed)entity).putExplosive(message.isExplosive);
             });
         }
         ctx.get().setPacketHandled(true);

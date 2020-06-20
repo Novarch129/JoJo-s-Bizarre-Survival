@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
@@ -36,6 +37,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +131,8 @@ public class EventHandleStandAbilities
         });
         assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
+            if(entity instanceof EntityStandPunch.magiciansRed)
+                LogManager.getLogger().debug(((EntityStandPunch.magiciansRed) entity).isExplosive());
             if (entity instanceof EntityAerosmith)
                 if (((EntityAerosmith) entity).getMaster() != null)
                     if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {

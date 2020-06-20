@@ -7,15 +7,14 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
-import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -48,6 +47,19 @@ public class EntityAerosmith extends EntityStandBase {
         world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 3.0f, 1.0f);
     }
 
+    public void shootBomb() {
+        Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+            if (props.getCooldown() <= 0) {
+                TNTEntity tnt = new TNTEntity(world, getPosX(), getPosY(), getPosZ(), getMaster());
+                tnt.setFuse(20);
+                tnt.setVelocity(getLookVec().getX(), getLookVec().getY(), getLookVec().getZ());
+                if(!world.isRemote)
+                    world.addEntity(tnt);
+                props.setCooldown(200);
+            }
+        });
+    }
+    
     @Override
     public void tick() {
         super.tick();
@@ -62,6 +74,9 @@ public class EntityAerosmith extends EntityStandBase {
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
                     ability = props.getAbility();
                 }
+                if(ability)
+                    if(props.getCooldown() > 0)
+                        props.subtractCooldown(1);
             });
 
             setRotation(yaw, pitch);
@@ -123,8 +138,6 @@ public class EntityAerosmith extends EntityStandBase {
         super.onAddedToWorld();
         if(getMaster() != null)
             Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if(!world.isRemote)
-                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
                 if (props.getAbility())
                     JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
             });

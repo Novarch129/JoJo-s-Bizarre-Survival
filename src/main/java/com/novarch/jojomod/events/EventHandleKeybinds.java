@@ -51,8 +51,6 @@ public class EventHandleKeybinds {
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, UP));
 						if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, DOWN));
-						if (KeyHandler.keys[2].isPressed())
-							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(BOMB));
 						if(Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(ATTACK));
 					}

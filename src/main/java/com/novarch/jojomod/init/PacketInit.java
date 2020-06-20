@@ -44,11 +44,6 @@ public class PacketInit {
                 SSyncSilverChariotArmorPacket::decode,
                 SSyncSilverChariotArmorPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                SSyncStandMasterPacket.class,
-                SSyncStandMasterPacket::encode,
-                SSyncStandMasterPacket::decode,
-                SSyncStandMasterPacket::handle);
-        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
                 CSyncAerosmithPacket.class,
                 CSyncAerosmithPacket::encode,
                 CSyncAerosmithPacket::decode,
@@ -58,5 +53,10 @@ public class PacketInit {
                 CSyncStandAbilitiesPacket::encode,
                 CSyncStandAbilitiesPacket::decode,
                 CSyncStandAbilitiesPacket::handle);
+        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
+                SSyncMagiciansRedFirePacket.class,
+                SSyncMagiciansRedFirePacket::encode,
+                SSyncMagiciansRedFirePacket::decode,
+                SSyncMagiciansRedFirePacket::handle);
     }
 }

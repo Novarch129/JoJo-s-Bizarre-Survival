@@ -1,9 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
-import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,13 +12,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -29,18 +28,18 @@ import java.util.UUID;
 @SuppressWarnings({"unused", "ConstantConditions"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class EntityStandBase extends MobEntity {
-    private PlayerEntity master = null;
+public abstract class EntityStandBase extends MobEntity implements IEntityAdditionalSpawnData {
+    private PlayerEntity master;
     protected boolean standOn = true;
-    private int act = 0;
-    public boolean orarush = false;
-    protected SoundEvent spawnSound = null;
+    private int act;
+    public boolean orarush;
+    protected SoundEvent spawnSound;
     public int longTick = 2;
-    public int standID = 0;
+    public int standID;
     boolean jumpCheck;
     boolean attack;
     public UUID masterUUID;
-    public boolean ability = true;
+    public boolean ability;
 
     public EntityStandBase(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
@@ -270,9 +269,9 @@ public abstract class EntityStandBase extends MobEntity {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
-        if(!world.isRemote)
-            if(getMaster() != null)
-                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
+//        if(!world.isRemote)
+//            if(getMaster() != null)
+//                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
     @Override
@@ -321,6 +320,19 @@ public abstract class EntityStandBase extends MobEntity {
     @Override
     public boolean canBeCollidedWith() {
         return false;
+    }
+
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+        if(getMaster() != null)
+            buffer.writeInt(getMaster().getEntityId());
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+        int id = additionalData.readInt();
+        if(id != 0)
+            setMaster((PlayerEntity) world.getEntityByID(id));
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,8 +12,7 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 
-import static com.novarch.jojomod.util.JojoLibs.StandID.GER;
-import static com.novarch.jojomod.util.JojoLibs.StandID.killerQueen;
+import static com.novarch.jojomod.util.JojoLibs.StandID.*;
 
 @SuppressWarnings( "ConstantConditions")
 public class CSyncStandAbilitiesPacket {
@@ -62,6 +62,13 @@ public class CSyncStandAbilitiesPacket {
 												else
 													((EntityGoldExperienceRequiem) entity).toggleFlight();
 											});
+									break;
+								}
+								case aerosmith: {
+									world.getServer().getWorld(player.dimension).getEntities()
+											.filter(entity -> entity instanceof EntityAerosmith)
+											.filter(entity -> ((EntityAerosmith) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((EntityAerosmith) entity).shootBomb());
 									break;
 								}
 								default:

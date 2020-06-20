@@ -1,6 +1,8 @@
 package com.novarch.jojomod.entities.stands;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.init.EntityInit;
+import com.novarch.jojomod.network.message.server.SSyncMagiciansRedFirePacket;
 import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -18,7 +21,9 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -27,7 +32,7 @@ import java.util.List;
 @SuppressWarnings({"ConstantConditions", "unused", "UnusedAssignment"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class EntityStandPunch extends Entity implements IProjectile {
+public abstract class EntityStandPunch extends Entity implements IProjectile, IEntityAdditionalSpawnData {
   public int xTile;
 
   public int yTile;
@@ -357,30 +362,37 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     compound.putByte("shake", (byte) this.arrowShake);
     compound.putByte("inGround", (byte) (this.inGround ? 1 : 0));
     compound.putDouble("damage", this.damage);
+    if(standMaster != null) {
+      compound.putInt("standMaster", standMaster.getEntityId());
+      LOGGER.debug("written standmaster");
+    }
   }
 
   @Override
   public void readAdditional(CompoundNBT compound) {
-    this.xTile = compound.getInt("xTile");
-    this.yTile = compound.getInt("yTile");
-    this.zTile = compound.getInt("zTile");
-    this.ticksInGround = compound.getShort("life");
-    this.inData = compound.getByte("inData") & 0xFF;
-    this.arrowShake = compound.getByte("shake") & 0xFF;
-    this.inGround = (compound.getByte("inGround") == 1);
-    if (compound.contains("damage", 99))
-      this.damage = compound.getDouble("damage");
+    xTile = compound.getInt("xTile");
+    yTile = compound.getInt("yTile");
+    zTile = compound.getInt("zTile");
+    ticksInGround = compound.getShort("life");
+    inData = compound.getByte("inData") & 0xFF;
+    arrowShake = compound.getByte("shake") & 0xFF;
+    inGround = (compound.getByte("inGround") == 1);
+    if(compound.contains("damage", 99))
+      damage = compound.getDouble("damage");
+    if(compound.contains("standMaster"))
+      if(world.isRemote)
+        standMaster = (PlayerEntity) world.getEntityByID(compound.getInt("standMaster"));
   }
 
   @Override
   public void onCollideWithPlayer(PlayerEntity entityIn) {
-    if (!this.world.isRemote && this.inGround && this.arrowShake <= 0 && entityIn != this.standMaster)
+    if (!world.isRemote && this.inGround && arrowShake <= 0 && entityIn != standMaster)
       remove();
   }
 
   @Override
   public void applyEntityCollision(Entity entityIn) {
-    if (entityIn != this.shootingStand && entityIn != this.standMaster)
+    if (entityIn != shootingStand && entityIn != standMaster)
       super.applyEntityCollision(entityIn);
   }
 
@@ -394,6 +406,28 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     return false;
   }
 
+  @Override
+  protected void registerData() {
+
+  }
+
+  @Override
+  public IPacket<?> createSpawnPacket() {
+    return NetworkHooks.getEntitySpawningPacket(this);
+  }
+
+  @Override
+  public void writeSpawnData(PacketBuffer buffer) {
+    buffer.writeInt(shootingStand.getEntityId());
+    buffer.writeInt(standMaster.getEntityId());
+  }
+
+  @Override
+  public void readSpawnData(PacketBuffer additionalData) {
+    shootingStand = (EntityStandBase) world.getEntityByID(additionalData.readInt());
+    standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
+  }
+
   public static class kingCrimson extends EntityStandPunch {
     public kingCrimson(World worldIn) {
       super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn);
@@ -405,11 +439,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public kingCrimson(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn, shooter, player);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 
@@ -425,11 +454,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public dirtyDeedsDoneDirtCheap(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.D4C_PUNCH.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class madeInHeaven extends EntityStandPunch {
@@ -443,11 +467,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public madeInHeaven(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.MADE_IN_HEAVEN_PUNCH.get(), worldIn, shooter, player);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 
@@ -467,16 +486,10 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     @Override
     public void tick() {
       super.tick();
-      if (this.ticksExisted > 5)
-        this.remove();
-      if (this.getMotion().getX() == 0 || this.getMotion().getY() == 0 || this.getMotion().getZ() == 0) {
-        this.remove();
-      }
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
+      if (ticksExisted > 5)
+        remove();
+      if (getMotion().getX() == 0 || getMotion().getY() == 0 || getMotion().getZ() == 0)
+        remove();
     }
   }
 
@@ -496,16 +509,10 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     @Override
     public void tick() {
       super.tick();
-      if (this.ticksExisted > 5)
-        this.remove();
-      if (this.getMotion().getX() == 0 || this.getMotion().getY() == 0 || this.getMotion().getZ() == 0) {
-        this.remove();
-      }
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
+      if (ticksExisted > 5)
+        remove();
+      if (getMotion().getX() == 0 || getMotion().getY() == 0 || getMotion().getZ() == 0)
+        remove();
     }
   }
 
@@ -549,11 +556,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public killerQueen(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.KILLER_QUEEN_PUNCH.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class crazyDiamond extends EntityStandPunch {
@@ -567,11 +569,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public crazyDiamond(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.CRAZY_DIAMOND_PUNCH.get(), worldIn, shooter, player);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 
@@ -587,11 +584,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public purpleHaze(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.PURPLE_HAZE_PUNCH.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class whitesnake extends EntityStandPunch {
@@ -605,11 +597,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public whitesnake(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.WHITESNAKE_PUNCH.get(), worldIn, shooter, player);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 
@@ -625,11 +612,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public cMoon(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.CMOON_PUNCH.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class theWorld extends EntityStandPunch {
@@ -643,11 +625,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
 
     public theWorld(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.THE_WORLD_PUNCH.get(), worldIn, shooter, player);
-    }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
     }
   }
 
@@ -663,11 +640,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public starPlatinum(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.STAR_PLATINUM_PUNCH.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class silverChariot extends EntityStandPunch {
@@ -682,14 +654,25 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
     public silverChariot(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.SILVER_CHARIOT_SWORD.get(), worldIn, shooter, player);
     }
-
-    @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
-    }
   }
 
   public static class magiciansRed extends EntityStandPunch {
+    private boolean explosive;
+
+    public void setExplosive(boolean explosive) {
+      this.explosive = explosive;
+      if(!world.isRemote)
+        JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncMagiciansRedFirePacket(getEntityId(), isExplosive()));
+    }
+
+    public void putExplosive(boolean explosive) {
+      this.explosive = explosive;
+    }
+
+    public boolean isExplosive() {
+      return explosive;
+    }
+
     public magiciansRed(World worldIn) {
       super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn);
     }
@@ -702,19 +685,23 @@ public abstract class EntityStandPunch extends Entity implements IProjectile {
       super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn, shooter, player);
     }
 
+//    @Override
+//    public void tick() {
+//      super.tick();
+//      if(!world.isRemote)
+//        JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncMagiciansRedFirePacket(getEntityId(), isExplosive()));
+//    }
+
     @Override
-    public IPacket<?> createSpawnPacket() {
-      return NetworkHooks.getEntitySpawningPacket(this);
+    public void writeSpawnData(PacketBuffer buffer) {
+      super.writeSpawnData(buffer);
+      buffer.writeBoolean(isExplosive());
     }
-  }
 
-  @Override
-  protected void registerData() {
-
-  }
-
-  @Override
-  public IPacket<?> createSpawnPacket() {
-    return NetworkHooks.getEntitySpawningPacket(this);
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+      super.readSpawnData(additionalData);
+      setExplosive(additionalData.readBoolean());
+    }
   }
 }
