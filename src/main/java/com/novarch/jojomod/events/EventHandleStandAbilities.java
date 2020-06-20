@@ -121,8 +121,6 @@ public class EventHandleStandAbilities {
         });
         assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if (entity instanceof EntityStandPunch.magiciansRed)
-                LogManager.getLogger().debug(((EntityStandPunch.magiciansRed) entity).isExplosive());
             if (entity instanceof EntityAerosmith)
                 if (((EntityAerosmith) entity).getMaster() != null)
                     if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {

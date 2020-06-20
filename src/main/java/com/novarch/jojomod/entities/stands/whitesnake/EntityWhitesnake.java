@@ -42,12 +42,12 @@ public class EntityWhitesnake extends EntityStandBase {
 			PlayerEntity player = getMaster();
 			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
+			player.setNoGravity(false);
+
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
 
-			if (!player.isAlive())
-				remove();
 			if (player.isSprinting()) {
 				if (attackSwing(player))
 					oratick++;

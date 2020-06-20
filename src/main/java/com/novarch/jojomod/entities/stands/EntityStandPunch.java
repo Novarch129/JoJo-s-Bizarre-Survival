@@ -531,6 +531,16 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
   }
 
   public static class weatherReport extends EntityStandPunch {
+    private boolean lightning;
+
+    public boolean isLightning() {
+      return lightning;
+    }
+
+    public void setLightning(boolean lightning) {
+      this.lightning = lightning;
+    }
+
     public weatherReport(World worldIn) {
       super(EntityInit.WEATHER_REPORT_PUNCH.get(), worldIn);
     }
@@ -541,6 +551,18 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
 
     public weatherReport(EntityType<weatherReport> weatherReportEntityType, World world) {
       super(weatherReportEntityType, world);
+    }
+
+    @Override
+    public void writeSpawnData(PacketBuffer buffer) {
+      super.writeSpawnData(buffer);
+      buffer.writeBoolean(lightning);
+    }
+
+    @Override
+    public void readSpawnData(PacketBuffer additionalData) {
+      super.readSpawnData(additionalData);
+      lightning = additionalData.readBoolean();
     }
   }
 

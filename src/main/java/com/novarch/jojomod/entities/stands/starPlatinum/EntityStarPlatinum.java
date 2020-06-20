@@ -21,6 +21,8 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -137,6 +139,8 @@ public class EntityStarPlatinum extends EntityStandBase {
 													entity.rotationPitch = props.getRotationPitch();
 													entity.setRotationYawHead(props.getRotationYawHead());
 												}
+												if(entity instanceof PlayerEntity)
+													((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 50, 255, false, false));
 												entity.setMotion(0, 0, 0);
 
 												entity.fallDistance = props.getFallDistance();
@@ -173,6 +177,8 @@ public class EntityStarPlatinum extends EntityStandBase {
 										if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
 											entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
 									}
+									if(entity instanceof PlayerEntity)
+										((PlayerEntity)entity).removePotionEffect(Effects.SLOWNESS);
 									if (entity instanceof MobEntity)
 										((MobEntity) entity).setNoAI(false);
 									entity.velocityChanged = true;
@@ -282,6 +288,8 @@ public class EntityStarPlatinum extends EntityStandBase {
 									if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
 										entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
 								}
+								if(entity instanceof PlayerEntity)
+									((PlayerEntity)entity).removePotionEffect(Effects.SLOWNESS);
 								if (entity instanceof MobEntity)
 									((MobEntity) entity).setNoAI(false);
 								entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());

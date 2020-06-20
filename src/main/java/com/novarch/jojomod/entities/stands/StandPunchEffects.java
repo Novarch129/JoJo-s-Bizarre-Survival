@@ -18,6 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -35,6 +36,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
 
@@ -1056,14 +1058,21 @@ public abstract class StandPunchEffects {
 			}
 			livingEntity.setMotion(livingEntity.getMotion().getX(), livingEntity.getMotion().getY(), 0);
 		} else {
-			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
+			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
 			Block block = punch.getInTile();
 			BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
-				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
-				block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItem(punch.standMaster.getActiveHand()));
+				if (!((EntityStandPunch.weatherReport) punch).isLightning()) {
+					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItem(punch.standMaster.getActiveHand()));
+				} else {
+					LightningBoltEntity lightning = new LightningBoltEntity(punch.world, blockPos.getX(), blockPos.getY(), blockPos.getZ(), false);
+					punch.world.addEntity(lightning);
+					if(!punch.world.isRemote)
+						punch.world.getServer().getWorld(punch.dimension).addLightningBolt(lightning);
+				}
 			}
 			punch.remove();
 		}

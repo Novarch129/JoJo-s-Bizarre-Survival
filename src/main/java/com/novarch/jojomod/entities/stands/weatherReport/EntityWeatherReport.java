@@ -109,6 +109,7 @@ public class EntityWeatherReport extends EntityStandBase {
                     oratick++;
                     if (oratick == 1) {
                         EntityStandPunch.weatherReport weatherReportPunch = new EntityStandPunch.weatherReport(world, this, player);
+                        weatherReportPunch.setLightning(world.rand.nextInt(10) == 1);
                         weatherReportPunch.shoot(player, rotationPitch, rotationYaw, 2.5f, 0.4f);
                         world.addEntity(weatherReportPunch);
                     }
