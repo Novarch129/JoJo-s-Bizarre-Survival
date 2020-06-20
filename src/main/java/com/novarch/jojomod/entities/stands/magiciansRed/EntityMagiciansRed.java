@@ -1,6 +1,8 @@
 package com.novarch.jojomod.entities.stands.magiciansRed;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
@@ -9,14 +11,11 @@ import com.novarch.jojomod.util.JojoLibs;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.BasicParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -62,7 +61,11 @@ public class EntityMagiciansRed extends EntityStandBase {
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
-			world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX(), getPosY(), getPosZ(), getMotion().getX(), 0.3, getMotion().getZ());
+			if(world.rand.nextInt(3) == 1) {
+				world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX() + 0.2, getPosY(), getPosZ(), 0, 0.05, -0.001);
+				world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX() - 0.2, getPosY(), getPosZ() + 0.1, 0, 0.075, 0);
+				world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX(), getPosY() + 0.1, getPosZ() - 0.02, 0, 0.07, 0.005);
+			}
 
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
@@ -108,7 +111,6 @@ public class EntityMagiciansRed extends EntityStandBase {
 						magiciansRed2.setRandomPositions();
 						magiciansRed2.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.6f);
 						world.addEntity(magiciansRed2);
-						world.addParticle(new BasicParticleType(true), magiciansRed1.getPosX(), magiciansRed1.getPosY(), magiciansRed1.getPosZ(), 3d, 0d, 3d);
 					}
 				if (oratickr >= 80) {
 					orarush = false;
@@ -120,4 +122,9 @@ public class EntityMagiciansRed extends EntityStandBase {
 
 	@Override
 	public void setFire(int seconds) { }
+
+	@Override
+	public boolean canRenderOnFire() {
+		return JojoBizarreSurvivalConfig.CLIENT.renderMagiciansRedFire.get();
+	}
 }

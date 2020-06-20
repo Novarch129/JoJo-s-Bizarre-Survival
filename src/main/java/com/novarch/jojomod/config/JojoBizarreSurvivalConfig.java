@@ -7,8 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class JojoBizarreSurvivalConfig
 {
-    public static class Common
-    {
+    public static class Common {
         public final ForgeConfigSpec.BooleanValue saveStandOnDeath;
         public final ForgeConfigSpec.BooleanValue sheerHeartAttackDeathLoop;
         public final ForgeConfigSpec.BooleanValue madeInHeavenAbilityAccelerating;
@@ -16,8 +15,7 @@ public class JojoBizarreSurvivalConfig
         public final ForgeConfigSpec.BooleanValue standPunchBlockBreaking;
         public final ForgeConfigSpec.BooleanValue infiniteTimestop;
 
-        Common(final ForgeConfigSpec.Builder builder)
-        {
+        Common(final ForgeConfigSpec.Builder builder) {
             builder.push("common");
 
             saveStandOnDeath = builder
@@ -48,17 +46,39 @@ public class JojoBizarreSurvivalConfig
         }
     }
 
+    public static class Client {
+        public final ForgeConfigSpec.BooleanValue renderMagiciansRedFire;
+
+        Client(ForgeConfigSpec.Builder builder) {
+            builder.push("client");
+
+            renderMagiciansRedFire = builder
+                    .comment("Toggle Magician's red always rendering as on fire.")
+                    .define("renderMagiciansRedFire", true);
+
+            builder.pop();
+        }
+    }
+
     private static final ForgeConfigSpec commonSpec;
     public static final Common COMMON;
 
+    private static final ForgeConfigSpec clientSpec;
+    public static final Client CLIENT;
+
     static {
-        final Pair<Common, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Common::new);
-        commonSpec = specPair.getRight();
-        COMMON = specPair.getLeft();
+        final Pair<Common, ForgeConfigSpec> specPairCommon = new ForgeConfigSpec.Builder().configure(Common::new);
+        commonSpec = specPairCommon.getRight();
+        COMMON = specPairCommon.getLeft();
+
+        final Pair<Client, ForgeConfigSpec> specPairClient = new ForgeConfigSpec.Builder().configure(Client::new);
+        clientSpec = specPairClient.getRight();
+        CLIENT = specPairClient.getLeft();
     }
 
     public static void register(final ModLoadingContext context)
     {
         context.registerConfig(ModConfig.Type.COMMON, commonSpec);
+        context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
     }
 }
