@@ -12,10 +12,8 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.ValueTextComponent;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -23,8 +21,6 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -59,13 +55,13 @@ public class EntityTheWorld extends EntityStandBase {
 	public EntityTheWorld(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		standID = JojoLibs.StandID.theWorld;
+		standID = Util.StandID.theWorld;
 	}
 
 	public EntityTheWorld(World world) {
 		super(EntityInit.THE_WORLD.get(), world);
 		spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-		standID = JojoLibs.StandID.theWorld;
+		standID = Util.StandID.theWorld;
 	}
 
 	@Override
@@ -107,11 +103,11 @@ public class EntityTheWorld extends EntityStandBase {
 								.forEach(entity -> {
 									if (entity instanceof PlayerEntity) {
 										IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
-										if (props.getStandID() == JojoLibs.StandID.GER)
+										if (props.getStandID() == Util.StandID.GER)
 											return;
-										if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+										if (props.getStandID() == Util.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
-										if (props.getStandID() == JojoLibs.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+										if (props.getStandID() == Util.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
 									}
 									if (entity instanceof MobEntity) {

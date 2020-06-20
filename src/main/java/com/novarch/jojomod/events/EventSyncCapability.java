@@ -8,7 +8,7 @@ import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -20,7 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import static com.novarch.jojomod.util.JojoLibs.StandID.theWorld;
+import static com.novarch.jojomod.util.Util.StandID.theWorld;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -99,7 +99,7 @@ public class EventSyncCapability
                                     if (entity == EntityTheWorld.theWorld)
                                         EntityTheWorld.theWorld = null;
                             });
-                } else if(props.getStandID() == JojoLibs.StandID.starPlatinum) {
+                } else if(props.getStandID() == Util.StandID.starPlatinum) {
                     player.getServerWorld().getEntities()
                             .forEach(entity -> {
                                 Timestop.getLazyOptional(entity).ifPresent(props2 -> {

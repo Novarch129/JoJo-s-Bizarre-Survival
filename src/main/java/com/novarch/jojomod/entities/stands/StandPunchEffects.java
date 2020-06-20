@@ -8,7 +8,7 @@ import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,74 +41,74 @@ import javax.annotation.Nullable;
 @SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class StandPunchEffects {
 	/**
-	 * Gets the appropriate effect for an {@link EntityStandPunch} based on it's {@link com.novarch.jojomod.util.JojoLibs.StandID}.
+	 * Gets the appropriate effect for an {@link EntityStandPunch} based on it's {@link Util.StandID}.
 	 *
 	 * @param result	The {@link RayTraceResult} of the {@link EntityStandPunch}.
 	 * @param entityIn	The {@link LivingEntity} that the {@link EntityStandPunch} has hit, {@link Nullable}.
 	 * @param punch		The {@link EntityStandPunch} that called the method
 	 * @param isEntity	A <code>boolean</code> that defines whether the punch hit a {@link LivingEntity} or a {@link Block}.
-	 * @param standID	The {@link com.novarch.jojomod.util.JojoLibs.StandID} of the {@link EntityStandPunch} that called the method, used to determine what effect the punch will have.
+	 * @param standID	The {@link Util.StandID} of the {@link EntityStandPunch} that called the method, used to determine what effect the punch will have.
 	 */
 	public static void getStandSpecific(RayTraceResult result, @Nullable LivingEntity entityIn, EntityStandPunch punch, boolean isEntity, int standID) {
 		if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent(punch, result, entityIn, isEntity))) return;
 		switch (standID) {
-			case JojoLibs.StandID.kingCrimson: {
+			case Util.StandID.kingCrimson: {
 				kingCrimson(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.dirtyDeedsDoneDirtCheap: {
+			case Util.StandID.dirtyDeedsDoneDirtCheap: {
 				dirtyDeedsDoneDirtCheap(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.goldExperience: {
+			case Util.StandID.goldExperience: {
 				goldExperience(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.madeInHeaven: {
+			case Util.StandID.madeInHeaven: {
 				madeInHeaven(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.GER: {
+			case Util.StandID.GER: {
 				goldExperienceRequiem(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.aerosmith: {
+			case Util.StandID.aerosmith: {
 				aerosmith(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.weatherReport: {
+			case Util.StandID.weatherReport: {
 				weatherReport(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.killerQueen: {
+			case Util.StandID.killerQueen: {
 				killerQueen(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.crazyDiamond: {
+			case Util.StandID.crazyDiamond: {
 				crazyDiamond(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.purpleHaze: {
+			case Util.StandID.purpleHaze: {
 				purpleHaze(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.whitesnake: {
+			case Util.StandID.whitesnake: {
 				whitesnake(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.cMoon: {
+			case Util.StandID.cMoon: {
 				cMoon(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.theWorld: {
+			case Util.StandID.theWorld: {
 				theWorld(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.starPlatinum: {
+			case Util.StandID.starPlatinum: {
 				starPlatinum(result, entityIn, punch, isEntity);
 				break;
 			}
-			case JojoLibs.StandID.magiciansRed: {
+			case Util.StandID.magiciansRed: {
 				magiciansRed(result, entityIn, punch, isEntity);
 				break;
 			}
@@ -1175,7 +1175,7 @@ public abstract class StandPunchEffects {
 			if (punch.shootingStand.ability)
 				if(livingEntity instanceof PlayerEntity)
 					Stand.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
-						if(props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && livingEntity.getHealth() <= livingEntity.getMaxHealth() / 2) {
+						if(props.getStandID() != 0 && props.getStandID() != Util.StandID.GER && livingEntity.getHealth() <= livingEntity.getMaxHealth() / 2) {
 							ItemStack itemStack = new ItemStack(ItemInit.stand_disc.get());
 							CompoundNBT nbt = itemStack.getTag() == null ? new CompoundNBT() : itemStack.getTag();
 							if (punch.standMaster.inventory.getStackInSlot(punch.standMaster.inventory.getBestHotbarSlot()).isEmpty()) {
@@ -1213,7 +1213,7 @@ public abstract class StandPunchEffects {
 
 	public static void cMoon(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
 		Stand.getLazyOptional(punch.standMaster).ifPresent(props -> {
-			if(props.getAct() == 1 && props.getStandID() == JojoLibs.StandID.cMoon) {
+			if(props.getAct() == 1 && props.getStandID() == Util.StandID.cMoon) {
 				whitesnake(result, livingEntity, punch, isEntity);
 			}
 		});

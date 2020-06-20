@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ public class CarbonDioxideRadarGUI extends AbstractGui
 
         assert player != null;
         Stand.getLazyOptional(player).ifPresent(props ->{
-            if(props.getStandID() == JojoLibs.StandID.aerosmith && props.getStandOn())
+            if(props.getStandID() == Util.StandID.aerosmith && props.getStandOn())
             {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();

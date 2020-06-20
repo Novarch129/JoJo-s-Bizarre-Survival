@@ -3,7 +3,7 @@ package com.novarch.jojomod.objects.items.stands;
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.theEmperor.EntityEmperorBullet;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,7 +30,7 @@ public class ItemEmperor extends Item {
         ItemStack itemStack = playerIn.getHeldItem(handIn);
         if (!playerIn.world.isRemote) {
             IStand props = Stand.getCapabilityFromPlayer(playerIn);
-            if (props.getStandID() != JojoLibs.StandID.theEmperor)
+            if (props.getStandID() != Util.StandID.theEmperor)
                 itemStack.shrink(1);
             if (props.getCooldown() <= 0) {
                 EntityEmperorBullet bullet = new EntityEmperorBullet(playerIn, worldIn);
@@ -57,7 +57,7 @@ public class ItemEmperor extends Item {
                     props.setStandOn(false);
                     stack.shrink(1);
                 }
-                if(!props.getStandOn() || props.getStandID() != JojoLibs.StandID.theEmperor)
+                if(!props.getStandOn() || props.getStandID() != Util.StandID.theEmperor)
                     stack.shrink(1);
             });
     }

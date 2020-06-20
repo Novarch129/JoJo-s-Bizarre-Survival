@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,13 +28,13 @@ public class EntityCMoon extends EntityStandBase {
 	public EntityCMoon(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_CMOON.get();
-		this.standID = JojoLibs.StandID.cMoon;
+		this.standID = Util.StandID.cMoon;
 	}
 
 	public EntityCMoon(World world) {
 		super(EntityInit.CMOON.get(), world);
 		this.spawnSound = SoundInit.SPAWN_CMOON.get();
-		this.standID = JojoLibs.StandID.cMoon;
+		this.standID = Util.StandID.cMoon;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class EntityCMoon extends EntityStandBase {
 
 			Stand.getLazyOptional(player).ifPresent(props -> {
 				ability = props.getAbility();
-				if((props.getStandID() == JojoLibs.StandID.cMoon && props.getAct() == 1) || (props.getStandID() == JojoLibs.StandID.madeInHeaven && props.getAct() == 2)) {
+				if((props.getStandID() == Util.StandID.cMoon && props.getAct() == 1) || (props.getStandID() == Util.StandID.madeInHeaven && props.getAct() == 2)) {
 					player.setNoGravity(false);
 					remove();
 					EntityWhitesnake whitesnake = new EntityWhitesnake(world);

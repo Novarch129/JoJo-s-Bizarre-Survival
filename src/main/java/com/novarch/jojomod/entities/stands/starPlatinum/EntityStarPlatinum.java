@@ -12,7 +12,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
@@ -54,13 +54,13 @@ public class EntityStarPlatinum extends EntityStandBase {
 	public EntityStarPlatinum(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
-		standID = JojoLibs.StandID.starPlatinum;
+		standID = Util.StandID.starPlatinum;
 	}
 
 	public EntityStarPlatinum(World world) {
 		super(EntityInit.STAR_PLATINUM.get(), world);
 		spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
-		standID = JojoLibs.StandID.starPlatinum;
+		standID = Util.StandID.starPlatinum;
 	}
 
 	@Override
@@ -102,11 +102,11 @@ public class EntityStarPlatinum extends EntityStandBase {
 								.forEach(entity -> {
 									if (entity instanceof PlayerEntity) {
 										IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
-										if (props.getStandID() == JojoLibs.StandID.GER)
+										if (props.getStandID() == Util.StandID.GER)
 											return;
-										if (props.getStandID() == JojoLibs.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+										if (props.getStandID() == Util.StandID.theWorld && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
-										if (props.getStandID() == JojoLibs.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
+										if (props.getStandID() == Util.StandID.starPlatinum && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)
 											return;
 									}
 									if (entity instanceof MobEntity) {

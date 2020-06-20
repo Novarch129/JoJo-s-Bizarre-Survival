@@ -8,7 +8,7 @@ import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.DimensionHopTeleporter;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -35,13 +35,13 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 	public EntityDirtyDeedsDoneDirtCheap(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_D4C.get();
-		this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
+		this.standID = Util.StandID.dirtyDeedsDoneDirtCheap;
 	}
 
 	public EntityDirtyDeedsDoneDirtCheap(World world) {
 		super(EntityInit.D4C.get(), world);
 		this.spawnSound = SoundInit.SPAWN_D4C.get();
-		this.standID = JojoLibs.StandID.dirtyDeedsDoneDirtCheap;
+		this.standID = Util.StandID.dirtyDeedsDoneDirtCheap;
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class EntityDirtyDeedsDoneDirtCheap extends EntityStandBase {
 
 							world.getPlayers()
 									.stream()
-									.filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != JojoLibs.StandID.GER)
+									.filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
 									.filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
 									.forEach(this::changePlayerDimension);
 

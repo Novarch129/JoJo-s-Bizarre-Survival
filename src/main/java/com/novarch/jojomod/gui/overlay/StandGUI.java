@@ -1,7 +1,7 @@
 package com.novarch.jojomod.gui.overlay;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -59,7 +59,7 @@ public class StandGUI extends AbstractGui
             if (props.getStandOn())
             {
                 switch(standID) {
-                    case(JojoLibs.StandID.madeInHeaven): {
+                    case(Util.StandID.madeInHeaven): {
                         if(props.getAct() == 0) {
                             if (timeLeft > 0 && cooldown <= 0)
                                 renderTimeValue(timeLeft);
@@ -68,18 +68,18 @@ public class StandGUI extends AbstractGui
                         }
                         break;
                     }
-                    case(JojoLibs.StandID.kingCrimson):
-                    case(JojoLibs.StandID.silverChariot): {
+                    case(Util.StandID.kingCrimson):
+                    case(Util.StandID.silverChariot): {
                         if(timeLeft > 800 && cooldown == 0)
                             renderTimeLeft(timeLeft - 800);
                         break;
                     }
-                    case(JojoLibs.StandID.theWorld): {
+                    case(Util.StandID.theWorld): {
                         if(timeLeft > 780 && cooldown == 0)
                             renderTimeLeft(timeLeft - 780);
                         break;
                     }
-                    case(JojoLibs.StandID.starPlatinum): {
+                    case(Util.StandID.starPlatinum): {
                         if(timeLeft > 900 && cooldown == 0)
                             renderTimeLeft(timeLeft - 900);
                         break;
@@ -88,17 +88,17 @@ public class StandGUI extends AbstractGui
             }
             switch(standID) {
                 default: {
-                    if(standID != JojoLibs.StandID.madeInHeaven)
+                    if(standID != Util.StandID.madeInHeaven)
                         if(cooldown > 0)
                             renderCooldown(cooldown);
                     break;
                 }
-                case(JojoLibs.StandID.goldExperience): {
+                case(Util.StandID.goldExperience): {
                     if(cooldown > 0 && transformed > 0)
                         renderCooldown(cooldown);
                     break;
                 }
-                case(JojoLibs.StandID.GER): {
+                case(Util.StandID.GER): {
                     if(cooldown > 0 && transformed > 1)
                         renderCooldown(cooldown);
                     break;

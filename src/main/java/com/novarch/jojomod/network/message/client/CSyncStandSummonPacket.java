@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 
 import java.util.function.Supplier;
 
@@ -87,12 +87,12 @@ public class CSyncStandSummonPacket {
 
 	public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer) {
 		Stand.getLazyOptional(player).ifPresent(props -> {
-			if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.theEmperor) {
-				EntityStandBase stand = JojoLibs.getStand(props.getStandID(), player.world);
+			if (props.getStandID() != 0 && props.getStandID() != Util.StandID.theEmperor) {
+				EntityStandBase stand = Util.getStand(props.getStandID(), player.world);
 
 				if (stand != null) {
 					if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof EntityStandBase).contains(stand)) {
-						if (props.getStandID() == JojoLibs.StandID.aerosmith && props.getAbility())
+						if (props.getStandID() == Util.StandID.aerosmith && props.getAbility())
 							player.world.addEntity(fakePlayer);
 						props.setStandOn(true);
 						stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
@@ -107,7 +107,7 @@ public class CSyncStandSummonPacket {
 						}
 					}
 				}
-			} else if(props.getStandID() == JojoLibs.StandID.theEmperor) {
+			} else if(props.getStandID() == Util.StandID.theEmperor) {
 				ItemStack itemStack = new ItemStack(ItemInit.the_emperor.get());
 
 				if(!player.inventory.hasItemStack(itemStack)) {

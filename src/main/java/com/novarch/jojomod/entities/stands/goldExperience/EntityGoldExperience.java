@@ -5,7 +5,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,13 +28,13 @@ public class EntityGoldExperience extends EntityStandBase {
 	public EntityGoldExperience(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
-		this.standID = JojoLibs.StandID.goldExperience;
+		this.standID = Util.StandID.goldExperience;
 	}
 
 	public EntityGoldExperience(World world) {
 		super(EntityInit.GOLD_EXPERIENCE.get(), world);
 		this.spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
-		this.standID = JojoLibs.StandID.goldExperience;
+		this.standID = Util.StandID.goldExperience;
 	}
 
 	public boolean isTransforming() {

@@ -18,9 +18,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static com.novarch.jojomod.util.JojoLibs.Null;
-import static com.novarch.jojomod.util.JojoLibs.StandID.cMoon;
-import static com.novarch.jojomod.util.JojoLibs.StandID.madeInHeaven;
+import static com.novarch.jojomod.util.Util.Null;
+import static com.novarch.jojomod.util.Util.StandID.cMoon;
+import static com.novarch.jojomod.util.Util.StandID.madeInHeaven;
 
 /**
  * The {@link Capability} used for storing the player's Stand ability.

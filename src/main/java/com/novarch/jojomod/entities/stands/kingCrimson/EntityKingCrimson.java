@@ -7,7 +7,7 @@ import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -37,13 +37,13 @@ public class EntityKingCrimson extends EntityStandBase {
 	public EntityKingCrimson(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
-		this.standID = JojoLibs.StandID.kingCrimson;
+		this.standID = Util.StandID.kingCrimson;
 	}
 
 	public EntityKingCrimson(World world) {
 		super(EntityInit.KING_CRIMSON.get(), world);
 		this.spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
-		this.standID = JojoLibs.StandID.kingCrimson;
+		this.standID = Util.StandID.kingCrimson;
 	}
 
 	/**
@@ -99,8 +99,8 @@ public class EntityKingCrimson extends EntityStandBase {
 
 									if (entity instanceof PlayerEntity)
 										Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
-											if (entity != player && prs.getStandID() != JojoLibs.StandID.GER) {
-												if (prs.getStandID() == JojoLibs.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
+											if (entity != player && prs.getStandID() != Util.StandID.GER) {
+												if (prs.getStandID() == Util.StandID.kingCrimson && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
 													return;
 												((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
 											}

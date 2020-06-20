@@ -9,7 +9,7 @@ import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
@@ -39,13 +39,13 @@ public class EntityMadeInHeaven extends EntityStandBase {
 	public EntityMadeInHeaven(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
-		this.standID = JojoLibs.StandID.madeInHeaven;
+		this.standID = Util.StandID.madeInHeaven;
 	}
 
 	public EntityMadeInHeaven(World world) {
 		super(EntityInit.MADE_IN_HEAVEN.get(), world);
 		this.spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
-		this.standID = JojoLibs.StandID.madeInHeaven;
+		this.standID = Util.StandID.madeInHeaven;
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 
 			if (heaventickr <= 0) {
 				world.getPlayers().forEach(entity -> Stand.getLazyOptional(entity).ifPresent(prps -> {
-					if (prps.getStandID() != JojoLibs.StandID.GER) {
+					if (prps.getStandID() != Util.StandID.GER) {
 						entity.inventory.clear();
 						entity.getInventoryEnderChest().clear();
 						EventD4CTeleportProcessor.madeInHeaven.add(entity);

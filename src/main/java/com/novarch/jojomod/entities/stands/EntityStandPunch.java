@@ -3,7 +3,7 @@ package com.novarch.jojomod.entities.stands;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.network.message.server.SSyncMagiciansRedFirePacket;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -332,7 +332,7 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
   @Nullable
   protected Entity findEntityOnPath(Vec3d start) {
     Entity entity = null;
-    List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0d), JojoLibs.Predicates.STAND_PUNCH_TARGET);
+    List<Entity> list = this.world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(this.getMotion().x, this.getMotion().y, this.getMotion().z).grow(1.0d), Util.Predicates.STAND_PUNCH_TARGET);
     double d0 = 0.0d;
     for (Entity entity1 : list) {
       EntityStandPunch punch = null;
@@ -684,13 +684,6 @@ public abstract class EntityStandPunch extends Entity implements IProjectile, IE
     public magiciansRed(World worldIn, EntityStandBase shooter, PlayerEntity player) {
       super(EntityInit.MAGICIANS_RED_FLAMES.get(), worldIn, shooter, player);
     }
-
-//    @Override
-//    public void tick() {
-//      super.tick();
-//      if(!world.isRemote)
-//        JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncMagiciansRedFirePacket(getEntityId(), isExplosive()));
-//    }
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {

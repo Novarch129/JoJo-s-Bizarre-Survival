@@ -7,7 +7,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -33,13 +33,13 @@ public class EntityAerosmith extends EntityStandBase {
     public EntityAerosmith(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        standID = JojoLibs.StandID.aerosmith;
+        standID = Util.StandID.aerosmith;
     }
 
     public EntityAerosmith(World worldIn) {
         super(EntityInit.AEROSMITH.get(), worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        standID = JojoLibs.StandID.aerosmith;
+        standID = Util.StandID.aerosmith;
     }
 
     @Override

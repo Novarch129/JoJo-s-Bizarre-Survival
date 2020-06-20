@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -38,13 +38,13 @@ public class EntityKillerQueen extends EntityStandBase {
 	public EntityKillerQueen(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-		standID = JojoLibs.StandID.killerQueen;
+		standID = Util.StandID.killerQueen;
 	}
 
 	public EntityKillerQueen(World world) {
 		super(EntityInit.KILLER_QUEEN.get(), world);
 		spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-		standID = JojoLibs.StandID.killerQueen;
+		standID = Util.StandID.killerQueen;
 	}
 
 	public LivingEntity getBombEntity() {
@@ -70,7 +70,7 @@ public class EntityKillerQueen extends EntityStandBase {
 								bombEntity.remove();
 							} else if (bombEntity instanceof PlayerEntity) {
 								Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
-									if (bombProps.getStandID() != JojoLibs.StandID.GER) {
+									if (bombProps.getStandID() != Util.StandID.GER) {
 										Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
 										((PlayerEntity) bombEntity).spawnSweepParticles();
 										explosion.doExplosionB(true);

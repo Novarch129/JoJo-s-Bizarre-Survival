@@ -16,6 +16,7 @@
   "item.jojomod.summon_star_platinum": "Star Platinum",
   "item.jojomod.summon_silver_chariot": "Silver Chariot",
   "item.jojomod.summon_magicians_red": "Magician's Red",
+  "item.jojomod.summon_the_hand": "The Hand",
 
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
@@ -65,7 +66,7 @@
   "entity.jojomod.magicians_red" : "Magician's Red",
   "entity.jojomod.magicians_red_flames" : "Magician's Red's flames",
 
-  "key.categories.JoJo's Bizarre Survival": "JoJo's Bizarre Survival",
+  "key.categories.jojobizarresurvival": "JoJo's Bizarre Survival",
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Ability Toggle",
   "key.ability2.desc": "Stand Ability",

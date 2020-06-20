@@ -5,7 +5,7 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -66,10 +66,10 @@ public class ItemStandArrow extends Item
 	{
 		PlayerEntity player = (PlayerEntity)entity;
 		Stand.getLazyOptional(player).ifPresent(props -> {
-			final int random = world.rand.nextInt(JojoLibs.StandID.numberOfStands);
+			final int random = world.rand.nextInt(Util.StandID.numberOfStands);
 			int newStandID;
 			if(standID == 0)
-				newStandID = JojoLibs.StandID.stands[random];
+				newStandID = Util.StandID.stands[random];
 			else
 				newStandID = standID;
 			if (props.getStandID() == 0)
@@ -83,12 +83,12 @@ public class ItemStandArrow extends Item
 				else
 					props.setStandID(standID);
 				props.setStandOn(true);
-				final EntityStandBase theStand = JojoLibs.getStand(newStandID, world);
+				final EntityStandBase theStand = Util.getStand(newStandID, world);
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
 					theStand.setMasterUUID(player.getUniqueID());
-					if(this.standID == JojoLibs.StandID.aerosmith)
+					if(this.standID == Util.StandID.aerosmith)
 					{
 						FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
 						fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
@@ -98,7 +98,7 @@ public class ItemStandArrow extends Item
 					theStand.spawnSound();
 				}
 			}
-			else if(props.getStandID() == JojoLibs.StandID.goldExperience && this.standID == 0)
+			else if(props.getStandID() == Util.StandID.goldExperience && this.standID == 0)
 			{
 				props.removeStand();
 				if(!world.isRemote) {
@@ -108,9 +108,9 @@ public class ItemStandArrow extends Item
 							.forEach(Entity::remove);
 				}
 
-				props.setStandID(JojoLibs.StandID.GER);
+				props.setStandID(Util.StandID.GER);
 				props.setStandOn(true);
-				final EntityStandBase theStand = JojoLibs.getStand(JojoLibs.StandID.GER, world);
+				final EntityStandBase theStand = Util.getStand(Util.StandID.GER, world);
 				if (theStand != null) {
 					theStand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 					theStand.setMaster(player);
@@ -127,7 +127,7 @@ public class ItemStandArrow extends Item
 	{
 		final ItemStack stack = playerIn.getHeldItem(handIn);
             IStand props = Stand.getCapabilityFromPlayer(playerIn);
-        	if (props.getStandID() == 0 || props.getStandID() == JojoLibs.StandID.goldExperience) {
+        	if (props.getStandID() == 0 || props.getStandID() == Util.StandID.goldExperience) {
         		playerIn.setActiveHand(handIn);
         		return new ActionResult<>(ActionResultType.SUCCESS, stack);
         	} else

@@ -14,10 +14,10 @@ public class PacketInit {
                 CSyncStandSummonPacket::decode,
                 CSyncStandSummonPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                CSyncPlayerAttackPacket.class,
-                CSyncPlayerAttackPacket::encode,
-                CSyncPlayerAttackPacket::decode,
-                CSyncPlayerAttackPacket::handle);
+                CSyncStandAttackPacket.class,
+                CSyncStandAttackPacket::encode,
+                CSyncStandAttackPacket::decode,
+                CSyncStandAttackPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
                 CSyncAbilityPacket.class,
                 CSyncAbilityPacket::encode,
@@ -28,11 +28,6 @@ public class PacketInit {
                 SSyncStandCapabilityPacket::encode,
                 SSyncStandCapabilityPacket::decode,
                 SSyncStandCapabilityPacket::handle);
-        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                STimestopPacket.class,
-                STimestopPacket::encode,
-                STimestopPacket::decode,
-                STimestopPacket::handle);
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
                 SSyncTimestopCapabilityPacket.class,
                 SSyncTimestopCapabilityPacket::encode,

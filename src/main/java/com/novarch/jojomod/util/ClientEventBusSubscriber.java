@@ -37,7 +37,7 @@ import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunc
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnake;
 import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnakePunch;
 import com.novarch.jojomod.init.EntityInit;
-import com.novarch.jojomod.util.handlers.KeyHandler;
+import com.novarch.jojomod.init.KeyInit;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -51,6 +51,8 @@ public class ClientEventBusSubscriber
 	@SubscribeEvent
 	public static void clientSetup(FMLClientSetupEvent event)
 	{
+		KeyInit.register();
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON.get(), RenderKingCrimson::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON_PUNCH.get(), RenderKingCrimsonPunch::new);
 

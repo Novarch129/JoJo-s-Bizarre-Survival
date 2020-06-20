@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static com.novarch.jojomod.util.JojoLibs.Null;
+import static com.novarch.jojomod.util.Util.Null;
 
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault

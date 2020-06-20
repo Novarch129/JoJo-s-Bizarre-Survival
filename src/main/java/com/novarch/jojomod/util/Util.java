@@ -18,7 +18,7 @@ import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
-import com.novarch.jojomod.util.handlers.KeyHandler;
+import com.novarch.jojomod.init.KeyInit;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.*;
@@ -34,7 +34,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
-public class JojoLibs
+public class Util
 {
     public static int getHighestBlock(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--) {
@@ -169,10 +169,10 @@ public class JojoLibs
 
     public static class KeyCodes
     {
-        public static String summonStand = KeyHandler.keys[0].getLocalizedName().toUpperCase();
-        public static String abilityToggle = KeyHandler.keys[1].getLocalizedName().toUpperCase();
-        public static String ability1 = KeyHandler.keys[2].getLocalizedName().toUpperCase();
-        public static String ability2 = KeyHandler.keys[3].getLocalizedName().toUpperCase();
+        public static String summonStand = KeyInit.SPAWN_STAND.getLocalizedName().toUpperCase();
+        public static String abilityToggle = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
+        public static String ability1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
+        public static String ability2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
     }
 
     public static EntityStandBase getStand(int standID, World world)

@@ -5,7 +5,6 @@ import com.novarch.jojomod.init.*;
 import com.novarch.jojomod.proxy.ClientProxy;
 import com.novarch.jojomod.proxy.IProxy;
 import com.novarch.jojomod.proxy.ServerProxy;
-import com.novarch.jojomod.util.handlers.KeyHandler;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -43,7 +42,6 @@ public class JojoBizarreSurvival {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::onServerStarting);
 
-        KeyHandler.addKeys();
         EventInit.register(MinecraftForge.EVENT_BUS);
         ItemInit.ITEMS.register(eventBus);
         EntityInit.ENTITY_TYPES.register(eventBus);

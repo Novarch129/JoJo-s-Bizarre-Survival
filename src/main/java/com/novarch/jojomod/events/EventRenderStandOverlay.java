@@ -5,7 +5,7 @@ import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.gui.overlay.CarbonDioxideRadarGUI;
 import com.novarch.jojomod.gui.overlay.StandGUI;
 import com.novarch.jojomod.init.EffectInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -40,7 +40,7 @@ public class EventRenderStandOverlay
 
         if(!playerEntity.world.isRemote)
             if(playerStand!=null)
-                entityList = playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities().filter(entity -> entity!=playerEntity).filter(entity -> entity!=playerStand).filter(JojoLibs.Predicates.BREATHS).filter(entity -> entity.getDistance(playerStand) < 16).collect(Collectors.toList());
+                entityList = playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities().filter(entity -> entity!=playerEntity).filter(entity -> entity!=playerStand).filter(Util.Predicates.BREATHS).filter(entity -> entity.getDistance(playerStand) < 16).collect(Collectors.toList());
     }
 
     @SubscribeEvent

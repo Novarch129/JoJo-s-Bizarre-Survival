@@ -5,11 +5,9 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -26,24 +24,34 @@ public class EntityCrazyDiamond extends EntityStandBase {
 
 	private int oratickr = 0;
 
-	private KeyBinding repair = KeyHandler.keys[2];
-
 	private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
 
 	public EntityCrazyDiamond(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
-		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-		this.standID = JojoLibs.StandID.crazyDiamond;
+		spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		standID = Util.StandID.crazyDiamond;
 	}
 
 	public EntityCrazyDiamond(World world) {
 		super(EntityInit.CRAZY_DIAMOND.get(), world);
-		this.spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-		this.standID = JojoLibs.StandID.crazyDiamond;
+		spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+		standID = Util.StandID.crazyDiamond;
 	}
 
 	public void putRepairBlock(BlockPos blockPos, BlockState state) {
 		repairBlocks.put(blockPos, state);
+	}
+
+	public void repair() {
+		if (getMaster() != null)
+			Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+				if (repairBlocks.size() > 0) {
+					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
+					props.setCooldown(100);
+				}
+				repairBlocks.forEach(world::setBlockState);
+				repairBlocks.clear();
+			});
 	}
 
 	@Override
@@ -54,28 +62,17 @@ public class EntityCrazyDiamond extends EntityStandBase {
 	@Override
 	public void tick() {
 		super.tick();
-		this.fallDistance = 0.0f;
+		fallDistance = 0.0f;
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
 			Stand.getLazyOptional(player).ifPresent(props -> {
-				this.ability = props.getAbility();
-
-				//Crazy Diamond's ability
-				if (repair.isPressed() && props.getCooldown() <= 0) {
-					if (repairBlocks.size() > 0) {
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
-						props.setCooldown(100);
-					}
-					repairBlocks.forEach(world::setBlockState);
-					repairBlocks.clear();
-				}
-
+				ability = props.getAbility();
 				if (props.getCooldown() > 0 && ability)
 					props.subtractCooldown(1);
 			});
 
-			if (this.standOn) {
+			if (standOn) {
 				followMaster();
 				setRotationYawHead(player.rotationYaw);
 				setRotation(player.rotationYaw, player.rotationPitch);
@@ -84,45 +81,43 @@ public class EntityCrazyDiamond extends EntityStandBase {
 					remove();
 				if (player.isSprinting()) {
 					if (attackSwing(player))
-						this.oratick++;
-					if (this.oratick == 1) {
-						if (!world.isRemote)
-							world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
-
-						if (!this.world.isRemote)
-							this.orarush = true;
-					}
+						oratick++;
+					if (oratick == 1)
+						if (!world.isRemote) {
+							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
+							orarush = true;
+						}
 				} else if (attackSwing(getMaster())) {
-					if (!this.world.isRemote) {
-						this.oratick++;
-						if (this.oratick == 1) {
-							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (this.rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-							EntityStandPunch.crazyDiamond crazyDiamond = new EntityStandPunch.crazyDiamond(this.world, this, player);
+					if (!world.isRemote) {
+						oratick++;
+						if (oratick == 1) {
+							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
+							EntityStandPunch.crazyDiamond crazyDiamond = new EntityStandPunch.crazyDiamond(world, this, player);
 							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond);
+							world.addEntity(crazyDiamond);
 						}
 					}
 				}
 				if (player.swingProgressInt == 0)
-					this.oratick = 0;
-				if (this.orarush) {
+					oratick = 0;
+				if (orarush) {
 					player.setSprinting(false);
-					this.oratickr++;
-					if (this.oratickr >= 10)
-						if (!this.world.isRemote) {
+					oratickr++;
+					if (oratickr >= 10)
+						if (!world.isRemote) {
 							player.setSprinting(false);
-							EntityStandPunch.crazyDiamond crazyDiamond1 = new EntityStandPunch.crazyDiamond(this.world, this, player);
+							EntityStandPunch.crazyDiamond crazyDiamond1 = new EntityStandPunch.crazyDiamond(world, this, player);
 							crazyDiamond1.setRandomPositions();
 							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond1);
-							EntityStandPunch.crazyDiamond crazyDiamond2 = new EntityStandPunch.crazyDiamond(this.world, this, player);
+							world.addEntity(crazyDiamond1);
+							EntityStandPunch.crazyDiamond crazyDiamond2 = new EntityStandPunch.crazyDiamond(world, this, player);
 							crazyDiamond2.setRandomPositions();
 							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							this.world.addEntity(crazyDiamond2);
+							world.addEntity(crazyDiamond2);
 						}
-					if (this.oratickr >= 100) {
-						this.orarush = false;
-						this.oratickr = 0;
+					if (oratickr >= 100) {
+						orarush = false;
+						oratickr = 0;
 					}
 				}
 			}

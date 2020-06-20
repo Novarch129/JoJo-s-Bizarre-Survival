@@ -2,8 +2,10 @@ package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
+import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.world.World;
@@ -12,7 +14,7 @@ import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 
-import static com.novarch.jojomod.util.JojoLibs.StandID.*;
+import static com.novarch.jojomod.util.Util.StandID.*;
 
 @SuppressWarnings( "ConstantConditions")
 public class CSyncStandAbilitiesPacket {
@@ -69,6 +71,20 @@ public class CSyncStandAbilitiesPacket {
 											.filter(entity -> entity instanceof EntityAerosmith)
 											.filter(entity -> ((EntityAerosmith) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> ((EntityAerosmith) entity).shootBomb());
+									break;
+								}
+								case crazyDiamond: {
+									world.getServer().getWorld(player.dimension).getEntities()
+											.filter(entity -> entity instanceof EntityCrazyDiamond)
+											.filter(entity -> ((EntityCrazyDiamond) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((EntityCrazyDiamond) entity).repair());
+									break;
+								}
+								case weatherReport: {
+									world.getServer().getWorld(player.dimension).getEntities()
+											.filter(entity -> entity instanceof EntityWeatherReport)
+											.filter(entity -> ((EntityWeatherReport) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((EntityWeatherReport) entity).changeWeather());
 									break;
 								}
 								default:

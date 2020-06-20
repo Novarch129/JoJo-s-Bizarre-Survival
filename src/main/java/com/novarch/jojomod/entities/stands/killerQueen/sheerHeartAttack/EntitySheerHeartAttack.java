@@ -8,7 +8,7 @@ import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -126,7 +126,7 @@ public class EntitySheerHeartAttack extends MonsterEntity implements IChargeable
                 damageSource.ifPresent(damageSourceEntity -> {
                     if (damageSourceEntity instanceof PlayerEntity)
                         Stand.getLazyOptional((PlayerEntity) damageSourceEntity).ifPresent(props -> {
-                            if (props.getStandID() == JojoLibs.StandID.GER)
+                            if (props.getStandID() == Util.StandID.GER)
                                 remove();
                         });
                 });

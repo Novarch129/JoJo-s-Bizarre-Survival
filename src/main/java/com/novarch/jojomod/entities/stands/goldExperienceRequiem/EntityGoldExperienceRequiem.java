@@ -5,7 +5,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -35,13 +35,13 @@ public class EntityGoldExperienceRequiem extends EntityStandBase {
 	public EntityGoldExperienceRequiem(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		this.spawnSound = SoundInit.SPAWN_GER.get();
-		this.standID = JojoLibs.StandID.GER;
+		this.standID = Util.StandID.GER;
 	}
 
 	public EntityGoldExperienceRequiem(World world) {
 		super(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
 		this.spawnSound = SoundInit.SPAWN_GER.get();
-		this.standID = JojoLibs.StandID.GER;
+		this.standID = Util.StandID.GER;
 	}
 
 	public void toggleFlight() {

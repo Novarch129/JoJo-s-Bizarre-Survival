@@ -6,7 +6,7 @@ import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,13 +28,13 @@ public class EntityMagiciansRed extends EntityStandBase {
 	public EntityMagiciansRed(EntityType<? extends EntityStandBase> type, World world) {
 		super(type, world);
 		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-		standID = JojoLibs.StandID.magiciansRed;
+		standID = Util.StandID.magiciansRed;
 	}
 
 	public EntityMagiciansRed(World world) {
 		super(EntityInit.MAGICIANS_RED.get(), world);
 		spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-		standID = JojoLibs.StandID.magiciansRed;
+		standID = Util.StandID.magiciansRed;
 	}
 
 	/**

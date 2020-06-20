@@ -2,7 +2,7 @@ package com.novarch.jojomod.objects.items;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +29,7 @@ public class ItemStandDisc extends Item {
             ItemStack stack = player.getHeldItem(hand);
             CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
             IStand props = Stand.getCapabilityFromPlayer(player);
-            if (props.getStandID() != 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") == 0) {
+            if (props.getStandID() != 0 && props.getStandID() != Util.StandID.GER && nbt.getInt("StandID") == 0) {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();
                 stack.setTag(nbt);
@@ -52,12 +52,12 @@ public class ItemStandDisc extends Item {
                 if (attacker instanceof PlayerEntity) {
                     final int standID = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getStandID();
                     final int standAct = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getAct();
-                    if(standID == JojoLibs.StandID.whitesnake || (standID == JojoLibs.StandID.madeInHeaven && standAct == 2)) {
+                    if(standID == Util.StandID.whitesnake || (standID == Util.StandID.madeInHeaven && standAct == 2)) {
                         if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
                             nbt.putInt("StandID", props.getStandID());
                             props.removeStand();
                             stack.setTag(nbt);
-                        } else if (props.getStandID() == 0 && props.getStandID() != JojoLibs.StandID.GER && nbt.getInt("StandID") != 0) {
+                        } else if (props.getStandID() == 0 && props.getStandID() != Util.StandID.GER && nbt.getInt("StandID") != 0) {
 
                             props.setStandID(nbt.getInt("StandID"));
                             nbt.putInt("StandID", 0);

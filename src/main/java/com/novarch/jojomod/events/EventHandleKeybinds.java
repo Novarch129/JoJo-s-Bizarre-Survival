@@ -2,9 +2,9 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.init.KeyInit;
 import com.novarch.jojomod.network.message.client.*;
-import com.novarch.jojomod.util.JojoLibs;
-import com.novarch.jojomod.util.handlers.KeyHandler;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -20,24 +20,24 @@ public class EventHandleKeybinds {
 	 @SubscribeEvent
 	 public static void onInput(InputEvent event) {
 	 	if(Minecraft.getInstance().player != null) {
-			if (KeyHandler.keys[0].isPressed())
+			if (KeyInit.SPAWN_STAND.isPressed())
 				JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandSummonPacket());
 
-			if (KeyHandler.keys[1].isPressed())
+			if (KeyInit.TOGGLE_ABILITY.isPressed())
 				JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAbilityPacket());
 
 			if (Minecraft.getInstance().gameSettings.keyBindAttack.isKeyDown())
-				JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncPlayerAttackPacket());
+				JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAttackPacket());
 
 			Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
 				if(props.getStandOn()) {
-					if (KeyHandler.keys[2].isPressed())
+					if (KeyInit.ABILITY1.isPressed())
 						JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(1));
-					if (KeyHandler.keys[3].isPressed())
+					if (KeyInit.ABILITY2.isPressed())
 						JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(2));
 				}
 
-				if (props.getStandID() == JojoLibs.StandID.aerosmith) {
+				if (props.getStandID() == Util.StandID.aerosmith) {
 					if (props.getStandOn() && props.getAbility()) {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, FORWARDS, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));

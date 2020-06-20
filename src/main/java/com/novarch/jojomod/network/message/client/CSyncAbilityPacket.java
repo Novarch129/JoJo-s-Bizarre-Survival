@@ -4,7 +4,7 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.JojoLibs;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -52,46 +52,46 @@ public class CSyncAbilityPacket {
 
                 if (props.getAbility()) {
                     switch (standID) {
-                        case JojoLibs.StandID.magiciansRed:
-                        case JojoLibs.StandID.killerQueen:
-                        case JojoLibs.StandID.theEmperor:
+                        case Util.StandID.magiciansRed:
+                        case Util.StandID.killerQueen:
+                        case Util.StandID.theEmperor:
                             break;
-                        case JojoLibs.StandID.goldExperience: {
+                        case Util.StandID.goldExperience: {
                             player.sendMessage(new StringTextComponent("Mode: Lifegiver"));
                             break;
                         }
-                        case JojoLibs.StandID.GER: {
+                        case Util.StandID.GER: {
                             player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
                             break;
                         }
-                        case JojoLibs.StandID.aerosmith: {
+                        case Util.StandID.aerosmith: {
                             player.sendMessage(new StringTextComponent("Ability: ON"));
                             if (standOn)
                                 player.world.addEntity(fakePlayer);
                         }
                         default: {
-                            if (standID != JojoLibs.StandID.madeInHeaven || act != 0)
+                            if (standID != Util.StandID.madeInHeaven || act != 0)
                                 player.sendMessage(new StringTextComponent("Ability: ON"));
                         }
                     }
                 } else {
                     switch (standID) {
-                        case JojoLibs.StandID.magiciansRed:
-                        case JojoLibs.StandID.theEmperor:
-                        case JojoLibs.StandID.killerQueen:
+                        case Util.StandID.magiciansRed:
+                        case Util.StandID.theEmperor:
+                        case Util.StandID.killerQueen:
                             break;
-                        case JojoLibs.StandID.goldExperience:
-                        case JojoLibs.StandID.GER: {
+                        case Util.StandID.goldExperience:
+                        case Util.StandID.GER: {
                             player.sendMessage(new StringTextComponent("Mode: Normal"));
                             break;
                         }
                         default: {
-                            if (standID != JojoLibs.StandID.madeInHeaven || act != 0)
+                            if (standID != Util.StandID.madeInHeaven || act != 0)
                                 player.sendMessage(new StringTextComponent("Ability: OFF"));
-                            if (props.getStandID() == JojoLibs.StandID.theWorld && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
+                            if (props.getStandID() == Util.StandID.theWorld && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
                                 player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
 
-                            if (props.getStandID() == JojoLibs.StandID.starPlatinum && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
+                            if (props.getStandID() == Util.StandID.starPlatinum && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
                                 player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
                         }
                     }

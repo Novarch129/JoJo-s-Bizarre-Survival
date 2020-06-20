@@ -13,15 +13,15 @@ import java.util.List;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class CSyncPlayerAttackPacket {
-	public static void encode(CSyncPlayerAttackPacket msg, PacketBuffer buffer) {
+public class CSyncStandAttackPacket {
+	public static void encode(CSyncStandAttackPacket msg, PacketBuffer buffer) {
 	}
 
-	public static CSyncPlayerAttackPacket decode(PacketBuffer buffer) {
-		return new CSyncPlayerAttackPacket();
+	public static CSyncStandAttackPacket decode(PacketBuffer buffer) {
+		return new CSyncStandAttackPacket();
 	}
 
-	public static void handle(CSyncPlayerAttackPacket message, Supplier<Context> ctx) {
+	public static void handle(CSyncStandAttackPacket message, Supplier<Context> ctx) {
 		ServerPlayerEntity player = (ctx.get().getSender());
 		if (player != null) {
 			World world = player.world;
