@@ -2,13 +2,13 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.JojoBizarreSurvival.JojoItemGroup;
-import com.novarch.jojomod.objects.items.ItemCanzoniPreferite;
 import com.novarch.jojomod.objects.items.ItemRemoveStand;
 import com.novarch.jojomod.objects.items.ItemStandArrow;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.objects.items.stands.ItemEmperor;
 import com.novarch.jojomod.util.JojoLibs;
 import net.minecraft.item.Item;
+import net.minecraft.item.MusicDiscItem;
 import net.minecraft.item.Rarity;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.RegistryObject;
@@ -37,9 +37,10 @@ public class ItemInit
 	public static final RegistryObject<Item> summon_star_platinum = ITEMS.register("summon_star_platinum", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("star_platinum", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), JojoLibs.StandID.starPlatinum, ""));
 	public static final RegistryObject<Item> summon_silver_chariot = ITEMS.register("summon_silver_chariot", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("silver_chariot", TextFormatting.GRAY)).group(JojoItemGroup.instance), JojoLibs.StandID.silverChariot, ""));
 	public static final RegistryObject<Item> summon_magicians_red = ITEMS.register("summon_magicians_red", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("magicians_red", TextFormatting.RED)).group(JojoItemGroup.instance), JojoLibs.StandID.magiciansRed, ""));
+	public static final RegistryObject<Item> summon_the_hand = ITEMS.register("summon_the_hand", () -> new ItemStandArrow(new Item.Properties().maxStackSize(1).rarity(Rarity.create("the_hand", TextFormatting.DARK_BLUE)).group(JojoItemGroup.instance), JojoLibs.StandID.theHand, ""));
 
 	public static final RegistryObject<Item> stand_disc = ITEMS.register("stand_disc", () -> new ItemStandDisc(new Item.Properties().maxStackSize(1).group(JojoItemGroup.instance)));
 	public static final RegistryObject<Item> the_emperor = ITEMS.register("the_emperor", () -> new ItemEmperor(new Item.Properties().maxStackSize(1)));
 	public static final RegistryObject<Item> remove_stand = ITEMS.register("remove_stand", () -> new ItemRemoveStand(new Item.Properties().maxStackSize(1).rarity(Rarity.create("stand_disc", TextFormatting.GRAY)).group(JojoItemGroup.instance)));
-	public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new ItemCanzoniPreferite(1, SoundInit.CANZONI_PREFERITE, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.instance)));
+	public static final RegistryObject<Item> canzoni_preferite = ITEMS.register("canzoni_preferite", () -> new MusicDiscItem(1, SoundInit.CANZONI_PREFERITE, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.instance)));
 }
