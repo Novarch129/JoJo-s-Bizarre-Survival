@@ -52,6 +52,7 @@ public class CSyncAbilityPacket {
 
                 if (props.getAbility()) {
                     switch (standID) {
+                        case Util.StandID.theHand:
                         case Util.StandID.magiciansRed:
                         case Util.StandID.killerQueen:
                         case Util.StandID.theEmperor:
@@ -76,6 +77,7 @@ public class CSyncAbilityPacket {
                     }
                 } else {
                     switch (standID) {
+                        case Util.StandID.theHand:
                         case Util.StandID.magiciansRed:
                         case Util.StandID.theEmperor:
                         case Util.StandID.killerQueen:

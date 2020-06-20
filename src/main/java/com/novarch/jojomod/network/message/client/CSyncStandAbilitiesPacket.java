@@ -1,6 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
 import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
@@ -128,7 +129,14 @@ public class CSyncStandAbilitiesPacket {
 														Vec3d vec3d1 = entity1.getLook(1.0F);
 														Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
 														AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(d0)).grow(1.0D, 1.0D, 1.0D);
-														EntityRayTraceResult entity1raytraceresult = ProjectileHelper.rayTraceEntities(entity1, vec3d, vec3d2, axisalignedbb, (p_215312_0_) -> !p_215312_0_.isSpectator() && p_215312_0_.canBeCollidedWith(), 1000);
+														EntityRayTraceResult entity1raytraceresult =
+																ProjectileHelper.rayTraceEntities(
+																		entity1,
+																		vec3d,
+																		vec3d2,
+																		axisalignedbb,
+																		(predicateEntity) -> !predicateEntity.isSpectator() && predicateEntity.canBeCollidedWith() && predicateEntity != entity && !(predicateEntity instanceof EntityStandPunch),
+																		3000);
 														if (entity1raytraceresult != null) {
 															Entity entity11 = entity1raytraceresult.getEntity();
 															Vec3d vec3d3 = entity1raytraceresult.getHitVec();

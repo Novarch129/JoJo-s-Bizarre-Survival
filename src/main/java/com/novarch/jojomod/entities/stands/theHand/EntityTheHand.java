@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings("ConstantConditions")
@@ -56,8 +57,6 @@ public class EntityTheHand extends EntityStandBase {
 			PlayerEntity player = getMaster();
 			Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
-			player.setNoGravity(false);
-
 			followMaster();
 			setRotationYawHead(player.rotationYaw);
 			setRotation(player.rotationYaw, player.rotationPitch);
@@ -75,7 +74,7 @@ public class EntityTheHand extends EntityStandBase {
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 						EntityStandPunch.TheHand theHand = new EntityStandPunch.TheHand(world, this, player);
-						theHand.shoot(player, player.rotationPitch, player.rotationYaw, 0.7f, 0.4f);
+						theHand.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.4f);
 						world.addEntity(theHand);
 					}
 				}
@@ -90,11 +89,11 @@ public class EntityTheHand extends EntityStandBase {
 						player.setSprinting(false);
 						EntityStandPunch.TheHand theHand1 = new EntityStandPunch.TheHand(world, this, player);
 						theHand1.setRandomPositions();
-						theHand1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.5f);
+						theHand1.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
 						world.addEntity(theHand1);
 						EntityStandPunch.TheHand theHand2 = new EntityStandPunch.TheHand(world, this, player);
 						theHand2.setRandomPositions();
-						theHand2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.5f);
+						theHand2.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
 						world.addEntity(theHand2);
 					}
 				if (oratickr >= 80) {
