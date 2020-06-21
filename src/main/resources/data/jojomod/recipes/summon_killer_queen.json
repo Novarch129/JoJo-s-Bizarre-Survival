@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TDT",
+    "DAD",
+    "TDT"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_killer_queen"
+  }
+}

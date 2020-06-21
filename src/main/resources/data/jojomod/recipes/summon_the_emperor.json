@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IDI",
+    "DAD",
+    "IDI"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:bow"
+    },
+    "I": {
+      "item": "minecraft:arrow"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_the_emperor"
+  }
+}

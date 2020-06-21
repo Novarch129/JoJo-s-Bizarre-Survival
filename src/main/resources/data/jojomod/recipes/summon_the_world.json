@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DDD",
+    "DAD",
+    "DDD"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_the_world"
+  }
+}

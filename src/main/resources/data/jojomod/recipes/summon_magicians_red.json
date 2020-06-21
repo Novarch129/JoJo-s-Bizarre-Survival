@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    "DAD",
+    " D "
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_magicians_red"
+  }
+}

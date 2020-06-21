@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " D ",
+    "DAD",
+    " D "
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:iron_block"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_silver_chariot"
+  }
+}

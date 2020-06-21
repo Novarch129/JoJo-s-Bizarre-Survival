@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IDI",
+    "DAD",
+    "IDI"
+  ],
+  "key": {
+    "D": {
+      "item": "minecraft:turtle_helmet"
+    },
+    "I": {
+      "tag": "minecraft:fishes"
+    },
+    "A": {
+      "item": "jojomod:stand_arrow"
+    }
+  },
+  "result": {
+    "item": "jojomod:summon_star_platinum"
+  }
+}

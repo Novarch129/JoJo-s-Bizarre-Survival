@@ -1,13 +1,15 @@
-package com.novarch.jojomod.entities.stands.weatherReport;// Made with Blockbench 3.5.2
-// Exported for Minecraft version 1.15
-// Paste this class into your mod and generate all required imports
-
+package com.novarch.jojomod.entities.stands.weatherReport;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class ModelWeatherReport<T extends EntityWeatherReport> extends EntityModel<T> {
 	private final ModelRenderer HeadBase;
 	private final ModelRenderer Head;
