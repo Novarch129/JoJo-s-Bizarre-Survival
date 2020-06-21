@@ -44,7 +44,7 @@ public class EntityPurpleHaze extends EntityStandBase {
 	}
 
 	@Override
-	public void spawnSound() {
+	public void playSpawnSound() {
 		this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 2.0f, 1.0f);
 	}
 

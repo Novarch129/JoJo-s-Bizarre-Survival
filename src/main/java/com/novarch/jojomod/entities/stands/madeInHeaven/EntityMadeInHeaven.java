@@ -69,7 +69,7 @@ public class EntityMadeInHeaven extends EntityStandBase {
 					cMoon.setMaster(getMaster());
 					cMoon.setMasterUUID(getMaster().getUniqueID());
 					world.addEntity(cMoon);
-					cMoon.spawnSound();
+					cMoon.playSpawnSound();
 				}
 			});
 			player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));

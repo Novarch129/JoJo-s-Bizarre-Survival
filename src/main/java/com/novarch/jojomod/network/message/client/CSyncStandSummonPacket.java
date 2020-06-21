@@ -99,7 +99,7 @@ public class CSyncStandSummonPacket {
 						stand.setMaster(player);
 						stand.setMasterUUID(player.getUniqueID());
 						player.world.addEntity(stand);
-						stand.spawnSound();
+						stand.playSpawnSound();
 					} else {
 						if (!stand.hasAct()) {
 							MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));

@@ -55,7 +55,7 @@ public class EntityCrazyDiamond extends EntityStandBase {
 	}
 
 	@Override
-	public void spawnSound() {
+	public void playSpawnSound() {
 		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
 	}
 

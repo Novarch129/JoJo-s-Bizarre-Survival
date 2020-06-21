@@ -8,6 +8,7 @@ import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExper
 import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
 import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
 import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -45,7 +46,7 @@ public class CSyncStandAbilitiesPacket {
 		if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
 			ctx.get().enqueueWork(() -> {
 				PlayerEntity player = ctx.get().getSender();
-				assert player != null;
+				if(player == null) return;
 				World world = player.world;
 				if (world != null)
 					if (!world.isRemote) {
@@ -101,45 +102,48 @@ public class CSyncStandAbilitiesPacket {
 											.filter(entity -> entity instanceof EntityTheHand)
 											.filter(entity -> ((EntityTheHand) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
-												Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
-												float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
-												if (entity1 != null) {
-													if (Minecraft.getInstance().world != null) {
-														Minecraft.getInstance().getProfiler().startSection("pick");
-														Minecraft.getInstance().pointedEntity = null;
-														Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
-														Vec3d vec3d = entity1.getEyePosition(partialTicks);
-														boolean flag = false;
-														double d0 = 30.0D;
-														Vec3d vec3d1 = entity1.getLook(1.0f);
-														Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
-														AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(d0)).grow(1.0D, 1.0D, 1.0D);
-														EntityRayTraceResult entity1raytraceresult =
-																ProjectileHelper.rayTraceEntities(
-																		entity1,
-																		vec3d,
-																		vec3d2,
-																		axisalignedbb,
-																		(predicateEntity) -> !predicateEntity.isSpectator() && predicateEntity.canBeCollidedWith() && predicateEntity != entity && !(predicateEntity instanceof EntityStandPunch),
-																		3000);
-														if (entity1raytraceresult != null) {
-															Entity entity11 = entity1raytraceresult.getEntity();
-															Vec3d vec3d3 = entity1raytraceresult.getHitVec();
-															if (entity11 != null)
-																((EntityTheHand) entity).teleportEntity(entity11.getEntityId());
-															double d2 = vec3d.squareDistanceTo(vec3d3);
-															if (flag && d2 > 9.0D) {
-																Minecraft.getInstance().objectMouseOver = BlockRayTraceResult.createMiss(vec3d3, Direction.getFacingFromVector(vec3d1.x, vec3d1.y, vec3d1.z), new BlockPos(vec3d3));
-															} else if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
-																Minecraft.getInstance().objectMouseOver = entity1raytraceresult;
-																if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
-																	Minecraft.getInstance().pointedEntity = entity11;
+												if(message.action == 1) {
+													Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
+													float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
+													if (entity1 != null) {
+														if (Minecraft.getInstance().world != null) {
+															Minecraft.getInstance().getProfiler().startSection("pick");
+															Minecraft.getInstance().pointedEntity = null;
+															Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
+															Vec3d vec3d = entity1.getEyePosition(partialTicks);
+															boolean flag = false;
+															double d0 = 30.0D;
+															Vec3d vec3d1 = entity1.getLook(1.0f);
+															Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
+															AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(d0)).grow(1.0D, 1.0D, 1.0D);
+															EntityRayTraceResult entity1raytraceresult =
+																	ProjectileHelper.rayTraceEntities(
+																			entity1,
+																			vec3d,
+																			vec3d2,
+																			axisalignedbb,
+																			Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof EntityStandPunch)),
+																			3000);
+															if (entity1raytraceresult != null) {
+																Entity entity11 = entity1raytraceresult.getEntity();
+																Vec3d vec3d3 = entity1raytraceresult.getHitVec();
+																if (entity11 != null)
+																	((EntityTheHand) entity).teleportEntity(entity11.getEntityId());
+																double d2 = vec3d.squareDistanceTo(vec3d3);
+																if (flag && d2 > 9.0D) {
+																	Minecraft.getInstance().objectMouseOver = BlockRayTraceResult.createMiss(vec3d3, Direction.getFacingFromVector(vec3d1.x, vec3d1.y, vec3d1.z), new BlockPos(vec3d3));
+																} else if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
+																	Minecraft.getInstance().objectMouseOver = entity1raytraceresult;
+																	if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
+																		Minecraft.getInstance().pointedEntity = entity11;
+																	}
 																}
 															}
+															Minecraft.getInstance().getProfiler().endSection();
 														}
-														Minecraft.getInstance().getProfiler().endSection();
 													}
-												}
+												} else
+													((EntityTheHand) entity).teleportMaster(((EntityTheHand) entity).getMaster().getEntityId());
 											});
 									break;
 								}

@@ -60,7 +60,7 @@ public class EntityCMoon extends EntityStandBase {
 					whitesnake.setMaster(getMaster());
 					whitesnake.setMasterUUID(getMaster().getUniqueID());
 					world.addEntity(whitesnake);
-					whitesnake.spawnSound();
+					whitesnake.playSpawnSound();
 				}
 			});
 

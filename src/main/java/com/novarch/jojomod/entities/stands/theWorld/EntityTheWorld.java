@@ -67,7 +67,7 @@ public class EntityTheWorld extends EntityStandBase {
 	}
 
 	@Override
-	public void spawnSound() {
+	public void playSpawnSound() {
 		Stand.getLazyOptional(getMaster()).ifPresent(props -> {
 			if (!props.getAbility())
 				world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 5.0f, 1.0f);

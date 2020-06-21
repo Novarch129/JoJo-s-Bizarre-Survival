@@ -1,5 +1,6 @@
 package com.novarch.jojomod.entities.stands;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
 import mcp.MethodsReturnNonnullByDefault;
@@ -14,12 +15,14 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -84,12 +87,11 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     }
 
     public PlayerEntity getMaster() {
-        return this.master;
+        return master;
     }
 
     public void setMasterUUID(UUID masterUUID) {
-        if (!this.world.isRemote)
-            this.masterUUID = masterUUID;
+        this.masterUUID = masterUUID;
     }
 
     public UUID getMasterUUID() {
@@ -99,8 +101,8 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     /**
      *  Plays the Stand's spawn sound.
      */
-    public void spawnSound() {
-        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 1.0f, 1.0f);
+    public void playSpawnSound() {
+        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
     }
 
     /**
@@ -208,30 +210,23 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
                 remove();
                 return;
             }
-
-            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this));
-            dodgeAttacks();
-
             if (!getMaster().isAlive()) {
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
                 remove();
             }
+            if (getMaster().isSpectator()) remove();
+            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this));
 
-            if(getMaster().isSpectator())
-                remove();
-
-            if (getAir() < 20)
-                setAir(60);
-
-            clearActivePotions();
             Stand.getLazyOptional(getMaster()).ifPresent(props -> {
                 standOn = props.getStandOn();
-
                 if (!props.getStandOn()) {
                     MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(getMaster(), this));
                     remove();
                 }
             });
+            dodgeAttacks();
+            if (getAir() < 20)
+                setAir(60);
         }
     }
 
@@ -326,13 +321,20 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     public void writeSpawnData(PacketBuffer buffer) {
         if(getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
+        if(getMasterUUID() != null)
+            buffer.writeUniqueId(getMasterUUID());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         int id = additionalData.readInt();
+        UUID uuid = additionalData.readUniqueId();
         if(id != 0)
             setMaster((PlayerEntity) world.getEntityByID(id));
+        else if(id == 0 && uuid != null)
+            setMaster(world.getPlayerByUuid(uuid));
+        else if(id != 0 && uuid != null)
+            setMasterUUID(uuid);
     }
 
     /**

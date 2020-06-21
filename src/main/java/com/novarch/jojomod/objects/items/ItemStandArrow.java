@@ -95,7 +95,7 @@ public class ItemStandArrow extends Item
 						world.addEntity(fakePlayer);
 					}
 					world.addEntity(theStand);
-					theStand.spawnSound();
+					theStand.playSpawnSound();
 				}
 			}
 			else if(props.getStandID() == Util.StandID.goldExperience && this.standID == 0)
@@ -116,7 +116,7 @@ public class ItemStandArrow extends Item
 					theStand.setMaster(player);
 					theStand.setMasterUUID(player.getUniqueID());
 					world.addEntity(theStand);
-					theStand.spawnSound();
+					theStand.playSpawnSound();
 				}
 			}
 		});
