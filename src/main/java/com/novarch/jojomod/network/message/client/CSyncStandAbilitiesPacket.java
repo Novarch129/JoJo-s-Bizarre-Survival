@@ -50,13 +50,13 @@ public class CSyncStandAbilitiesPacket {
 				if (world != null)
 					if (!world.isRemote) {
 						Stand.getLazyOptional(player).ifPresent(props -> {
-							switch(props.getStandID()) {
+							switch (props.getStandID()) {
 								case killerQueen: {
 									world.getServer().getWorld(player.dimension).getEntities()
 											.filter(entity -> entity instanceof EntityKillerQueen)
 											.filter(entity -> ((EntityKillerQueen) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
-												if(message.action == 1)
+												if (message.action == 1)
 													((EntityKillerQueen) entity).detonate();
 												else
 													((EntityKillerQueen) entity).toggleSheerHeartAttack();
@@ -68,7 +68,7 @@ public class CSyncStandAbilitiesPacket {
 											.filter(entity -> entity instanceof EntityGoldExperienceRequiem)
 											.filter(entity -> ((EntityGoldExperienceRequiem) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
-												if(message.action == 1)
+												if (message.action == 1)
 													((EntityGoldExperienceRequiem) entity).toggleTruth();
 												else
 													((EntityGoldExperienceRequiem) entity).toggleFlight();
@@ -107,26 +107,11 @@ public class CSyncStandAbilitiesPacket {
 													if (Minecraft.getInstance().world != null) {
 														Minecraft.getInstance().getProfiler().startSection("pick");
 														Minecraft.getInstance().pointedEntity = null;
-														double d0 = Minecraft.getInstance().playerController.getBlockReachDistance();
-														Minecraft.getInstance().objectMouseOver = entity1.pick(d0, partialTicks, false);
+														Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
 														Vec3d vec3d = entity1.getEyePosition(partialTicks);
 														boolean flag = false;
-														double d1 = d0;
-														if (Minecraft.getInstance().playerController.extendedReach()) {
-															d1 = 6.0D;
-															d0 = d1;
-														} else {
-															if (d0 > 3.0D) {
-																flag = true;
-															}
-														}
-
-														d1 = d1 * d1;
-														if (Minecraft.getInstance().objectMouseOver != null) {
-															d1 = Minecraft.getInstance().objectMouseOver.getHitVec().squareDistanceTo(vec3d);
-														}
-
-														Vec3d vec3d1 = entity1.getLook(1.0F);
+														double d0 = 30.0D;
+														Vec3d vec3d1 = entity1.getLook(1.0f);
 														Vec3d vec3d2 = vec3d.add(vec3d1.x * d0, vec3d1.y * d0, vec3d1.z * d0);
 														AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(d0)).grow(1.0D, 1.0D, 1.0D);
 														EntityRayTraceResult entity1raytraceresult =
@@ -140,12 +125,12 @@ public class CSyncStandAbilitiesPacket {
 														if (entity1raytraceresult != null) {
 															Entity entity11 = entity1raytraceresult.getEntity();
 															Vec3d vec3d3 = entity1raytraceresult.getHitVec();
-															if(entity11 != null)
+															if (entity11 != null)
 																((EntityTheHand) entity).teleportEntity(entity11.getEntityId());
 															double d2 = vec3d.squareDistanceTo(vec3d3);
 															if (flag && d2 > 9.0D) {
 																Minecraft.getInstance().objectMouseOver = BlockRayTraceResult.createMiss(vec3d3, Direction.getFacingFromVector(vec3d1.x, vec3d1.y, vec3d1.z), new BlockPos(vec3d3));
-															} else if (d2 < d1 || Minecraft.getInstance().objectMouseOver == null) {
+															} else if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
 																Minecraft.getInstance().objectMouseOver = entity1raytraceresult;
 																if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
 																	Minecraft.getInstance().pointedEntity = entity11;

@@ -45,7 +45,7 @@ public class EntityTheHand extends EntityStandBase {
 			double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
 			double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
 			double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
-			entity.setMotion(-motionX * 2, -motionY * 2, -motionZ * 2);
+			entity.setMotion(-motionX * (entity.getDistance(getMaster()) / 4), -motionY * (entity.getDistance(getMaster()) / 4), -motionZ * (entity.getDistance(getMaster()) / 4));
 		}
 	}
 

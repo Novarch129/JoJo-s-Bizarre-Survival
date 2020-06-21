@@ -1386,14 +1386,17 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void theHand(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch sword, boolean isEntity) {
+	public static void theHand(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
 		if (isEntity) {
-			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(sword, result, livingEntity))) return;
-			livingEntity.remove();
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
+			if (punch.world.rand.nextBoolean())
+				livingEntity.remove();
+			else
+				livingEntity.attackEntityFrom(DamageSource.FALLING_BLOCK, 1.0f);
 		} else {
-			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(sword, result, livingEntity))) return;
-			sword.world.setBlockState(new BlockPos(sword.getXTile(), sword.getYTile(), sword.getZTile()), Blocks.AIR.getDefaultState());
+			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(punch, result, livingEntity))) return;
+			punch.world.setBlockState(new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile()), Blocks.AIR.getDefaultState());
 		}
-		sword.remove();
+		punch.remove();
 	}
 }
