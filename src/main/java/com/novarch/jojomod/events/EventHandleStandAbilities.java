@@ -5,6 +5,7 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.EntityStandBase;
 import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
@@ -15,6 +16,7 @@ import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.client.CRequestSyncStandMasterPacket;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
 import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.Util;
@@ -121,6 +123,11 @@ public class EventHandleStandAbilities {
         });
         assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
+            if(entity instanceof EntityStandBase)
+                if(((EntityStandBase) entity).getMaster() == null) {
+                    LogManager.getLogger().debug("nullmaster");
+                    JojoBizarreSurvival.INSTANCE.sendToServer(new CRequestSyncStandMasterPacket(entity.getEntityId()));
+                }
             if (entity instanceof EntityAerosmith)
                 if (((EntityAerosmith) entity).getMaster() != null)
                     if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {

@@ -33,4 +33,4 @@
 
 Mod is almost ready for release, expect first release this month!
 
-UPDATE: 1.16 is releasing on the 23d, this might delay release considerably.
+UPDATE: 1.16 is releasing on the 23rd, this might delay release considerably.

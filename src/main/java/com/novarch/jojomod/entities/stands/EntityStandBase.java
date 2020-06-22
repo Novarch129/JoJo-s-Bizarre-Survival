@@ -321,20 +321,13 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     public void writeSpawnData(PacketBuffer buffer) {
         if(getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
-        if(getMasterUUID() != null)
-            buffer.writeUniqueId(getMasterUUID());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         int id = additionalData.readInt();
-        UUID uuid = additionalData.readUniqueId();
         if(id != 0)
             setMaster((PlayerEntity) world.getEntityByID(id));
-        else if(id == 0 && uuid != null)
-            setMaster(world.getPlayerByUuid(uuid));
-        else if(id != 0 && uuid != null)
-            setMasterUUID(uuid);
     }
 
     /**
