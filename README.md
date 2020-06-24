@@ -1,7 +1,7 @@
 -------------------------------------------
 ![Logo](https://github.com/Novarch129/JoJo-s-Blocky-Adventure/blob/master/src/main/resources/logo.png)
 -------------------------------------------
-# A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft 1.15.2.
+# A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft 1.16.
 
 ### List of planned Stands:
 - [ ] Tusk
@@ -31,6 +31,4 @@
 - [x] Silver Chariot
 - [x] The Emperor
 
-Mod is almost ready for release, expect first release this month!
-
-UPDATE: 1.16 is releasing on the 23rd, this might delay release considerably.
+Mod is almost ready for release, expect first release next month!

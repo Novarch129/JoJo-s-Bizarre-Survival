@@ -23,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -321,6 +322,8 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     public void writeSpawnData(PacketBuffer buffer) {
         if(getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
+        else
+            LogManager.getLogger().debug("write null master");
     }
 
     @Override
