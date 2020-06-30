@@ -128,6 +128,8 @@ public class EntityTheWorld extends EntityStandBase {
 											props.setFire(entity.getFireTimer());
 											if (entity instanceof TNTEntity)
 												props.setFuse(((TNTEntity) entity).getFuse());
+											if(entity instanceof ItemEntity)
+												props.setAge(((ItemEntity)entity).getAge());
 										});
 									} else {
 										Timestop.getLazyOptional(entity).ifPresent(props -> {
@@ -147,6 +149,8 @@ public class EntityTheWorld extends EntityStandBase {
 												entity.setFireTimer(props.getFire());
 												if (entity instanceof TNTEntity)
 													((TNTEntity) entity).setFuse(props.getFuse());
+												if(entity instanceof ItemEntity)
+													((ItemEntity)entity).age = props.getAge();
 												entity.velocityChanged = true;
 											} else {
 												props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -156,6 +160,8 @@ public class EntityTheWorld extends EntityStandBase {
 												props.setFire(entity.getFireTimer());
 												if (entity instanceof TNTEntity)
 													props.setFuse(((TNTEntity) entity).getFuse());
+												if(entity instanceof ItemEntity)
+													props.setAge(((ItemEntity)entity).getAge());
 											}
 										});
 									}
