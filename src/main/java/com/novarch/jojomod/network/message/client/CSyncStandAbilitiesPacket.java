@@ -142,9 +142,8 @@ public class CSyncStandAbilitiesPacket {
                                                             Minecraft.getInstance().getProfiler().endSection();
                                                         }
                                                     }
-                                                }
-//												} else
-//													((EntityTheHand) entity).teleportMaster(((EntityTheHand) entity).getMaster().getEntityId());
+                                                } else
+                                                	((EntityTheHand) entity).teleportMaster(((EntityTheHand) entity).getMaster().getEntityId());
 											});
 									break;
 								}

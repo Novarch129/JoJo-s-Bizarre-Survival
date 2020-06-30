@@ -1,6 +1,5 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
 import mcp.MethodsReturnNonnullByDefault;
@@ -22,7 +21,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
-import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;

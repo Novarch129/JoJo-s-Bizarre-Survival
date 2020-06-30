@@ -34,7 +34,13 @@ public class RenderStarPlatinumPunch extends EntityRenderer<EntityStandPunch.Sta
 
 	public void renderEntityModel(@Nonnull EntityStandPunch.StarPlatinum entityIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
 	{
-		renderManager.textureManager.bindTexture(texture);
+//		renderManager.textureManager.bindTexture(texture);
+//		matrixStackIn.push();
+//		matrixStackIn.translate(entityIn.getPosX(), entityIn.getPosY(), entityIn.getPosZ());
+//		matrixStackIn.scale(2.0f, 2.0f, 2.0f);
+//		punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0);
+//		Minecraft.getInstance().textureManager.bindTexture(texture);
+//		matrixStackIn.pop();
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());
 		GL11.glRotatef(entityIn.prevRotationYaw + (entityIn.rotationYaw - entityIn.prevRotationYaw) * packedLightIn - 90.0F, 0.0F, 1.0F, 0.0F);
