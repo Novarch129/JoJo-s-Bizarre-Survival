@@ -35,6 +35,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     private float fallDistance = 0;
     private int fuse = 0;
     private int fire = 0;
+    private int age = 0;
 
     @CapabilityInject(ITimestop.class)
     public static final Capability<ITimestop> TIMESTOP = Null();
@@ -152,6 +153,17 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public void setAge(int age) {
+        this.age = age;
+        onDataUpdated();
+    }
+
+    @Override
     public void putPosX(double posX) {
         this.posX = posX;
     }
@@ -209,6 +221,11 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void putFire(int fire) {
         this.fire = fire;
+    }
+
+    @Override
+    public void putAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -275,6 +292,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 nbt.putFloat("fallDistance", instance.getFallDistance());
                 nbt.putInt("fuse", instance.getFuse());
                 nbt.putInt("fire", instance.getFire());
+                nbt.putInt("age", instance.getAge());
                 return nbt;
             }
 
@@ -292,7 +310,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
                 instance.putFallDistance(compoundNBT.getInt("fallDistance"));
                 instance.putFuse(compoundNBT.getInt("fuse"));
-                instance.putFire(compoundNBT.getInt("fire"));
+                instance.putAge(compoundNBT.getInt("age"));
             }
         }, () -> new Timestop(Null()));
     }

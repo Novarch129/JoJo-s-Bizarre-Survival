@@ -22,6 +22,8 @@ public interface ITimestop {
     void setFuse(int fuse);
     int getFire();
     void setFire(int fire);
+    int getAge();
+    void setAge(int age);
     void putPosX(double posX);
     void putPosY(double posY);
     void putPosZ(double posZ);
@@ -34,6 +36,7 @@ public interface ITimestop {
     void putFallDistance(float fallDistance);
     void putFuse(int fuse);
     void putFire(int fire);
+    void putAge(int age);
     void onDataUpdated();
     void clear();
 }

@@ -19,6 +19,7 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.item.minecart.TNTMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.EffectInstance;
@@ -128,6 +129,10 @@ public class EntityTheWorld extends EntityStandBase {
 											props.setFire(entity.getFireTimer());
 											if (entity instanceof TNTEntity)
 												props.setFuse(((TNTEntity) entity).getFuse());
+											if (entity instanceof TNTMinecartEntity)
+												props.setFuse(((TNTMinecartEntity) entity).minecartTNTFuse);
+											if (entity instanceof ItemEntity)
+												props.setAge(((ItemEntity) entity).age);
 										});
 									} else {
 										Timestop.getLazyOptional(entity).ifPresent(props -> {
@@ -140,13 +145,17 @@ public class EntityTheWorld extends EntityStandBase {
 													entity.rotationPitch = props.getRotationPitch();
 													entity.setRotationYawHead(props.getRotationYawHead());
 												}
-												if(entity instanceof PlayerEntity)
-													((PlayerEntity)entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 50, 255, false, false));
+												if (entity instanceof PlayerEntity)
+													((PlayerEntity) entity).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 50, 255, false, false));
 												entity.setMotion(0, 0, 0);
 												entity.fallDistance = props.getFallDistance();
 												entity.setFireTimer(props.getFire());
 												if (entity instanceof TNTEntity)
 													((TNTEntity) entity).setFuse(props.getFuse());
+												if (entity instanceof TNTMinecartEntity)
+													((TNTMinecartEntity) entity).minecartTNTFuse = props.getFuse();
+												if (entity instanceof ItemEntity)
+													((ItemEntity) entity).age = props.getAge();
 												entity.velocityChanged = true;
 											} else {
 												props.setPosition(entity.getPosX(), entity.getPosY(), entity.getPosZ());
@@ -156,6 +165,10 @@ public class EntityTheWorld extends EntityStandBase {
 												props.setFire(entity.getFireTimer());
 												if (entity instanceof TNTEntity)
 													props.setFuse(((TNTEntity) entity).getFuse());
+												if (entity instanceof TNTMinecartEntity)
+													props.setFuse(((TNTMinecartEntity) entity).minecartTNTFuse);
+												if (entity instanceof ItemEntity)
+													props.setAge(((ItemEntity) entity).age);
 											}
 										});
 									}
@@ -177,8 +190,8 @@ public class EntityTheWorld extends EntityStandBase {
 										if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
 											entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
 									}
-									if(entity instanceof PlayerEntity)
-										((PlayerEntity)entity).removePotionEffect(Effects.SLOWNESS);
+									if (entity instanceof PlayerEntity)
+										((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
 									if (entity instanceof MobEntity)
 										((MobEntity) entity).setNoAI(false);
 									entity.velocityChanged = true;
@@ -288,8 +301,8 @@ public class EntityTheWorld extends EntityStandBase {
 									if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
 										entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
 								}
-								if(entity instanceof PlayerEntity)
-									((PlayerEntity)entity).removePotionEffect(Effects.SLOWNESS);
+								if (entity instanceof PlayerEntity)
+									((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
 								if (entity instanceof MobEntity)
 									((MobEntity) entity).setNoAI(false);
 								entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
