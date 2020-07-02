@@ -1,7 +1,9 @@
 package com.novarch.jojomod.entities.stands;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.events.custom.StandEvent;
+import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,6 +15,7 @@ import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -21,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;
@@ -259,13 +263,16 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
             super.applyEntityCollision(entityIn);
     }
 
+    /**
+     * Posts the {@link com.novarch.jojomod.events.custom.StandEvent.StandSummonedEvent} and sends a {@link SSyncStandMasterPacket} because I'm paranoid.
+     */
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
-//        if(!world.isRemote)
-//            if(getMaster() != null)
-//                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
+        if(!world.isRemote)
+            if(getMaster() != null)
+                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
     @Override
@@ -277,13 +284,13 @@ public abstract class EntityStandBase extends MobEntity implements IEntityAdditi
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
-        compound.putUniqueId("MasterUUID", getMasterUUID());
+        compound.putInt("MasterID", getMaster().getEntityId());
     }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        this.setMasterUUID(compound.getUniqueId("MasterUUID"));
+        setMaster((PlayerEntity) world.getEntityByID(compound.getInt("MasterID")));
     }
 
     @Override

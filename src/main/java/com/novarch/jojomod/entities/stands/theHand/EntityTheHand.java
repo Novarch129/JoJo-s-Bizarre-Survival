@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -50,15 +51,16 @@ public class EntityTheHand extends EntityStandBase {
 			entity.setMotion(-motionX * (entity.getDistance(getMaster()) / 4), -motionY * (entity.getDistance(getMaster()) / 4), -motionZ * (entity.getDistance(getMaster()) / 4));
 	}
 
-	public void teleportMaster(int id) {
-		PlayerEntity master = (PlayerEntity) world.getEntityByID(id);
+	//TODO Fix player not teleporting
+	public void teleportMaster() {
+		PlayerEntity master = getMaster();
 		if(master == null || world.isRemote) return;
 		int distance = 20;
-		float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292F - (float)Math.PI);
-		float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292F - (float)Math.PI);
-		float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292F);
-		float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292F);
-		master.setMotion(distance * f2 * f3, distance * f4, distance * f1 * f3);
+		float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float)Math.PI);
+		float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float)Math.PI);
+		float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);
+		float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292f);
+		master.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
 	}
 
 	@Override

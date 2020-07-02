@@ -6,7 +6,6 @@ import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
 import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
 import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
 import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
 import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
@@ -35,6 +34,7 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,37 +48,57 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
+    private static PlayerEntity playerEntity;
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
+        playerEntity = player;
 
         if (!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
             player.setGlowing(false);
 
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getCooldown() == 0.5)
+            int standID = props.getStandID();
+            boolean standOn = props.getStandOn();
+            boolean ability = props.getAbility();
+            double cooldown = props.getCooldown();
+            double timeLeft = props.getTimeLeft();
+
+            if (cooldown == 0.5)
                 props.setTimeLeft(1000);
 
-            if (props.getStandID() == Util.StandID.GER)
+            if (standID == Util.StandID.GER)
                 player.clearActivePotions();
 
-            if (!props.getStandOn()) {
-                if (props.getCooldown() > 0)
+            if (!standOn) {
+                if (cooldown > 0)
                     props.subtractCooldown(0.5);
 
-                if (props.getTimeLeft() < 1000)
+                if (timeLeft < 1000)
                     props.addTimeLeft(0.5);
 
                 player.setInvulnerable(false);
-            } else if (props.getStandOn() && !props.getAbility()) {
-                if (props.getCooldown() > 0)
+            } else if (standOn && !ability) {
+                if (cooldown > 0)
                     props.subtractCooldown(0.5);
 
-                if (props.getTimeLeft() < 1000)
+                if (timeLeft < 1000)
                     props.addTimeLeft(0.5);
             }
+
+            if((standID == Util.StandID.kingCrimson) && (standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+                player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
+    }
+
+    @SubscribeEvent
+    public static void livingTick(LivingEvent.LivingUpdateEvent event) {
+        if(!event.getEntityLiving().isPotionActive(EffectInit.CRIMSON.get()) || !event.getEntityLiving().isPotionActive(Effects.GLOWING))
+            event.getEntityLiving().setGlowing(false);
+        if (playerEntity != null)
+            if (playerEntity.isCrouching())
+                event.setCanceled(true);
     }
 
     @SubscribeEvent

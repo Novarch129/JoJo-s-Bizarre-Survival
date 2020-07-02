@@ -34,8 +34,8 @@ public class SSyncStandMasterPacket {
                 if(Minecraft.getInstance().world == null) return;
                 Entity stand = Minecraft.getInstance().world.getEntityByID(msg.standID);
                 Entity master = Minecraft.getInstance().world.getEntityByID(msg.masterID);
-                if(stand != null && master != null)
-                    ((EntityStandBase)stand).setMaster((PlayerEntity) master);
+                if(stand != null && master != null && stand.world.isRemote)
+                    ((EntityStandBase) stand).setMaster((PlayerEntity) master);
             });
         }
         ctx.get().setPacketHandled(true);
