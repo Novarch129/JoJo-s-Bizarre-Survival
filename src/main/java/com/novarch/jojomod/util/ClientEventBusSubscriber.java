@@ -1,45 +1,11 @@
 package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.entities.fakePlayer.RenderFakePlayerEntity;
-import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmith;
-import com.novarch.jojomod.entities.stands.aerosmith.RenderAerosmithBullet;
-import com.novarch.jojomod.entities.stands.cMoon.RenderCMoon;
-import com.novarch.jojomod.entities.stands.cMoon.RenderCMoonPunch;
-import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamond;
-import com.novarch.jojomod.entities.stands.crazyDiamond.RenderCrazyDiamondPunch;
-import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheap;
-import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.RenderDirtyDeedsDoneDirtCheapPunch;
-import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperience;
-import com.novarch.jojomod.entities.stands.goldExperience.RenderGoldExperiencePunch;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExperienceRequiem;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.RenderGoldExperienceRequiemPunch;
-import com.novarch.jojomod.entities.stands.killerQueen.RenderKillerQueen;
-import com.novarch.jojomod.entities.stands.killerQueen.RenderKillerQueenPunch;
-import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.RenderSheerHeartAttack;
-import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimson;
-import com.novarch.jojomod.entities.stands.kingCrimson.RenderKingCrimsonPunch;
-import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeaven;
-import com.novarch.jojomod.entities.stands.madeInHeaven.RenderMadeInHeavenPunch;
-import com.novarch.jojomod.entities.stands.magiciansRed.RenderMagiciansRed;
-import com.novarch.jojomod.entities.stands.magiciansRed.RenderMagiciansRedFlames;
-import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHaze;
-import com.novarch.jojomod.entities.stands.purpleHaze.RenderPurpleHazePunch;
-import com.novarch.jojomod.entities.stands.silverChariot.RenderSilverChariot;
-import com.novarch.jojomod.entities.stands.silverChariot.RenderSilverChariotSword;
-import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinum;
-import com.novarch.jojomod.entities.stands.starPlatinum.RenderStarPlatinumPunch;
-import com.novarch.jojomod.entities.stands.theEmperor.RenderEmperorBullet;
-import com.novarch.jojomod.entities.stands.theHand.RenderTheHand;
-import com.novarch.jojomod.entities.stands.theHand.RenderTheHandPunch;
-import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorld;
-import com.novarch.jojomod.entities.stands.theWorld.RenderTheWorldPunch;
-import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReport;
-import com.novarch.jojomod.entities.stands.weatherReport.RenderWeatherReportPunch;
-import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnake;
-import com.novarch.jojomod.entities.stands.whitesnake.RenderWhitesnakePunch;
+import com.novarch.jojomod.client.entity.render.*;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.KeyInit;
+import net.minecraft.client.renderer.entity.ArrowRenderer;
+import net.minecraft.client.renderer.entity.SpectralArrowRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -111,5 +77,7 @@ public class ClientEventBusSubscriber
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_HAND.get(), RenderTheHand::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_HAND_PUNCH.get(), RenderTheHandPunch::new);
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityInit.STAND_ARROW.get(), StandArrowRenderer::new);
 	}
 }

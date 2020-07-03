@@ -1,7 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
+import com.novarch.jojomod.entities.FakePlayerEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -52,12 +52,12 @@ public class CSyncAbilityPacket {
 
                 if (props.getAbility()) {
                     switch (standID) {
-                        case Util.StandID.theHand:
-                        case Util.StandID.magiciansRed:
-                        case Util.StandID.killerQueen:
-                        case Util.StandID.theEmperor:
+                        case Util.StandID.THE_HAND:
+                        case Util.StandID.MAGICIANS_RED:
+                        case Util.StandID.KILLER_QUEEN:
+                        case Util.StandID.THE_EMPEROR:
                             break;
-                        case Util.StandID.goldExperience: {
+                        case Util.StandID.GOLD_EXPERIENCE: {
                             player.sendMessage(new StringTextComponent("Mode: Lifegiver"));
                             break;
                         }
@@ -65,35 +65,35 @@ public class CSyncAbilityPacket {
                             player.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
                             break;
                         }
-                        case Util.StandID.aerosmith: {
+                        case Util.StandID.AEROSMITH: {
                             player.sendMessage(new StringTextComponent("Ability: ON"));
                             if (standOn)
                                 player.world.addEntity(fakePlayer);
                         }
                         default: {
-                            if (standID != Util.StandID.madeInHeaven || act != 0)
+                            if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
                                 player.sendMessage(new StringTextComponent("Ability: ON"));
                         }
                     }
                 } else {
                     switch (standID) {
-                        case Util.StandID.theHand:
-                        case Util.StandID.magiciansRed:
-                        case Util.StandID.theEmperor:
-                        case Util.StandID.killerQueen:
+                        case Util.StandID.THE_HAND:
+                        case Util.StandID.MAGICIANS_RED:
+                        case Util.StandID.THE_EMPEROR:
+                        case Util.StandID.KILLER_QUEEN:
                             break;
-                        case Util.StandID.goldExperience:
+                        case Util.StandID.GOLD_EXPERIENCE:
                         case Util.StandID.GER: {
                             player.sendMessage(new StringTextComponent("Mode: Normal"));
                             break;
                         }
                         default: {
-                            if (standID != Util.StandID.madeInHeaven || act != 0)
+                            if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
                                 player.sendMessage(new StringTextComponent("Ability: OFF"));
-                            if (props.getStandID() == Util.StandID.theWorld && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
+                            if (props.getStandID() == Util.StandID.THE_WORLD && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
                                 player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
 
-                            if (props.getStandID() == Util.StandID.starPlatinum && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
+                            if (props.getStandID() == Util.StandID.STAR_PLATINUM && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
                                 player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
                         }
                     }

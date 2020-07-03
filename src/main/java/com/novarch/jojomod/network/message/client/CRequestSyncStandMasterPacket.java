@@ -1,7 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +37,7 @@ public class CRequestSyncStandMasterPacket {
                 Entity stand = ctx.get().getSender().world.getEntityByID(msg.standID);
                 if(stand != null && !stand.world.isRemote) {
                     LogManager.getLogger().debug("run");
-                    PlayerEntity master = ((EntityStandBase)stand).getMaster();
+                    PlayerEntity master = ((AbstractStandEntity)stand).getMaster();
                     if(master != null)
                         JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> stand), new SSyncStandMasterPacket(stand.getEntityId(), master.getEntityId()));
                 }

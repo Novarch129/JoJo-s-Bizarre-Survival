@@ -4,9 +4,9 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
-import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
-import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
+import com.novarch.jojomod.entities.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.SheerHeartAttackEntity;
+import com.novarch.jojomod.entities.stands.TheWorldEntity;
 import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.Entity;
@@ -20,17 +20,14 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-import static com.novarch.jojomod.util.Util.StandID.theWorld;
+import static com.novarch.jojomod.util.Util.StandID.THE_WORLD;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class EventSyncCapability
-{
+public class EventSyncCapability {
     @SubscribeEvent
-    public static void saveStand(PlayerEvent.Clone event)
-    {
-        if(!event.isWasDeath() || JojoBizarreSurvivalConfig.COMMON.saveStandOnDeath.get())
-        {
+    public static void saveStand(PlayerEvent.Clone event) {
+        if (!event.isWasDeath() || JojoBizarreSurvivalConfig.COMMON.saveStandOnDeath.get()) {
             Stand.getLazyOptional(event.getOriginal()).ifPresent(originalProps -> {
                 ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
                 Stand.getLazyOptional(player).ifPresent(newProps -> newProps.clone(originalProps));
@@ -39,43 +36,40 @@ public class EventSyncCapability
     }
 
     @SubscribeEvent
-    public static void playerRespawn(PlayerEvent.PlayerRespawnEvent event)
-    {
+    public static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         Stand.getLazyOptional(player).ifPresent(props -> JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props)));
     }
 
     @SubscribeEvent
-    public static void playerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
-    {
+    public static void playerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         Stand.getLazyOptional(player).ifPresent(props -> JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props)));
     }
 
     @SubscribeEvent
-    public static void playerJoinWorld(PlayerEvent.PlayerLoggedInEvent event)
-    {
+    public static void playerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         Stand.getLazyOptional(player).ifPresent(props -> JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props)));
     }
 
     @SubscribeEvent
-    public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event)
-    {
+    public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> {
             props.putStandOn(false);
+            props.putAct(0);
             if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)
                         .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
                         .forEach(Entity::remove);
                 player.getServerWorld().getEntities()
-                        .filter(entity -> entity instanceof EntitySheerHeartAttack)
-                        .filter(entity -> ((EntitySheerHeartAttack) entity).getMaster() == player)
+                        .filter(entity -> entity instanceof SheerHeartAttackEntity)
+                        .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster() == player)
                         .forEach(Entity::remove);
-                if (props.getStandID() == theWorld) {
+                if (props.getStandID() == THE_WORLD) {
                     player.getServerWorld().getEntities()
                             .forEach(entity -> {
                                 Timestop.getLazyOptional(entity).ifPresent(props2 -> {
@@ -95,11 +89,11 @@ public class EventSyncCapability
                                     props2.clear();
 
                                 });
-                                if (entity instanceof EntityTheWorld)
-                                    if (entity == EntityTheWorld.theWorld)
-                                        EntityTheWorld.theWorld = null;
+                                if (entity instanceof TheWorldEntity)
+                                    if (entity == TheWorldEntity.theWorld)
+                                        TheWorldEntity.theWorld = null;
                             });
-                } else if(props.getStandID() == Util.StandID.starPlatinum) {
+                } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                     player.getServerWorld().getEntities()
                             .forEach(entity -> {
                                 Timestop.getLazyOptional(entity).ifPresent(props2 -> {
@@ -119,9 +113,9 @@ public class EventSyncCapability
                                     props2.clear();
 
                                 });
-                                if (entity instanceof EntityTheWorld)
-                                    if (entity == EntityTheWorld.theWorld)
-                                        EntityTheWorld.theWorld = null;
+                                if (entity instanceof TheWorldEntity)
+                                    if (entity == TheWorldEntity.theWorld)
+                                        TheWorldEntity.theWorld = null;
                             });
                 }
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));

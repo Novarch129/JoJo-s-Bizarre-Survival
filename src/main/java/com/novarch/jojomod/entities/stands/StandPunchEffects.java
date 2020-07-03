@@ -1,9 +1,6 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
-import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
-import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
@@ -42,30 +39,30 @@ import javax.annotation.Nullable;
 @SuppressWarnings({"unused", "ConstantConditions"})
 public abstract class StandPunchEffects {
 	/**
-	 * Gets the appropriate effect for an {@link EntityStandPunch} based on it's {@link Util.StandID}.
+	 * Gets the appropriate effect for an {@link AbstractStandPunchEntity} based on it's {@link Util.StandID}.
 	 *
-	 * @param result	The {@link RayTraceResult} of the {@link EntityStandPunch}.
-	 * @param entityIn	The {@link LivingEntity} that the {@link EntityStandPunch} has hit, {@link Nullable}.
-	 * @param punch		The {@link EntityStandPunch} that called the method
+	 * @param result	The {@link RayTraceResult} of the {@link AbstractStandPunchEntity}.
+	 * @param entityIn	The {@link LivingEntity} that the {@link AbstractStandPunchEntity} has hit, {@link Nullable}.
+	 * @param punch		The {@link AbstractStandPunchEntity} that called the method
 	 * @param isEntity	A <code>boolean</code> that defines whether the punch hit a {@link LivingEntity} or a {@link Block}.
-	 * @param standID	The {@link Util.StandID} of the {@link EntityStandPunch} that called the method, used to determine what effect the punch will have.
+	 * @param standID	The {@link Util.StandID} of the {@link AbstractStandPunchEntity} that called the method, used to determine what effect the punch will have.
 	 */
-	public static void getStandSpecific(RayTraceResult result, @Nullable LivingEntity entityIn, EntityStandPunch punch, boolean isEntity, int standID) {
+	public static void getStandSpecific(RayTraceResult result, @Nullable LivingEntity entityIn, AbstractStandPunchEntity punch, boolean isEntity, int standID) {
 		if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent(punch, result, entityIn, isEntity))) return;
 		switch (standID) {
-			case Util.StandID.kingCrimson: {
+			case Util.StandID.KING_CRIMSON: {
 				kingCrimson(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.dirtyDeedsDoneDirtCheap: {
+			case Util.StandID.D4C: {
 				dirtyDeedsDoneDirtCheap(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.goldExperience: {
+			case Util.StandID.GOLD_EXPERIENCE: {
 				goldExperience(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.madeInHeaven: {
+			case Util.StandID.MADE_IN_HEAVEN: {
 				madeInHeaven(result, entityIn, punch, isEntity);
 				break;
 			}
@@ -73,47 +70,47 @@ public abstract class StandPunchEffects {
 				goldExperienceRequiem(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.aerosmith: {
+			case Util.StandID.AEROSMITH: {
 				aerosmith(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.weatherReport: {
+			case Util.StandID.WEATHER_REPORT: {
 				weatherReport(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.killerQueen: {
+			case Util.StandID.KILLER_QUEEN: {
 				killerQueen(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.crazyDiamond: {
+			case Util.StandID.CRAZY_DIAMOND: {
 				crazyDiamond(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.purpleHaze: {
+			case Util.StandID.PURPLE_HAZE: {
 				purpleHaze(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.whitesnake: {
+			case Util.StandID.WHITESNAKE: {
 				whitesnake(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.cMoon: {
+			case Util.StandID.CMOON: {
 				cMoon(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.theWorld: {
+			case Util.StandID.THE_WORLD: {
 				theWorld(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.starPlatinum: {
+			case Util.StandID.STAR_PLATINUM: {
 				starPlatinum(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.magiciansRed: {
+			case Util.StandID.MAGICIANS_RED: {
 				magiciansRed(result, entityIn, punch, isEntity);
 				break;
 			}
-			case Util.StandID.theHand: {
+			case Util.StandID.THE_HAND: {
 				theHand(result, entityIn, punch, isEntity);
 			}
 			default: {
@@ -123,7 +120,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void basicDefault(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void basicDefault(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if(isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			livingEntity.attackEntityFrom(DamageSource.GENERIC, 1.0f);
@@ -134,7 +131,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void kingCrimson(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void kingCrimson(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
@@ -164,7 +161,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void dirtyDeedsDoneDirtCheap(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
@@ -191,7 +188,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void madeInHeaven(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void madeInHeaven(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if(Stand.getCapabilityFromPlayer(punch.standMaster).getAct() == 2) {
 			whitesnake(result, livingEntity, punch, isEntity);
 			return;
@@ -254,7 +251,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void goldExperience(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void goldExperience(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if (punch.shootingStand.ability) {
@@ -631,7 +628,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void goldExperienceRequiem(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void goldExperienceRequiem(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if (punch.shootingStand.ability) {
@@ -1014,7 +1011,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void aerosmith(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch bullet, boolean isEntity) {
+	public static void aerosmith(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity bullet, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(bullet, result, livingEntity))) return;
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(bullet.shootingStand.getMaster()), 1.5f);
@@ -1044,7 +1041,7 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void weatherReport(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void weatherReport(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 1.0f);
@@ -1066,7 +1063,7 @@ public abstract class StandPunchEffects {
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
 			if (hardness != -1.0f && hardness < 3.0f) {
-				if (!((EntityStandPunch.WeatherReport) punch).isLightning()) {
+				if (!((AbstractStandPunchEntity.WeatherReport) punch).isLightning()) {
 					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItem(punch.standMaster.getActiveHand()));
 				} else {
@@ -1080,11 +1077,11 @@ public abstract class StandPunchEffects {
 		}
 	}
 
-	public static void killerQueen(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void killerQueen(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
-			((EntityKillerQueen) punch.shootingStand).setBombEntity(livingEntity);
+			((KillerQueenEntity) punch.shootingStand).setBombEntity(livingEntity);
 			livingEntity.attackEntityFrom(DamageSource.causeMobDamage(punch.standMaster), 0.5f);
 			livingEntity.hurtResistantTime = 0;
 			livingEntity.setMotion(0, livingEntity.getMotion().getY(), livingEntity.getMotion().getZ());
@@ -1107,7 +1104,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void crazyDiamond(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void crazyDiamond(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
@@ -1131,7 +1128,7 @@ public abstract class StandPunchEffects {
 			if (hardness != -1.0f && hardness < 3.0f) {
 				if (blockState.getMaterial() != Material.AIR && blockState.getMaterial() != Material.WATER && punch.shootingStand.ability) {
 					if (punch.world.getBlockState(blockPos).getMaterial() != Material.AIR && punch.world.getBlockState(blockPos).getMaterial() != Material.WATER)
-						((EntityCrazyDiamond) punch.shootingStand).putRepairBlock(blockPos, blockState);
+						((CrazyDiamondEntity) punch.shootingStand).putRepairBlock(blockPos, blockState);
 				}
 				punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 				if (!punch.shootingStand.ability)
@@ -1141,7 +1138,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void purpleHaze(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void purpleHaze(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
@@ -1172,14 +1169,14 @@ public abstract class StandPunchEffects {
 					punch.world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 					if (punch.shootingStand.ability)
-						((EntityPurpleHaze) punch.shootingStand).burstCapsule();
+						((PurpleHazeEntity) punch.shootingStand).burstCapsule();
 				}
 			}
 		}
 		punch.remove();
 	}
 
-	public static void whitesnake(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void whitesnake(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 
@@ -1187,7 +1184,7 @@ public abstract class StandPunchEffects {
 				if(livingEntity instanceof PlayerEntity)
 					Stand.getLazyOptional((PlayerEntity) livingEntity).ifPresent(props -> {
 						if(props.getStandID() != 0 && props.getStandID() != Util.StandID.GER && livingEntity.getHealth() <= livingEntity.getMaxHealth() / 2) {
-							ItemStack itemStack = new ItemStack(ItemInit.stand_disc.get());
+							ItemStack itemStack = new ItemStack(ItemInit.STAND_DISC.get());
 							CompoundNBT nbt = itemStack.getTag() == null ? new CompoundNBT() : itemStack.getTag();
 							if (punch.standMaster.inventory.getStackInSlot(punch.standMaster.inventory.getBestHotbarSlot()).isEmpty()) {
 								punch.standMaster.inventory.currentItem = punch.standMaster.inventory.getBestHotbarSlot();
@@ -1222,9 +1219,9 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void cMoon(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void cMoon(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		Stand.getLazyOptional(punch.standMaster).ifPresent(props -> {
-			if(props.getAct() == 1 && props.getStandID() == Util.StandID.cMoon) {
+			if(props.getAct() == 1 && props.getStandID() == Util.StandID.CMOON) {
 				whitesnake(result, livingEntity, punch, isEntity);
 			}
 		});
@@ -1260,7 +1257,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void theWorld(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void theWorld(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if (punch.shootingStand.orarush)
@@ -1289,7 +1286,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void starPlatinum(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void starPlatinum(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if(livingEntity instanceof DolphinEntity) {
@@ -1323,7 +1320,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void silverChariot(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch sword, boolean isEntity) {
+	public static void silverChariot(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity sword, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(sword, result, livingEntity))) return;
 			if (sword.shootingStand.orarush)
@@ -1352,7 +1349,7 @@ public abstract class StandPunchEffects {
 		sword.remove();
 	}
 
-	public static void magiciansRed(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void magiciansRed(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if (punch.shootingStand.orarush) {
@@ -1375,7 +1372,7 @@ public abstract class StandPunchEffects {
 			BlockPos blockPos = new BlockPos(punch.getXTile(), punch.getYTile(), punch.getZTile());
 			BlockState blockState = punch.world.getBlockState(blockPos);
 			float hardness = blockState.getBlockHardness(punch.world, blockPos);
-			if(!((EntityStandPunch.MagiciansRed)punch).isExplosive()) {
+			if(!((AbstractStandPunchEntity.MagiciansRed)punch).isExplosive()) {
 				if (hardness != -1.0f && hardness < 3.0f) {
 					block.harvestBlock(punch.world, punch.standMaster, blockPos, blockState, null, punch.standMaster.getHeldItemMainhand());
 					punch.world.setBlockState(blockPos, Blocks.FIRE.getDefaultState());
@@ -1386,7 +1383,7 @@ public abstract class StandPunchEffects {
 		punch.remove();
 	}
 
-	public static void theHand(RayTraceResult result, LivingEntity livingEntity, EntityStandPunch punch, boolean isEntity) {
+	public static void theHand(RayTraceResult result, LivingEntity livingEntity, AbstractStandPunchEntity punch, boolean isEntity) {
 		if (isEntity) {
 			if(MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(punch, result, livingEntity))) return;
 			if (punch.world.rand.nextBoolean())

@@ -1,13 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
-import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
-import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
-import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
+import com.novarch.jojomod.entities.stands.*;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -48,59 +42,59 @@ public class CSyncStandAbilitiesPacket {
 				PlayerEntity player = ctx.get().getSender();
 				if (player == null) return;
 				World world = player.world;
-				if (world != null)
+				if (world != null) {
 					if (!world.isRemote) {
 						Stand.getLazyOptional(player).ifPresent(props -> {
 							switch (props.getStandID()) {
-								case killerQueen: {
+								case KILLER_QUEEN: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityKillerQueen)
-											.filter(entity -> ((EntityKillerQueen) entity).getMaster().getEntityId() == player.getEntityId())
+											.filter(entity -> entity instanceof KillerQueenEntity)
+											.filter(entity -> ((KillerQueenEntity) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
 												if (message.action == 1)
-													((EntityKillerQueen) entity).detonate();
+													((KillerQueenEntity) entity).detonate();
 												else
-													((EntityKillerQueen) entity).toggleSheerHeartAttack();
+													((KillerQueenEntity) entity).toggleSheerHeartAttack();
 											});
 									break;
 								}
 								case GER: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityGoldExperienceRequiem)
-											.filter(entity -> ((EntityGoldExperienceRequiem) entity).getMaster().getEntityId() == player.getEntityId())
+											.filter(entity -> entity instanceof GoldExperienceRequiemEntity)
+											.filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
 												if (message.action == 1)
-													((EntityGoldExperienceRequiem) entity).toggleTruth();
+													((GoldExperienceRequiemEntity) entity).toggleTruth();
 												else
-													((EntityGoldExperienceRequiem) entity).toggleFlight();
+													((GoldExperienceRequiemEntity) entity).toggleFlight();
 											});
 									break;
 								}
-								case aerosmith: {
+								case AEROSMITH: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityAerosmith)
-											.filter(entity -> ((EntityAerosmith) entity).getMaster().getEntityId() == player.getEntityId())
-											.forEach(entity -> ((EntityAerosmith) entity).shootBomb());
+											.filter(entity -> entity instanceof AerosmithEntity)
+											.filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((AerosmithEntity) entity).shootBomb());
 									break;
 								}
-								case crazyDiamond: {
+								case CRAZY_DIAMOND: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityCrazyDiamond)
-											.filter(entity -> ((EntityCrazyDiamond) entity).getMaster().getEntityId() == player.getEntityId())
-											.forEach(entity -> ((EntityCrazyDiamond) entity).repair());
+											.filter(entity -> entity instanceof CrazyDiamondEntity)
+											.filter(entity -> ((CrazyDiamondEntity) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((CrazyDiamondEntity) entity).repair());
 									break;
 								}
-								case weatherReport: {
+								case WEATHER_REPORT: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityWeatherReport)
-											.filter(entity -> ((EntityWeatherReport) entity).getMaster().getEntityId() == player.getEntityId())
-											.forEach(entity -> ((EntityWeatherReport) entity).changeWeather());
+											.filter(entity -> entity instanceof WeatherReportEntity)
+											.filter(entity -> ((WeatherReportEntity) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((WeatherReportEntity) entity).changeWeather());
 									break;
 								}
-								case theHand: {
+								case THE_HAND: {
 									world.getServer().getWorld(player.dimension).getEntities()
-											.filter(entity -> entity instanceof EntityTheHand)
-											.filter(entity -> ((EntityTheHand) entity).getMaster().getEntityId() == player.getEntityId())
+											.filter(entity -> entity instanceof TheHandEntity)
+											.filter(entity -> ((TheHandEntity) entity).getMaster().getEntityId() == player.getEntityId())
 											.forEach(entity -> {
 												if (message.action == 1) {
 													Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
@@ -122,13 +116,13 @@ public class CSyncStandAbilitiesPacket {
 																			vec3d,
 																			vec3d2,
 																			axisalignedbb,
-																			Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof EntityStandPunch)),
+																			Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandPunchEntity)),
 																			3000);
 															if (entityRayTraceResult != null) {
 																Entity entity11 = entityRayTraceResult.getEntity();
 																Vec3d vec3d3 = entityRayTraceResult.getHitVec();
 																if (entity11 != null)
-																	((EntityTheHand) entity).teleportEntity(entity11.getEntityId());
+																	((TheHandEntity) entity).teleportEntity(entity11.getEntityId());
 																double d2 = vec3d.squareDistanceTo(vec3d3);
 																if (flag && d2 > 9.0D) {
 																	Minecraft.getInstance().objectMouseOver = BlockRayTraceResult.createMiss(vec3d3, Direction.getFacingFromVector(vec3d1.x, vec3d1.y, vec3d1.z), new BlockPos(vec3d3));
@@ -143,7 +137,7 @@ public class CSyncStandAbilitiesPacket {
 														}
 													}
 												} else
-													((EntityTheHand) entity).teleportMaster();
+													((TheHandEntity) entity).teleportMaster();
 											});
 									break;
 								}
@@ -152,6 +146,7 @@ public class CSyncStandAbilitiesPacket {
 							}
 						});
 					}
+				}
 			});
 		}
 		ctx.get().setPacketHandled(true);

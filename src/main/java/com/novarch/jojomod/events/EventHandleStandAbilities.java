@@ -4,20 +4,20 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
-import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
-import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
+import com.novarch.jojomod.entities.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
+import com.novarch.jojomod.entities.stands.AerosmithEntity;
+import com.novarch.jojomod.entities.stands.StarPlatinumEntity;
+import com.novarch.jojomod.entities.stands.TheWorldEntity;
 import com.novarch.jojomod.events.custom.AbilityEvent;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.item.StandDiscItem;
 import com.novarch.jojomod.network.message.client.CRequestSyncStandMasterPacket;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
-import com.novarch.jojomod.objects.items.ItemStandDisc;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -87,7 +87,7 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
             }
 
-            if((standID == Util.StandID.kingCrimson) && (standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if((standID == Util.StandID.KING_CRIMSON) && (standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
@@ -96,9 +96,6 @@ public class EventHandleStandAbilities {
     public static void livingTick(LivingEvent.LivingUpdateEvent event) {
         if(!event.getEntityLiving().isPotionActive(EffectInit.CRIMSON.get()) || !event.getEntityLiving().isPotionActive(Effects.GLOWING))
             event.getEntityLiving().setGlowing(false);
-        if (playerEntity != null)
-            if (playerEntity.isCrouching())
-                event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -143,14 +140,14 @@ public class EventHandleStandAbilities {
         });
         assert Minecraft.getInstance().world != null;
         Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if(entity instanceof EntityStandBase)
-                if(((EntityStandBase) entity).getMaster() == null) {
+            if(entity instanceof AbstractStandEntity)
+                if(((AbstractStandEntity) entity).getMaster() == null) {
                     LogManager.getLogger().debug("nullmaster");
                     JojoBizarreSurvival.INSTANCE.sendToServer(new CRequestSyncStandMasterPacket(entity.getEntityId()));
                 }
-            if (entity instanceof EntityAerosmith)
-                if (((EntityAerosmith) entity).getMaster() != null)
-                    if (player.getEntityId() == ((EntityAerosmith) entity).getMaster().getEntityId()) {
+            if (entity instanceof AerosmithEntity)
+                if (((AerosmithEntity) entity).getMaster() != null)
+                    if (player.getEntityId() == ((AerosmithEntity) entity).getMaster().getEntityId()) {
                         float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
                         float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
 
@@ -178,19 +175,19 @@ public class EventHandleStandAbilities {
         String standName = "";
         if (event.getItemStack().getTag() != null)
             switch (event.getItemStack().getTag().getInt("StandID")) {
-                case Util.StandID.kingCrimson: {
+                case Util.StandID.KING_CRIMSON: {
                     standName = "King Crimson";
                     break;
                 }
-                case Util.StandID.dirtyDeedsDoneDirtCheap: {
+                case Util.StandID.D4C: {
                     standName = "D4C";
                     break;
                 }
-                case Util.StandID.goldExperience: {
+                case Util.StandID.GOLD_EXPERIENCE: {
                     standName = "Gold Experience";
                     break;
                 }
-                case Util.StandID.madeInHeaven: {
+                case Util.StandID.MADE_IN_HEAVEN: {
                     standName = "Made in Heaven";
                     break;
                 }
@@ -198,63 +195,63 @@ public class EventHandleStandAbilities {
                     standName = "Gold Experience Requiem";
                     break;
                 }
-                case Util.StandID.aerosmith: {
+                case Util.StandID.AEROSMITH: {
                     standName = "Aerosmith";
                     break;
                 }
-                case Util.StandID.weatherReport: {
+                case Util.StandID.WEATHER_REPORT: {
                     standName = "Weather Report";
                     break;
                 }
-                case Util.StandID.killerQueen: {
+                case Util.StandID.KILLER_QUEEN: {
                     standName = "Killer Queen";
                     break;
                 }
-                case Util.StandID.crazyDiamond: {
+                case Util.StandID.CRAZY_DIAMOND: {
                     standName = "Crazy Diamond";
                     break;
                 }
-                case Util.StandID.purpleHaze: {
+                case Util.StandID.PURPLE_HAZE: {
                     standName = "Purple Haze";
                     break;
                 }
-                case Util.StandID.theEmperor: {
+                case Util.StandID.THE_EMPEROR: {
                     standName = "The Emperor";
                     break;
                 }
-                case Util.StandID.whitesnake: {
+                case Util.StandID.WHITESNAKE: {
                     standName = "Whitesnake";
                     break;
                 }
-                case Util.StandID.cMoon: {
+                case Util.StandID.CMOON: {
                     standName = "C-Moon";
                     break;
                 }
-                case Util.StandID.theWorld: {
+                case Util.StandID.THE_WORLD: {
                     standName = "The World";
                     break;
                 }
-                case Util.StandID.starPlatinum: {
+                case Util.StandID.STAR_PLATINUM: {
                     standName = "Star Platinum";
                     break;
                 }
-                case Util.StandID.silverChariot: {
+                case Util.StandID.SILVER_CHARIOT: {
                     standName = "Silver Chariot";
                     break;
                 }
-                case Util.StandID.magiciansRed: {
+                case Util.StandID.MAGICIANS_RED: {
                     standName = "Magician's Red";
                     break;
                 }
             }
-        if (event.getItemStack().getItem() instanceof ItemStandDisc)
+        if (event.getItemStack().getItem() instanceof StandDiscItem)
             if (!standName.equals(""))
                 event.getToolTip().add(new StringTextComponent(standName));
     }
 
     @SubscribeEvent
     public static void throwawayEvent(ItemTossEvent event) {
-        if (event.getEntityItem().getItem().getItem() == ItemInit.the_emperor.get()) {
+        if (event.getEntityItem().getItem().getItem() == ItemInit.THE_EMPEROR.get()) {
             event.setCanceled(true);
             Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }
@@ -277,18 +274,18 @@ public class EventHandleStandAbilities {
                         .forEach(Entity::remove);
             }
             if (player.world.isRemote) {
-                if (props.getStandID() == Util.StandID.aerosmith)
+                if (props.getStandID() == Util.StandID.AEROSMITH)
                     if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
                         Minecraft.getInstance().setRenderViewEntity(player);
                         Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                     }
             }
-            if (props.getStandID() == Util.StandID.theWorld) {
+            if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
-                EntityTheWorld.theWorld = null;
-                EntityTheWorld.dayTime = -1;
-                EntityTheWorld.gameTime = -1;
+                TheWorldEntity.theWorld = null;
+                TheWorldEntity.dayTime = -1;
+                TheWorldEntity.gameTime = -1;
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)
@@ -308,12 +305,12 @@ public class EventHandleStandAbilities {
                                 entity.setInvulnerable(false);
                                 props2.clear();
                             }));
-            } else if (props.getStandID() == Util.StandID.starPlatinum) {
+            } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                 if (props.getAbility() && props.getTimeLeft() > 900)
                     player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
-                EntityStarPlatinum.starPlatinum = null;
-                EntityStarPlatinum.dayTime = -1;
-                EntityStarPlatinum.gameTime = -1;
+                StarPlatinumEntity.starPlatinum = null;
+                StarPlatinumEntity.dayTime = -1;
+                StarPlatinumEntity.gameTime = -1;
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)
@@ -342,7 +339,7 @@ public class EventHandleStandAbilities {
         PlayerEntity player = event.getPlayer();
         assert player != null;
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.aerosmith)
+            if (props.getStandID() == Util.StandID.AEROSMITH)
                 if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
                     Minecraft.getInstance().setRenderViewEntity(player);
                     Minecraft.getInstance().gameSettings.thirdPersonView = 0;
@@ -365,7 +362,7 @@ public class EventHandleStandAbilities {
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event) {
         Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.aerosmith && props.getStandOn() && props.getAbility())
+            if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility())
                 event.setCanceled(true);
         });
     }

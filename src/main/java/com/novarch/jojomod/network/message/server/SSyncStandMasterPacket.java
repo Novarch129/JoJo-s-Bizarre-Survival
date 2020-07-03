@@ -1,6 +1,6 @@
 package com.novarch.jojomod.network.message.server;
 
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +35,7 @@ public class SSyncStandMasterPacket {
                 Entity stand = Minecraft.getInstance().world.getEntityByID(msg.standID);
                 Entity master = Minecraft.getInstance().world.getEntityByID(msg.masterID);
                 if(stand != null && master != null && stand.world.isRemote)
-                    ((EntityStandBase) stand).setMaster((PlayerEntity) master);
+                    ((AbstractStandEntity) stand).setMaster((PlayerEntity) master);
             });
         }
         ctx.get().setPacketHandled(true);

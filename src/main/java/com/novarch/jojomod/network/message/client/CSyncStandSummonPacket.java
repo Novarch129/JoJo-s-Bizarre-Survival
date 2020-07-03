@@ -2,8 +2,8 @@ package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -78,11 +78,11 @@ public class CSyncStandSummonPacket {
 								return;
 							}
 							if (!player.isSpectator())
-								if (props.getStandID() != 0 && props.getStandID() != Util.StandID.theEmperor) {
-									EntityStandBase stand = Util.getStand(props.getStandID(), player.world);
+								if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
+									AbstractStandEntity stand = Util.getStand(props.getStandID(), player.world);
 									if (stand != null) {
-										if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof EntityStandBase).contains(stand)) {
-											if (props.getStandID() == Util.StandID.aerosmith && props.getAbility())
+										if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof AbstractStandEntity).contains(stand)) {
+											if (props.getStandID() == Util.StandID.AEROSMITH && props.getAbility())
 												player.world.addEntity(fakePlayer);
 											props.setStandOn(true);
 											stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
@@ -96,14 +96,12 @@ public class CSyncStandSummonPacket {
 											player.world.addEntity(stand);
 											stand.playSpawnSound();
 										} else {
-											if (!stand.hasAct()) {
-												MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
-												stand.remove();
-											}
+											MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
+											stand.remove();
 										}
 									}
-								} else if (props.getStandID() == Util.StandID.theEmperor) {
-									ItemStack itemStack = new ItemStack(ItemInit.the_emperor.get());
+								} else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
+									ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
 
 									if (!player.inventory.hasItemStack(itemStack)) {
 										if (player.inventory.getStackInSlot(player.inventory.getBestHotbarSlot()).isEmpty()) {
