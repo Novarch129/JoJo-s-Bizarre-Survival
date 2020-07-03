@@ -265,12 +265,13 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
           entity.setFire(5);
         if (entity.attackEntityFrom(damagesource, 0.1f)) {
           if (entity instanceof LivingEntity) {
-            LivingEntity LivingEntity = (LivingEntity) entity;
+            LivingEntity livingEntity = (LivingEntity) entity;
             if (!world.isRemote) {
               world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1.0d, 0.0d, 0.0d);
-              StandPunchEffects.getStandSpecific(result, LivingEntity, this, true, standID);
+              if(!world.isRemote)
+                StandPunchEffects.getStandSpecific(result, livingEntity, this, true, standID);
             }
-            if (standMaster != null && LivingEntity != standMaster && LivingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
+            if (standMaster != null && livingEntity != standMaster && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
               ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0.0f));
           }
           if (!(entity instanceof net.minecraft.entity.monster.EndermanEntity))
@@ -289,10 +290,12 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
       setPosition(getPosX() - getMotion().getX() / f2 * 0.05000000074505806d, getPosY() - getMotion().getY() / f2 * 0.05000000074505806d, getPosZ() - getMotion().getZ() / f2 * 0.05000000074505806d);
       inGround = true;
       arrowShake = 7;
-      StandPunchEffects.getStandSpecific(result, null, this, false, standID);
-      if (state.getMaterial() != Material.AIR) {
-        inTile.onProjectileCollision(world, state, (BlockRayTraceResult) result, this);
-        remove();
+      if (!world.isRemote) {
+        StandPunchEffects.getStandSpecific(result, null, this, false, standID);
+        if (state.getMaterial() != Material.AIR) {
+          inTile.onProjectileCollision(world, state, (BlockRayTraceResult) result, this);
+          remove();
+        }
       }
     }
   }

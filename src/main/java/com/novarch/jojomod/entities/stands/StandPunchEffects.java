@@ -37,6 +37,7 @@ import net.minecraftforge.common.MinecraftForge;
 import javax.annotation.Nullable;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
+@Deprecated //TODO Remove in 1.16
 public abstract class StandPunchEffects {
 	/**
 	 * Gets the appropriate effect for an {@link AbstractStandPunchEntity} based on it's {@link Util.StandID}.
