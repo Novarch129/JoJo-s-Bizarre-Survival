@@ -22,14 +22,14 @@ public class PurpleHazeEntity extends AbstractStandEntity {
 
 	public PurpleHazeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
 		super(type, world);
-		this.spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
-		this.standID = Util.StandID.PURPLE_HAZE;
+		spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
+		standID = Util.StandID.PURPLE_HAZE;
 	}
 
 	public PurpleHazeEntity(World world) {
 		super(EntityInit.PURPLE_HAZE.get(), world);
-		this.spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
-		this.standID = Util.StandID.PURPLE_HAZE;
+		spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
+		standID = Util.StandID.PURPLE_HAZE;
 	}
 
 	public void burstCapsule() {
@@ -43,13 +43,12 @@ public class PurpleHazeEntity extends AbstractStandEntity {
 
 	@Override
 	public void playSpawnSound() {
-		this.world.playSound(null, new BlockPos(this.getMaster().getPosX(), this.getMaster().getPosY(), this.getMaster().getPosZ()), this.getSpawnSound(), this.getSoundCategory(), 2.0f, 1.0f);
+		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		this.fallDistance = 0.0f;
 		if (getMaster() != null) {
 			PlayerEntity player = getMaster();
 
@@ -68,45 +67,45 @@ public class PurpleHazeEntity extends AbstractStandEntity {
 				remove();
 			if (player.isSprinting()) {
 				if (attackSwing(player))
-					this.oratick++;
-				if (this.oratick == 1) {
+					oratick++;
+				if (oratick == 1) {
 					if (!world.isRemote)
-						world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PURPLE_HAZE_RUSH.get(), getSoundCategory(), 4.5f, 1.0f);
+						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PURPLE_HAZE_RUSH.get(), getSoundCategory(), 4.5f, 1.0f);
 
-					if (!this.world.isRemote)
-						this.orarush = true;
+					if (!world.isRemote)
+						orarush = true;
 				}
 			} else if (attackSwing(getMaster())) {
-				if (!this.world.isRemote) {
-					this.oratick++;
-					if (this.oratick == 1) {
-						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (this.rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze = new AbstractStandPunchEntity.PurpleHaze(this.world, this, player);
+				if (!world.isRemote) {
+					oratick++;
+					if (oratick == 1) {
+						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
+						AbstractStandPunchEntity.PurpleHaze purpleHaze = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
 						purpleHaze.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-						this.world.addEntity(purpleHaze);
+						world.addEntity(purpleHaze);
 					}
 				}
 			}
 			if (player.swingProgressInt == 0)
-				this.oratick = 0;
-			if (this.orarush) {
+				oratick = 0;
+			if (orarush) {
 				player.setSprinting(false);
-				this.oratickr++;
-				if (this.oratickr >= 10)
-					if (!this.world.isRemote) {
+				oratickr++;
+				if (oratickr >= 10)
+					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze1 = new AbstractStandPunchEntity.PurpleHaze(this.world, this, player);
+						AbstractStandPunchEntity.PurpleHaze purpleHaze1 = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
 						purpleHaze1.setRandomPositions();
 						purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-						this.world.addEntity(purpleHaze1);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze2 = new AbstractStandPunchEntity.PurpleHaze(this.world, this, player);
+						world.addEntity(purpleHaze1);
+						AbstractStandPunchEntity.PurpleHaze purpleHaze2 = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
 						purpleHaze2.setRandomPositions();
 						purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-						this.world.addEntity(purpleHaze2);
+						world.addEntity(purpleHaze2);
 					}
-				if (this.oratickr >= 120) {
-					this.orarush = false;
-					this.oratickr = 0;
+				if (oratickr >= 120) {
+					orarush = false;
+					oratickr = 0;
 				}
 			}
 		}

@@ -23,7 +23,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
-import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,12 +34,9 @@ import java.util.UUID;
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
     private PlayerEntity master;
     protected boolean standOn = true;
-    private int act;
     public boolean orarush;
     protected SoundEvent spawnSound;
-    public int longTick = 2;
     public int standID;
-    boolean jumpCheck;
     boolean attack;
     public UUID masterUUID;
     public boolean ability;
@@ -65,10 +61,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         this.master = master;
     }
 
-    public int getStandID() {
-        return this.standID;
-    }
-
     /**
      * Used to check if the Stand's master has swung their hand, used to summon {@link AbstractStandPunchEntity}.
      *
@@ -76,15 +68,11 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * @return  Returns whether or not the swing was successful.
      */
     public boolean attackSwing(PlayerEntity player) {
-        return (player.isSwingInProgress && getAttack()) && !setAttack(false);
+        return (player.isSwingInProgress && attack) && !setAttack(false);
     }
 
     public boolean setAttack(boolean attack) {
         return this.attack = attack;
-    }
-
-    public boolean getAttack() {
-        return this.attack;
     }
 
     public PlayerEntity getMaster() {
@@ -93,10 +81,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
 
     public void setMasterUUID(UUID masterUUID) {
         this.masterUUID = masterUUID;
-    }
-
-    public UUID getMasterUUID() {
-        return masterUUID;
     }
 
     /**
@@ -159,39 +143,39 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * Makes the Stand dodge oncoming attacks, such as TNT, arrows and falling blocks.
      */
     private void dodgeAttacks() {
-        if (this.world != null) {
-            if (!world.isRemote)
-                world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
-                    Entity entity;
-                    Entity playerEntity = null;
+        if (world == null) return;
+        if (!world.isRemote) {
+            world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
+                Entity entity;
+                Entity playerEntity = null;
 
-                    if (entity1 != null)
-                        playerEntity = entity1;
+                if (entity1 != null)
+                    playerEntity = entity1;
 
-                    final double distance = playerEntity.getDistance(getMaster());
-                    final double distance2 = Math.PI * 2 * 2 * 2;
+                final double distance = playerEntity.getDistance(getMaster());
+                final double distance2 = Math.PI * 2 * 2 * 2;
 
-                    entity = playerEntity;
+                entity = playerEntity;
 
-                    if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
-                        final double distanceX = getPosX() - entity.getPosX();
-                        final double distanceY = getPosY() - entity.getPosY();
-                        final double distanceZ = getPosZ() - entity.getPosZ();
+                if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
+                    final double distanceX = getPosX() - entity.getPosX();
+                    final double distanceY = getPosY() - entity.getPosY();
+                    final double distanceZ = getPosZ() - entity.getPosZ();
 
-                        if (distanceX > 0.0)
-                            moveForward += -0.3;
-                        if (distanceX < 0.0)
-                            moveForward += 0.3;
-                        if (distanceY > 0.0)
-                            moveVertical += -0.3;
-                        if (distanceY < 0.0)
-                            moveVertical += 0.3;
-                        if (distanceZ > 0.0)
-                            moveStrafing += -0.3;
-                        if (distanceZ < 0.0)
-                            moveStrafing += 0.3;
-                    }
-                });
+                    if (distanceX > 0.0)
+                        moveForward += -0.3;
+                    if (distanceX < 0.0)
+                        moveForward += 0.3;
+                    if (distanceY > 0.0)
+                        moveVertical += -0.3;
+                    if (distanceY < 0.0)
+                        moveVertical += 0.3;
+                    if (distanceZ > 0.0)
+                        moveStrafing += -0.3;
+                    if (distanceZ < 0.0)
+                        moveStrafing += 0.3;
+                }
+            });
         }
     }
 
@@ -318,8 +302,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     public void writeSpawnData(PacketBuffer buffer) {
         if(getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
-        else
-            LogManager.getLogger().debug("write null master");
     }
 
     @Override
