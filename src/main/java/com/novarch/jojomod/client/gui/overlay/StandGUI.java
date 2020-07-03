@@ -1,4 +1,4 @@
-package com.novarch.jojomod.client.entity.gui.overlay;
+package com.novarch.jojomod.client.gui.overlay;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.util.Util;
