@@ -1,24 +1,24 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.entities.stands.EntityStandBase;
-import com.novarch.jojomod.entities.stands.EntityStandPunch;
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.entities.stands.cMoon.EntityCMoon;
-import com.novarch.jojomod.entities.stands.crazyDiamond.EntityCrazyDiamond;
-import com.novarch.jojomod.entities.stands.dirtyDeedsDoneDirtCheap.EntityDirtyDeedsDoneDirtCheap;
-import com.novarch.jojomod.entities.stands.goldExperience.EntityGoldExperience;
-import com.novarch.jojomod.entities.stands.goldExperienceRequiem.EntityGoldExperienceRequiem;
-import com.novarch.jojomod.entities.stands.killerQueen.EntityKillerQueen;
-import com.novarch.jojomod.entities.stands.kingCrimson.EntityKingCrimson;
-import com.novarch.jojomod.entities.stands.madeInHeaven.EntityMadeInHeaven;
-import com.novarch.jojomod.entities.stands.magiciansRed.EntityMagiciansRed;
-import com.novarch.jojomod.entities.stands.purpleHaze.EntityPurpleHaze;
-import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
-import com.novarch.jojomod.entities.stands.starPlatinum.EntityStarPlatinum;
-import com.novarch.jojomod.entities.stands.theHand.EntityTheHand;
-import com.novarch.jojomod.entities.stands.theWorld.EntityTheWorld;
-import com.novarch.jojomod.entities.stands.weatherReport.EntityWeatherReport;
-import com.novarch.jojomod.entities.stands.whitesnake.EntityWhitesnake;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
+import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
+import com.novarch.jojomod.entities.stands.AerosmithEntity;
+import com.novarch.jojomod.entities.stands.CMoonEntity;
+import com.novarch.jojomod.entities.stands.CrazyDiamondEntity;
+import com.novarch.jojomod.entities.stands.DirtyDeedsDoneDirtCheapEntity;
+import com.novarch.jojomod.entities.stands.GoldExperienceEntity;
+import com.novarch.jojomod.entities.stands.GoldExperienceRequiemEntity;
+import com.novarch.jojomod.entities.stands.KillerQueenEntity;
+import com.novarch.jojomod.entities.stands.KingCrimsonEntity;
+import com.novarch.jojomod.entities.stands.MadeInHeavenEntity;
+import com.novarch.jojomod.entities.stands.MagiciansRedEntity;
+import com.novarch.jojomod.entities.stands.PurpleHazeEntity;
+import com.novarch.jojomod.entities.stands.SilverChariotEntity;
+import com.novarch.jojomod.entities.stands.StarPlatinumEntity;
+import com.novarch.jojomod.entities.stands.TheHandEntity;
+import com.novarch.jojomod.entities.stands.TheWorldEntity;
+import com.novarch.jojomod.entities.stands.WeatherReportEntity;
+import com.novarch.jojomod.entities.stands.WhitesnakeEntity;
 import com.novarch.jojomod.init.KeyInit;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -65,11 +65,6 @@ public class Util
         return new BlockPos(0, 65, 0);
     }
 
-//    @Nullable
-//    protected EntityRayTraceResult findEntityOnPath(World world, Vec3d start, Predicate<Entity> filter) {
-//        return ProjectileHelper.rayTraceEntities(world, )
-//    }
-
     public static void sendStringMessage(PlayerEntity player, String message)
     {
         player.sendMessage(new StringTextComponent(message));
@@ -89,8 +84,8 @@ public class Util
 
     public static class Predicates
     {
-        public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof EntityStandBase);
-        public static final Predicate<Entity> IS_STAND = entity -> entity instanceof EntityStandBase;
+        public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof AbstractStandEntity);
+        public static final Predicate<Entity> IS_STAND = entity -> entity instanceof AbstractStandEntity;
 
         public static final Predicate<Entity> STAND_PUNCH_TARGET =
                 EntityPredicates.NOT_SPECTATING
@@ -110,116 +105,116 @@ public class Util
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
                                                                                                         .and(entity -> !(entity instanceof PhantomEntity))
-                                                                                                                .and(entity -> !(entity instanceof EntityStandPunch))
-                                                                                                                        .and(entity -> !(entity instanceof EntityStandBase)))))))))));
+                                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
+                                                                                                                        .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
     }
 
     public static class StandID
     {
-        public static final int kingCrimson = 1;
+        public static final int KING_CRIMSON = 1;
 
-        public static final int dirtyDeedsDoneDirtCheap = 2;
+        public static final int D4C = 2;
 
-        public static final int goldExperience = 3;
+        public static final int GOLD_EXPERIENCE = 3;
 
-        public static final int madeInHeaven = 4;
+        public static final int MADE_IN_HEAVEN = 4;
 
         public static final int GER = 5;
 
-        public static final int aerosmith = 6;
+        public static final int AEROSMITH = 6;
 
-        public static final int weatherReport = 7;
+        public static final int WEATHER_REPORT = 7;
 
-        public static final int killerQueen = 8;
+        public static final int KILLER_QUEEN = 8;
 
-        public static final int crazyDiamond = 9;
+        public static final int CRAZY_DIAMOND = 9;
 
-        public static final int purpleHaze = 10;
+        public static final int PURPLE_HAZE = 10;
 
-        public static final int theEmperor = 11;
+        public static final int THE_EMPEROR = 11;
 
-        public static final int whitesnake = 12;
+        public static final int WHITESNAKE = 12;
 
-        public static final int cMoon = 13;
+        public static final int CMOON = 13;
 
-        public static final int theWorld = 14;
+        public static final int THE_WORLD = 14;
 
-        public static final int starPlatinum = 15;
+        public static final int STAR_PLATINUM = 15;
 
-        public static final int silverChariot = 16;
+        public static final int SILVER_CHARIOT = 16;
 
-        public static final int magiciansRed = 17;
+        public static final int MAGICIANS_RED = 17;
 
-        public static final int theHand = 18;
+        public static final int THE_HAND = 18;
 
-        public static int[] stands = {
-                kingCrimson,
-                dirtyDeedsDoneDirtCheap,
-                goldExperience,
-                aerosmith,
-                weatherReport,
-                killerQueen,
-                crazyDiamond,
-                purpleHaze,
-                theEmperor,
-                whitesnake,
-                theWorld,
-                starPlatinum,
-                silverChariot,
-                magiciansRed,
-                theHand
+        public static final int[] STANDS = {
+                KING_CRIMSON,
+                D4C,
+                GOLD_EXPERIENCE,
+                AEROSMITH,
+                WEATHER_REPORT,
+                KILLER_QUEEN,
+                CRAZY_DIAMOND,
+                PURPLE_HAZE,
+                THE_EMPEROR,
+                WHITESNAKE,
+                THE_WORLD,
+                STAR_PLATINUM,
+                SILVER_CHARIOT,
+                MAGICIANS_RED,
+                THE_HAND
         };
 
-        public static int numberOfStands = stands.length;
+        public static final int NUMBER_OF_STANDS = STANDS.length;
     }
 
     public static class KeyCodes
     {
-        public static String summonStand = KeyInit.SPAWN_STAND.getLocalizedName().toUpperCase();
-        public static String abilityToggle = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
-        public static String ability1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
-        public static String ability2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+        public static final String SUMMON_STAND = KeyInit.SPAWN_STAND.getLocalizedName().toUpperCase();
+        public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
+        public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
+        public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
     }
 
-    public static EntityStandBase getStand(int standID, World world)
+    public static AbstractStandEntity getStand(int standID, World world)
     {
         switch (standID) {
             default:
                 return null;
-            case StandID.kingCrimson:
-                return new EntityKingCrimson(world);
-            case StandID.dirtyDeedsDoneDirtCheap:
-                return new EntityDirtyDeedsDoneDirtCheap(world);
-            case StandID.goldExperience:
-                return new EntityGoldExperience(world);
-            case StandID.madeInHeaven:
-                return new EntityMadeInHeaven(world);
+            case StandID.KING_CRIMSON:
+                return new KingCrimsonEntity(world);
+            case StandID.D4C:
+                return new DirtyDeedsDoneDirtCheapEntity(world);
+            case StandID.GOLD_EXPERIENCE:
+                return new GoldExperienceEntity(world);
+            case StandID.MADE_IN_HEAVEN:
+                return new MadeInHeavenEntity(world);
             case StandID.GER:
-                return new EntityGoldExperienceRequiem(world);
-            case StandID.aerosmith:
-                return new EntityAerosmith(world);
-            case StandID.weatherReport:
-                return new EntityWeatherReport(world);
-            case StandID.killerQueen:
-                return new EntityKillerQueen(world);
-            case StandID.crazyDiamond:
-                return new EntityCrazyDiamond(world);
-            case StandID.purpleHaze:
-                return new EntityPurpleHaze(world);
-            case StandID.whitesnake:
-                return new EntityWhitesnake(world);
-            case StandID.cMoon:
-                return new EntityCMoon(world);
-            case StandID.theWorld:
-                return new EntityTheWorld(world);
-            case StandID.starPlatinum:
-                return new EntityStarPlatinum(world);
-            case StandID.silverChariot:
-                return new EntitySilverChariot(world);
-            case StandID.magiciansRed:
-                return new EntityMagiciansRed(world);
-            case StandID.theHand:
-                return new EntityTheHand(world);
+                return new GoldExperienceRequiemEntity(world);
+            case StandID.AEROSMITH:
+                return new AerosmithEntity(world);
+            case StandID.WEATHER_REPORT:
+                return new WeatherReportEntity(world);
+            case StandID.KILLER_QUEEN:
+                return new KillerQueenEntity(world);
+            case StandID.CRAZY_DIAMOND:
+                return new CrazyDiamondEntity(world);
+            case StandID.PURPLE_HAZE:
+                return new PurpleHazeEntity(world);
+            case StandID.WHITESNAKE:
+                return new WhitesnakeEntity(world);
+            case StandID.CMOON:
+                return new CMoonEntity(world);
+            case StandID.THE_WORLD:
+                return new TheWorldEntity(world);
+            case StandID.STAR_PLATINUM:
+                return new StarPlatinumEntity(world);
+            case StandID.SILVER_CHARIOT:
+                return new SilverChariotEntity(world);
+            case StandID.MAGICIANS_RED:
+                return new MagiciansRedEntity(world);
+            case StandID.THE_HAND:
+                return new TheHandEntity(world);
         }
     }
 }

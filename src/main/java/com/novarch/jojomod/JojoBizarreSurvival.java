@@ -77,7 +77,7 @@ public class JojoBizarreSurvival {
 
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(ItemInit.stand_arrow.get());
+            return new ItemStack(ItemInit.STAND_ARROW.get());
         }
     }
 }

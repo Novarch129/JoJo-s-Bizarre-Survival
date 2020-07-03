@@ -27,11 +27,11 @@ public class CrimsonEffect extends Effect
             return;
         Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             if(!props.getStandOn()) {
-                if(props.getStandID() == Util.StandID.kingCrimson)
+                if(props.getStandID() == Util.StandID.KING_CRIMSON)
                     entityLivingBaseIn.removePotionEffect(this);
             } else {
                 if(!props.getAbility() || !(props.getTimeLeft() > 800))
-                    if(props.getStandID() == Util.StandID.kingCrimson)
+                    if(props.getStandID() == Util.StandID.KING_CRIMSON)
                         entityLivingBaseIn.removePotionEffect(this);
             }
         });

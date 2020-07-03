@@ -37,7 +37,7 @@ public class EventHandleKeybinds {
 						JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(2));
 				}
 
-				if (props.getStandID() == Util.StandID.aerosmith) {
+				if (props.getStandID() == Util.StandID.AEROSMITH) {
 					if (props.getStandOn() && props.getAbility()) {
 						if (Minecraft.getInstance().gameSettings.keyBindForward.isKeyDown())
 							JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, FORWARDS, Minecraft.getInstance().gameSettings.keyBindSprint.isKeyDown()));

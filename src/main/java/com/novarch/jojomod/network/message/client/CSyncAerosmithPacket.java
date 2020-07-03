@@ -1,6 +1,6 @@
 package com.novarch.jojomod.network.message.client;
 
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
+import com.novarch.jojomod.entities.stands.AerosmithEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -17,7 +17,7 @@ import java.util.function.Supplier;
  * @variable action	 Defines the action Aerosmith will perform, the following are the possible values:
  * 1 Movement
  * 2 Rotation
- * 3 Set to renderViewEntity
+ * 3 Set <code>Minecraft#renderViewEntity</code>
  * 4 Attack
  *
  * @variable direction	Defines the direction Aerosmith should go in if <code>action == Action#MOVEMENT</code>:
@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *
  * @variable sprint  Defines whether or not Aerosmith should sprint(if <code>Minecraft#gameSetting#keyBindSprint#isKeyDown</code>).
  *
- * @variable yaw, pitch  Define Aerosmith's rotation relative to the mouse position(<code>Minecarft#mouseHelper#getMouseX/getMouseY</code>).
+ * @variable yaw, pitch  Define Aerosmith's rotation relative to the mouse position(<code>Minecraft#mouseHelper#getMouseX/getMouseY</code>).
  */
 @SuppressWarnings("ConstantConditions")
 public class CSyncAerosmithPacket {
@@ -109,8 +109,8 @@ public class CSyncAerosmithPacket {
 				if (world != null)
 					if (!world.isRemote) {
 						world.getServer().getWorld(player.dimension).getEntities()
-								.filter(entity -> entity instanceof EntityAerosmith)
-								.filter(entity -> ((EntityAerosmith) entity).getMaster().getEntityId() == player.getEntityId())
+								.filter(entity -> entity instanceof AerosmithEntity)
+								.filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
 								.forEach(entity -> {
 									float yaw = entity.rotationYaw;
 									float pitch = entity.rotationPitch;
@@ -162,8 +162,8 @@ public class CSyncAerosmithPacket {
 										}
 										//Rotation
 										case ROTATE: {
-											((EntityAerosmith) entity).yaw = message.yaw;
-											((EntityAerosmith) entity).pitch = message.pitch;
+											((AerosmithEntity) entity).yaw = message.yaw;
+											((AerosmithEntity) entity).pitch = message.pitch;
 											break;
 										}
 										//Set RenderViewEntity
@@ -180,9 +180,9 @@ public class CSyncAerosmithPacket {
 										//Attack
 										case ATTACK: {
 											if(message.direction == Direction.FORWARDS)
-												((EntityAerosmith) entity).swingProgressInt = 1;
+												((AerosmithEntity) entity).swingProgressInt = 1;
 											else
-												((EntityAerosmith) entity).swingProgressInt = 0;
+												((AerosmithEntity) entity).swingProgressInt = 0;
 											break;
 										}
 										default:

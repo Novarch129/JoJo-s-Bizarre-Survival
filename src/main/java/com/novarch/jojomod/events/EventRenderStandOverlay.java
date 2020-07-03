@@ -1,9 +1,9 @@
 package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.entities.stands.aerosmith.EntityAerosmith;
-import com.novarch.jojomod.gui.overlay.CarbonDioxideRadarGUI;
-import com.novarch.jojomod.gui.overlay.StandGUI;
+import com.novarch.jojomod.entities.stands.AerosmithEntity;
+import com.novarch.jojomod.client.entity.gui.overlay.CarbonDioxideRadarGUI;
+import com.novarch.jojomod.client.entity.gui.overlay.StandGUI;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.Entity;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class EventRenderStandOverlay
 {
     public static List<Entity> entityList = null;
-    public static EntityAerosmith playerStand = null;
+    public static AerosmithEntity playerStand = null;
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event)
@@ -33,9 +33,9 @@ public class EventRenderStandOverlay
 
         if(!playerEntity.world.isRemote)
             playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities().forEach(entity -> {
-                if(entity instanceof EntityAerosmith)
-                    if(((EntityAerosmith) entity).getMaster() == playerEntity)
-                        playerStand = (EntityAerosmith) entity;
+                if(entity instanceof AerosmithEntity)
+                    if(((AerosmithEntity) entity).getMaster() == playerEntity)
+                        playerStand = (AerosmithEntity) entity;
             });
 
         if(!playerEntity.world.isRemote)

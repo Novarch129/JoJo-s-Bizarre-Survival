@@ -1,18 +1,17 @@
 package com.novarch.jojomod.network.message.client;
 
+import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.fakePlayer.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.FakePlayerEntity;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
+import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import com.novarch.jojomod.util.Util;
-
-import java.util.function.Supplier;
-
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -20,6 +19,9 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
+
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class CSyncStandSummonPacket {
@@ -48,13 +50,13 @@ public class CSyncStandSummonPacket {
 				ServerPlayerEntity sender = ctx.getSender();
 				if (sender == null)
 					return;
-				summonPlayerStand(msg, supplier, sender);
+				summonStand(msg, supplier, sender);
 			});
 		}
 		ctx.setPacketHandled(true);
 	}
 
-	public static void summonPlayerStand(CSyncStandSummonPacket message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity player) {
+	private static void summonStand(CSyncStandSummonPacket message, Supplier<NetworkEvent.Context> ctx, ServerPlayerEntity player) {
 		FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
 		fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
 		World world = player.world;
@@ -69,60 +71,56 @@ public class CSyncStandSummonPacket {
 							if (props.getStandOn()) {
 								if (fakePlayer.isAlive())
 									fakePlayer.remove();
-								if(!props.hasAct())
+								if (!props.hasAct())
 									props.setStandOn(false);
 								else
 									props.changeAct();
 								return;
 							}
-							if(!player.isSpectator())
-								CSyncStandSummonPacket.summonStand(player, fakePlayer);
+							if (!player.isSpectator())
+								if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
+									AbstractStandEntity stand = Util.getStand(props.getStandID(), player.world);
+									if (stand != null) {
+										if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof AbstractStandEntity).contains(stand)) {
+											if (props.getStandID() == Util.StandID.AEROSMITH && props.getAbility())
+												player.world.addEntity(fakePlayer);
+											props.setStandOn(true);
+											stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+											stand.setMaster(player);
+											stand.setMasterUUID(player.getUniqueID());
+											if(!player.world.isRemote)
+												JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new SSyncStandMasterPacket(stand.getEntityId(), player.getEntityId()));
+											CompoundNBT nbt = new CompoundNBT();
+											nbt.putInt("MasterID", player.getEntityId());
+											stand.writeAdditional(nbt);
+											player.world.addEntity(stand);
+											stand.playSpawnSound();
+										} else {
+											MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
+											stand.remove();
+										}
+									}
+								} else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
+									ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
+
+									if (!player.inventory.hasItemStack(itemStack)) {
+										if (player.inventory.getStackInSlot(player.inventory.getBestHotbarSlot()).isEmpty()) {
+											player.inventory.currentItem = player.inventory.getBestHotbarSlot();
+											player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);
+											player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
+											props.setStandOn(true);
+										} else
+											player.sendMessage(new StringTextComponent("Your hotbar is full!"));
+									} else {
+										itemStack.shrink(1);
+										props.setStandOn(false);
+									}
+								}
 							return;
 						}
 					}
 				}
 			});
 		}
-	}
-
-	public static void summonStand(PlayerEntity player, FakePlayerEntity fakePlayer) {
-		Stand.getLazyOptional(player).ifPresent(props -> {
-			if (props.getStandID() != 0 && props.getStandID() != Util.StandID.theEmperor) {
-				EntityStandBase stand = Util.getStand(props.getStandID(), player.world);
-
-				if (stand != null) {
-					if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof EntityStandBase).contains(stand)) {
-						if (props.getStandID() == Util.StandID.aerosmith && props.getAbility())
-							player.world.addEntity(fakePlayer);
-						props.setStandOn(true);
-						stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-						stand.setMaster(player);
-						stand.setMasterUUID(player.getUniqueID());
-						player.world.addEntity(stand);
-						stand.playSpawnSound();
-					} else {
-						if (!stand.hasAct()) {
-							MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(player, stand));
-							stand.remove();
-						}
-					}
-				}
-			} else if(props.getStandID() == Util.StandID.theEmperor) {
-				ItemStack itemStack = new ItemStack(ItemInit.the_emperor.get());
-
-				if(!player.inventory.hasItemStack(itemStack)) {
-					if (player.inventory.getStackInSlot(player.inventory.getBestHotbarSlot()).isEmpty()) {
-						player.inventory.currentItem = player.inventory.getBestHotbarSlot();
-						player.inventory.add(player.inventory.getBestHotbarSlot(), itemStack);
-						player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
-						props.setStandOn(true);
-					} else
-						player.sendMessage(new StringTextComponent("Your hotbar is full!"));
-				} else {
-					itemStack.shrink(1);
-					props.setStandOn(false);
-				}
-			}
-		});
 	}
 }

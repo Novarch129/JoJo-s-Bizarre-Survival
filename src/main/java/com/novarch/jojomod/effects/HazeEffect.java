@@ -1,6 +1,6 @@
 package com.novarch.jojomod.effects;
 
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.init.EffectInit;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +30,7 @@ public class HazeEffect extends Effect {
             entityLivingBaseIn.world.getServer().getWorld(entityLivingBaseIn.dimension).getEntities()
                     .filter(entity -> entity != entityLivingBaseIn)
                     .filter(entity -> entity instanceof LivingEntity)
-                    .filter(entity -> !(entity instanceof EntityStandBase))
+                    .filter(entity -> !(entity instanceof AbstractStandEntity))
                     .filter(entity -> entity.getDistance(entityLivingBaseIn) < 7)
                     .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
     }

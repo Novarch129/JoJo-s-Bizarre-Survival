@@ -1,6 +1,6 @@
 package com.novarch.jojomod.network.message.server;
 
-import com.novarch.jojomod.entities.stands.silverChariot.EntitySilverChariot;
+import com.novarch.jojomod.entities.stands.SilverChariotEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
@@ -39,8 +39,8 @@ public class SSyncSilverChariotArmorPacket
                 assert Minecraft.getInstance().world != null;
                 Entity entity = Minecraft.getInstance().world.getEntityByID(message.standID);
                 if(entity != null)
-                    if(entity instanceof EntitySilverChariot)
-                        ((EntitySilverChariot)entity).putHasArmor(message.hasArmor);
+                    if(entity instanceof SilverChariotEntity)
+                        ((SilverChariotEntity)entity).putHasArmor(message.hasArmor);
             });
         }
         ctx.get().setPacketHandled(true);

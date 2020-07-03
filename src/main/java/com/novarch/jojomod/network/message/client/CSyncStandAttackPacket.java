@@ -1,7 +1,7 @@
 package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.stands.EntityStandBase;
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -31,8 +31,8 @@ public class CSyncStandAttackPacket {
 						List<Entity> entityList = world.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.getPosX() - 5.0D, player.getPosY() - 5.0D, player.getPosZ() - 5.0D, player.getPosX() + 5.0D, player.getPosY() + 5.0D, player.getPosZ() + 5.0D));
 						if (!entityList.isEmpty())
 							for (Entity entity : entityList) {
-								if (entity instanceof EntityStandBase) {
-									EntityStandBase stand = (EntityStandBase) entity;
+								if (entity instanceof AbstractStandEntity) {
+									AbstractStandEntity stand = (AbstractStandEntity) entity;
 									if (stand.getMaster() == player) {
 										stand.setAttack(true);
 										return;

@@ -1,6 +1,6 @@
 package com.novarch.jojomod.ai.goals;
 
-import com.novarch.jojomod.entities.stands.killerQueen.sheerHeartAttack.EntitySheerHeartAttack;
+import com.novarch.jojomod.entities.stands.SheerHeartAttackEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 
@@ -11,11 +11,11 @@ import java.util.EnumSet;
  */
 public class SheerHeartAttackSwellGoal extends Goal
 {
-    private final EntitySheerHeartAttack swellingSHA;
+    private final SheerHeartAttackEntity swellingSHA;
     private LivingEntity creeperAttackTarget;
 
-    public SheerHeartAttackSwellGoal(EntitySheerHeartAttack entitySheerHeartAttackIn) {
-        this.swellingSHA = entitySheerHeartAttackIn;
+    public SheerHeartAttackSwellGoal(SheerHeartAttackEntity sheerHeartAttackEntityIn) {
+        this.swellingSHA = sheerHeartAttackEntityIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 

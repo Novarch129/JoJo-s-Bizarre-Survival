@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static com.novarch.jojomod.util.Util.Null;
-import static com.novarch.jojomod.util.Util.StandID.cMoon;
-import static com.novarch.jojomod.util.Util.StandID.madeInHeaven;
+import static com.novarch.jojomod.util.Util.StandID.CMOON;
+import static com.novarch.jojomod.util.Util.StandID.MADE_IN_HEAVEN;
 
 /**
  * The {@link Capability} used for storing the player's Stand ability.
@@ -85,15 +85,15 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
 	@Override
 	public boolean hasAct() {
-		return getStandID() == madeInHeaven || getStandID() == cMoon;
+		return getStandID() == MADE_IN_HEAVEN || getStandID() == CMOON;
 	}
 
 	@Override
 	public int getMaxAct() {
 		switch(standID) {
-			case madeInHeaven:
+			case MADE_IN_HEAVEN:
 				return 3;
-			case cMoon:
+			case CMOON:
 				return 2;
 		}
 		return 0;
