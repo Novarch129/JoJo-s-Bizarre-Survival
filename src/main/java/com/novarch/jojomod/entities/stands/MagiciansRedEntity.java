@@ -35,6 +35,15 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 		standID = Util.StandID.MAGICIANS_RED;
 	}
 
+	public void crossfireHurricane() {
+		if (getMaster() == null) return;
+		AbstractStandPunchEntity.MagiciansRed crossfireHurricane = new AbstractStandPunchEntity.MagiciansRed(world, this, getMaster());
+		crossfireHurricane.shoot(getMaster(), getMaster().rotationPitch, getMaster().rotationYaw, 4.0f, 0.5f);
+		crossfireHurricane.setExplosive(true);
+		world.addEntity(crossfireHurricane);
+		world.addParticle(ParticleTypes.LARGE_SMOKE, crossfireHurricane.getPosX(), crossfireHurricane.getPosY(), crossfireHurricane.getPosZ(), crossfireHurricane.getMotion().getX(), crossfireHurricane.getMotion().getY(), crossfireHurricane.getMotion().getZ());
+	}
+
 	/**
 	 * Prevents all fire damage from affecting Magician's Red.
 	 *
@@ -85,7 +94,6 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
 						AbstractStandPunchEntity.MagiciansRed magiciansRed = new AbstractStandPunchEntity.MagiciansRed(world, this, player);
 						magiciansRed.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.5f);
-						magiciansRed.setExplosive(true);
 						world.addEntity(magiciansRed);
 						world.addParticle(ParticleTypes.LARGE_SMOKE, magiciansRed.getPosX(), magiciansRed.getPosY(), magiciansRed.getPosZ(), magiciansRed.getMotion().getX(), magiciansRed.getMotion().getY(), magiciansRed.getMotion().getZ());
 					}

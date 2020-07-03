@@ -2,8 +2,8 @@ package com.novarch.jojomod.events;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.entities.stands.AerosmithEntity;
-import com.novarch.jojomod.client.entity.gui.overlay.CarbonDioxideRadarGUI;
-import com.novarch.jojomod.client.entity.gui.overlay.StandGUI;
+import com.novarch.jojomod.client.gui.overlay.CarbonDioxideRadarGUI;
+import com.novarch.jojomod.client.gui.overlay.StandGUI;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.entity.Entity;

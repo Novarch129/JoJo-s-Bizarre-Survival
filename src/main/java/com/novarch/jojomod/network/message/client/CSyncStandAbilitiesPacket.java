@@ -91,6 +91,12 @@ public class CSyncStandAbilitiesPacket {
 											.forEach(entity -> ((WeatherReportEntity) entity).changeWeather());
 									break;
 								}
+								case MAGICIANS_RED: {
+									world.getServer().getWorld(player.dimension).getEntities()
+											.filter(entity -> entity instanceof MagiciansRedEntity)
+											.filter(entity -> ((MagiciansRedEntity) entity).getMaster().getEntityId() == player.getEntityId())
+											.forEach(entity -> ((MagiciansRedEntity) entity).crossfireHurricane());
+								}
 								case THE_HAND: {
 									world.getServer().getWorld(player.dimension).getEntities()
 											.filter(entity -> entity instanceof TheHandEntity)

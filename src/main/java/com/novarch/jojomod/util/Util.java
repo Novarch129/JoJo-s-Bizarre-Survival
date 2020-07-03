@@ -35,8 +35,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
-public class Util
-{
+public class Util {
     public static int getHighestBlock(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--) {
             if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR) {
@@ -65,8 +64,7 @@ public class Util
         return new BlockPos(0, 65, 0);
     }
 
-    public static void sendStringMessage(PlayerEntity player, String message)
-    {
+    public static void sendStringMessage(PlayerEntity player, String message) {
         player.sendMessage(new StringTextComponent(message));
     }
 
@@ -82,14 +80,54 @@ public class Util
         return null;
     }
 
-    public static class Predicates
-    {
+    public static AbstractStandEntity getStand(int standID, World world) {
+        switch (standID) {
+            default:
+                return null;
+            case StandID.KING_CRIMSON:
+                return new KingCrimsonEntity(world);
+            case StandID.D4C:
+                return new DirtyDeedsDoneDirtCheapEntity(world);
+            case StandID.GOLD_EXPERIENCE:
+                return new GoldExperienceEntity(world);
+            case StandID.MADE_IN_HEAVEN:
+                return new MadeInHeavenEntity(world);
+            case StandID.GER:
+                return new GoldExperienceRequiemEntity(world);
+            case StandID.AEROSMITH:
+                return new AerosmithEntity(world);
+            case StandID.WEATHER_REPORT:
+                return new WeatherReportEntity(world);
+            case StandID.KILLER_QUEEN:
+                return new KillerQueenEntity(world);
+            case StandID.CRAZY_DIAMOND:
+                return new CrazyDiamondEntity(world);
+            case StandID.PURPLE_HAZE:
+                return new PurpleHazeEntity(world);
+            case StandID.WHITESNAKE:
+                return new WhitesnakeEntity(world);
+            case StandID.CMOON:
+                return new CMoonEntity(world);
+            case StandID.THE_WORLD:
+                return new TheWorldEntity(world);
+            case StandID.STAR_PLATINUM:
+                return new StarPlatinumEntity(world);
+            case StandID.SILVER_CHARIOT:
+                return new SilverChariotEntity(world);
+            case StandID.MAGICIANS_RED:
+                return new MagiciansRedEntity(world);
+            case StandID.THE_HAND:
+                return new TheHandEntity(world);
+        }
+    }
+
+    public static class Predicates {
         public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof AbstractStandEntity);
         public static final Predicate<Entity> IS_STAND = entity -> entity instanceof AbstractStandEntity;
 
         public static final Predicate<Entity> STAND_PUNCH_TARGET =
                 EntityPredicates.NOT_SPECTATING
-                    .and(EntityPredicates.IS_ALIVE)
+                        .and(EntityPredicates.IS_ALIVE)
                         .and(Entity::canBeCollidedWith);
 
         public static final Predicate<Entity> BREATHS =
@@ -104,13 +142,12 @@ public class Util
                                                                                 .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
-                                                                                                        .and(entity -> !(entity instanceof PhantomEntity))
-                                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
-                                                                                                                        .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
+                                                                                                .and(entity -> !(entity instanceof PhantomEntity))
+                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
+                                                                                                .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
     }
 
-    public static class StandID
-    {
+    public static class StandID {
         public static final int KING_CRIMSON = 1;
 
         public static final int D4C = 2;
@@ -168,53 +205,10 @@ public class Util
         public static final int NUMBER_OF_STANDS = STANDS.length;
     }
 
-    public static class KeyCodes
-    {
+    public static class KeyCodes {
         public static final String SUMMON_STAND = KeyInit.SPAWN_STAND.getLocalizedName().toUpperCase();
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
-    }
-
-    public static AbstractStandEntity getStand(int standID, World world)
-    {
-        switch (standID) {
-            default:
-                return null;
-            case StandID.KING_CRIMSON:
-                return new KingCrimsonEntity(world);
-            case StandID.D4C:
-                return new DirtyDeedsDoneDirtCheapEntity(world);
-            case StandID.GOLD_EXPERIENCE:
-                return new GoldExperienceEntity(world);
-            case StandID.MADE_IN_HEAVEN:
-                return new MadeInHeavenEntity(world);
-            case StandID.GER:
-                return new GoldExperienceRequiemEntity(world);
-            case StandID.AEROSMITH:
-                return new AerosmithEntity(world);
-            case StandID.WEATHER_REPORT:
-                return new WeatherReportEntity(world);
-            case StandID.KILLER_QUEEN:
-                return new KillerQueenEntity(world);
-            case StandID.CRAZY_DIAMOND:
-                return new CrazyDiamondEntity(world);
-            case StandID.PURPLE_HAZE:
-                return new PurpleHazeEntity(world);
-            case StandID.WHITESNAKE:
-                return new WhitesnakeEntity(world);
-            case StandID.CMOON:
-                return new CMoonEntity(world);
-            case StandID.THE_WORLD:
-                return new TheWorldEntity(world);
-            case StandID.STAR_PLATINUM:
-                return new StarPlatinumEntity(world);
-            case StandID.SILVER_CHARIOT:
-                return new SilverChariotEntity(world);
-            case StandID.MAGICIANS_RED:
-                return new MagiciansRedEntity(world);
-            case StandID.THE_HAND:
-                return new TheHandEntity(world);
-        }
     }
 }

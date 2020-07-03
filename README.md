@@ -1,7 +1,7 @@
 -------------------------------------------
 ![Logo](https://github.com/Novarch129/JoJo-s-Blocky-Adventure/blob/master/src/main/resources/logo.png)
 -------------------------------------------
-# A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft 1.16.
+## A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft.
 
 ### List of planned Stands:
 - [ ] Tusk
