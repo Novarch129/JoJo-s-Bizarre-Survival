@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TheWorldRenderer extends MobRenderer<TheWorldEntity, TheWorldModel<TheWorldEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world.png");
+public class TheWorldRenderer extends MobRenderer<TheWorldEntity, TheWorldModel<TheWorldEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world.png");
 
-	public TheWorldRenderer(EntityRendererManager renderManagerIn)
-	{
+	public TheWorldRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new TheWorldModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final TheWorldEntity entity)
-	{
-		return TheWorldRenderer.texture;
+	public ResourceLocation getEntityTexture(final TheWorldEntity entity) {
+		return TEXTURE;
 	}
 }
 

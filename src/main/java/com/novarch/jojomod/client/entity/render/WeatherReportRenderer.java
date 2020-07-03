@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class WeatherReportRenderer extends MobRenderer<WeatherReportEntity, WeatherReportModel<WeatherReportEntity>>
-{
-    public static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report.png");
+public class WeatherReportRenderer extends MobRenderer<WeatherReportEntity, WeatherReportModel<WeatherReportEntity>> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report.png");
 
-    public WeatherReportRenderer(EntityRendererManager renderManagerIn)
-    {
+    public WeatherReportRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new WeatherReportModel<>(), 0.5f);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(WeatherReportEntity entity)
-    {
-        return WeatherReportRenderer.texture;
+    public ResourceLocation getEntityTexture(WeatherReportEntity entity) {
+        return TEXTURE;
     }
 }

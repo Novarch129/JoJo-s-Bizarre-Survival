@@ -11,7 +11,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class MagiciansRedFlamesModel<T extends AbstractStandPunchEntity.MagiciansRed> extends EntityModel<T> {
+public class MagiciansRedFlameModel<T extends AbstractStandPunchEntity.MagiciansRed> extends EntityModel<T> {
 	public final ModelRenderer Flames;
 	private final ModelRenderer Left;
 	private final ModelRenderer Circle2;
@@ -45,7 +45,7 @@ public class MagiciansRedFlamesModel<T extends AbstractStandPunchEntity.Magician
 	private final ModelRenderer Circle25;
 	private final ModelRenderer Circle26;
 
-	public MagiciansRedFlamesModel() {
+	public MagiciansRedFlameModel() {
 		textureWidth = 64;
 		textureHeight = 32;
 

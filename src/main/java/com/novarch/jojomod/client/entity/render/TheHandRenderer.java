@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TheHandRenderer extends MobRenderer<TheHandEntity, TheHandModel<TheHandEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
+public class TheHandRenderer extends MobRenderer<TheHandEntity, TheHandModel<TheHandEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
 
-	public TheHandRenderer(EntityRendererManager renderManagerIn)
-	{
+	public TheHandRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new TheHandModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final TheHandEntity entity)
-	{
-		return TheHandRenderer.texture;
+	public ResourceLocation getEntityTexture(final TheHandEntity entity) {
+		return TEXTURE;
 	}
 }
 

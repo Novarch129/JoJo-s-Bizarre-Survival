@@ -13,20 +13,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class KillerQueenRenderer extends MobRenderer<KillerQueenEntity, KillerQueenModel<KillerQueenEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
+public class KillerQueenRenderer extends MobRenderer<KillerQueenEntity, KillerQueenModel<KillerQueenEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
 
-	public KillerQueenRenderer(EntityRendererManager renderManagerIn)
-	{
+	public KillerQueenRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new KillerQueenModel<>(), 0.5f);
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final KillerQueenEntity entity)
-	{
-		return KillerQueenRenderer.texture;
+	public ResourceLocation getEntityTexture(final KillerQueenEntity entity) {
+		return KillerQueenRenderer.TEXTURE;
 	}
 }
 

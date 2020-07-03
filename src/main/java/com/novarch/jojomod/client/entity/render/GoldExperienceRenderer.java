@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class GoldExperienceRenderer extends MobRenderer<GoldExperienceEntity, GoldExperienceModel<GoldExperienceEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/gold_experience.png");
+public class GoldExperienceRenderer extends MobRenderer<GoldExperienceEntity, GoldExperienceModel<GoldExperienceEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/gold_experience.png");
 
-	public GoldExperienceRenderer(EntityRendererManager renderManagerIn)
-	{
+	public GoldExperienceRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new GoldExperienceModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final GoldExperienceEntity entity)
-	{
-		return GoldExperienceRenderer.texture;
+	public ResourceLocation getEntityTexture(final GoldExperienceEntity entity) {
+		return TEXTURE;
 	}
 }
 

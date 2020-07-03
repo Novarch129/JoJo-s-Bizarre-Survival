@@ -12,19 +12,16 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class DirtyDeedsDoneDirtCheapRenderer extends MobRenderer<DirtyDeedsDoneDirtCheapEntity, DirtyDeedsDoneDirtCheapModel<DirtyDeedsDoneDirtCheapEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/d4c.png");
+public class DirtyDeedsDoneDirtCheapRenderer extends MobRenderer<DirtyDeedsDoneDirtCheapEntity, DirtyDeedsDoneDirtCheapModel<DirtyDeedsDoneDirtCheapEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/d4c.png");
 
-	public DirtyDeedsDoneDirtCheapRenderer(EntityRendererManager renderManagerIn)
-	{
+	public DirtyDeedsDoneDirtCheapRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new DirtyDeedsDoneDirtCheapModel<>(), 0.5f);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(final DirtyDeedsDoneDirtCheapEntity entity)
-	{
-		return DirtyDeedsDoneDirtCheapRenderer.texture;
+	public ResourceLocation getEntityTexture(final DirtyDeedsDoneDirtCheapEntity entity) {
+		return TEXTURE;
 	}
 }
 

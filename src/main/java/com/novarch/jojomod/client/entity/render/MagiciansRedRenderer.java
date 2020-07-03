@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class MagiciansRedRenderer extends MobRenderer<MagiciansRedEntity, MagiciansRedModel<MagiciansRedEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/magicians_red.png");
+public class MagiciansRedRenderer extends MobRenderer<MagiciansRedEntity, MagiciansRedModel<MagiciansRedEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/magicians_red.png");
 
-	public MagiciansRedRenderer(EntityRendererManager renderManagerIn)
-	{
+	public MagiciansRedRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new MagiciansRedModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final MagiciansRedEntity entity)
-	{
-		return MagiciansRedRenderer.texture;
+	public ResourceLocation getEntityTexture(final MagiciansRedEntity entity) {
+		return TEXTURE;
 	}
 }
 

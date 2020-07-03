@@ -13,20 +13,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class CrazyDiamondRenderer extends MobRenderer<CrazyDiamondEntity, CrazyDiamondModel<CrazyDiamondEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond.png");
+public class CrazyDiamondRenderer extends MobRenderer<CrazyDiamondEntity, CrazyDiamondModel<CrazyDiamondEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond.png");
 
-	public CrazyDiamondRenderer(EntityRendererManager renderManagerIn)
-	{
+	public CrazyDiamondRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new CrazyDiamondModel<>(), 0.5f);
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final CrazyDiamondEntity entity)
-	{
-		return CrazyDiamondRenderer.texture;
+	public ResourceLocation getEntityTexture(final CrazyDiamondEntity entity) {
+		return TEXTURE;
 	}
 }
 

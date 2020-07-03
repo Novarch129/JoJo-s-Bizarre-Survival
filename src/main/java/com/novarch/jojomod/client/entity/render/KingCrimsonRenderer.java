@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class KingCrimsonRenderer extends MobRenderer<KingCrimsonEntity, KingCrimsonModel<KingCrimsonEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson.png");
+public class KingCrimsonRenderer extends MobRenderer<KingCrimsonEntity, KingCrimsonModel<KingCrimsonEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson.png");
 
-	public KingCrimsonRenderer(EntityRendererManager renderManagerIn)
-	{
+	public KingCrimsonRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new KingCrimsonModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final KingCrimsonEntity entity)
-	{
-		return KingCrimsonRenderer.texture;
+	public ResourceLocation getEntityTexture(final KingCrimsonEntity entity) {
+		return TEXTURE;
 	}
 }
 

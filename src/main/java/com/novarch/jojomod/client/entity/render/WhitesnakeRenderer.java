@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class WhitesnakeRenderer extends MobRenderer<WhitesnakeEntity, WhitesnakeModel<WhitesnakeEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
+public class WhitesnakeRenderer extends MobRenderer<WhitesnakeEntity, WhitesnakeModel<WhitesnakeEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
 
-	public WhitesnakeRenderer(EntityRendererManager renderManagerIn)
-	{
+	public WhitesnakeRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new WhitesnakeModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final WhitesnakeEntity entity)
-	{
-		return WhitesnakeRenderer.texture;
+	public ResourceLocation getEntityTexture(final WhitesnakeEntity entity) {
+		return TEXTURE;
 	}
 }
 

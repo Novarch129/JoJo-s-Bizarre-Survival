@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class CMoonRenderer extends MobRenderer<CMoonEntity, CMoonModel<CMoonEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon.png");
+public class CMoonRenderer extends MobRenderer<CMoonEntity, CMoonModel<CMoonEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon.png");
 
-	public CMoonRenderer(EntityRendererManager renderManagerIn)
-	{
+	public CMoonRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new CMoonModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final CMoonEntity entity)
-	{
-		return CMoonRenderer.texture;
+	public ResourceLocation getEntityTexture(final CMoonEntity entity) {
+		return TEXTURE;
 	}
 }
 

@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class SilverChariotRenderer extends MobRenderer<SilverChariotEntity, SilverChariotModel<SilverChariotEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot.png");
+public class SilverChariotRenderer extends MobRenderer<SilverChariotEntity, SilverChariotModel<SilverChariotEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot.png");
 
-	public SilverChariotRenderer(EntityRendererManager renderManagerIn)
-	{
+	public SilverChariotRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new SilverChariotModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(SilverChariotEntity entity)
-	{
-		return SilverChariotRenderer.texture;
+	public ResourceLocation getEntityTexture(SilverChariotEntity entity) {
+		return TEXTURE;
 	}
 }
 

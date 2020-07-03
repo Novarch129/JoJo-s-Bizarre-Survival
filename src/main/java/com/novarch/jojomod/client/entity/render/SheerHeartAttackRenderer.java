@@ -13,20 +13,17 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class SheerHeartAttackRenderer extends MobRenderer<SheerHeartAttackEntity, SheerHeartAttackModel<SheerHeartAttackEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sheer_heart_attack.png");
+public class SheerHeartAttackRenderer extends MobRenderer<SheerHeartAttackEntity, SheerHeartAttackModel<SheerHeartAttackEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sheer_heart_attack.png");
 
-	public SheerHeartAttackRenderer(EntityRendererManager renderManagerIn)
-	{
+	public SheerHeartAttackRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new SheerHeartAttackModel<>(), 0.5f);
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final SheerHeartAttackEntity entity)
-	{
-		return SheerHeartAttackRenderer.texture;
+	public ResourceLocation getEntityTexture(SheerHeartAttackEntity entity) {
+		return TEXTURE;
 	}
 }
 

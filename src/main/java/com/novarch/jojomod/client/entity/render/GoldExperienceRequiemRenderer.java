@@ -14,25 +14,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class GoldExperienceRequiemRenderer extends MobRenderer<GoldExperienceRequiemEntity, GoldExperienceRequiemModel<GoldExperienceRequiemEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger.png");
+public class GoldExperienceRequiemRenderer extends MobRenderer<GoldExperienceRequiemEntity, GoldExperienceRequiemModel<GoldExperienceRequiemEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger.png");
 
-	public GoldExperienceRequiemRenderer(EntityRendererManager renderManagerIn)
-	{
+	public GoldExperienceRequiemRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new GoldExperienceRequiemModel<>(), 0.5f);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(final GoldExperienceRequiemEntity entity)
-	{
-		return GoldExperienceRequiemRenderer.texture;
+	public void render(GoldExperienceRequiemEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	public void render(GoldExperienceRequiemEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn)
-	{
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+	public ResourceLocation getEntityTexture(final GoldExperienceRequiemEntity entity) {
+		return TEXTURE;
 	}
 }
 

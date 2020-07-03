@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class AerosmithRenderer extends MobRenderer<AerosmithEntity, AerosmithModel<AerosmithEntity>>
-{
-    protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/aerosmith.png");
+public class AerosmithRenderer extends MobRenderer<AerosmithEntity, AerosmithModel<AerosmithEntity>> {
+    protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/aerosmith.png");
 
-    public AerosmithRenderer(EntityRendererManager manager)
-    {
+    public AerosmithRenderer(EntityRendererManager manager) {
         super(manager, new AerosmithModel<>(), 0.3f);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(AerosmithEntity entity)
-    {
-        return AerosmithRenderer.texture;
+    public ResourceLocation getEntityTexture(AerosmithEntity entity) {
+        return TEXTURE;
     }
 }

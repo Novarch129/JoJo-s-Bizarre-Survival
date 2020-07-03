@@ -12,18 +12,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class MadeInHeavenRenderer extends MobRenderer<MadeInHeavenEntity, MadeInHeavenModel<MadeInHeavenEntity>>
-{
-	protected static final ResourceLocation texture = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/made_in_heaven.png");
+public class MadeInHeavenRenderer extends MobRenderer<MadeInHeavenEntity, MadeInHeavenModel<MadeInHeavenEntity>> {
+	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/made_in_heaven.png");
 
-	public MadeInHeavenRenderer(EntityRendererManager renderManagerIn)
-	{
+	public MadeInHeavenRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new MadeInHeavenModel<>(), 0.5f);
 	}
 
-	public ResourceLocation getEntityTexture(final MadeInHeavenEntity entity)
-	{
-		return MadeInHeavenRenderer.texture;
+	public ResourceLocation getEntityTexture(final MadeInHeavenEntity entity) {
+		return TEXTURE;
 	}
 }
 
