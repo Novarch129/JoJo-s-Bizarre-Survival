@@ -2,11 +2,11 @@ package com.novarch.jojomod.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
+import com.novarch.jojomod.entities.stands.attacks.PurpleHazePunchEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class PurpleHazePunchModel<T extends AbstractStandPunchEntity.PurpleHaze> extends EntityModel<T> {
+public class PurpleHazePunchModel extends EntityModel<PurpleHazePunchEntity> {
 	private final ModelRenderer Punch;
 	private final ModelRenderer ElbowPad;
 	private final ModelRenderer Capsules1;
@@ -37,15 +37,11 @@ public class PurpleHazePunchModel<T extends AbstractStandPunchEntity.PurpleHaze>
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(PurpleHazePunchEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 	}
 
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
-	}
-
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay) {
 		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 

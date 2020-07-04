@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.PurpleHazePunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -80,7 +81,7 @@ public class PurpleHazeEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
+						PurpleHazePunchEntity purpleHaze = new PurpleHazePunchEntity(world, this, player);
 						purpleHaze.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						world.addEntity(purpleHaze);
 					}
@@ -94,11 +95,11 @@ public class PurpleHazeEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze1 = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
+						PurpleHazePunchEntity purpleHaze1 = new PurpleHazePunchEntity(world, this, player);
 						purpleHaze1.setRandomPositions();
 						purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						world.addEntity(purpleHaze1);
-						AbstractStandPunchEntity.PurpleHaze purpleHaze2 = new AbstractStandPunchEntity.PurpleHaze(world, this, player);
+						PurpleHazePunchEntity purpleHaze2 = new PurpleHazePunchEntity(world, this, player);
 						purpleHaze2.setRandomPositions();
 						purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
 						world.addEntity(purpleHaze2);

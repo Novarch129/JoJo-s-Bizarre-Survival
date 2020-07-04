@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.WeatherReportPunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -104,8 +105,7 @@ public class WeatherReportEntity extends AbstractStandEntity {
                 if (attackSwing(player)) {
                     oratick++;
                     if (oratick == 1) {
-                        AbstractStandPunchEntity.WeatherReport weatherReportPunch = new AbstractStandPunchEntity.WeatherReport(world, this, player);
-                        weatherReportPunch.setLightning(world.rand.nextInt(10) == 1);
+                        WeatherReportPunchEntity weatherReportPunch = new WeatherReportPunchEntity(world, this, player);
                         weatherReportPunch.shoot(player, rotationPitch, rotationYaw, 2.5f, 0.4f);
                         world.addEntity(weatherReportPunch);
                     }
@@ -127,11 +127,11 @@ public class WeatherReportEntity extends AbstractStandEntity {
                 if (oratickr >= 10)
                     if (!world.isRemote) {
                         player.setSprinting(false);
-                        AbstractStandPunchEntity.WeatherReport weatherReportPunch1 = new AbstractStandPunchEntity.WeatherReport(world, this, player);
+                        WeatherReportPunchEntity weatherReportPunch1 = new WeatherReportPunchEntity(world, this, player);
                         weatherReportPunch1.setRandomPositions();
                         weatherReportPunch1.shoot(player, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch1);
-                        AbstractStandPunchEntity.WeatherReport weatherReportPunch2 = new AbstractStandPunchEntity.WeatherReport(world, this, player);
+                        WeatherReportPunchEntity weatherReportPunch2 = new WeatherReportPunchEntity(world, this, player);
                         weatherReportPunch2.setRandomPositions();
                         weatherReportPunch2.shoot(player, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch2);

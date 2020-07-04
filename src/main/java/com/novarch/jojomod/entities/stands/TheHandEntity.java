@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.TheHandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -85,7 +86,7 @@ public class TheHandEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.TheHand theHand = new AbstractStandPunchEntity.TheHand(world, this, player);
+						TheHandPunchEntity theHand = new TheHandPunchEntity(world, this, player);
 						theHand.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.4f);
 						world.addEntity(theHand);
 					}
@@ -99,11 +100,11 @@ public class TheHandEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.TheHand theHand1 = new AbstractStandPunchEntity.TheHand(world, this, player);
+						TheHandPunchEntity theHand1 = new TheHandPunchEntity(world, this, player);
 						theHand1.setRandomPositions();
 						theHand1.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
 						world.addEntity(theHand1);
-						AbstractStandPunchEntity.TheHand theHand2 = new AbstractStandPunchEntity.TheHand(world, this, player);
+						TheHandPunchEntity theHand2 = new TheHandPunchEntity(world, this, player);
 						theHand2.setRandomPositions();
 						theHand2.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
 						world.addEntity(theHand2);

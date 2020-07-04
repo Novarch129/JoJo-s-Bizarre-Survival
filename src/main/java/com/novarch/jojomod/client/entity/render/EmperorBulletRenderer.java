@@ -3,7 +3,7 @@ package com.novarch.jojomod.client.entity.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.client.entity.model.EmperorBulletModel;
-import com.novarch.jojomod.entities.stands.EmperorBulletEntity;
+import com.novarch.jojomod.entities.stands.attacks.EmperorBulletEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

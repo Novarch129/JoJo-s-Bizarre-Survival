@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.KingCrimsonPunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -148,7 +149,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 							oratick++;
 							if (oratick == 1) {
 								world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-								AbstractStandPunchEntity.KingCrimson kingCrimson = new AbstractStandPunchEntity.KingCrimson(world, this, player);
+								KingCrimsonPunchEntity kingCrimson = new KingCrimsonPunchEntity(world, this, player);
 								kingCrimson.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 								world.addEntity(kingCrimson);
 							}
@@ -162,11 +163,11 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 						if (oratickr >= 10)
 							if (!world.isRemote) {
 								player.setSprinting(false);
-								AbstractStandPunchEntity.KingCrimson kingCrimson1 = new AbstractStandPunchEntity.KingCrimson(world, this, player);
+								KingCrimsonPunchEntity kingCrimson1 = new KingCrimsonPunchEntity(world, this, player);
 								kingCrimson1.setRandomPositions();
 								kingCrimson1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 								world.addEntity(kingCrimson1);
-								AbstractStandPunchEntity.KingCrimson kingCrimson2 = new AbstractStandPunchEntity.KingCrimson(world, this, player);
+								KingCrimsonPunchEntity kingCrimson2 = new KingCrimsonPunchEntity(world, this, player);
 								kingCrimson2.setRandomPositions();
 								kingCrimson2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 								world.addEntity(kingCrimson2);

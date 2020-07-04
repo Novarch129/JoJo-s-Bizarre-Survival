@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.SilverChariotSwordEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
@@ -149,7 +150,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.SilverChariot silverChariot = new AbstractStandPunchEntity.SilverChariot(world, this, player);
+						SilverChariotSwordEntity silverChariot = new SilverChariotSwordEntity(world, this, player);
 						silverChariot.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 4.0f : 10.0f, hasArmor() ? 0.001f : Float.MIN_VALUE);
 						world.addEntity(silverChariot);
 					}
@@ -163,11 +164,11 @@ public class SilverChariotEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.SilverChariot silverChariot1 = new AbstractStandPunchEntity.SilverChariot(world, this, player);
+						SilverChariotSwordEntity silverChariot1 = new SilverChariotSwordEntity(world, this, player);
 						silverChariot1.setRandomPositions();
 						silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot1);
-						AbstractStandPunchEntity.SilverChariot silverChariot2 = new AbstractStandPunchEntity.SilverChariot(world, this, player);
+						SilverChariotSwordEntity silverChariot2 = new SilverChariotSwordEntity(world, this, player);
 						silverChariot2.setRandomPositions();
 						silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3.0f : 6.0f, hasArmor() ? 0.05f : 0.0001f);
 						world.addEntity(silverChariot2);

@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.AerosmithBulletEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
@@ -85,7 +86,7 @@ public class AerosmithEntity extends AbstractStandEntity {
                 if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability)) {
                     oratick++;
                     if (oratick == 1) {
-                        AbstractStandPunchEntity.Aerosmith aerosmithBullet = new AbstractStandPunchEntity.Aerosmith(world, this, player);
+                        AerosmithBulletEntity aerosmithBullet = new AerosmithBulletEntity(world, this, player);
                         aerosmithBullet.shoot(player, rotationPitch, rotationYaw, 4.0f, 0.4f);
                         world.addEntity(aerosmithBullet);
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
@@ -113,11 +114,11 @@ public class AerosmithEntity extends AbstractStandEntity {
                 if (oratickr >= 10)
                     if (!world.isRemote) {
                         player.setSprinting(false);
-                        AbstractStandPunchEntity.Aerosmith aerosmithBullet1 = new AbstractStandPunchEntity.Aerosmith(world, this, player);
+                        AerosmithBulletEntity aerosmithBullet1 = new AerosmithBulletEntity(world, this, player);
                         aerosmithBullet1.setRandomPositions();
                         aerosmithBullet1.shoot(player, rotationPitch, rotationYaw, 4.0F, 0.3F);
                         world.addEntity(aerosmithBullet1);
-                        AbstractStandPunchEntity.Aerosmith aerosmithBullet2 = new AbstractStandPunchEntity.Aerosmith(world, this, player);
+                        AerosmithBulletEntity aerosmithBullet2 = new AerosmithBulletEntity(world, this, player);
                         aerosmithBullet2.setRandomPositions();
                         aerosmithBullet2.shoot(player, rotationPitch, rotationYaw, 4.0F, 0.3F);
                         world.addEntity(aerosmithBullet2);

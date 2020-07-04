@@ -1,15 +1,12 @@
-package com.novarch.jojomod.client.entity.model;// Made with Blockbench 3.5.2
-// Exported for Minecraft version 1.15
-// Paste this class into your mod and generate all required imports
-
+package com.novarch.jojomod.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
+import com.novarch.jojomod.entities.stands.attacks.KingCrimsonPunchEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class KingCrimsonPunchModel<T extends AbstractStandPunchEntity.KingCrimson> extends EntityModel<T> {
+public class KingCrimsonPunchModel extends EntityModel<KingCrimsonPunchEntity> {
 	private final ModelRenderer Punch;
 
 	public KingCrimsonPunchModel() {
@@ -22,16 +19,11 @@ public class KingCrimsonPunchModel<T extends AbstractStandPunchEntity.KingCrimso
 	}
 
 	@Override
-	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+	public void setRotationAngles(KingCrimsonPunchEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 	}
 
 	@Override
 	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
-	}
-
-	public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay){
 		Punch.render(matrixStack, buffer, packedLight, packedOverlay);
 	}
 

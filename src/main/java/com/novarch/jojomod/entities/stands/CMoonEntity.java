@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.CMoonPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -86,7 +87,7 @@ public class CMoonEntity extends AbstractStandEntity {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.CMoon cMoon = new AbstractStandPunchEntity.CMoon(this.world, this, player);
+						CMoonPunchEntity cMoon = new CMoonPunchEntity(this.world, this, player);
 						cMoon.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.15f);
 						this.world.addEntity(cMoon);
 					}
@@ -100,11 +101,11 @@ public class CMoonEntity extends AbstractStandEntity {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.CMoon cMoon1 = new AbstractStandPunchEntity.CMoon(this.world, this, player);
+						CMoonPunchEntity cMoon1 = new CMoonPunchEntity(this.world, this, player);
 						cMoon1.setRandomPositions();
 						cMoon1.shoot(player, player.rotationPitch, player.rotationYaw, 2.15f, 0.2F);
 						this.world.addEntity(cMoon1);
-						AbstractStandPunchEntity.CMoon cMoon2 = new AbstractStandPunchEntity.CMoon(this.world, this, player);
+						CMoonPunchEntity cMoon2 = new CMoonPunchEntity(this.world, this, player);
 						cMoon2.setRandomPositions();
 						cMoon2.shoot(player, player.rotationPitch, player.rotationYaw, 2.15f, 0.2F);
 						this.world.addEntity(cMoon2);

@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.WhitesnakePunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -58,7 +59,7 @@ public class WhitesnakeEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.Whitesnake whitesnake = new AbstractStandPunchEntity.Whitesnake(world, this, player);
+						WhitesnakePunchEntity whitesnake = new WhitesnakePunchEntity(world, this, player);
 						whitesnake.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.2f);
 						world.addEntity(whitesnake);
 					}
@@ -72,11 +73,11 @@ public class WhitesnakeEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.Whitesnake whitesnake1 = new AbstractStandPunchEntity.Whitesnake(world, this, player);
+						WhitesnakePunchEntity whitesnake1 = new WhitesnakePunchEntity(world, this, player);
 						whitesnake1.setRandomPositions();
 						whitesnake1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
 						world.addEntity(whitesnake1);
-						AbstractStandPunchEntity.Whitesnake whitesnake2 = new AbstractStandPunchEntity.Whitesnake(world, this, player);
+						WhitesnakePunchEntity whitesnake2 = new WhitesnakePunchEntity(world, this, player);
 						whitesnake2.setRandomPositions();
 						whitesnake2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25F);
 						world.addEntity(whitesnake2);

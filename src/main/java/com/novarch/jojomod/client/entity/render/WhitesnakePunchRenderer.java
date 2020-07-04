@@ -3,7 +3,7 @@ package com.novarch.jojomod.client.entity.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.client.entity.model.WhitesnakePunchModel;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
+import com.novarch.jojomod.entities.stands.attacks.WhitesnakePunchEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -14,7 +14,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class WhitesnakePunchRenderer extends StandPunchRenderer<AbstractStandPunchEntity.Whitesnake> {
+public class WhitesnakePunchRenderer extends StandPunchRenderer<WhitesnakePunchEntity> {
 	protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
 
 	public WhitesnakePunchRenderer(EntityRendererManager renderManagerIn) {
@@ -22,13 +22,13 @@ public class WhitesnakePunchRenderer extends StandPunchRenderer<AbstractStandPun
 	}
 
 	@Override
-	public void render(@Nonnull AbstractStandPunchEntity.Whitesnake entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, new WhitesnakePunchModel<>());
+	public void render(@Nonnull WhitesnakePunchEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, new WhitesnakePunchModel());
 	}
 
 	@Nonnull
 	@Override
-	public ResourceLocation getEntityTexture(final AbstractStandPunchEntity.Whitesnake entity) {
+	public ResourceLocation getEntityTexture(final WhitesnakePunchEntity entity) {
 		return TEXTURE;
 	}
 }

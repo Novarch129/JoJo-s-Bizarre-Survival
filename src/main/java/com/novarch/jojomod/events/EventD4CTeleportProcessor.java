@@ -20,7 +20,8 @@ public class EventD4CTeleportProcessor {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {
-        d4cPassengers.forEach((passenger, type) ->
+        d4cPassengers.forEach((passenger, type) -> {
+            if (!passenger.world.isRemote)
                 passenger.changeDimension(
                         type,
                         new DimensionHopTeleporter(
@@ -29,26 +30,28 @@ public class EventD4CTeleportProcessor {
                                 passenger.getPosY(),
                                 passenger.getPosZ()
                         )
-                )
-        );
+                );
+        });
         d4cPassengers.clear();
 
         madeInHeaven.forEach(passenger -> {
             Random rand = passenger.world.rand;
-            passenger.changeDimension(
-                    Objects.requireNonNull(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE)),
-                    new DimensionHopTeleporter(
-                            (ServerWorld) passenger.getEntityWorld(),
-                            passenger.getPosX(),
-                            passenger.getPosY(),
-                            passenger.getPosZ()
-                    )
-            );
-            passenger.setPositionAndUpdate(
-                    rand.nextBoolean() ? passenger.getPosX() + rand.nextInt(100000) : passenger.getPosX() - rand.nextInt(100000),
-                    passenger.getPosY() + rand.nextInt(10),
-                    rand.nextBoolean() ? passenger.getPosZ() + rand.nextInt(100000) : passenger.getPosZ() - rand.nextInt(100000)
-            );
+            if (!passenger.world.isRemote) {
+                passenger.changeDimension(
+                        Objects.requireNonNull(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE)),
+                        new DimensionHopTeleporter(
+                                (ServerWorld) passenger.getEntityWorld(),
+                                passenger.getPosX(),
+                                passenger.getPosY(),
+                                passenger.getPosZ()
+                        )
+                );
+                passenger.setPositionAndUpdate(
+                        rand.nextBoolean() ? passenger.getPosX() + rand.nextInt(100000) : passenger.getPosX() - rand.nextInt(100000),
+                        passenger.getPosY() + rand.nextInt(10),
+                        rand.nextBoolean() ? passenger.getPosZ() + rand.nextInt(100000) : passenger.getPosZ() - rand.nextInt(100000)
+                );
+            }
         });
         madeInHeaven.clear();
     }

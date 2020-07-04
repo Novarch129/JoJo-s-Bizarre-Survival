@@ -6,6 +6,7 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.ITimestop;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
+import com.novarch.jojomod.entities.stands.attacks.TheWorldPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -248,7 +249,7 @@ public class TheWorldEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						AbstractStandPunchEntity.TheWorld theWorld = new AbstractStandPunchEntity.TheWorld(world, this, player);
+						TheWorldPunchEntity theWorld = new TheWorldPunchEntity(world, this, player);
 						theWorld.shoot(player, player.rotationPitch, player.rotationYaw, 3.0f, 0.1f);
 						world.addEntity(theWorld);
 					}
@@ -262,11 +263,11 @@ public class TheWorldEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.TheWorld theWorld1 = new AbstractStandPunchEntity.TheWorld(world, this, player);
+						TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, player);
 						theWorld1.setRandomPositions();
 						theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
 						world.addEntity(theWorld1);
-						AbstractStandPunchEntity.TheWorld theWorld2 = new AbstractStandPunchEntity.TheWorld(world, this, player);
+						TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, player);
 						theWorld2.setRandomPositions();
 						theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
 						world.addEntity(theWorld2);
