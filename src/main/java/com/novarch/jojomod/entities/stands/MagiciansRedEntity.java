@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
+import com.novarch.jojomod.entities.stands.attacks.MagiciansRedFlameEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -37,7 +38,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 
 	public void crossfireHurricane() {
 		if (getMaster() == null) return;
-		AbstractStandPunchEntity.MagiciansRed crossfireHurricane = new AbstractStandPunchEntity.MagiciansRed(world, this, getMaster());
+		MagiciansRedFlameEntity crossfireHurricane = new MagiciansRedFlameEntity(world, this, getMaster());
 		crossfireHurricane.shoot(getMaster(), getMaster().rotationPitch, getMaster().rotationYaw, 4.0f, 0.5f);
 		crossfireHurricane.setExplosive(true);
 		world.addEntity(crossfireHurricane);
@@ -92,7 +93,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-						AbstractStandPunchEntity.MagiciansRed magiciansRed = new AbstractStandPunchEntity.MagiciansRed(world, this, player);
+						MagiciansRedFlameEntity magiciansRed = new MagiciansRedFlameEntity(world, this, player);
 						magiciansRed.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.5f);
 						world.addEntity(magiciansRed);
 						world.addParticle(ParticleTypes.LARGE_SMOKE, magiciansRed.getPosX(), magiciansRed.getPosY(), magiciansRed.getPosZ(), magiciansRed.getMotion().getX(), magiciansRed.getMotion().getY(), magiciansRed.getMotion().getZ());
@@ -107,11 +108,11 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.MagiciansRed magiciansRed1 = new AbstractStandPunchEntity.MagiciansRed(world, this, player);
+						MagiciansRedFlameEntity magiciansRed1 = new MagiciansRedFlameEntity(world, this, player);
 						magiciansRed1.setRandomPositions();
 						magiciansRed1.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.6f);
 						world.addEntity(magiciansRed1);
-						AbstractStandPunchEntity.MagiciansRed magiciansRed2 = new AbstractStandPunchEntity.MagiciansRed(world, this, player);
+						MagiciansRedFlameEntity magiciansRed2 = new MagiciansRedFlameEntity(world, this, player);
 						magiciansRed2.setRandomPositions();
 						magiciansRed2.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.6f);
 						world.addEntity(magiciansRed2);

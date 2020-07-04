@@ -2,7 +2,7 @@ package com.novarch.jojomod.item;
 
 import com.novarch.jojomod.capabilities.stand.IStand;
 import com.novarch.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.stands.EmperorBulletEntity;
+import com.novarch.jojomod.entities.stands.attacks.EmperorBulletEntity;
 import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;

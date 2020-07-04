@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.DirtyDeedsDoneDirtCheapPunchEntity;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
@@ -141,7 +142,7 @@ public class DirtyDeedsDoneDirtCheapEntity extends AbstractStandEntity {
 						this.oratick++;
 						if (this.oratick == 1) {
 							this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-							AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap = new AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap(this.world, this, player);
+							DirtyDeedsDoneDirtCheapPunchEntity dirtyDeedsDoneDirtCheap = new DirtyDeedsDoneDirtCheapPunchEntity(this.world, this, player);
 							dirtyDeedsDoneDirtCheap.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap);
 						}
@@ -155,11 +156,11 @@ public class DirtyDeedsDoneDirtCheapEntity extends AbstractStandEntity {
 					if (this.oratickr >= 10)
 						if (!this.world.isRemote) {
 							player.setSprinting(false);
-							AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap1 = new AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap(this.world, this, player);
+							DirtyDeedsDoneDirtCheapPunchEntity dirtyDeedsDoneDirtCheap1 = new DirtyDeedsDoneDirtCheapPunchEntity(this.world, this, player);
 							dirtyDeedsDoneDirtCheap1.setRandomPositions();
 							dirtyDeedsDoneDirtCheap1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap1);
-							AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap dirtyDeedsDoneDirtCheap2 = new AbstractStandPunchEntity.DirtyDeedsDoneDirtCheap(this.world, this, player);
+							DirtyDeedsDoneDirtCheapPunchEntity dirtyDeedsDoneDirtCheap2 = new DirtyDeedsDoneDirtCheapPunchEntity(this.world, this, player);
 							dirtyDeedsDoneDirtCheap2.setRandomPositions();
 							dirtyDeedsDoneDirtCheap2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							this.world.addEntity(dirtyDeedsDoneDirtCheap2);

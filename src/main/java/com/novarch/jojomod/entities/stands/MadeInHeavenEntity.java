@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
+import com.novarch.jojomod.entities.stands.attacks.MadeInHeavenPunchEntity;
 import com.novarch.jojomod.events.EventD4CTeleportProcessor;
 import com.novarch.jojomod.init.DimensionInit;
 import com.novarch.jojomod.init.EntityInit;
@@ -138,7 +139,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
 					oratick++;
 					if (oratick == 1) {
 						world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.MadeInHeaven madeInHeaven = new AbstractStandPunchEntity.MadeInHeaven(world, this, player);
+						MadeInHeavenPunchEntity madeInHeaven = new MadeInHeavenPunchEntity(world, this, player);
 						madeInHeaven.shoot(player, player.rotationPitch, player.rotationYaw, 6.0f, 0.0001f);
 						world.addEntity(madeInHeaven);
 					}
@@ -152,11 +153,11 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
 				if (oratickr >= 10)
 					if (!world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.MadeInHeaven madeInHeaven1 = new AbstractStandPunchEntity.MadeInHeaven(world, this, player);
+						MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, player);
 						madeInHeaven1.setRandomPositions();
 						madeInHeaven1.shoot(player, player.rotationPitch, player.rotationYaw, 4.0f, 0.1f);
 						world.addEntity(madeInHeaven1);
-						AbstractStandPunchEntity.MadeInHeaven madeInHeaven2 = new AbstractStandPunchEntity.MadeInHeaven(world, this, player);
+						MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, player);
 						madeInHeaven2.setRandomPositions();
 						madeInHeaven2.shoot(player, player.rotationPitch, player.rotationYaw, 4.0f, 0.1f);
 						world.addEntity(madeInHeaven2);

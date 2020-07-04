@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.GoldExperienceRequiemPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -143,7 +144,7 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.GoldExperienceRequiem goldExperienceRequiem = new AbstractStandPunchEntity.GoldExperienceRequiem(this.world, this, player);
+						GoldExperienceRequiemPunchEntity goldExperienceRequiem = new GoldExperienceRequiemPunchEntity(this.world, this, player);
 						goldExperienceRequiem.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem);
 					}
@@ -157,11 +158,11 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.GoldExperienceRequiem goldExperienceRequiem1 = new AbstractStandPunchEntity.GoldExperienceRequiem(this.world, this, player);
+						GoldExperienceRequiemPunchEntity goldExperienceRequiem1 = new GoldExperienceRequiemPunchEntity(this.world, this, player);
 						goldExperienceRequiem1.setRandomPositions();
 						goldExperienceRequiem1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem1);
-						AbstractStandPunchEntity.GoldExperienceRequiem goldExperienceRequiem2 = new AbstractStandPunchEntity.GoldExperienceRequiem(this.world, this, player);
+						GoldExperienceRequiemPunchEntity goldExperienceRequiem2 = new GoldExperienceRequiemPunchEntity(this.world, this, player);
 						goldExperienceRequiem2.setRandomPositions();
 						goldExperienceRequiem2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperienceRequiem2);

@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.GoldExperiencePunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -95,7 +96,7 @@ public class GoldExperienceEntity extends AbstractStandEntity {
 					this.oratick++;
 					if (this.oratick == 1) {
 						this.world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (this.rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-						AbstractStandPunchEntity.GoldExperience goldExperience = new AbstractStandPunchEntity.GoldExperience(this.world, this, player);
+						GoldExperiencePunchEntity goldExperience = new GoldExperiencePunchEntity(this.world, this, player);
 						goldExperience.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience);
 					}
@@ -109,11 +110,11 @@ public class GoldExperienceEntity extends AbstractStandEntity {
 				if (this.oratickr >= 10)
 					if (!this.world.isRemote) {
 						player.setSprinting(false);
-						AbstractStandPunchEntity.GoldExperience goldExperience1 = new AbstractStandPunchEntity.GoldExperience(this.world, this, player);
+						GoldExperiencePunchEntity goldExperience1 = new GoldExperiencePunchEntity(this.world, this, player);
 						goldExperience1.setRandomPositions();
 						goldExperience1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience1);
-						AbstractStandPunchEntity.GoldExperience goldExperience2 = new AbstractStandPunchEntity.GoldExperience(this.world, this, player);
+						GoldExperiencePunchEntity goldExperience2 = new GoldExperiencePunchEntity(this.world, this, player);
 						goldExperience2.setRandomPositions();
 						goldExperience2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 						this.world.addEntity(goldExperience2);

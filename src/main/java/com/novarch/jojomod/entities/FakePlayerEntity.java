@@ -16,8 +16,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class FakePlayerEntity extends MobEntity {
     private final PlayerEntity parent;
 
-    public FakePlayerEntity(EntityType<? extends MobEntity> p_i48576_1_, World p_i48576_2_, PlayerEntity parent) {
-        super(p_i48576_1_, p_i48576_2_);
+    public FakePlayerEntity(EntityType<? extends MobEntity> type, World world, PlayerEntity parent) {
+        super(type, world);
         this.parent = parent;
     }
 

@@ -41,7 +41,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     public static final Capability<ITimestop> TIMESTOP = Null();
     private LazyOptional<ITimestop> holder = LazyOptional.of(() -> new Timestop(entity));
 
-    public Timestop(Entity entity) {
+    public Timestop(@Nonnull Entity entity) {
         this.entity = entity;
     }
 
@@ -310,6 +310,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
                 instance.putFallDistance(compoundNBT.getInt("fallDistance"));
                 instance.putFuse(compoundNBT.getInt("fuse"));
+                instance.putFire(compoundNBT.getInt("fire"));
                 instance.putAge(compoundNBT.getInt("age"));
             }
         }, () -> new Timestop(Null()));

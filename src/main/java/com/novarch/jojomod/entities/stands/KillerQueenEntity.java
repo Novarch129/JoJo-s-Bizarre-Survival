@@ -1,6 +1,7 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.KillerQueenPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.util.Util;
@@ -134,7 +135,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
 						oratick++;
 						if (oratick == 1) {
 							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-							AbstractStandPunchEntity.KillerQueen killerQueen = new AbstractStandPunchEntity.KillerQueen(world, this, player);
+							KillerQueenPunchEntity killerQueen = new KillerQueenPunchEntity(world, this, player);
 							killerQueen.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen);
 						}
@@ -148,11 +149,11 @@ public class KillerQueenEntity extends AbstractStandEntity {
 					if (oratickr >= 10)
 						if (!world.isRemote) {
 							player.setSprinting(false);
-							AbstractStandPunchEntity.KillerQueen killerQueen1 = new AbstractStandPunchEntity.KillerQueen(world, this, player);
+							KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, player);
 							killerQueen1.setRandomPositions();
 							killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen1);
-							AbstractStandPunchEntity.KillerQueen killerQueen2 = new AbstractStandPunchEntity.KillerQueen(world, this, player);
+							KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, player);
 							killerQueen2.setRandomPositions();
 							killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
 							world.addEntity(killerQueen2);

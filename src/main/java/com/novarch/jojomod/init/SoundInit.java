@@ -8,12 +8,10 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class SoundInit
-{
+public class SoundInit {
 	public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, JojoBizarreSurvival.MOD_ID);
 
 	public static final RegistryObject<SoundEvent> CANZONI_PREFERITE = SOUNDS.register("canzoni_preferite", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "canzoni_preferite")));
-
 	public static final RegistryObject<SoundEvent> PUNCH_MISS = SOUNDS.register("punch_miss", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "punch_miss")));
 	public static final RegistryObject<SoundEvent> SPAWN_KING_CRIMSON = SOUNDS.register("spawn_king_crimson", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_king_crimson")));
 	public static final RegistryObject<SoundEvent> SPAWN_D4C = SOUNDS.register("spawn_d4c", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_d4c")));
