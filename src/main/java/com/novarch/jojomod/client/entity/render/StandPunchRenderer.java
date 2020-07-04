@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -25,7 +26,8 @@ public abstract class StandPunchRenderer<T extends AbstractStandPunchEntity> ext
         renderManager.textureManager.bindTexture(getEntityTexture(entityIn));
         matrixStackIn.push();
         matrixStackIn.translate((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());
-        matrixStackIn.rotate(new Quaternion(entityIn.prevRotationYaw + (entityIn.rotationYaw - entityIn.prevRotationYaw) * packedLightIn - 90, 0, 1, 0));
+        matrixStackIn.rotate(new Quaternion(0, 1, 0, MathHelper.lerp(entityIn.standMaster.rotationYaw, entityIn.standMaster.prevRotationYaw, partialTicks)));
+        matrixStackIn.rotate(new Quaternion(1, 0, 0, entityIn.standMaster.rotationPitch));
         matrixStackIn.scale(2, 2, 2);
         matrixStackIn.pop();
         punch.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0, 0, 0, 0, 0);

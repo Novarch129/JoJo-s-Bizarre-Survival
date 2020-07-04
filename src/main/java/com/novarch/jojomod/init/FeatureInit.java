@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Deprecated //All the current structure code is bad
 public class FeatureInit {
     public static final ResourceLocation JOJO_TEMPLE_LOCATION = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "jojo_temple");
     public static IStructurePieceType JOJO_TEMPLE_PIECE = null;

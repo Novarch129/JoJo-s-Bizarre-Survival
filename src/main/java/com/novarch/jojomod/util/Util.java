@@ -1,24 +1,6 @@
 package com.novarch.jojomod.util;
 
-import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
-import com.novarch.jojomod.entities.stands.AerosmithEntity;
-import com.novarch.jojomod.entities.stands.CMoonEntity;
-import com.novarch.jojomod.entities.stands.CrazyDiamondEntity;
-import com.novarch.jojomod.entities.stands.DirtyDeedsDoneDirtCheapEntity;
-import com.novarch.jojomod.entities.stands.GoldExperienceEntity;
-import com.novarch.jojomod.entities.stands.GoldExperienceRequiemEntity;
-import com.novarch.jojomod.entities.stands.KillerQueenEntity;
-import com.novarch.jojomod.entities.stands.KingCrimsonEntity;
-import com.novarch.jojomod.entities.stands.MadeInHeavenEntity;
-import com.novarch.jojomod.entities.stands.MagiciansRedEntity;
-import com.novarch.jojomod.entities.stands.PurpleHazeEntity;
-import com.novarch.jojomod.entities.stands.SilverChariotEntity;
-import com.novarch.jojomod.entities.stands.StarPlatinumEntity;
-import com.novarch.jojomod.entities.stands.TheHandEntity;
-import com.novarch.jojomod.entities.stands.TheWorldEntity;
-import com.novarch.jojomod.entities.stands.WeatherReportEntity;
-import com.novarch.jojomod.entities.stands.WhitesnakeEntity;
+import com.novarch.jojomod.entities.stands.*;
 import com.novarch.jojomod.init.KeyInit;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -83,7 +65,7 @@ public class Util {
     public static AbstractStandEntity getStand(int standID, World world) {
         switch (standID) {
             default:
-                return null;
+                return Null();
             case StandID.KING_CRIMSON:
                 return new KingCrimsonEntity(world);
             case StandID.D4C:
@@ -142,9 +124,9 @@ public class Util {
                                                                                 .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
-                                                                                                .and(entity -> !(entity instanceof PhantomEntity))
-                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
-                                                                                                .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
+                                                                                                        .and(entity -> !(entity instanceof PhantomEntity))
+                                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
+                                                                                                                        .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
     }
 
     public static class StandID {

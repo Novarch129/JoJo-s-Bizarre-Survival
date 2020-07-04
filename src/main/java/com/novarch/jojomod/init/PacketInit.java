@@ -53,10 +53,5 @@ public class PacketInit {
                 SSyncStandMasterPacket::encode,
                 SSyncStandMasterPacket::decode,
                 SSyncStandMasterPacket::handle);
-        JojoBizarreSurvival.INSTANCE.registerMessage(networkId++,
-                CRequestSyncStandMasterPacket.class,
-                CRequestSyncStandMasterPacket::encode,
-                CRequestSyncStandMasterPacket::decode,
-                CRequestSyncStandMasterPacket::handle);
     }
 }

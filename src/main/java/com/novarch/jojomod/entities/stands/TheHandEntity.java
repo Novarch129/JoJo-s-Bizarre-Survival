@@ -48,7 +48,7 @@ public class TheHandEntity extends AbstractStandEntity {
 			entity.setMotion(-motionX * (entity.getDistance(getMaster()) / 4), -motionY * (entity.getDistance(getMaster()) / 4), -motionZ * (entity.getDistance(getMaster()) / 4));
 	}
 
-	@Deprecated  //TODO Fix player not teleporting
+	@Deprecated  //Safe to call, @Deprecated because it's buggy
 	public void teleportMaster() {
 		PlayerEntity master = getMaster();
 		if(master == null || world.isRemote) return;

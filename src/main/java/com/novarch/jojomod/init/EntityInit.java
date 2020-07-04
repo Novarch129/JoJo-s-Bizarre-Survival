@@ -35,18 +35,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD)
-public class EntityInit
-{
-	private int ID = 0;
-
+public class EntityInit {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
-	
+
 	public static final RegistryObject<EntityType<KingCrimsonEntity>> KING_CRIMSON = ENTITY_TYPES
 			.register("king_crimson",
 					() -> EntityType.Builder.<KingCrimsonEntity>create(KingCrimsonEntity::new, EntityClassification.CREATURE)
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson").toString()));
-	
+
 	public static final RegistryObject<EntityType<AbstractStandPunchEntity.KingCrimson>> KING_CRIMSON_PUNCH = ENTITY_TYPES
 			.register("king_crimson_punch", () -> EntityType.Builder.<AbstractStandPunchEntity.KingCrimson>create(AbstractStandPunchEntity.KingCrimson::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)

@@ -22,6 +22,9 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import static com.novarch.jojomod.util.Util.StandID.THE_WORLD;
 
+/**
+ * Syncs the {@link Stand} capability to the client, for things like GUIs.
+ */
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventSyncCapability {

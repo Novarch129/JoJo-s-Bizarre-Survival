@@ -15,9 +15,11 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * This class reminds me of how stupid {@link DeferredRegister} looks when used to register lots of things.
+ */
 @SuppressWarnings("unused")
-public class ItemInit
-{
+public class ItemInit {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, JojoBizarreSurvival.MOD_ID);
 
 	public static final RegistryObject<Item> STAND_ARROW = ITEMS.register("stand_arrow", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("arrow", TextFormatting.YELLOW)).group(JojoItemGroup.instance), 0, "On use, grants the user the power of a STAND."));
@@ -27,7 +29,7 @@ public class ItemInit
 	public static final RegistryObject<Item> SUMMON_MADE_IN_HEAVEN = ITEMS.register("summon_made_in_heaven", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("made_in_heaven", TextFormatting.GREEN)).group(JojoItemGroup.instance), Util.StandID.MADE_IN_HEAVEN, "Possess the ability to accelerate the passage of time."));
 	public static final RegistryObject<Item> SUMMON_AEROSMITH = ITEMS.register("summon_aerosmith", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("aerosmith", TextFormatting.LIGHT_PURPLE)).group(JojoItemGroup.instance), Util.StandID.AEROSMITH, "Remote controlled Stand, allows the user to detect entities by their breathing."));
 	public static final RegistryObject<Item> SUMMON_WEATHER_REPORT = ITEMS.register("summon_weather_report", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("weather_report", TextFormatting.WHITE)).group(JojoItemGroup.instance), Util.StandID.WEATHER_REPORT, "Possess the ability to control the weather, is there something more to this ability?"));
-	public static final RegistryObject<Item> SUMMON_KILLER_QUEEN = ITEMS.register("summon_killer_queen", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("killer_queen", TextFormatting.GRAY)).group(JojoItemGroup.instance), Util.StandID.KILLER_QUEEN, "Can turn anything it touches into a bomb.\n\nControls: \n"+ Util.KeyCodes.ABILITY_1 +": Activate 1st bomb.\n"+ Util.KeyCodes.ABILITY_2 +": Summon Sheer Heart Attack."));
+	public static final RegistryObject<Item> SUMMON_KILLER_QUEEN = ITEMS.register("summon_killer_queen", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("killer_queen", TextFormatting.GRAY)).group(JojoItemGroup.instance), Util.StandID.KILLER_QUEEN, "Can turn anything it touches into a bomb.\n\nControls: \n" + Util.KeyCodes.ABILITY_1 + ": Activate 1st bomb.\n" + Util.KeyCodes.ABILITY_2 + ": Summon Sheer Heart Attack."));
 	public static final RegistryObject<Item> SUMMON_CRAZY_DIAMOND = ITEMS.register("summon_crazy_diamond", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("crazy_diamond", TextFormatting.BLUE)).group(JojoItemGroup.instance), Util.StandID.CRAZY_DIAMOND, "Has the ability to revert objects to a previous state."));
 	public static final RegistryObject<Item> SUMMON_PURPLE_HAZE = ITEMS.register("summon_purple_haze", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("purple_haze", TextFormatting.DARK_PURPLE)).group(JojoItemGroup.instance), Util.StandID.PURPLE_HAZE, "Releases a deadly virus into the atmosphere."));
 	public static final RegistryObject<Item> SUMMON_THE_EMPEROR = ITEMS.register("summon_the_emperor", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("emperor", TextFormatting.DARK_GRAY)).group(JojoItemGroup.instance), Util.StandID.THE_EMPEROR, ""));

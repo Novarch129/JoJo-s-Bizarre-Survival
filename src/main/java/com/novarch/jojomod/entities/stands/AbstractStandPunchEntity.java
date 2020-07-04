@@ -26,6 +26,9 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+/**
+ * TODO Completely overhaul this mess
+ */
 @SuppressWarnings({"ConstantConditions", "unused", "UnusedAssignment"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -165,7 +168,7 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
   public void tick() {
     super.tick();
     if (standMaster != null) {
-      rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
+//      rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
       setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
     }
     if (shootingEntity == null && !world.isRemote)
@@ -392,12 +395,18 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
   public void writeSpawnData(PacketBuffer buffer) {
     buffer.writeInt(shootingStand.getEntityId());
     buffer.writeInt(standMaster.getEntityId());
+    buffer.writeFloat(rotationYaw);
+    buffer.writeFloat(rotationPitch);
+    buffer.writeFloat(getRotationYawHead());
   }
 
   @Override
   public void readSpawnData(PacketBuffer additionalData) {
     shootingStand = (AbstractStandEntity) world.getEntityByID(additionalData.readInt());
     standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
+    rotationYaw = additionalData.readFloat();
+    rotationPitch = additionalData.readFloat();
+    setRotationYawHead(additionalData.readFloat());
   }
 
   public static class KingCrimson extends AbstractStandPunchEntity {

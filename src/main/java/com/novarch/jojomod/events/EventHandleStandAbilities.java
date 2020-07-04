@@ -5,7 +5,6 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.capabilities.timestop.Timestop;
 import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.FakePlayerEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.entities.stands.AerosmithEntity;
 import com.novarch.jojomod.entities.stands.StarPlatinumEntity;
 import com.novarch.jojomod.entities.stands.TheWorldEntity;
@@ -16,8 +15,6 @@ import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.item.StandDiscItem;
-import com.novarch.jojomod.network.message.client.CRequestSyncStandMasterPacket;
-import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -31,7 +28,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
-import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -39,15 +35,17 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
+    public static List<Entity> entityList;
+    public static AerosmithEntity playerStand;
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -55,6 +53,23 @@ public class EventHandleStandAbilities {
 
         if (!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
             player.setGlowing(false);
+
+        if (!player.world.isRemote) {
+            player.world.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
+                if (entity instanceof AerosmithEntity)
+                    if (((AerosmithEntity) entity).getMaster() == player)
+                        playerStand = (AerosmithEntity) entity;
+            });
+            if (playerStand != null)
+                entityList = player.world.getServer().getWorld(player.dimension)
+                        .getEntities()
+                        .filter(entity -> entity != player)
+                        .filter(entity -> entity != playerStand)
+                        .filter(entity -> !(entity instanceof FakePlayerEntity))
+                        .filter(Util.Predicates.BREATHS)
+                        .filter(entity -> entity.getDistance(playerStand) < 16)
+                        .collect(Collectors.toList());
+        }
 
         Stand.getLazyOptional(player).ifPresent(props -> {
             int standID = props.getStandID();
@@ -85,7 +100,7 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
             }
 
-            if((standID == Util.StandID.KING_CRIMSON) && (standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
@@ -122,42 +137,6 @@ public class EventHandleStandAbilities {
             event.getEntityLiving().setGlowing(false);
         if (event.getPotionEffect().getPotion() == Effects.GLOWING)
             event.getEntityLiving().setGlowing(false);
-    }
-
-    @SubscribeEvent
-    public static void clientTick(TickEvent.ClientTickEvent event) {
-        if (Minecraft.getInstance().player == null)
-            return;
-
-        PlayerEntity player = Minecraft.getInstance().player;
-
-        Stand.getLazyOptional(player).ifPresent(props -> {
-            if (!props.getStandOn() || !props.getAbility())
-                if (!player.isSpectator())
-                    Minecraft.getInstance().setRenderViewEntity(player);
-        });
-        assert Minecraft.getInstance().world != null;
-        Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-            if(entity instanceof AbstractStandEntity)
-                if(((AbstractStandEntity) entity).getMaster() == null) {
-                    LogManager.getLogger().debug("nullmaster");
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CRequestSyncStandMasterPacket(entity.getEntityId()));
-                }
-            if (entity instanceof AerosmithEntity)
-                if (((AerosmithEntity) entity).getMaster() != null)
-                    if (player.getEntityId() == ((AerosmithEntity) entity).getMaster().getEntityId()) {
-                        float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
-                        float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
-
-                        if (pitch > 89.0f)
-                            pitch = 89.0f;
-                        else if (pitch < -89.0f)
-                            pitch = -89.0f;
-
-                        if (entity.rotationYaw != yaw && entity.rotationPitch != pitch)
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(yaw, pitch));
-                    }
-        });
     }
 
     @SubscribeEvent
@@ -355,13 +334,5 @@ public class EventHandleStandAbilities {
     public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void renderPlayer(RenderPlayerEvent.Pre event) {
-        Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility())
-                event.setCanceled(true);
-        });
     }
 }

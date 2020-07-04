@@ -4,7 +4,7 @@ import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.client.entity.model.FakePlayerModel;
 import com.novarch.jojomod.entities.FakePlayerEntity;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+@SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class FakePlayerRenderer extends MobRenderer<FakePlayerEntity, FakePlayerModel<FakePlayerEntity>> {
@@ -22,7 +23,7 @@ public class FakePlayerRenderer extends MobRenderer<FakePlayerEntity, FakePlayer
 	@Nonnull
 	@Override
 	public ResourceLocation getEntityTexture(FakePlayerEntity entity) {
-		return Minecraft.getInstance().player == null ? new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson.png") : Minecraft.getInstance().player.getLocationSkin(); //Weird backup for if player is null, hope that never happens
+		return entity.getParent() == null && entity.getParent() instanceof ClientPlayerEntity ? new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson.png") : ((ClientPlayerEntity) entity.getParent()).getLocationSkin(); //Weird backup for if player is null, hope that never happens
 	}
 }
 

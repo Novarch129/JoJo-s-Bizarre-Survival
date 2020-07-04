@@ -2,8 +2,10 @@ package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.client.entity.render.*;
+import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.KeyInit;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -11,12 +13,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import javax.annotation.Nonnull;
+
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
-public class ClientEventBusSubscriber
-{
+public class ClientEventBusSubscriber {
 	@SubscribeEvent
-	public static void clientSetup(FMLClientSetupEvent event)
-	{
+	public static void clientSetup(FMLClientSetupEvent event) {
 		KeyInit.register();
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON.get(), KingCrimsonRenderer::new);
