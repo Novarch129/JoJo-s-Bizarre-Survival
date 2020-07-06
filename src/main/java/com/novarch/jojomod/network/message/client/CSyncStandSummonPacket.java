@@ -87,7 +87,6 @@ public class CSyncStandSummonPacket {
 											props.setStandOn(true);
 											stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
 											stand.setMaster(player);
-											stand.setMasterUUID(player.getUniqueID());
 											if(!player.world.isRemote)
 												JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new SSyncStandMasterPacket(stand.getEntityId(), player.getEntityId()));
 											CompoundNBT nbt = new CompoundNBT();

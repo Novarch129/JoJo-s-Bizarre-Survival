@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import net.minecraft.block.Block;
@@ -27,8 +26,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
-public class GoldExperienceRequiemPunchEntity extends AbstractStandPunchEntity {
-    public GoldExperienceRequiemPunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity {
+    public GoldExperienceRequiemPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

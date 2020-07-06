@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.entities.stands.CrazyDiamondEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
@@ -18,8 +17,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class CrazyDiamondPunchEntity extends AbstractStandPunchEntity {
-    public CrazyDiamondPunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class CrazyDiamondPunchEntity extends AbstractStandAttackEntity {
+    public CrazyDiamondPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

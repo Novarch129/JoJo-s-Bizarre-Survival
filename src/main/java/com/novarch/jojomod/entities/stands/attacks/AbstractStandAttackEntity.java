@@ -1,5 +1,6 @@
-package com.novarch.jojomod.entities.stands;
+package com.novarch.jojomod.entities.stands.attacks;
 
+import com.novarch.jojomod.entities.stands.AbstractStandEntity;
 import com.novarch.jojomod.events.custom.StandPunchEvent;
 import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
@@ -30,19 +31,14 @@ import java.util.List;
 @SuppressWarnings({"ConstantConditions", "unused", "UnusedAssignment"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class AbstractStandPunchEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
-    public int xTile;
-    public int yTile;
-    public int zTile;
-    public int arrowShake;
+public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
+    public int xTile, yTile, zTile, arrowShake, ticksInAir, longTick = 3;
     public Entity shootingEntity;
     public AbstractStandEntity shootingStand;
     public PlayerEntity standMaster;
     protected boolean inGround;
-    private int ticksInAir;
-    private int longTick = 3;
 
-    public AbstractStandPunchEntity(EntityType<? extends Entity> type, World worldIn) {
+    public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn) {
         super(type, worldIn);
         xTile = -1;
         yTile = -1;
@@ -51,12 +47,12 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
             setNoGravity(true);
     }
 
-    public AbstractStandPunchEntity(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
+    public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
         this(type, worldIn);
         setPosition(x, y, z);
     }
 
-    public AbstractStandPunchEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
+    public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         this(type, worldIn, shooter.getPosX(), shooter.getPosY() + (shooter.getMaster()).getEyeHeight(), shooter.getPosZ());
         shootingEntity = shooter;
         shootingStand = shooter;
@@ -178,8 +174,8 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
             Entity entity = findEntityOnPath(vec3d1);
             if (entity != null) {
                 entityRayTraceResult = new EntityRayTraceResult(entity);
-                if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof AbstractStandPunchEntity) {
-                    AbstractStandPunchEntity punch = (AbstractStandPunchEntity) entityRayTraceResult.getEntity();
+                if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof AbstractStandAttackEntity) {
+                    AbstractStandAttackEntity punch = (AbstractStandAttackEntity) entityRayTraceResult.getEntity();
                     if (punch.shootingEntity == shootingEntity)
                         raytraceresult = null;
                 }
@@ -305,10 +301,10 @@ public abstract class AbstractStandPunchEntity extends Entity implements IProjec
         List<Entity> list = world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(getMotion().x, getMotion().y, getMotion().z).grow(1.0d), Util.Predicates.STAND_PUNCH_TARGET);
         double d0 = 0.0d;
         for (Entity entity1 : list) {
-            AbstractStandPunchEntity punch = null;
-            if (entity1 instanceof AbstractStandPunchEntity)
-                punch = (AbstractStandPunchEntity) entity1;
-            if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || entity1 != shootingStand || entity1 != standMaster || (entity1 instanceof AbstractStandPunchEntity && punch != null && punch.shootingEntity != shootingEntity) || ticksInAir >= 6)) {
+            AbstractStandAttackEntity punch = null;
+            if (entity1 instanceof AbstractStandAttackEntity)
+                punch = (AbstractStandAttackEntity) entity1;
+            if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || entity1 != shootingStand || entity1 != standMaster || (entity1 instanceof AbstractStandAttackEntity && punch != null && punch.shootingEntity != shootingEntity) || ticksInAir >= 6)) {
                 RayTraceResult raytraceresult = new EntityRayTraceResult(entity1);
                 if (raytraceresult != null) {
                     double d1 = start.squareDistanceTo(raytraceresult.getHitVec());

@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -14,8 +13,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class MadeInHeavenPunchEntity extends AbstractStandPunchEntity {
-    public MadeInHeavenPunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class MadeInHeavenPunchEntity extends AbstractStandAttackEntity {
+    public MadeInHeavenPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

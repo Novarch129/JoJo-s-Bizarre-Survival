@@ -2,7 +2,6 @@ package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.ItemInit;
 import com.novarch.jojomod.util.Util;
@@ -18,8 +17,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class WhitesnakePunchEntity extends AbstractStandPunchEntity {
-    public WhitesnakePunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class WhitesnakePunchEntity extends AbstractStandAttackEntity {
+    public WhitesnakePunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

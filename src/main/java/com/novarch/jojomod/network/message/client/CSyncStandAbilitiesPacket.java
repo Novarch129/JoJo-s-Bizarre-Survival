@@ -2,6 +2,7 @@ package com.novarch.jojomod.network.message.client;
 
 import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.*;
+import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
 import com.novarch.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -122,7 +123,7 @@ public class CSyncStandAbilitiesPacket {
 																			vec3d,
 																			vec3d2,
 																			axisalignedbb,
-																			Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandPunchEntity)),
+																			Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandAttackEntity)),
 																			3000);
 															if (entityRayTraceResult != null) {
 																Entity entity11 = entityRayTraceResult.getEntity();

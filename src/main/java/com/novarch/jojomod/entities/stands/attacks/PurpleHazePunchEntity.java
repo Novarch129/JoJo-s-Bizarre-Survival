@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.entities.stands.PurpleHazeEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
@@ -20,8 +19,8 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
-public class PurpleHazePunchEntity extends AbstractStandPunchEntity {
-    public PurpleHazePunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class PurpleHazePunchEntity extends AbstractStandAttackEntity {
+    public PurpleHazePunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 

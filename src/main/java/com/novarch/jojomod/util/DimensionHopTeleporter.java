@@ -15,42 +15,29 @@ import java.util.function.Function;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class DimensionHopTeleporter extends Teleporter
-{
-    private final ServerWorld world;
-    private double x,y,z;
-
-    public DimensionHopTeleporter(ServerWorld world, double x, double y, double z)
-    {
+public class DimensionHopTeleporter extends Teleporter {
+    public DimensionHopTeleporter(ServerWorld world) {
         super(world);
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
     }
 
     @Override
-    public boolean makePortal(Entity entityIn)
-    {
+    public boolean makePortal(Entity entityIn) {
         return false;
     }
 
     @Override
-    public boolean placeInPortal(Entity p_222268_1_, float p_222268_2_)
-    {
+    public boolean placeInPortal(Entity p_222268_1_, float p_222268_2_) {
         return false;
     }
 
     @Nullable
     @Override
-    public BlockPattern.PortalInfo placeInExistingPortal(BlockPos p_222272_1_, Vec3d p_222272_2_, Direction directionIn, double p_222272_4_, double p_222272_6_, boolean p_222272_8_)
-    {
+    public BlockPattern.PortalInfo placeInExistingPortal(BlockPos p_222272_1_, Vec3d p_222272_2_, Direction directionIn, double p_222272_4_, double p_222272_6_, boolean p_222272_8_) {
         return null;
     }
 
     @Override
-    public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity)
-    {
+    public Entity placeEntity(Entity entity, ServerWorld currentWorld, ServerWorld destWorld, float yaw, Function<Boolean, Entity> repositionEntity) {
         return repositionEntity.apply(false);
     }
 }

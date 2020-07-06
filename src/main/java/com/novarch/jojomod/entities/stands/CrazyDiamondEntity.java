@@ -9,6 +9,7 @@ import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,107 +20,94 @@ import java.util.WeakHashMap;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CrazyDiamondEntity extends AbstractStandEntity {
-	private int oratick = 0;
+    private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
 
-	private int oratickr = 0;
+    public CrazyDiamondEntity(EntityType<? extends AbstractStandEntity> type, World world) {
+        super(type, world);
+        spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+        standID = Util.StandID.CRAZY_DIAMOND;
+    }
 
-	private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
+    public CrazyDiamondEntity(World world) {
+        super(EntityInit.CRAZY_DIAMOND.get(), world);
+        spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
+        standID = Util.StandID.CRAZY_DIAMOND;
+    }
 
-	public CrazyDiamondEntity(EntityType<? extends AbstractStandEntity> type, World world) {
-		super(type, world);
-		spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-		standID = Util.StandID.CRAZY_DIAMOND;
-	}
+    public void putRepairBlock(BlockPos blockPos, BlockState state) {
+        repairBlocks.put(blockPos, state);
+    }
 
-	public CrazyDiamondEntity(World world) {
-		super(EntityInit.CRAZY_DIAMOND.get(), world);
-		spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-		standID = Util.StandID.CRAZY_DIAMOND;
-	}
+    public void repair() {
+        if (getMaster() != null)
+            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+                if (repairBlocks.size() > 0) {
+                    world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
+                    props.setCooldown(100);
+                }
+                repairBlocks.forEach(world::setBlockState);
+                repairBlocks.clear();
+            });
+    }
 
-	public void putRepairBlock(BlockPos blockPos, BlockState state) {
-		repairBlocks.put(blockPos, state);
-	}
+    @Override
+    public void playSpawnSound() {
+        world.playSound(null, getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 2, 1);
+    }
 
-	public void repair() {
-		if (getMaster() != null)
-			Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-				if (repairBlocks.size() > 0) {
-					world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
-					props.setCooldown(100);
-				}
-				repairBlocks.forEach(world::setBlockState);
-				repairBlocks.clear();
-			});
-	}
+    @Override
+    public void attack(boolean special) {
+        if (getMaster() == null) return;
+        attackTick++;
+        if (attackTick == 1)
+            if (special) {
+                world.playSound(null, getPosition(), SoundInit.DORARUSH.get(), SoundCategory.NEUTRAL, 1, 1);
+                attackRush = true;
+            } else {
+                world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                CrazyDiamondPunchEntity crazyDiamondPunchEntity = new CrazyDiamondPunchEntity(world, this, getMaster());
+                crazyDiamondPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2.9f, 0.15f);
+                world.addEntity(crazyDiamondPunchEntity);
+            }
+    }
 
-	@Override
-	public void playSpawnSound() {
-		world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 2.0f, 1.0f);
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        if (getMaster() != null) {
+            PlayerEntity player = getMaster();
+            Stand.getLazyOptional(player).ifPresent(props -> {
+                ability = props.getAbility();
+                if (props.getCooldown() > 0 && ability)
+                    props.subtractCooldown(1);
+            });
 
-	@Override
-	public void tick() {
-		super.tick();
-		fallDistance = 0.0f;
-		if (getMaster() != null) {
-			PlayerEntity player = getMaster();
+            followMaster();
+            setRotationYawHead(player.rotationYaw);
+            setRotation(player.rotationYaw, player.rotationPitch);
 
-			Stand.getLazyOptional(player).ifPresent(props -> {
-				ability = props.getAbility();
-				if (props.getCooldown() > 0 && ability)
-					props.subtractCooldown(1);
-			});
-
-			if (standOn) {
-				followMaster();
-				setRotationYawHead(player.rotationYaw);
-				setRotation(player.rotationYaw, player.rotationPitch);
-
-				if (!player.isAlive())
-					remove();
-				if (player.isSprinting()) {
-					if (attackSwing(player))
-						oratick++;
-					if (oratick == 1)
-						if (!world.isRemote) {
-							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.DORARUSH.get(), getSoundCategory(), 1.0f, 1.0f);
-							orarush = true;
-						}
-				} else if (attackSwing(getMaster())) {
-					if (!world.isRemote) {
-						oratick++;
-						if (oratick == 1) {
-							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0f, 0.8f / (rand.nextFloat() * 0.4f + 1.2f) + 0.5f);
-							CrazyDiamondPunchEntity crazyDiamond = new CrazyDiamondPunchEntity(world, this, player);
-							crazyDiamond.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							world.addEntity(crazyDiamond);
-						}
-					}
-				}
-				if (player.swingProgressInt == 0)
-					oratick = 0;
-				if (orarush) {
-					player.setSprinting(false);
-					oratickr++;
-					if (oratickr >= 10)
-						if (!world.isRemote) {
-							player.setSprinting(false);
-							CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, player);
-							crazyDiamond1.setRandomPositions();
-							crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							world.addEntity(crazyDiamond1);
-							CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, player);
-							crazyDiamond2.setRandomPositions();
-							crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0f, 0.2f);
-							world.addEntity(crazyDiamond2);
-						}
-					if (oratickr >= 100) {
-						orarush = false;
-						oratickr = 0;
-					}
-				}
-			}
-		}
-	}
+            if (player.swingProgressInt == 0 && !attackRush)
+                attackTick = 0;
+            if (attackRush) {
+                player.setSprinting(false);
+                attackTicker++;
+                if (attackTicker >= 10)
+                    if (!world.isRemote) {
+                        player.setSprinting(false);
+                        CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, player);
+                        crazyDiamond1.setRandomPositions();
+                        crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                        world.addEntity(crazyDiamond1);
+                        CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, player);
+                        crazyDiamond2.setRandomPositions();
+                        crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                        world.addEntity(crazyDiamond2);
+                    }
+                if (attackTicker >= 100) {
+                    attackRush = false;
+                    attackTicker = 0;
+                }
+            }
+        }
+    }
 }
