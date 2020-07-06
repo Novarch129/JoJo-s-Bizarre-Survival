@@ -13,7 +13,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -38,7 +37,11 @@ public class AerosmithEntity extends AbstractStandEntity {
 
     @Override
     public void playSpawnSound() {
+<<<<<<< HEAD
         world.playSound(null, getMaster().getPosition(), getSpawnSound(), getSoundCategory(), 3.0f, 1.0f);
+=======
+        world.playSound(null, getMaster().getPosition(), getSpawnSound(), getSoundCategory(), 3, 1);
+>>>>>>> e790b14021843e8d6ad83265f275bfb141ebb825
     }
 
     public void shootBomb() {
@@ -67,13 +70,13 @@ public class AerosmithEntity extends AbstractStandEntity {
                 AerosmithBulletEntity aerosmithBulletEntity = new AerosmithBulletEntity(world, this, getMaster());
                 aerosmithBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.4f);
                 world.addEntity(aerosmithBulletEntity);
+                attackTick = 0;
             }
     }
 
-    @Override //TODO Fix
+    @Override
     public void tick() {
         super.tick();
-
         setMotion(getMotion().getX(), 0, getMotion().getZ());
 
         if (getMaster() != null) {
@@ -93,7 +96,32 @@ public class AerosmithEntity extends AbstractStandEntity {
             if (getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
                 setRotationYawHead(yaw);
 
+<<<<<<< HEAD
             if ((player.swingProgressInt == 0 && !ability) || (swingProgressInt == 0 && ability))
+=======
+//            if ((!player.isSprinting() && !ability) || (!isSprinting() && ability)) {
+//                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability)) {
+//                    attackTick++;
+//                    if (attackTick == 1) {
+//                        AerosmithBulletEntity aerosmithBullet = new AerosmithBulletEntity(world, this, player);
+//                        aerosmithBullet.shoot(player, rotationPitch, rotationYaw, 4.0f, 0.4f);
+//                        world.addEntity(aerosmithBullet);
+//                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
+//                    }
+//                }
+//            } else if ((player.isSprinting() && !ability) || (isSprinting() && ability)) {
+//                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability))
+//                    if (player.getFoodStats().getFoodLevel() > 6) {
+//                        attackTick++;
+//                        if (attackTick == 1) {
+//                            world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.VOLARUSH.get(), getSoundCategory(), 4.05f, 1.0f);
+//                            if (!world.isRemote)
+//                                attackRush = true;
+//                        }
+//                    }
+//            }
+            if (player.swingProgressInt == 0 && !ability && !attackRush)
+>>>>>>> e790b14021843e8d6ad83265f275bfb141ebb825
                 attackTick = 0;
             if (attackRush) {
                 if (!ability)
@@ -116,6 +144,10 @@ public class AerosmithEntity extends AbstractStandEntity {
                 if (attackTicker >= 110) {
                     attackRush = false;
                     attackTicker = 0;
+<<<<<<< HEAD
+=======
+                    attackTick = 0;
+>>>>>>> e790b14021843e8d6ad83265f275bfb141ebb825
                 }
             }
         }
