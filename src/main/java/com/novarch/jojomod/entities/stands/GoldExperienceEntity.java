@@ -15,9 +15,8 @@ import net.minecraft.world.World;
 @SuppressWarnings({"ConstantConditions", "unused"})
 @MethodsReturnNonnullByDefault
 public class GoldExperienceEntity extends AbstractStandEntity {
-    private boolean transforming = false;
-
-    private int transformTick = 0;
+    private boolean transforming;
+    private int transformTick;
 
     public GoldExperienceEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

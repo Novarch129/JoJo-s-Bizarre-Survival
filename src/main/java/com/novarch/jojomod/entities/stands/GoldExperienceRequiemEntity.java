@@ -24,7 +24,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class GoldExperienceRequiemEntity extends AbstractStandEntity {
     private StringTextComponent truthname = new StringTextComponent("You will never reach the truth.");
-
     private boolean truth;
 
     public GoldExperienceRequiemEntity(EntityType<? extends AbstractStandEntity> type, World world) {

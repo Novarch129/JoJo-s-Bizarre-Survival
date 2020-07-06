@@ -22,7 +22,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class AerosmithEntity extends AbstractStandEntity {
-    public float yaw = 0, pitch = 0;
+    public float yaw, pitch;
 
     public AerosmithEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
@@ -38,7 +38,7 @@ public class AerosmithEntity extends AbstractStandEntity {
 
     @Override
     public void playSpawnSound() {
-        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 3.0f, 1.0f);
+        world.playSound(null, getMaster().getPosition(), getSpawnSound(), getSoundCategory(), 3.0f, 1.0f);
     }
 
     public void shootBomb() {
@@ -93,27 +93,6 @@ public class AerosmithEntity extends AbstractStandEntity {
             if (getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
                 setRotationYawHead(yaw);
 
-//            if ((!player.isSprinting() && !ability) || (!isSprinting() && ability)) {
-//                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability)) {
-//                    attackTick++;
-//                    if (attackTick == 1) {
-//                        AerosmithBulletEntity aerosmithBullet = new AerosmithBulletEntity(world, this, player);
-//                        aerosmithBullet.shoot(player, rotationPitch, rotationYaw, 4.0f, 0.4f);
-//                        world.addEntity(aerosmithBullet);
-//                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
-//                    }
-//                }
-//            } else if ((player.isSprinting() && !ability) || (isSprinting() && ability)) {
-//                if ((attackSwing(player) && !ability) || (swingProgressInt == 1 && ability))
-//                    if (player.getFoodStats().getFoodLevel() > 6) {
-//                        attackTick++;
-//                        if (attackTick == 1) {
-//                            world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.VOLARUSH.get(), getSoundCategory(), 4.05f, 1.0f);
-//                            if (!world.isRemote)
-//                                attackRush = true;
-//                        }
-//                    }
-//            }
             if ((player.swingProgressInt == 0 && !ability) || (swingProgressInt == 0 && ability))
                 attackTick = 0;
             if (attackRush) {
@@ -137,7 +116,6 @@ public class AerosmithEntity extends AbstractStandEntity {
                 if (attackTicker >= 110) {
                     attackRush = false;
                     attackTicker = 0;
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
                 }
             }
         }

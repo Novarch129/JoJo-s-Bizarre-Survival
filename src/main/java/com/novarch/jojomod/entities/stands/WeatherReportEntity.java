@@ -23,7 +23,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class WeatherReportEntity extends AbstractStandEntity {
-    private int weatherTick = 0;
+    private int weatherTick;
 
     public WeatherReportEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);

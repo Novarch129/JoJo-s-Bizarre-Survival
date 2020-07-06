@@ -25,7 +25,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class KillerQueenEntity extends AbstractStandEntity {
     SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
     private LivingEntity bombEntity = null;
-    private int shaCount = 0;
+    private int shaCount;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
