@@ -13,7 +13,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -38,7 +37,7 @@ public class AerosmithEntity extends AbstractStandEntity {
 
     @Override
     public void playSpawnSound() {
-        world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), getSpawnSound(), getSoundCategory(), 3.0f, 1.0f);
+        world.playSound(null, getMaster().getPosition(), getSpawnSound(), getSoundCategory(), 3, 1);
     }
 
     public void shootBomb() {
@@ -67,13 +66,13 @@ public class AerosmithEntity extends AbstractStandEntity {
                 AerosmithBulletEntity aerosmithBulletEntity = new AerosmithBulletEntity(world, this, getMaster());
                 aerosmithBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.4f);
                 world.addEntity(aerosmithBulletEntity);
+                attackTick = 0;
             }
     }
 
-    @Override //TODO Fix
+    @Override
     public void tick() {
         super.tick();
-
         setMotion(getMotion().getX(), 0, getMotion().getZ());
 
         if (getMaster() != null) {
@@ -114,7 +113,7 @@ public class AerosmithEntity extends AbstractStandEntity {
 //                        }
 //                    }
 //            }
-            if ((player.swingProgressInt == 0 && !ability) || (swingProgressInt == 0 && ability))
+            if (player.swingProgressInt == 0 && !ability && !attackRush)
                 attackTick = 0;
             if (attackRush) {
                 if (!ability)
@@ -137,7 +136,7 @@ public class AerosmithEntity extends AbstractStandEntity {
                 if (attackTicker >= 110) {
                     attackRush = false;
                     attackTicker = 0;
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(5, 1));
+                    attackTick = 0;
                 }
             }
         }
