@@ -5,6 +5,7 @@ import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
 import com.novarch.jojomod.init.KeyInit;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
@@ -125,9 +126,10 @@ public class Util {
                                                                                 .and(((Predicate<Entity>) entity -> !(entity instanceof ZombieVillagerEntity))
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
-                                                                                                        .and(entity -> !(entity instanceof PhantomEntity))
-                                                                                                                .and(entity -> !(entity instanceof AbstractStandAttackEntity))
-                                                                                                                        .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
+                                                                                                .and(entity -> !(entity instanceof PhantomEntity))
+                                                                                                .and(entity -> !(entity instanceof AbstractStandAttackEntity))
+                                                                                                .and(entity -> !(entity instanceof AbstractStandEntity))
+                                                                                                .and(entity -> !(entity instanceof ItemEntity)))))))))));
     }
 
     public static class StandID {
