@@ -31,14 +31,14 @@ public class EntityInit {
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson_punch").toString()));
 
-	public static final RegistryObject<EntityType<DirtyDeedsDoneDirtCheapEntity>> D4C = ENTITY_TYPES
+	public static final RegistryObject<EntityType<D4CEntity>> D4C = ENTITY_TYPES
 			.register("d4c",
-					() -> EntityType.Builder.<DirtyDeedsDoneDirtCheapEntity>create(DirtyDeedsDoneDirtCheapEntity::new, EntityClassification.CREATURE)
+					() -> EntityType.Builder.<D4CEntity>create(D4CEntity::new, EntityClassification.CREATURE)
 							.size(1.2f, 2.7f)
 							.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "d4c").toString()));
 
-	public static final RegistryObject<EntityType<DirtyDeedsDoneDirtCheapPunchEntity>> D4C_PUNCH = ENTITY_TYPES
-			.register("d4c_punch", () -> EntityType.Builder.<DirtyDeedsDoneDirtCheapPunchEntity>create(DirtyDeedsDoneDirtCheapPunchEntity::new, EntityClassification.MISC)
+	public static final RegistryObject<EntityType<D4CPunchEntity>> D4C_PUNCH = ENTITY_TYPES
+			.register("d4c_punch", () -> EntityType.Builder.<D4CPunchEntity>create(D4CPunchEntity::new, EntityClassification.MISC)
 					.size(0.2f, 0.2f)
 					.build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "d4c_punch").toString()));
 

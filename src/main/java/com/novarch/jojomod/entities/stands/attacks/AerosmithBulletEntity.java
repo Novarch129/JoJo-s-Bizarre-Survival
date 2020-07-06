@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -15,7 +14,7 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class AerosmithBulletEntity extends AbstractStandPunchEntity {
+public class AerosmithBulletEntity extends AbstractStandAttackEntity {
     public AerosmithBulletEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         super(EntityInit.AEROSMITH_BULLET.get(), worldIn, shooter, player);
     }

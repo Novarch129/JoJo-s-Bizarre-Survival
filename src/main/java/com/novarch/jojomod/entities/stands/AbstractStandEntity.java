@@ -2,6 +2,7 @@ package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.capabilities.stand.Stand;
+import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
 import com.novarch.jojomod.events.custom.StandEvent;
 import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
 import mcp.MethodsReturnNonnullByDefault;
@@ -26,72 +27,59 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.UUID;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
-    private PlayerEntity master;
-    protected boolean standOn = true;
-    public boolean orarush;
+    public boolean ability, attackRush, standOn;
+    public int attackTick, attackTicker, standID;
     protected SoundEvent spawnSound;
-    public int standID;
-    boolean attack;
-    public UUID masterUUID;
-    public boolean ability;
+    private PlayerEntity master;
 
     public AbstractStandEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
     /**
-     * @return  Returns a {@link SoundEvent}, the Stand's spawn sound.
+     * @return Returns a {@link SoundEvent}, the Stand's spawn sound.
      */
     public SoundEvent getSpawnSound() {
         return spawnSound;
     }
 
     /**
+     * Initiates the Stand's default attack, usually a punch ({@link AbstractStandAttackEntity}).
+     *
+     * @param special Whether the attack is a special attack or not, usually if it's a rush attack.
+     */
+    public abstract void attack(boolean special);
+
+    /**
+     * @return The Stand's current master.
+     */
+    public PlayerEntity getMaster() {
+        return master;
+    }
+
+    /**
      * Sets the Stand's master, should never be <code>null</code> as it would most likely crash the game.
      *
-     * @param master  The {@link PlayerEntity} that will be set as the Stand's master.
+     * @param master The {@link PlayerEntity} that will be set as the Stand's master.
      */
     public void setMaster(@Nonnull PlayerEntity master) {
         this.master = master;
     }
 
     /**
-     * Used to check if the Stand's master has swung their hand, used to summon {@link AbstractStandPunchEntity}.
-     *
-     * @param player    The player who's swing is checked.
-     * @return  Returns whether or not the swing was successful.
-     */
-    public boolean attackSwing(PlayerEntity player) {
-        return (player.isSwingInProgress && attack) && !setAttack(false);
-    }
-
-    public boolean setAttack(boolean attack) {
-        return this.attack = attack;
-    }
-
-    public PlayerEntity getMaster() {
-        return master;
-    }
-
-    public void setMasterUUID(UUID masterUUID) {
-        this.masterUUID = masterUUID;
-    }
-
-    /**
-     *  Plays the Stand's spawn sound.
+     * Plays the Stand's spawn sound.
      */
     public void playSpawnSound() {
         world.playSound(null, getMaster().getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 1, 1);
     }
 
     /**
-     *  Makes the Stand follow it's master, follow speed is based on distance from it's master.
+     * Makes the Stand follow it's master, follow speed is based on distance from it's master.
      */
     protected void followMaster() {
         PlayerEntity player = getMaster();
@@ -112,10 +100,10 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     *  Used in followMaster() to shorten code, moves the Stand based on the,
+     * Used in followMaster() to shorten code, moves the Stand based on the,
      *
-     *  @param distance The Stand's distance from it's master.
-     *  @param player   The Stand's master, used for some distance calculations.
+     * @param distance The Stand's distance from it's master.
+     * @param player   The Stand's master, used for some distance calculations.
      */
     public void moveStand(double distance, PlayerEntity player) {
         double distanceX = getPosX() - player.getPosX();
@@ -211,9 +199,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     /**
      * Redirects attacks from the Stand to it's master.
      *
-     * @param damageSource  The {@link DamageSource} damaging the Stand.
-     * @param damage    The amount of damage taken.
-     * @return  Always returns <code>false</code> to prevent the Stand from taking damage, and because I'm paranoid.
+     * @param damageSource The {@link DamageSource} damaging the Stand.
+     * @param damage       The amount of damage taken.
+     * @return Always returns <code>false</code> to prevent the Stand from taking damage, and because I'm paranoid.
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
@@ -230,11 +218,11 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     /**
      * Makes Stand's phase through non Stand entities.
      *
-     * @param entityIn  The {@link Entity} being collided with.
+     * @param entityIn The {@link Entity} being collided with.
      */
     @Override
     public void applyEntityCollision(Entity entityIn) {
-        if(entityIn instanceof AbstractStandEntity || entityIn instanceof AbstractStandPunchEntity)
+        if (entityIn instanceof AbstractStandEntity || entityIn instanceof AbstractStandAttackEntity)
             super.applyEntityCollision(entityIn);
     }
 
@@ -244,9 +232,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if(MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
-        if(!world.isRemote)
-            if(getMaster() != null)
+        if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
+        if (!world.isRemote)
+            if (getMaster() != null)
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
@@ -276,7 +264,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     /**
      * Makes the Stand not render flames when it's on fire as it looks stupid.
      *
-     * @return  Whether the entity should render as on fire.
+     * @return Whether the entity should render as on fire.
      */
     @Override
     public boolean canRenderOnFire() {
@@ -300,14 +288,14 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        if(getMaster() != null)
+        if (getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         int id = additionalData.readInt();
-        if(id != 0)
+        if (id != 0)
             setMaster((PlayerEntity) world.getEntityByID(id));
     }
 

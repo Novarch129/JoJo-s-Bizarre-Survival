@@ -23,147 +23,135 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class KillerQueenEntity extends AbstractStandEntity {
-	private int oratick = 0;
+    SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
+    private LivingEntity bombEntity = null;
+    private int shaCount = 0;
 
-	private int oratickr = 0;
+    public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
+        super(type, world);
+        spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
+        standID = Util.StandID.KILLER_QUEEN;
+    }
 
-	private LivingEntity bombEntity = null;
+    public KillerQueenEntity(World world) {
+        super(EntityInit.KILLER_QUEEN.get(), world);
+        spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
+        standID = Util.StandID.KILLER_QUEEN;
+    }
 
-	SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
+    public LivingEntity getBombEntity() {
+        return bombEntity;
+    }
 
-	private int shaCount = 0;
+    public void setBombEntity(LivingEntity bombEntity) {
+        this.bombEntity = bombEntity;
+    }
 
-	public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
-		super(type, world);
-		spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-		standID = Util.StandID.KILLER_QUEEN;
-	}
+    public void detonate() {
+        if (getMaster() != null)
+            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+                if (props.getCooldown() <= 0) {
+                    if (bombEntity != null) {
+                        if (bombEntity.isAlive()) {
+                            props.setCooldown(140);
+                            if (bombEntity instanceof MobEntity) {
+                                Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                ((MobEntity) bombEntity).spawnExplosionParticle();
+                                explosion.doExplosionB(true);
+                                world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                                bombEntity.remove();
+                            } else if (bombEntity instanceof PlayerEntity) {
+                                Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
+                                    if (bombProps.getStandID() != Util.StandID.GER) {
+                                        Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                        ((PlayerEntity) bombEntity).spawnSweepParticles();
+                                        explosion.doExplosionB(true);
+                                        bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
+                                    } else {
+                                        Explosion explosion = new Explosion(getMaster().world, getMaster(), getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                        getMaster().spawnSweepParticles();
+                                        explosion.doExplosionB(true);
+                                        getMaster().setHealth(0);
+                                    }
+                                });
+                            }
+                            if (!getMaster().isCreative() && !getMaster().isSpectator())
+                                getMaster().getFoodStats().addStats(-2, 0);
+                        }
+                    }
+                }
+            });
+    }
 
-	public KillerQueenEntity(World world) {
-		super(EntityInit.KILLER_QUEEN.get(), world);
-		spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-		standID = Util.StandID.KILLER_QUEEN;
-	}
+    public void toggleSheerHeartAttack() {
+        if (getMaster() != null)
+            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+                if (shaCount <= 0) {
+                    sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
+                    world.addEntity(sheerHeartAttack);
+                    shaCount++;
+                    props.setCooldown(300);
+                } else {
+                    if (!world.isRemote)
+                        world.getServer().getWorld(dimension).getEntities()
+                                .filter(entity -> entity instanceof SheerHeartAttackEntity)
+                                .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster().getEntityId() == getMaster().getEntityId())
+                                .forEach(entity -> {
+                                    entity.remove();
+                                    shaCount--;
+                                });
+                }
+            });
+    }
 
-	public LivingEntity getBombEntity() {
-		return bombEntity;
-	}
+    @Override
+    public void attack(boolean special) {
+        if (getMaster() == null) return;
+        attackTick++;
+        if (attackTick == 1)
+            if (special)
+                attackRush = true;
+            else {
+                world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                KillerQueenPunchEntity killerQueenPunchEntity = new KillerQueenPunchEntity(world, this, getMaster());
+                killerQueenPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2, 0.3f);
+                world.addEntity(killerQueenPunchEntity);
+            }
+    }
 
-	public void setBombEntity(LivingEntity bombEntity) {
-		this.bombEntity = bombEntity;
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        if (getMaster() != null) {
+            PlayerEntity player = getMaster();
+            Stand.getLazyOptional(player).ifPresent(props -> props.setAbility(false));
 
-	public void detonate() {
-		if (getMaster() != null)
-			Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-				if (props.getCooldown() <= 0) {
-					if (bombEntity != null) {
-						if (bombEntity.isAlive()) {
-							props.setCooldown(140);
-							if (bombEntity instanceof MobEntity) {
-								Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-								((MobEntity) bombEntity).spawnExplosionParticle();
-								explosion.doExplosionB(true);
-								world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-								bombEntity.remove();
-							} else if (bombEntity instanceof PlayerEntity) {
-								Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
-									if (bombProps.getStandID() != Util.StandID.GER) {
-										Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-										((PlayerEntity) bombEntity).spawnSweepParticles();
-										explosion.doExplosionB(true);
-										bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
-									} else {
-										Explosion explosion = new Explosion(getMaster().world, getMaster(), getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-										getMaster().spawnSweepParticles();
-										explosion.doExplosionB(true);
-										getMaster().setHealth(0);
-									}
-								});
-							}
-							if (!getMaster().isCreative() && !getMaster().isSpectator())
-								getMaster().getFoodStats().addStats(-2, 0);
-						}
-					}
-				}
-			});
-	}
-	
-	public void toggleSheerHeartAttack() {
-		if (getMaster() != null)
-			Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-				if (shaCount <= 0) {
-					sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
-					world.addEntity(sheerHeartAttack);
-					shaCount++;
-					props.setCooldown(300);
-				} else {
-					if (!world.isRemote)
-						world.getServer().getWorld(dimension).getEntities()
-								.filter(entity -> entity instanceof SheerHeartAttackEntity)
-								.filter(entity -> ((SheerHeartAttackEntity) entity).getMaster().getEntityId() == getMaster().getEntityId())
-								.forEach(entity -> {
-									entity.remove();
-									shaCount--;
-								});
-				}
-			});
-	}
+            followMaster();
+            setRotationYawHead(player.rotationYaw);
+            setRotation(player.rotationYaw, player.rotationPitch);
 
-	@Override
-	public void tick() {
-		super.tick();
-		fallDistance = 0.0F;
-		if (getMaster() != null) {
-			PlayerEntity player = getMaster();
-			Stand.getLazyOptional(player).ifPresent(props -> props.setAbility(false));
-
-			if (standOn) {
-				followMaster();
-				setRotationYawHead(player.rotationYaw);
-				setRotation(player.rotationYaw, player.rotationPitch);
-
-				if (player.isSprinting()) {
-					if (attackSwing(player))
-						oratick++;
-					if (oratick == 1) {
-						if (!world.isRemote)
-							orarush = true;
-					}
-				} else if (attackSwing(getMaster())) {
-					if (!world.isRemote) {
-						oratick++;
-						if (oratick == 1) {
-							world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1.0F, 0.8F / (rand.nextFloat() * 0.4F + 1.2F) + 0.5F);
-							KillerQueenPunchEntity killerQueen = new KillerQueenPunchEntity(world, this, player);
-							killerQueen.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
-							world.addEntity(killerQueen);
-						}
-					}
-				}
-				if (player.swingProgressInt == 0)
-					oratick = 0;
-				if (orarush) {
-					player.setSprinting(false);
-					oratickr++;
-					if (oratickr >= 10)
-						if (!world.isRemote) {
-							player.setSprinting(false);
-							KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, player);
-							killerQueen1.setRandomPositions();
-							killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
-							world.addEntity(killerQueen1);
-							KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, player);
-							killerQueen2.setRandomPositions();
-							killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
-							world.addEntity(killerQueen2);
-						}
-					if (oratickr >= 80) {
-						orarush = false;
-						oratickr = 0;
-					}
-				}
-			}
-		}
-	}
+            if (player.swingProgressInt == 0 && !attackRush)
+                attackTick = 0;
+            if (attackRush) {
+                player.setSprinting(false);
+                attackTicker++;
+                if (attackTicker >= 10)
+                    if (!world.isRemote) {
+                        player.setSprinting(false);
+                        KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, player);
+                        killerQueen1.setRandomPositions();
+                        killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.4f);
+                        world.addEntity(killerQueen1);
+                        KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, player);
+                        killerQueen2.setRandomPositions();
+                        killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.4f);
+                        world.addEntity(killerQueen2);
+                    }
+                if (attackTicker >= 80) {
+                    attackRush = false;
+                    attackTicker = 0;
+                }
+            }
+        }
+    }
 }

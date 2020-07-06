@@ -13,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,10 +23,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class WeatherReportEntity extends AbstractStandEntity {
-    private int oratick = 0;
-
-    private int oratickr = 0;
-
     private int weatherTick = 0;
 
     public WeatherReportEntity(EntityType<? extends MobEntity> type, World worldIn) {
@@ -72,6 +69,21 @@ public class WeatherReportEntity extends AbstractStandEntity {
     }
 
     @Override
+    public void attack(boolean special) {
+        if (getMaster() == null) return;
+        attackTick++;
+        if (attackTick == 1)
+            if (special)
+                attackRush = true;
+            else {
+                world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                WeatherReportPunchEntity weatherReportPunch = new WeatherReportPunchEntity(world, this, getMaster());
+                weatherReportPunch.shoot(getMaster(), rotationPitch, rotationYaw, 2.5f, 0.4f);
+                world.addEntity(weatherReportPunch);
+            }
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (world.rand.nextInt(35) == 1)
@@ -100,31 +112,12 @@ public class WeatherReportEntity extends AbstractStandEntity {
                                 }
                             });
             }
-
-            if (!player.isSprinting()) {
-                if (attackSwing(player)) {
-                    oratick++;
-                    if (oratick == 1) {
-                        WeatherReportPunchEntity weatherReportPunch = new WeatherReportPunchEntity(world, this, player);
-                        weatherReportPunch.shoot(player, rotationPitch, rotationYaw, 2.5f, 0.4f);
-                        world.addEntity(weatherReportPunch);
-                    }
-                }
-            } else if (player.isSprinting()) {
-                if (attackSwing(player))
-                    if (player.getFoodStats().getFoodLevel() > 6) {
-                        oratick++;
-                        if (oratick == 1)
-                            if (!world.isRemote)
-                                orarush = true;
-                    }
-            }
-            if (player.swingProgressInt == 0)
-                oratick = 0;
-            if (orarush) {
+            if (player.swingProgressInt == 0 && !attackRush)
+                attackTick = 0;
+            if (attackRush) {
                 player.setSprinting(false);
-                oratickr++;
-                if (oratickr >= 10)
+                attackTicker++;
+                if (attackTicker >= 10)
                     if (!world.isRemote) {
                         player.setSprinting(false);
                         WeatherReportPunchEntity weatherReportPunch1 = new WeatherReportPunchEntity(world, this, player);
@@ -136,9 +129,9 @@ public class WeatherReportEntity extends AbstractStandEntity {
                         weatherReportPunch2.shoot(player, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch2);
                     }
-                if (oratickr >= 110) {
-                    orarush = false;
-                    oratickr = 0;
+                if (attackTicker >= 110) {
+                    attackRush = false;
+                    attackTicker = 0;
                 }
             }
         }

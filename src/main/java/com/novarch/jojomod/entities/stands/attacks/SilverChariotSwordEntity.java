@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -13,8 +12,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class SilverChariotSwordEntity extends AbstractStandPunchEntity {
-    public SilverChariotSwordEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class SilverChariotSwordEntity extends AbstractStandAttackEntity {
+    public SilverChariotSwordEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -25,7 +24,7 @@ public class SilverChariotSwordEntity extends AbstractStandPunchEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.orarush ? 1.2f : 2.5f);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.2f : 2.5f);
         entity.hurtResistantTime = 0;
     }
 

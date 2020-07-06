@@ -25,10 +25,7 @@ public class EventD4CTeleportProcessor {
                 passenger.changeDimension(
                         type,
                         new DimensionHopTeleporter(
-                                (ServerWorld) passenger.getEntityWorld(),
-                                passenger.getPosX(),
-                                passenger.getPosY(),
-                                passenger.getPosZ()
+                                (ServerWorld) passenger.getEntityWorld()
                         )
                 );
         });
@@ -40,10 +37,7 @@ public class EventD4CTeleportProcessor {
                 passenger.changeDimension(
                         Objects.requireNonNull(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE)),
                         new DimensionHopTeleporter(
-                                (ServerWorld) passenger.getEntityWorld(),
-                                passenger.getPosX(),
-                                passenger.getPosY(),
-                                passenger.getPosZ()
+                                (ServerWorld) passenger.getEntityWorld()
                         )
                 );
                 passenger.setPositionAndUpdate(

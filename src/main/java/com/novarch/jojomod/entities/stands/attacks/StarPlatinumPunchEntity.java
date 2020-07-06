@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -15,8 +14,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class StarPlatinumPunchEntity extends AbstractStandPunchEntity {
-    public StarPlatinumPunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class StarPlatinumPunchEntity extends AbstractStandAttackEntity {
+    public StarPlatinumPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -31,9 +30,9 @@ public class StarPlatinumPunchEntity extends AbstractStandPunchEntity {
             if (!standMaster.isCreative() && !standMaster.isSpectator())
                 standMaster.attackEntityFrom(DamageSource.causeMobDamage((DolphinEntity) entity), 5);
         if (standMaster.isPotionActive(Effects.DOLPHINS_GRACE))
-            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.orarush ? 2f : 3.5f);
+            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 2f : 3.5f);
         else
-            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.orarush ? 1.4f : 2.9f);
+            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.4f : 2.9f);
         entity.hurtResistantTime = 0;
     }
 

@@ -1,7 +1,7 @@
 package com.novarch.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
+import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Quaternion;
@@ -16,7 +16,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public abstract class StandPunchRenderer<T extends AbstractStandPunchEntity> extends EntityRenderer<T> {
+public abstract class StandPunchRenderer<T extends AbstractStandAttackEntity> extends EntityRenderer<T> {
     protected StandPunchRenderer(EntityRendererManager manager) {
         super(manager);
     }

@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -13,12 +12,12 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class DirtyDeedsDoneDirtCheapPunchEntity extends AbstractStandPunchEntity {
-    public DirtyDeedsDoneDirtCheapPunchEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+public class D4CPunchEntity extends AbstractStandAttackEntity {
+    public D4CPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
-    public DirtyDeedsDoneDirtCheapPunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
+    public D4CPunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         super(EntityInit.D4C_PUNCH.get(), worldIn, shooter, player);
     }
 

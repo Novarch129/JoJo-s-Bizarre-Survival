@@ -40,27 +40,24 @@ import java.util.Optional;
 @SuppressWarnings("ConstantConditions")
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class SheerHeartAttackEntity extends MonsterEntity implements IChargeableMob
-{
-    private KillerQueenEntity masterStand;
-    private PlayerEntity master;
+public class SheerHeartAttackEntity extends MonsterEntity implements IChargeableMob {
     private static final DataParameter<Integer> STATE = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.BOOLEAN);
+    private KillerQueenEntity masterStand;
+    private PlayerEntity master;
     private int timeSinceIgnited;
     private int fuseTime = 30;
     private int explosionRadius = 3;
 
-    public SheerHeartAttackEntity(EntityType<? extends MonsterEntity> type, World worldIn)
-    {
+    public SheerHeartAttackEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
-    public SheerHeartAttackEntity(World worldIn, KillerQueenEntity killerQueen)
-    {
+    public SheerHeartAttackEntity(World worldIn, KillerQueenEntity killerQueen) {
         super(EntityInit.SHEER_HEART_ATTACK.get(), worldIn);
         masterStand = killerQueen;
-        if(killerQueen.getMaster() != null)
+        if (killerQueen.getMaster() != null)
             master = killerQueen.getMaster();
     }
 
@@ -68,13 +65,8 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
         return master;
     }
 
-    public KillerQueenEntity getMasterStand() {
-        return masterStand;
-    }
-
     @Override
-    protected void registerGoals()
-    {
+    protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(2, new SheerHeartAttackSwellGoal(this));
         this.goalSelector.addGoal(11, new AvoidEntityGoal<>(this, GoldExperienceRequiemEntity.class, 6.0f, 1.0f, 1.2f));
@@ -87,12 +79,10 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
     }
 
     @Override
-    public void tick()
-    {
+    public void tick() {
         super.tick();
-
         if (this.isAlive()) {
-            if(masterStand != null) {
+            if (masterStand != null) {
                 master = masterStand.getMaster();
                 if (master != null) {
                     Stand.getLazyOptional(master).ifPresent(props -> {
@@ -101,8 +91,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
                                 remove();
                             else if (getAttackTarget() != this)
                                 remove();
-                        }
-                        else
+                        } else
                             this.setAttackTarget(masterStand.getBombEntity());
                     });
                     if (!master.isAlive() && getAttackTarget() != this) {
@@ -114,7 +103,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
 
                 }
 
-                if(getAttackTarget() == masterStand || getAttackTarget() == master)
+                if (getAttackTarget() == masterStand || getAttackTarget() == master)
                     setAttackTarget(this);
 
                 Optional<Entity> damageSource = Optional.empty();
@@ -151,8 +140,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
     }
 
     @Override
-    public float getHealth()
-    {
+    public float getHealth() {
         return Float.POSITIVE_INFINITY;
     }
 
@@ -173,7 +161,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
     @Override
     public boolean onLivingFall(float distance, float damageMultiplier) {
         boolean flag = super.onLivingFall(distance, damageMultiplier);
-        this.timeSinceIgnited = (int)((float)this.timeSinceIgnited + distance * 1.5F);
+        this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
         if (this.timeSinceIgnited > this.fuseTime - 5) {
             this.timeSinceIgnited = this.fuseTime - 5;
         }
@@ -196,8 +184,8 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
             compound.putBoolean("powered", true);
         }
 
-        compound.putShort("Fuse", (short)this.fuseTime);
-        compound.putByte("ExplosionRadius", (byte)this.explosionRadius);
+        compound.putShort("Fuse", (short) this.fuseTime);
+        compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
         compound.putBoolean("ignited", this.hasIgnited());
     }
 
@@ -237,7 +225,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
         super.dropSpecialItems(source, looting, recentlyHitIn);
         Entity entity = source.getTrueSource();
         if (entity != this && entity instanceof CreeperEntity) {
-            CreeperEntity creeperentity = (CreeperEntity)entity;
+            CreeperEntity creeperentity = (CreeperEntity) entity;
             if (creeperentity.ableToCauseSkullDrop()) {
                 creeperentity.incrementDroppedSkulls();
                 this.entityDropItem(ItemInit.SUMMON_KILLER_QUEEN.get());
@@ -303,7 +291,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
         if (!this.world.isRemote) {
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
             float f = this.isCharged() ? 2.0F : 1.0F;
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float)this.explosionRadius * f * 3, explosion$mode);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionRadius * f * 3, explosion$mode);
         }
 
     }
@@ -316,7 +304,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
             float f = this.isCharged() ? 2.0F : 1.0F;
             this.dead = true;
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float)this.explosionRadius * f * 100, explosion$mode);
+            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionRadius * f * 100, explosion$mode);
             remove();
         }
 

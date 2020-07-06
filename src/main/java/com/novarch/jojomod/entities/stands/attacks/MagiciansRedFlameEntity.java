@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,10 +15,10 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-public class MagiciansRedFlameEntity extends AbstractStandPunchEntity {
+public class MagiciansRedFlameEntity extends AbstractStandAttackEntity {
     private boolean explosive;
 
-    public MagiciansRedFlameEntity(EntityType<? extends AbstractStandPunchEntity> type, World worldIn) {
+    public MagiciansRedFlameEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -50,8 +49,8 @@ public class MagiciansRedFlameEntity extends AbstractStandPunchEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.setFire(shootingStand.orarush ? 2 : 5);
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.orarush ? 0.5f : 0.75f);
+        entity.setFire(shootingStand.attackRush ? 2 : 5);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 0.5f : 0.75f);
         entity.hurtResistantTime = 0;
     }
 

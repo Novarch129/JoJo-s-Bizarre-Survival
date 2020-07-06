@@ -1,6 +1,7 @@
 package com.novarch.jojomod.util;
 
 import com.novarch.jojomod.entities.stands.*;
+import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
 import com.novarch.jojomod.init.KeyInit;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -69,7 +70,7 @@ public class Util {
             case StandID.KING_CRIMSON:
                 return new KingCrimsonEntity(world);
             case StandID.D4C:
-                return new DirtyDeedsDoneDirtCheapEntity(world);
+                return new D4CEntity(world);
             case StandID.GOLD_EXPERIENCE:
                 return new GoldExperienceEntity(world);
             case StandID.MADE_IN_HEAVEN:
@@ -125,7 +126,7 @@ public class Util {
                                                                                         .and(((Predicate<Entity>) entity -> !(entity instanceof StrayEntity))
                                                                                                 .and(entity -> !(entity instanceof ZombiePigmanEntity))
                                                                                                         .and(entity -> !(entity instanceof PhantomEntity))
-                                                                                                                .and(entity -> !(entity instanceof AbstractStandPunchEntity))
+                                                                                                                .and(entity -> !(entity instanceof AbstractStandAttackEntity))
                                                                                                                         .and(entity -> !(entity instanceof AbstractStandEntity)))))))))));
     }
 

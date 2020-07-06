@@ -2,14 +2,14 @@ package com.novarch.jojomod.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import com.novarch.jojomod.entities.stands.attacks.DirtyDeedsDoneDirtCheapPunchEntity;
+import com.novarch.jojomod.entities.stands.attacks.D4CPunchEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class DirtyDeedsDoneDirtCheapPunchModel extends EntityModel<DirtyDeedsDoneDirtCheapPunchEntity> {
+public class D4CPunchModel extends EntityModel<D4CPunchEntity> {
     private final ModelRenderer Punch;
 
-    public DirtyDeedsDoneDirtCheapPunchModel() {
+    public D4CPunchModel() {
         this.textureWidth = 64;
         this.textureHeight = 32;
 
@@ -26,7 +26,7 @@ public class DirtyDeedsDoneDirtCheapPunchModel extends EntityModel<DirtyDeedsDon
     }
 
     @Override
-    public void setRotationAngles(DirtyDeedsDoneDirtCheapPunchEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadBaseYaw, float headPitch) {
+    public void setRotationAngles(D4CPunchEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadBaseYaw, float headPitch) {
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

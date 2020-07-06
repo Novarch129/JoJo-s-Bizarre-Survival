@@ -1,7 +1,6 @@
 package com.novarch.jojomod.entities.stands.attacks;
 
 import com.novarch.jojomod.entities.stands.AbstractStandEntity;
-import com.novarch.jojomod.entities.stands.AbstractStandPunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
@@ -10,7 +9,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -20,7 +18,7 @@ import net.minecraft.world.World;
 
 import java.util.Objects;
 
-public class WeatherReportPunchEntity extends AbstractStandPunchEntity {
+public class WeatherReportPunchEntity extends AbstractStandAttackEntity {
     private boolean lightning = world.rand.nextInt(10) == 1;
 
     public WeatherReportPunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
@@ -46,7 +44,7 @@ public class WeatherReportPunchEntity extends AbstractStandPunchEntity {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 3) {
-            if (lightning && !shootingStand.orarush) {
+            if (lightning && !shootingStand.attackRush) {
                 LightningBoltEntity lightning = new LightningBoltEntity(world, pos.getX(), pos.getY(), pos.getZ(), false);
                 world.addEntity(lightning);
                 if (!world.isRemote)
