@@ -42,8 +42,8 @@ import java.util.Objects;
 public class TheWorldEntity extends AbstractStandEntity {
     public static long dayTime = -1, gameTime = -1;
     public static TheWorldEntity theWorld;
-    public int timestopTick = 0;
-    public boolean cooldown = false;
+    public int timestopTick;
+    public boolean cooldown ;
 
     public TheWorldEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
