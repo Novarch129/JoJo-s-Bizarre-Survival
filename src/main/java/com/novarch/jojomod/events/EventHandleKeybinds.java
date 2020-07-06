@@ -12,7 +12,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-import static com.novarch.jojomod.network.message.client.CSyncAerosmithPacket.Action.ATTACK;
 import static com.novarch.jojomod.network.message.client.CSyncAerosmithPacket.Action.MOVE;
 import static com.novarch.jojomod.network.message.client.CSyncAerosmithPacket.Direction.*;
 
@@ -54,8 +53,6 @@ public class EventHandleKeybinds {
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, UP));
                         if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(MOVE, DOWN));
-                        if (Minecraft.getInstance().gameSettings.keyBindAttack.isPressed())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(ATTACK));
                     }
                 }
             });
