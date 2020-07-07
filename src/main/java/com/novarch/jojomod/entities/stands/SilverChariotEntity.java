@@ -6,7 +6,6 @@ import com.novarch.jojomod.entities.stands.attacks.SilverChariotSwordEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,13 +29,11 @@ public class SilverChariotEntity extends AbstractStandEntity {
     public SilverChariotEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_SILVER_CHARIOT.get();
-        standID = Util.StandID.SILVER_CHARIOT;
     }
 
     public SilverChariotEntity(World world) {
         super(EntityInit.SILVER_CHARIOT.get(), world);
         spawnSound = SoundInit.SPAWN_SILVER_CHARIOT.get();
-        standID = Util.StandID.SILVER_CHARIOT;
     }
 
     public boolean hasArmor() {

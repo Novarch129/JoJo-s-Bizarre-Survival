@@ -47,13 +47,11 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public StarPlatinumEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
-        standID = Util.StandID.STAR_PLATINUM;
     }
 
     public StarPlatinumEntity(World world) {
         super(EntityInit.STAR_PLATINUM.get(), world);
         spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
-        standID = Util.StandID.STAR_PLATINUM;
     }
 
     @SubscribeEvent

@@ -22,13 +22,11 @@ public class CMoonEntity extends AbstractStandEntity {
     public CMoonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_CMOON.get();
-        standID = Util.StandID.CMOON;
     }
 
     public CMoonEntity(World world) {
         super(EntityInit.CMOON.get(), world);
         spawnSound = SoundInit.SPAWN_CMOON.get();
-        standID = Util.StandID.CMOON;
     }
 
     @Override

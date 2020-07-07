@@ -33,13 +33,11 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
     public MadeInHeavenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
-        standID = Util.StandID.MADE_IN_HEAVEN;
     }
 
     public MadeInHeavenEntity(World world) {
         super(EntityInit.MADE_IN_HEAVEN.get(), world);
         spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
-        standID = Util.StandID.MADE_IN_HEAVEN;
     }
 
     @Override

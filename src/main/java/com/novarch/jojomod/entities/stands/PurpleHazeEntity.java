@@ -5,7 +5,6 @@ import com.novarch.jojomod.entities.stands.attacks.PurpleHazePunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -20,13 +19,11 @@ public class PurpleHazeEntity extends AbstractStandEntity {
     public PurpleHazeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
-        standID = Util.StandID.PURPLE_HAZE;
     }
 
     public PurpleHazeEntity(World world) {
         super(EntityInit.PURPLE_HAZE.get(), world);
         spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
-        standID = Util.StandID.PURPLE_HAZE;
     }
 
     public void burstCapsule() {

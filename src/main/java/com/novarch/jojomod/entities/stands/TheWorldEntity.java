@@ -48,13 +48,11 @@ public class TheWorldEntity extends AbstractStandEntity {
     public TheWorldEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-        standID = Util.StandID.THE_WORLD;
     }
 
     public TheWorldEntity(World world) {
         super(EntityInit.THE_WORLD.get(), world);
         spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-        standID = Util.StandID.THE_WORLD;
     }
 
     @SubscribeEvent

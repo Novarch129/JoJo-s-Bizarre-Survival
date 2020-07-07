@@ -4,7 +4,6 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.attacks.WhitesnakePunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,13 +19,11 @@ public class WhitesnakeEntity extends AbstractStandEntity {
     public WhitesnakeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-        standID = Util.StandID.WHITESNAKE;
     }
 
     public WhitesnakeEntity(World world) {
         super(EntityInit.WHITESNAKE.get(), world);
         spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
-        standID = Util.StandID.WHITESNAKE;
     }
 
     @Override

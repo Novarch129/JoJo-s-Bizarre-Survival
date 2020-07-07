@@ -20,7 +20,7 @@ archivesBaseName = 'JoJoBizarreSurvival'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200703-1.15.1'
+    mappings channel: 'snapshot', version: '20200707-1.15.1'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
      accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -79,7 +79,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.30'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.31'
 }
 
 jar {

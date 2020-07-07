@@ -31,13 +31,11 @@ public class D4CEntity extends AbstractStandEntity {
     public D4CEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_D4C.get();
-        standID = Util.StandID.D4C;
     }
 
     public D4CEntity(World world) {
         super(EntityInit.D4C.get(), world);
         spawnSound = SoundInit.SPAWN_D4C.get();
-        standID = Util.StandID.D4C;
     }
 
     /**

@@ -4,7 +4,6 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.attacks.TheHandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -24,13 +23,11 @@ public class TheHandEntity extends AbstractStandEntity {
     public TheHandEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-        standID = Util.StandID.THE_HAND;
     }
 
     public TheHandEntity(World world) {
         super(EntityInit.THE_HAND.get(), world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-        standID = Util.StandID.THE_HAND;
     }
 
     public void teleportEntity(int id) {

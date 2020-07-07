@@ -33,7 +33,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
     public boolean ability, attackRush, standOn;
-    public int attackTick, attackTicker, standID;
+    public int attackTick, attackTicker;
     protected SoundEvent spawnSound;
     private PlayerEntity master;
 

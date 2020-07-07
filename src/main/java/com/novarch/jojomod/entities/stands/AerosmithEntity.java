@@ -6,7 +6,6 @@ import com.novarch.jojomod.entities.stands.attacks.AerosmithBulletEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import com.novarch.jojomod.network.message.client.CSyncAerosmithPacket;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -26,13 +25,11 @@ public class AerosmithEntity extends AbstractStandEntity {
     public AerosmithEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        standID = Util.StandID.AEROSMITH;
     }
 
     public AerosmithEntity(World worldIn) {
         super(EntityInit.AEROSMITH.get(), worldIn);
         spawnSound = SoundInit.SPAWN_AEROSMITH.get();
-        standID = Util.StandID.AEROSMITH;
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.novarch.jojomod.config.JojoBizarreSurvivalConfig;
 import com.novarch.jojomod.entities.stands.attacks.MagiciansRedFlameEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,13 +22,11 @@ public class MagiciansRedEntity extends AbstractStandEntity {
     public MagiciansRedEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-        standID = Util.StandID.MAGICIANS_RED;
     }
 
     public MagiciansRedEntity(World world) {
         super(EntityInit.MAGICIANS_RED.get(), world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
-        standID = Util.StandID.MAGICIANS_RED;
     }
 
     public void crossfireHurricane() {

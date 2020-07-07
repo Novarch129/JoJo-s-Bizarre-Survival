@@ -30,13 +30,11 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-        standID = Util.StandID.KILLER_QUEEN;
     }
 
     public KillerQueenEntity(World world) {
         super(EntityInit.KILLER_QUEEN.get(), world);
         spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
-        standID = Util.StandID.KILLER_QUEEN;
     }
 
     public LivingEntity getBombEntity() {

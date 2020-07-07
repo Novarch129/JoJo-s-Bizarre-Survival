@@ -5,7 +5,6 @@ import com.novarch.jojomod.entities.stands.attacks.WeatherReportPunchEntity;
 import com.novarch.jojomod.init.EffectInit;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
@@ -28,13 +27,11 @@ public class WeatherReportEntity extends AbstractStandEntity {
     public WeatherReportEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
         spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
-        standID = Util.StandID.WEATHER_REPORT;
     }
 
     public WeatherReportEntity(World worldIn) {
         super(EntityInit.WEATHER_REPORT.get(), worldIn);
         spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
-        standID = Util.StandID.WEATHER_REPORT;
     }
 
     public void changeWeather() {

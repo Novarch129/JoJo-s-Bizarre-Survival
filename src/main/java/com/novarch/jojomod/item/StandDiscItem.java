@@ -10,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
@@ -33,15 +32,15 @@ public class StandDiscItem extends Item {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();
                 stack.setTag(nbt);
-                return new ActionResult<>(ActionResultType.CONSUME, stack);
+                return ActionResult.resultConsume(stack);
             } else if (props.getStandID() == 0 && nbt.getInt("StandID") != 0) {
                 props.setStandID(nbt.getInt("StandID"));
                 nbt.putInt("StandID", 0);
-                return new ActionResult<>(ActionResultType.CONSUME, stack);
+                return ActionResult.resultConsume(stack);
             }
             stack.setTag(nbt);
         }
-        return new ActionResult<>(ActionResultType.PASS, player.getHeldItem(hand));
+        return ActionResult.resultPass(player.getHeldItem(hand));
     }
 
     @Override
@@ -52,7 +51,7 @@ public class StandDiscItem extends Item {
                 if (attacker instanceof PlayerEntity) {
                     final int standID = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getStandID();
                     final int standAct = Stand.getCapabilityFromPlayer(((PlayerEntity) attacker)).getAct();
-                    if(standID == Util.StandID.WHITESNAKE || (standID == Util.StandID.MADE_IN_HEAVEN && standAct == 2)) {
+                    if (standID == Util.StandID.WHITESNAKE || (standID == Util.StandID.MADE_IN_HEAVEN && standAct == 2)) {
                         if (props.getStandID() != 0 && nbt.getInt("StandID") == 0) {
                             nbt.putInt("StandID", props.getStandID());
                             props.removeStand();

@@ -4,7 +4,6 @@ import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.attacks.CrazyDiamondPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
-import com.novarch.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
@@ -25,13 +24,11 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
     public CrazyDiamondEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-        standID = Util.StandID.CRAZY_DIAMOND;
     }
 
     public CrazyDiamondEntity(World world) {
         super(EntityInit.CRAZY_DIAMOND.get(), world);
         spawnSound = SoundInit.SPAWN_CRAZY_DIAMOND.get();
-        standID = Util.StandID.CRAZY_DIAMOND;
     }
 
     public void putRepairBlock(BlockPos blockPos, BlockState state) {

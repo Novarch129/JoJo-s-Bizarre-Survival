@@ -30,13 +30,11 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
-        standID = Util.StandID.KING_CRIMSON;
     }
 
     public KingCrimsonEntity(World world) {
         super(EntityInit.KING_CRIMSON.get(), world);
         spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
-        standID = Util.StandID.KING_CRIMSON;
     }
 
     @Override

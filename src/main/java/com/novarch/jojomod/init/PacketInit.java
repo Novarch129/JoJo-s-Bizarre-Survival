@@ -2,7 +2,10 @@ package com.novarch.jojomod.init;
 
 import com.novarch.jojomod.JojoBizarreSurvival;
 import com.novarch.jojomod.network.message.client.*;
-import com.novarch.jojomod.network.message.server.*;
+import com.novarch.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
+import com.novarch.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import com.novarch.jojomod.network.message.server.SSyncStandMasterPacket;
+import com.novarch.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
 
 @SuppressWarnings("ALL")
 public class PacketInit {
