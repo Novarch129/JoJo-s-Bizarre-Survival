@@ -46,7 +46,7 @@ public class StandArrowItem extends ArrowItem {
         if (!(entity instanceof PlayerEntity)) return;
         PlayerEntity player = (PlayerEntity) entity;
         Stand.getLazyOptional(player).ifPresent(props -> {
-            final int random = world.rand.nextInt(Util.StandID.NUMBER_OF_STANDS);
+            final int random = world.rand.nextInt(Util.StandID.STANDS.length);
             int newStandID;
             if (standID == 0)
                 newStandID = Util.StandID.STANDS[random];

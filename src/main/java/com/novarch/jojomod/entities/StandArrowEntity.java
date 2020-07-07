@@ -44,7 +44,7 @@ public class StandArrowEntity extends AbstractArrowEntity {
         if (entity instanceof PlayerEntity) {
             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
                 if (props.getStandID() == 0) {
-                    props.setStandID(Util.StandID.STANDS[world.rand.nextInt(Util.StandID.NUMBER_OF_STANDS)]);
+                    props.setStandID(Util.StandID.STANDS[world.rand.nextInt(Util.StandID.STANDS.length)]);
                     world.playSound(null, getPosition(), SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.NEUTRAL, 1, 1);
                     remove();
                 }

@@ -11,21 +11,19 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE)
-public class ForgeEventBusSubscriber
-{
+public class ForgeEventBusSubscriber {
     @SubscribeEvent
-    public static void registerDimensions(final RegisterDimensionsEvent event)
-    {
+    public static void registerDimensions(final RegisterDimensionsEvent event) {
         if (DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE) == null)
             DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE, DimensionInit.D4C_DIMENSION.get(), null, true);
 
-        if(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER) == null)
+        if (DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_NETHER) == null)
             DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE_NETHER, DimensionInit.D4C_DIMENSION_NETHER.get(), null, false);
 
-        if(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END) == null)
+        if (DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END) == null)
             DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE_END, DimensionInit.D4C_DIMENSION_END.get(), null, false);
 
-        if(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE) == null)
+        if (DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE) == null)
             DimensionManager.registerDimension(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE, DimensionInit.MADE_IN_HEAVEN_DIMENSION.get(), null, true);
     }
 }

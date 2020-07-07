@@ -169,6 +169,9 @@ public class Util {
 
         public static final int THE_HAND = 18;
 
+        /**
+         * An array of Stand's that can be obtained through the {@link com.novarch.jojomod.item.StandArrowItem}.
+         */
         public static final int[] STANDS = {
                 KING_CRIMSON,
                 D4C,
@@ -186,8 +189,6 @@ public class Util {
                 MAGICIANS_RED,
                 THE_HAND
         };
-
-        public static final int NUMBER_OF_STANDS = STANDS.length;
     }
 
     public static class KeyCodes {

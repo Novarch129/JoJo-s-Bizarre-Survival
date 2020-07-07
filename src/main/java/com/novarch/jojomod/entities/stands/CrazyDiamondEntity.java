@@ -49,7 +49,7 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
 
     @Override
     public void playSpawnSound() {
-        world.playSound(null, getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 2, 1);
+        world.playSound(null, getMaster().getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 2, 1);
     }
 
     @Override

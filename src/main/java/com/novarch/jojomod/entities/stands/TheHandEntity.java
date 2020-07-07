@@ -1,6 +1,5 @@
 package com.novarch.jojomod.entities.stands;
 
-import com.novarch.jojomod.capabilities.stand.Stand;
 import com.novarch.jojomod.entities.stands.attacks.TheHandPunchEntity;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
@@ -20,6 +19,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TheHandEntity extends AbstractStandEntity {
+    private int teleportTick;
+
     public TheHandEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
@@ -44,15 +45,10 @@ public class TheHandEntity extends AbstractStandEntity {
 
     @Deprecated  //Safe to call, @Deprecated because it's buggy
     public void teleportMaster() {
-        PlayerEntity master = getMaster();
-        if (master == null || world.isRemote) return;
-        int distance = 20;
-        float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI);
-        float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float) Math.PI);
-        float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);
-        float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292f);
-        if (!master.world.isRemote)
-            master.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
+        if (getMaster() == null) return;
+        if (getMaster().world.isRemote) return;
+        Vec3d newPosition = getMaster().getLookVec().mul(2, 2, 2).add(getMaster().getPositionVec());
+        getMaster().setPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ());
     }
 
     @Override
@@ -75,7 +71,6 @@ public class TheHandEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
 
             followMaster();
             setRotationYawHead(player.rotationYaw);

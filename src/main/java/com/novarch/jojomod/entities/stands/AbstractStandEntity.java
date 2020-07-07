@@ -75,27 +75,26 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * Plays the Stand's spawn sound.
      */
     public void playSpawnSound() {
-        world.playSound(null, getMaster().getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 1, 1);
+        world.playSound(null, getMaster().getPosition(), spawnSound, SoundCategory.NEUTRAL, 1, 1);
     }
 
     /**
      * Makes the Stand follow it's master, follow speed is based on distance from it's master.
      */
     protected void followMaster() {
-        PlayerEntity player = getMaster();
-        double distance = player.getDistance(this);
-        double minimum = 0.5;
-        double maximum = 3;
+        double distance = master.getDistance(this);
+        final double minimum = 0.5;
+        final double maximum = 3;
 
         if (distance < minimum)
-            moveStand(distance, player);
+            moveStand(distance, master);
 
         else if (distance > minimum) {
             if (distance < maximum && distance > minimum + 0.3)
-                moveStand(distance, player);
+                moveStand(distance, master);
 
             else if (distance > maximum && !world.isRemote)
-                setPosition(player.getPosX(), player.getPosY(), player.getPosZ());
+                setPosition(master.getPosX(), master.getPosY(), master.getPosZ());
         }
     }
 
@@ -131,68 +130,60 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * Makes the Stand dodge oncoming attacks, such as TNT, arrows and falling blocks.
      */
     private void dodgeAttacks() {
-        if (world == null) return;
         if (!world.isRemote) {
-            world.getServer().getWorld(dimension).getEntities().forEach(entity1 -> {
-                Entity entity;
-                Entity playerEntity = null;
+            world.getServer().getWorld(dimension).getEntities().forEach(entity -> {
 
-                if (entity1 != null)
-                    playerEntity = entity1;
-
-                final double distance = playerEntity.getDistance(getMaster());
-                final double distance2 = Math.PI * 2 * 2 * 2;
-
-                entity = playerEntity;
+                double distance = entity.getDistance(getMaster());
+                double distance2 = Math.PI * 2 * 2 * 2;
 
                 if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
-                    final double distanceX = getPosX() - entity.getPosX();
-                    final double distanceY = getPosY() - entity.getPosY();
-                    final double distanceZ = getPosZ() - entity.getPosZ();
+                    double distanceX = getPosX() - entity.getPosX();
+                    double distanceY = getPosY() - entity.getPosY();
+                    double distanceZ = getPosZ() - entity.getPosZ();
 
-                    if (distanceX > 0.0)
-                        moveForward += -0.3;
-                    if (distanceX < 0.0)
+                    if (distanceX > 0)
+                        moveForward -= 0.3;
+                    if (distanceX < 0)
                         moveForward += 0.3;
-                    if (distanceY > 0.0)
-                        moveVertical += -0.3;
-                    if (distanceY < 0.0)
+                    if (distanceY > 0)
+                        moveVertical -= 0.3;
+                    if (distanceY < 0)
                         moveVertical += 0.3;
-                    if (distanceZ > 0.0)
-                        moveStrafing += -0.3;
-                    if (distanceZ < 0.0)
+                    if (distanceZ > 0)
+                        moveStrafing -= 0.3;
+                    if (distanceZ < 0)
                         moveStrafing += 0.3;
                 }
             });
         }
     }
 
+    /**
+     * Called every tick to update the entity's position/logic and remove it if conditions are met.
+     */
     @Override
     public void tick() {
         super.tick();
-        fallDistance = 0.0f;
         if (!world.isRemote) {
-            if (getMaster() == null) {
+            if (getMaster() == null) { //Don't listen to your IDE, this can be null after a relog.
                 remove();
-                return;
+                return; //Code will continue executing and crash if this is removed.
             }
             if (!getMaster().isAlive()) {
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
                 remove();
             }
             if (getMaster().isSpectator()) remove();
-            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this));
+            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this)); //Fired after all death checks are passed to avoid confusion.
 
             Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                standOn = props.getStandOn();
+                standOn = props.getStandOn(); //If set to false, Stand will die next tick.
                 if (!props.getStandOn()) {
                     MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(getMaster(), this));
                     remove();
                 }
             });
             dodgeAttacks();
-            if (getAir() < 20)
-                setAir(60);
         }
     }
 
@@ -205,12 +196,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        if (!standOn)
-            return false;
-        if (damageSource.getTrueSource() == getMaster())
-            return false;
-        if (damageSource == DamageSource.CACTUS)
-            return false;
+        if (!standOn || damageSource.getTrueSource() == getMaster() || damageSource == DamageSource.CACTUS || damageSource == DamageSource.FALL)
+            return false; //Prevents Stands from taking damage they shouldn't, fall damage, cactus damage, etc.
         getMaster().attackEntityFrom(damageSource, damage * 0.5f);
         return false;
     }
@@ -232,12 +219,16 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this))) remove();
+        if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this)))
+            remove(); //Removes the Stand if the Stand summon event is cancelled.
         if (!world.isRemote)
             if (getMaster() != null)
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
+    /**
+     * Fires the {@link com.novarch.jojomod.events.custom.StandEvent.StandRemovedEvent}, will cause major issues if super isn't called.
+     */
     @Override
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
@@ -256,6 +247,12 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         setMaster((PlayerEntity) world.getEntityByID(compound.getInt("MasterID")));
     }
 
+    /**
+     * Prevents the Stand from despawning due to being far from players.
+     *
+     * @param distanceToClosestPlayer The Stand's distance to the nearest player.
+     * @return Whether or not the Stand should despawn.
+     */
     @Override
     public boolean canDespawn(double distanceToClosestPlayer) {
         return false;
@@ -286,12 +283,22 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         return false;
     }
 
+    /**
+     * Writes data from the server to a {@link PacketBuffer}.
+     *
+     * @param buffer The {@link PacketBuffer} to write to.
+     */
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
         if (getMaster() != null)
             buffer.writeInt(getMaster().getEntityId());
     }
 
+    /**
+     * Reads the data written to the {@link PacketBuffer} by the server from the client, syncing that data to the client.
+     *
+     * @param additionalData The {@link PacketBuffer} to read from.
+     */
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
         int id = additionalData.readInt();

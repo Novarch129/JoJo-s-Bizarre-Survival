@@ -176,7 +176,7 @@ public class TheWorldEntity extends AbstractStandEntity {
     public void playSpawnSound() {
         Stand.getLazyOptional(getMaster()).ifPresent(props -> {
             if (!props.getAbility())
-                world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundInit.SPAWN_THE_WORLD.get(), getSoundCategory(), 5.0f, 1.0f);
+                world.playSound(null, getMaster().getPosition(), SoundInit.SPAWN_THE_WORLD.get(), SoundCategory.NEUTRAL, 5, 1);
         });
     }
 
