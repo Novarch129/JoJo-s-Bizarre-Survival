@@ -43,12 +43,18 @@ public class TheHandEntity extends AbstractStandEntity {
             entity.setMotion(-motionX * (entity.getDistance(getMaster()) / 4), -motionY * (entity.getDistance(getMaster()) / 4), -motionZ * (entity.getDistance(getMaster()) / 4));
     }
 
-    @Deprecated  //Safe to call, @Deprecated because it's buggy
+    @Deprecated  //Safe to call, @Deprecated because it's buggy.
     public void teleportMaster() {
-        if (getMaster() == null) return;
-        if (getMaster().world.isRemote) return;
-        Vec3d newPosition = getMaster().getLookVec().mul(2, 2, 2).add(getMaster().getPositionVec());
-        getMaster().setPosition(newPosition.getX(), newPosition.getY(), newPosition.getZ());
+        PlayerEntity master = getMaster();
+        if (master == null) return;
+        if (!master.world.isRemote && !world.isRemote) {
+            int distance = 20;
+            float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI);
+            float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float) Math.PI);
+            float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);
+            float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292f);
+            master.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
+        }
     }
 
     @Override

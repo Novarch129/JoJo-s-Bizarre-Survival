@@ -22,7 +22,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 /**
  * @author Novarch
- *
+ * @since 1.15.2-0.0.1.0
+ * <p>
  * The main {@link Mod} {@link Class}, used mostly for registering objects.
  */
 @Mod("jojomod")
@@ -69,7 +70,7 @@ public class JojoBizarreSurvival {
 
     @MethodsReturnNonnullByDefault
     public static class JojoItemGroup extends ItemGroup {
-        public static final ItemGroup instance = new JojoItemGroup(ItemGroup.GROUPS.length, "jojotab");
+        public static final ItemGroup INSTANCE = new JojoItemGroup(ItemGroup.GROUPS.length, "jojotab");
 
         private JojoItemGroup(int index, String label) {
             super(index, label);
