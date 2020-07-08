@@ -24,7 +24,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SilverChariotEntity extends AbstractStandEntity {
-    private boolean hasArmor = true;
+    private boolean hasArmor;
 
     public SilverChariotEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -47,7 +47,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
      */
     public void setHasArmor(boolean hasArmor) {
         this.hasArmor = hasArmor;
-        if (!world.isRemote)
+        if (!world.isRemote) //Packet is necessary because hasArmor can change after the entity has spawned, after IEntityAdditionalSpawnData#writeSpawnData has already fired.
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncSilverChariotArmorPacket(getEntityId(), hasArmor()));
     }
 
@@ -64,11 +64,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        if (!standOn)
-            return false;
-        if (damageSource.getTrueSource() == getMaster())
-            return false;
-        if (damageSource == DamageSource.CACTUS)
+        if (!standOn || damageSource.getTrueSource() == getMaster() || damageSource == DamageSource.CACTUS || damageSource == DamageSource.FALL)
             return false;
         getMaster().attackEntityFrom(damageSource, hasArmor() ? damage * 0.5f : damage * 2);
         return false;
@@ -109,7 +105,6 @@ public class SilverChariotEntity extends AbstractStandEntity {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
                 ability = props.getAbility();
-
                 if (props.getTimeLeft() > 800 && props.getCooldown() <= 0) {
                     if (ability == hasArmor()) {
                         setHasArmor(!ability);

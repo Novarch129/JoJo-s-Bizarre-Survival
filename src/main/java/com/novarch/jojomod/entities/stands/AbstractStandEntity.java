@@ -13,6 +13,7 @@ import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
@@ -42,7 +43,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     * @return Returns a {@link SoundEvent}, the Stand's spawn sound.
+     * @return Returns a the Stand's {@link AbstractStandEntity#spawnSound}.
      */
     public SoundEvent getSpawnSound() {
         return spawnSound;
@@ -56,73 +57,69 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     public abstract void attack(boolean special);
 
     /**
-     * @return The Stand's current master.
+     * @return The Stand's current {@link AbstractStandEntity#master}.
      */
     public PlayerEntity getMaster() {
         return master;
     }
 
     /**
-     * Sets the Stand's master, should never be <code>null</code> as it would most likely crash the game.
+     * Sets the Stand's master, should never be <code>null</code> as it would most likely <b>crash</b> the game.
      *
-     * @param master The {@link PlayerEntity} that will be set as the Stand's master.
+     * @param master The {@link PlayerEntity} that will be set as the Stand's {@link AbstractStandEntity#master}.
      */
     public void setMaster(@Nonnull PlayerEntity master) {
         this.master = master;
     }
 
     /**
-     * Plays the Stand's spawn sound.
+     * Plays the Stand's {@link AbstractStandEntity#spawnSound}.
      */
     public void playSpawnSound() {
         world.playSound(null, getMaster().getPosition(), spawnSound, SoundCategory.NEUTRAL, 1, 1);
     }
 
     /**
-     * Makes the Stand follow it's master, follow speed is based on distance from it's master.
+     * Makes the Stand follow it's {@link AbstractStandEntity#master}, follow speed is based on distance from it's master.
      */
     protected void followMaster() {
         double distance = master.getDistance(this);
-        final double minimum = 0.5;
-        final double maximum = 3;
+        double minimum = 0.5; //The Stand's minimum and maximum distance from it's master.
+        double maximum = 3;
 
         if (distance < minimum)
-            moveStand(distance, master);
-
-        else if (distance > minimum) {
+            moveStand(distance);
+        else if (distance > minimum)
             if (distance < maximum && distance > minimum + 0.3)
-                moveStand(distance, master);
-
+                moveStand(distance);
             else if (distance > maximum && !world.isRemote)
                 setPosition(master.getPosX(), master.getPosY(), master.getPosZ());
-        }
     }
 
     /**
      * Used in followMaster() to shorten code, moves the Stand based on the,
      *
      * @param distance The Stand's distance from it's master.
-     * @param player   The Stand's master, used for some distance calculations.
      */
-    public void moveStand(double distance, PlayerEntity player) {
-        double distanceX = getPosX() - player.getPosX();
-        double distanceY = getPosY() - player.getPosY();
-        double distanceZ = getPosZ() - player.getPosZ();
-        float speed = (float) distance / 45.0f;
+    public void moveStand(double distance) {
+        double distanceX = getPosX() - master.getPosX();
+        double distanceY = getPosY() - master.getPosY();
+        double distanceZ = getPosZ() - master.getPosZ();
+        float speed = (float) (distance / 45); //The speed at which the Stand should move towards it's master
 
         if (distance < 0.5)
             speed = -0.1f;
-        if (distanceX > 0.0)
-            moveForward += -speed;
-        if (distanceX < 0.0)
+        if (distanceX > 0)
+            moveForward -= speed;
+        if (distanceX < 0)
             moveForward += speed;
-        if (distanceY > 0.0)
-            moveVertical += -speed;
-        if (distanceY < 0.0)
+        if (distanceY > 0)
+            moveVertical -= speed;
+        if (distanceY < 0)
             moveVertical += speed;
-        if (distanceZ > 0.0)
-            moveStrafing += -speed;
-        if (distanceZ < 0.0)
+        if (distanceZ > 0)
+            moveStrafing -= speed;
+        if (distanceZ < 0)
             moveStrafing += speed;
     }
 
@@ -132,11 +129,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     private void dodgeAttacks() {
         if (!world.isRemote) {
             world.getServer().getWorld(dimension).getEntities().forEach(entity -> {
-
                 double distance = entity.getDistance(getMaster());
-                double distance2 = Math.PI * 2 * 2 * 2;
 
-                if (!world.isRemote && (entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity) && distance <= distance2) {
+                if ((entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity || entity instanceof ProjectileItemEntity) && distance <= Math.PI * 8) {
                     double distanceX = getPosX() - entity.getPosX();
                     double distanceY = getPosY() - entity.getPosY();
                     double distanceZ = getPosZ() - entity.getPosZ();
@@ -221,9 +216,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         super.onAddedToWorld();
         if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this)))
             remove(); //Removes the Stand if the Stand summon event is cancelled.
-        if (!world.isRemote)
-            if (getMaster() != null)
-                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
+        if (!world.isRemote && getMaster() != null)
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
     }
 
     /**
@@ -238,13 +232,13 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
-        compound.putInt("MasterID", getMaster().getEntityId());
+        compound.putUniqueId("MasterID", getMaster().getUniqueID());
     }
 
-    @Override
+    @Override //Has caused some ClassCastExceptions in the past, be wary of that.
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        setMaster((PlayerEntity) world.getEntityByID(compound.getInt("MasterID")));
+        setMaster(world.getPlayerByUuid(compound.getUniqueId("MasterID")));
     }
 
     /**
@@ -301,9 +295,10 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        int id = additionalData.readInt();
-        if (id != 0)
-            setMaster((PlayerEntity) world.getEntityByID(id));
+        int entityID = additionalData.readInt();
+        Entity entity = world.getEntityByID(entityID);
+        if (entity instanceof PlayerEntity)
+            setMaster((PlayerEntity) entity);
     }
 
     /**

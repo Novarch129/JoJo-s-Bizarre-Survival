@@ -29,16 +29,17 @@ public class TheHandEntity extends AbstractStandEntity {
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
-    public void teleportEntity(int id) {
-        Entity entity = world.getEntityByID(id);
+    public void dragEntityToStand(final int entityID) {
+        Entity entity = world.getEntityByID(entityID);
         if (entity == null || getMaster() == null) return;
         float yaw = getMaster().rotationYaw;
         float pitch = getMaster().rotationPitch;
-        double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
-        double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
-        double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
+        double motionX = (-MathHelper.sin(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
+        double motionZ = (MathHelper.cos(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
+        double motionY = (-MathHelper.sin((pitch) / 180 * (float) Math.PI));
+        double strength = entity.getDistance(getMaster()) / 4;
         if (!world.isRemote)
-            entity.setMotion(-motionX * (entity.getDistance(getMaster()) / 4), -motionY * (entity.getDistance(getMaster()) / 4), -motionZ * (entity.getDistance(getMaster()) / 4));
+            entity.setMotion(-motionX * strength, -motionY * strength, -motionZ * strength);
     }
 
     @Deprecated  //Safe to call, @Deprecated because it's buggy.
@@ -46,7 +47,7 @@ public class TheHandEntity extends AbstractStandEntity {
         PlayerEntity master = getMaster();
         if (master == null) return;
         if (!master.world.isRemote && !world.isRemote) {
-            int distance = 5;
+            int distance = 2;
             float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
             float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float) Math.PI);
             float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);

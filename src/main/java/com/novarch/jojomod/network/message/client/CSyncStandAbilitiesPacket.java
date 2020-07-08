@@ -129,7 +129,7 @@ public class CSyncStandAbilitiesPacket {
                                                                 Entity entity11 = entityRayTraceResult.getEntity();
                                                                 Vec3d vec3d3 = entityRayTraceResult.getHitVec();
                                                                 if (entity11 != null)
-                                                                    ((TheHandEntity) entity).teleportEntity(entity11.getEntityId());
+                                                                    ((TheHandEntity) entity).dragEntityToStand(entity11.getEntityId());
                                                                 double d2 = vec3d.squareDistanceTo(vec3d3);
                                                                 if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
                                                                     Minecraft.getInstance().objectMouseOver = entityRayTraceResult;
