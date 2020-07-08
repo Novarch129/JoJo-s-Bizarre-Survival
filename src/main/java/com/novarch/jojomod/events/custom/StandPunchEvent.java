@@ -1,6 +1,7 @@
 package com.novarch.jojomod.events.custom;
 
 import com.novarch.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.eventbus.api.Cancelable;
@@ -22,10 +23,10 @@ import javax.annotation.Nullable;
 public class StandPunchEvent extends Event {
     private final AbstractStandAttackEntity punch;
     private final RayTraceResult rayTraceResult;
-    @Nullable private final LivingEntity target;
+    @Nullable private final Entity target;
     private final RayTraceResult.Type type;
 
-    public StandPunchEvent(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable LivingEntity target, RayTraceResult.Type type) {
+    public StandPunchEvent(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable Entity target, RayTraceResult.Type type) {
         this.punch = punch;
         this.rayTraceResult = rayTraceResult;
         this.target = target;
@@ -41,7 +42,7 @@ public class StandPunchEvent extends Event {
     }
 
     @Nullable
-    public LivingEntity getTarget() {
+    public Entity getTarget() {
         return target;
     }
 
@@ -58,7 +59,7 @@ public class StandPunchEvent extends Event {
      */
     @Cancelable
     public static class EntityHit extends StandPunchEvent {
-        public EntityHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nonnull LivingEntity target) {
+        public EntityHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nonnull Entity target) {
             super(punch, rayTraceResult, target, RayTraceResult.Type.ENTITY);
         }
     }
@@ -72,7 +73,7 @@ public class StandPunchEvent extends Event {
      */
     @Cancelable
     public static class BlockHit extends StandPunchEvent {
-        public BlockHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable LivingEntity target) {
+        public BlockHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable Entity target) {
             super(punch, rayTraceResult, target, RayTraceResult.Type.BLOCK);
         }
     }

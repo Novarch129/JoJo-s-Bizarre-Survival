@@ -19,8 +19,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class TheHandEntity extends AbstractStandEntity {
-    private int teleportTick;
-
     public TheHandEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
@@ -48,8 +46,8 @@ public class TheHandEntity extends AbstractStandEntity {
         PlayerEntity master = getMaster();
         if (master == null) return;
         if (!master.world.isRemote && !world.isRemote) {
-            int distance = 20;
-            float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI);
+            int distance = 5;
+            float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
             float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float) Math.PI);
             float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);
             float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292f);
@@ -79,7 +77,7 @@ public class TheHandEntity extends AbstractStandEntity {
             PlayerEntity player = getMaster();
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
+            setRotationYawHead(player.getRotationYawHead());
             setRotation(player.rotationYaw, player.rotationPitch);
 
             if (player.swingProgressInt == 0 && !attackRush)

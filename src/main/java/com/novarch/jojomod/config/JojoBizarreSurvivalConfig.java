@@ -5,8 +5,27 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
-public class JojoBizarreSurvivalConfig
-{
+public class JojoBizarreSurvivalConfig {
+    public static final Common COMMON;
+    public static final Client CLIENT;
+    private static final ForgeConfigSpec commonSpec;
+    private static final ForgeConfigSpec clientSpec;
+
+    static {
+        final Pair<Common, ForgeConfigSpec> specPairCommon = new ForgeConfigSpec.Builder().configure(Common::new);
+        commonSpec = specPairCommon.getRight();
+        COMMON = specPairCommon.getLeft();
+
+        final Pair<Client, ForgeConfigSpec> specPairClient = new ForgeConfigSpec.Builder().configure(Client::new);
+        clientSpec = specPairClient.getRight();
+        CLIENT = specPairClient.getLeft();
+    }
+
+    public static void register(final ModLoadingContext context) {
+        context.registerConfig(ModConfig.Type.COMMON, commonSpec);
+        context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
+    }
+
     public static class Common {
         public final ForgeConfigSpec.BooleanValue saveStandOnDeath;
         public final ForgeConfigSpec.BooleanValue sheerHeartAttackDeathLoop;
@@ -58,27 +77,5 @@ public class JojoBizarreSurvivalConfig
 
             builder.pop();
         }
-    }
-
-    private static final ForgeConfigSpec commonSpec;
-    public static final Common COMMON;
-
-    private static final ForgeConfigSpec clientSpec;
-    public static final Client CLIENT;
-
-    static {
-        final Pair<Common, ForgeConfigSpec> specPairCommon = new ForgeConfigSpec.Builder().configure(Common::new);
-        commonSpec = specPairCommon.getRight();
-        COMMON = specPairCommon.getLeft();
-
-        final Pair<Client, ForgeConfigSpec> specPairClient = new ForgeConfigSpec.Builder().configure(Client::new);
-        clientSpec = specPairClient.getRight();
-        CLIENT = specPairClient.getLeft();
-    }
-
-    public static void register(final ModLoadingContext context)
-    {
-        context.registerConfig(ModConfig.Type.COMMON, commonSpec);
-        context.registerConfig(ModConfig.Type.CLIENT, clientSpec);
     }
 }

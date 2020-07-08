@@ -22,6 +22,8 @@ import static com.novarch.jojomod.util.Util.Null;
 @SuppressWarnings("unused")
 @ParametersAreNonnullByDefault
 public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
+    @CapabilityInject(ITimestop.class)
+    public static final Capability<ITimestop> TIMESTOP = Null();
     private Entity entity;
     private double posX = 0;
     private double posY = 0;
@@ -36,13 +38,59 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     private int fuse = 0;
     private int fire = 0;
     private int age = 0;
-
-    @CapabilityInject(ITimestop.class)
-    public static final Capability<ITimestop> TIMESTOP = Null();
     private LazyOptional<ITimestop> holder = LazyOptional.of(() -> new Timestop(entity));
 
     public Timestop(@Nonnull Entity entity) {
         this.entity = entity;
+    }
+
+    public static ITimestop getCapabilityFromEntity(Entity entity) {
+        return entity.getCapability(TIMESTOP, null).orElse(new Timestop(entity));
+    }
+
+    public static LazyOptional<ITimestop> getLazyOptional(Entity entity) {
+        return entity.getCapability(TIMESTOP, null);
+    }
+
+    public static void register() {
+        CapabilityManager.INSTANCE.register(ITimestop.class, new Capability.IStorage<ITimestop>() {
+            @Override
+            public INBT writeNBT(Capability<ITimestop> capability, ITimestop instance, Direction side) {
+                CompoundNBT nbt = new CompoundNBT();
+                nbt.putDouble("posX", instance.getPosX());
+                nbt.putDouble("posY", instance.getPosY());
+                nbt.putDouble("posZ", instance.getPosZ());
+                nbt.putDouble("motionX", instance.getMotionX());
+                nbt.putDouble("motionY", instance.getMotionY());
+                nbt.putDouble("motionZ", instance.getMotionZ());
+                nbt.putFloat("rotationYaw", instance.getRotationYaw());
+                nbt.putFloat("rotationPitch", instance.getRotationPitch());
+                nbt.putFloat("rotationYawHead", instance.getRotationYawHead());
+                nbt.putFloat("fallDistance", instance.getFallDistance());
+                nbt.putInt("fuse", instance.getFuse());
+                nbt.putInt("fire", instance.getFire());
+                nbt.putInt("age", instance.getAge());
+                return nbt;
+            }
+
+            @Override
+            public void readNBT(Capability<ITimestop> capability, ITimestop instance, Direction side, INBT nbt) {
+                CompoundNBT compoundNBT = (CompoundNBT) nbt;
+                instance.putPosX(compoundNBT.getDouble("posX"));
+                instance.putPosY(compoundNBT.getDouble("posY"));
+                instance.putPosZ(compoundNBT.getDouble("posZ"));
+                instance.putMotionX(compoundNBT.getDouble("motionX"));
+                instance.putMotionY(compoundNBT.getDouble("motionY"));
+                instance.putMotionZ(compoundNBT.getDouble("motionZ"));
+                instance.putRotationYaw(compoundNBT.getFloat("rotationYaw"));
+                instance.putRotationPitch(compoundNBT.getFloat("rotationPitch"));
+                instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
+                instance.putFallDistance(compoundNBT.getInt("fallDistance"));
+                instance.putFuse(compoundNBT.getInt("fuse"));
+                instance.putFire(compoundNBT.getInt("fire"));
+                instance.putAge(compoundNBT.getInt("age"));
+            }
+        }, () -> new Timestop(Null()));
     }
 
     @Override
@@ -230,8 +278,8 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
 
     @Override
     public void onDataUpdated() {
-        if(entity != null)
-            if(!entity.world.isRemote)
+        if (entity != null)
+            if (!entity.world.isRemote)
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new SSyncTimestopCapabilityPacket(this));
     }
 
@@ -265,54 +313,5 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @Override
     public void deserializeNBT(INBT nbt) {
         TIMESTOP.getStorage().readNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
-    }
-
-    public static ITimestop getCapabilityFromEntity(Entity entity) {
-        return entity.getCapability(TIMESTOP, null).orElse(new Timestop(entity));
-    }
-
-    public static LazyOptional<ITimestop> getLazyOptional(Entity entity) {
-        return entity.getCapability(TIMESTOP, null);
-    }
-
-    public static void register() {
-        CapabilityManager.INSTANCE.register(ITimestop.class, new Capability.IStorage<ITimestop>() {
-            @Override
-            public INBT writeNBT(Capability<ITimestop> capability, ITimestop instance, Direction side) {
-                CompoundNBT nbt = new CompoundNBT();
-                nbt.putDouble("posX", instance.getPosX());
-                nbt.putDouble("posY", instance.getPosY());
-                nbt.putDouble("posZ", instance.getPosZ());
-                nbt.putDouble("motionX", instance.getMotionX());
-                nbt.putDouble("motionY", instance.getMotionY());
-                nbt.putDouble("motionZ", instance.getMotionZ());
-                nbt.putFloat("rotationYaw", instance.getRotationYaw());
-                nbt.putFloat("rotationPitch", instance.getRotationPitch());
-                nbt.putFloat("rotationYawHead", instance.getRotationYawHead());
-                nbt.putFloat("fallDistance", instance.getFallDistance());
-                nbt.putInt("fuse", instance.getFuse());
-                nbt.putInt("fire", instance.getFire());
-                nbt.putInt("age", instance.getAge());
-                return nbt;
-            }
-
-            @Override
-            public void readNBT(Capability<ITimestop> capability, ITimestop instance, Direction side, INBT nbt) {
-                CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                instance.putPosX(compoundNBT.getDouble("posX"));
-                instance.putPosY(compoundNBT.getDouble("posY"));
-                instance.putPosZ(compoundNBT.getDouble("posZ"));
-                instance.putMotionX(compoundNBT.getDouble("motionX"));
-                instance.putMotionY(compoundNBT.getDouble("motionY"));
-                instance.putMotionZ(compoundNBT.getDouble("motionZ"));
-                instance.putRotationYaw(compoundNBT.getFloat("rotationYaw"));
-                instance.putRotationPitch(compoundNBT.getFloat("rotationPitch"));
-                instance.putRotationYawHead(compoundNBT.getFloat("rotationYawHead"));
-                instance.putFallDistance(compoundNBT.getInt("fallDistance"));
-                instance.putFuse(compoundNBT.getInt("fuse"));
-                instance.putFire(compoundNBT.getInt("fire"));
-                instance.putAge(compoundNBT.getInt("age"));
-            }
-        }, () -> new Timestop(Null()));
     }
 }

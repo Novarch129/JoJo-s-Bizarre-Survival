@@ -10,6 +10,7 @@ import net.minecraft.potion.EffectType;
 import net.minecraft.util.DamageSource;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Objects;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -27,7 +28,7 @@ public class HazeEffect extends Effect {
     public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
         entityLivingBaseIn.attackEntityFrom(DamageSource.WITHER, (entityLivingBaseIn.getMaxHealth() / entityLivingBaseIn.getHealth()) * 1.25f);
         if (!entityLivingBaseIn.world.isRemote)
-            entityLivingBaseIn.world.getServer().getWorld(entityLivingBaseIn.dimension).getEntities()
+            Objects.requireNonNull(entityLivingBaseIn.world.getServer()).getWorld(entityLivingBaseIn.dimension).getEntities()
                     .filter(entity -> entity != entityLivingBaseIn)
                     .filter(entity -> entity instanceof LivingEntity)
                     .filter(entity -> !(entity instanceof AbstractStandEntity))

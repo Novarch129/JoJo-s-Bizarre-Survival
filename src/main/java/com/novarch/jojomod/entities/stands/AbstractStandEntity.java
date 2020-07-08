@@ -163,7 +163,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void tick() {
-        super.tick();
+        super.tick(); //Queues the tick method to run, code in tick() method won't run if removed.
         if (!world.isRemote) {
             if (getMaster() == null) { //Don't listen to your IDE, this can be null after a relog.
                 remove();

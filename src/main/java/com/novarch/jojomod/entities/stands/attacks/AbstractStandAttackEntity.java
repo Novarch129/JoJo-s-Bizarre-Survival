@@ -32,7 +32,7 @@ import java.util.List;
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
-    public int xTile, yTile, zTile, arrowShake, ticksInAir, longTick = 3;
+    public int xTile, yTile, zTile, arrowShake, ticksInAir, longTick = 2;
     public Entity shootingEntity;
     public AbstractStandEntity shootingStand;
     public PlayerEntity standMaster;
@@ -43,8 +43,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         xTile = -1;
         yTile = -1;
         zTile = -1;
-        if (worldIn.isRemote)
-            setNoGravity(true);
+        setNoGravity(true);
     }
 
     public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, double x, double y, double z) {
@@ -57,7 +56,6 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
-        longTick = 2;
         movePunchInFront(shooter);
     }
 
@@ -118,21 +116,21 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     }
 
     public void movePunchInFront(AbstractStandEntity base) {
-        PlayerEntity playerEntity = base.getMaster();
-        Vec3d vector = playerEntity.getLookVec();
-        double x = getPosX() + vector.x * 0.5d;
-        double y = getPosY() + vector.y * 0.4d * 0.5d;
-        double z = getPosZ() + vector.z * 0.5d;
+        PlayerEntity master = base.getMaster();
+        Vec3d vector = master.getLookVec();
+        double x = getPosX() + vector.x * 0.5;
+        double y = getPosY() + vector.y * 0.4 * 0.5;
+        double z = getPosZ() + vector.z * 0.5;
         setPosition(x, y, z);
     }
 
     @Override
     public void setVelocity(double x, double y, double z) {
         setMotion(x, y, z);
-        if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
+        if (prevRotationPitch == 0 && prevRotationYaw == 0) {
             float f = MathHelper.sqrt(x * x + z * z);
-            rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180F / (float) Math.PI));
-            rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180F / (float) Math.PI));
+            rotationPitch = (float) (MathHelper.atan2(y, f) * (double) (180 / (float) Math.PI));
+            rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180 / (float) Math.PI));
             prevRotationPitch = rotationPitch;
             prevRotationYaw = rotationYaw;
             setLocationAndAngles(getPosX(), getPosY(), getPosZ(), rotationYaw, rotationPitch);
@@ -200,19 +198,19 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 onHit(raytraceresult);
             }
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
-            rotationYaw = (float) (MathHelper.atan2(getMotion().x, getMotion().z) * 57.29577951308232d);
-            while (rotationPitch - prevRotationPitch >= 180.0f)
-                prevRotationPitch += 360.0f;
-            while (rotationYaw - prevRotationYaw < -180.0f)
-                prevRotationYaw -= 360.0f;
-            while (rotationYaw - prevRotationYaw >= 180.0f)
-                prevRotationYaw += 360.0f;
+            rotationYaw = (float) (MathHelper.atan2(getMotion().x, getMotion().z) * 57.29577951308232);
+            while (rotationPitch - prevRotationPitch >= 180)
+                prevRotationPitch += 360;
+            while (rotationYaw - prevRotationYaw < -180)
+                prevRotationYaw -= 360;
+            while (rotationYaw - prevRotationYaw >= 180)
+                prevRotationYaw += 360;
             rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2f;
             rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2f;
             float f1 = 0.99f;
             if (isInWater()) {
                 for (int i = 0; i < 4; i++) {
-                    world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().x * 0.25d, getPosY() - getMotion().y * 0.25d, getPosZ() - getMotion().z * 0.25d, getMotion().x, getMotion().y, getMotion().z);
+                    world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().x * 0.25, getPosY() - getMotion().y * 0.25d, getPosZ() - getMotion().z * 0.25d, getMotion().x, getMotion().y, getMotion().z);
                 }
                 f1 = 0.8f;
             }
@@ -220,7 +218,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 extinguish();
             setMotion(getMotion().getX() * f1, getMotion().getY() * f1, getMotion().getZ() * f1);
             if (!hasNoGravity())
-                setMotion(getMotion().getX(), getMotion().getY() - 0.05000000074505806d, getMotion().getZ());
+                setMotion(getMotion().getX(), getMotion().getY() - 0.05000000074505806, getMotion().getZ());
             setPosition(getPosX(), getPosY(), getPosZ());
             doBlockCollisions();
         }
@@ -231,7 +229,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent(
                     this,
                     result,
-                    result.getType() == RayTraceResult.Type.ENTITY ? (LivingEntity) ((EntityRayTraceResult) result).getEntity() : null,
+                    result.getType() == RayTraceResult.Type.ENTITY ? ((EntityRayTraceResult) result).getEntity() : null,
                     result.getType()
             ))) return;
         if (result.getType() == RayTraceResult.Type.ENTITY) {
@@ -252,7 +250,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                         if (!world.isRemote) {
                             world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1.0d, 0.0d, 0.0d);
                             if (!world.isRemote) {
-                                if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(this, result, (LivingEntity) entity)))
+                                if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(this, result, entity)))
                                     return;
                                 onEntityHit((EntityRayTraceResult) result);
                             }
@@ -328,8 +326,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     @Override
     public void onCollideWithPlayer(PlayerEntity entityIn) {
-        if (!world.isRemote && inGround && arrowShake <= 0 && entityIn != standMaster)
-            remove();
+        if (!world.isRemote && inGround && arrowShake <= 0 && entityIn != standMaster) remove();
     }
 
     @Override

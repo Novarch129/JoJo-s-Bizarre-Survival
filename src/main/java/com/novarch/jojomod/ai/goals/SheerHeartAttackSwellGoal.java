@@ -7,16 +7,15 @@ import net.minecraft.entity.ai.goal.Goal;
 import java.util.EnumSet;
 
 /**
- * Code taken from {@link net.minecraft.entity.ai.goal.CreeperSwellGoal} for more customization
+ * Almost the same as {@link net.minecraft.entity.ai.goal.CreeperSwellGoal}, needed to make my own version to be able to use it for {@link SheerHeartAttackEntity}.
  */
-public class SheerHeartAttackSwellGoal extends Goal
-{
+public class SheerHeartAttackSwellGoal extends Goal {
     private final SheerHeartAttackEntity swellingSHA;
-    private LivingEntity creeperAttackTarget;
+    private LivingEntity shaAttackTarget;
 
     public SheerHeartAttackSwellGoal(SheerHeartAttackEntity sheerHeartAttackEntityIn) {
-        this.swellingSHA = sheerHeartAttackEntityIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        swellingSHA = sheerHeartAttackEntityIn;
+        setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     /**
@@ -24,37 +23,36 @@ public class SheerHeartAttackSwellGoal extends Goal
      * method as well.
      */
     public boolean shouldExecute() {
-        LivingEntity livingentity = this.swellingSHA.getAttackTarget();
-        return this.swellingSHA.getSheerHeartAttackState() > 0 || livingentity != null && this.swellingSHA.getDistanceSq(livingentity) < 9.0D;
+        LivingEntity livingentity = swellingSHA.getAttackTarget();
+        return swellingSHA.getSheerHeartAttackState() > 0 || livingentity != null && swellingSHA.getDistanceSq(livingentity) < 9;
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
     public void startExecuting() {
-        this.swellingSHA.getNavigator().clearPath();
-        this.creeperAttackTarget = this.swellingSHA.getAttackTarget();
+        swellingSHA.getNavigator().clearPath();
+        shaAttackTarget = swellingSHA.getAttackTarget();
     }
 
     /**
      * Reset the task's internal state. Called when this task is interrupted by another one
      */
     public void resetTask() {
-        this.creeperAttackTarget = null;
+        shaAttackTarget = null;
     }
 
     /**
      * Keep ticking a continuous task that has already been started
      */
     public void tick() {
-        if (this.creeperAttackTarget == null) {
-            this.swellingSHA.setSheerHeartAttackState(-1);
-        } else if (this.swellingSHA.getDistanceSq(this.creeperAttackTarget) > 49.0D) {
-            this.swellingSHA.setSheerHeartAttackState(-1);
-        } else if (!this.swellingSHA.getEntitySenses().canSee(this.creeperAttackTarget)) {
-            this.swellingSHA.setSheerHeartAttackState(-1);
-        } else {
-            this.swellingSHA.setSheerHeartAttackState(1);
-        }
+        if (shaAttackTarget == null)
+            swellingSHA.setSheerHeartAttackState(-1);
+        else if (swellingSHA.getDistanceSq(shaAttackTarget) > 49)
+            swellingSHA.setSheerHeartAttackState(-1);
+        else if (!swellingSHA.getEntitySenses().canSee(shaAttackTarget))
+            swellingSHA.setSheerHeartAttackState(-1);
+        else
+            swellingSHA.setSheerHeartAttackState(1);
     }
 }
