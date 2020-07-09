@@ -20,12 +20,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
@@ -44,6 +47,7 @@ import java.util.stream.Collectors;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
+    public static List<PlayerEntity> teleportQueue = new ArrayList<>();
     public static List<Entity> entityList;
     public static AerosmithEntity playerStand;
 
@@ -100,14 +104,14 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
             }
 
-            if((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if ((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
 
     @SubscribeEvent
     public static void livingTick(LivingEvent.LivingUpdateEvent event) {
-        if(!event.getEntityLiving().isPotionActive(EffectInit.CRIMSON.get()) || !event.getEntityLiving().isPotionActive(Effects.GLOWING))
+        if (!event.getEntityLiving().isPotionActive(EffectInit.CRIMSON.get()) || !event.getEntityLiving().isPotionActive(Effects.GLOWING))
             event.getEntityLiving().setGlowing(false);
     }
 
@@ -142,8 +146,21 @@ public class EventHandleStandAbilities {
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            removalQueue.forEach(Entity::remove);
-            removalQueue.clear();
+            if (removalQueue.size() > 0) {
+                removalQueue.forEach(Entity::remove);
+                removalQueue.clear();
+            }
+            if (teleportQueue.size() > 0) {
+                teleportQueue.forEach(playerEntity -> {
+                    int distance = 5;
+                    float f1 = MathHelper.cos(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
+                    float f2 = MathHelper.sin(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI);
+                    float f3 = -MathHelper.cos(-playerEntity.rotationPitch * 0.017453292f);
+                    float f4 = MathHelper.sin(-playerEntity.rotationPitch * 0.017453292f);
+                    playerEntity.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
+                });
+                teleportQueue.clear();
+            }
         }
     }
 

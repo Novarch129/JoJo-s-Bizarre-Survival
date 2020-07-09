@@ -1,16 +1,15 @@
 package com.novarch.jojomod.entities.stands;
 
 import com.novarch.jojomod.entities.stands.attacks.TheHandPunchEntity;
+import com.novarch.jojomod.events.EventHandleStandAbilities;
 import com.novarch.jojomod.init.EntityInit;
 import com.novarch.jojomod.init.SoundInit;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -42,18 +41,11 @@ public class TheHandEntity extends AbstractStandEntity {
             entity.setMotion(-motionX * strength, -motionY * strength, -motionZ * strength);
     }
 
-    @Deprecated  //Safe to call, @Deprecated because it's buggy.
     public void teleportMaster() {
+        if (world.isRemote) return;
         PlayerEntity master = getMaster();
-        if (master == null) return;
-        if (!master.world.isRemote && !world.isRemote) {
-            int distance = 2;
-            float f1 = MathHelper.cos(-master.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
-            float f2 = MathHelper.sin(-master.rotationYaw * 0.017453292f - (float) Math.PI);
-            float f3 = -MathHelper.cos(-master.rotationPitch * 0.017453292f);
-            float f4 = MathHelper.sin(-master.rotationPitch * 0.017453292f);
-            master.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
-        }
+        if (master != null)
+            EventHandleStandAbilities.teleportQueue.add(master);
     }
 
     @Override
