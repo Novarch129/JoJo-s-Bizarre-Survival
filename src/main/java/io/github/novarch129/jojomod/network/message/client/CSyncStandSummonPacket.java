@@ -1,9 +1,9 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import io.github.novarch129.jojomod.entities.FakePlayerEntity;
-import io.github.novarch129.jojomod.entities.stands.AbstractStandEntity;
-import io.github.novarch129.jojomod.events.custom.StandEvent;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.FakePlayerEntity;
+import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.init.ItemInit;

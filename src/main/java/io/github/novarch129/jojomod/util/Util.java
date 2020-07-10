@@ -1,8 +1,7 @@
 package io.github.novarch129.jojomod.util;
 
-import com.novarch.jojomod.entities.stands.*;
-import io.github.novarch129.jojomod.entities.stands.*;
-import io.github.novarch129.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.entity.stands.*;
+import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
 import net.minecraft.block.material.Material;
@@ -16,7 +15,6 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import novarch.jojomod.entities.stands.*;
 
 import javax.annotation.Nonnull;
 import java.util.function.Predicate;

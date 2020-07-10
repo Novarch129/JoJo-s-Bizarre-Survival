@@ -1,10 +1,8 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import com.novarch.jojomod.entities.stands.*;
-import io.github.novarch129.jojomod.entities.stands.*;
-import novarch.jojomod.entities.stands.*;
-import io.github.novarch129.jojomod.entities.stands.attacks.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.*;
+import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

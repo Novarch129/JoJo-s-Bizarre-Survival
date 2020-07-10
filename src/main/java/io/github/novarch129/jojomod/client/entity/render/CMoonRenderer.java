@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.CMoonModel;
-import io.github.novarch129.jojomod.entities.stands.CMoonEntity;
+import io.github.novarch129.jojomod.entity.stands.CMoonEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

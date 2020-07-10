@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.network.message.server;
 
-import io.github.novarch129.jojomod.entities.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

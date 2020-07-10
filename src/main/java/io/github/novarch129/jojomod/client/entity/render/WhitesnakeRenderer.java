@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.WhitesnakeModel;
-import io.github.novarch129.jojomod.entities.stands.WhitesnakeEntity;
+import io.github.novarch129.jojomod.entity.stands.WhitesnakeEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.effects;
 
-import io.github.novarch129.jojomod.entities.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;

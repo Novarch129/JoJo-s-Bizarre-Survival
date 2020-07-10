@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
-import io.github.novarch129.jojomod.entities.stands.CrazyDiamondEntity;
+import io.github.novarch129.jojomod.entity.stands.CrazyDiamondEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.CrazyDiamondModel;
 import mcp.MethodsReturnNonnullByDefault;

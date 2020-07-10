@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capabilities.stand.IStand;
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import io.github.novarch129.jojomod.entities.stands.attacks.EmperorBulletEntity;
+import io.github.novarch129.jojomod.capability.stand.IStand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;

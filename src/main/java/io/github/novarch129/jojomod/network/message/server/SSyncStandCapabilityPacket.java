@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.network.message.server;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capabilities.stand.IStand;
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
+import io.github.novarch129.jojomod.capability.stand.IStand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;

@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.client.gui.overlay;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;

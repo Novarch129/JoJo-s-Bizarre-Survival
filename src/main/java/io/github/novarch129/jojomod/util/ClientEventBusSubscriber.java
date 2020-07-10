@@ -1,17 +1,15 @@
 package io.github.novarch129.jojomod.util;
 
-import io.github.novarch129.jojomod.client.entity.render.*;
-import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import com.novarch.jojomod.client.entity.render.*;
+import io.github.novarch129.jojomod.client.entity.render.*;
 import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.init.KeyInit;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import novarch.jojomod.client.entity.render.*;
 
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientEventBusSubscriber {

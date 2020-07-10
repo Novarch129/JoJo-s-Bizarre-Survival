@@ -1,12 +1,10 @@
 package io.github.novarch129.jojomod.init;
 
-import io.github.novarch129.jojomod.entities.FakePlayerEntity;
-import io.github.novarch129.jojomod.entities.stands.*;
-import io.github.novarch129.jojomod.entities.stands.attacks.*;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entities.StandArrowEntity;
-import com.novarch.jojomod.entities.stands.*;
-import com.novarch.jojomod.entities.stands.attacks.*;
+import io.github.novarch129.jojomod.entity.FakePlayerEntity;
+import io.github.novarch129.jojomod.entity.StandArrowEntity;
+import io.github.novarch129.jojomod.entity.stands.*;
+import io.github.novarch129.jojomod.entity.stands.attacks.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -16,8 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import novarch.jojomod.entities.stands.*;
-import novarch.jojomod.entities.stands.attacks.*;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.MOD)

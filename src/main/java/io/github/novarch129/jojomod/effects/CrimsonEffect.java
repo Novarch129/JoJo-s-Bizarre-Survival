@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.effects;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;

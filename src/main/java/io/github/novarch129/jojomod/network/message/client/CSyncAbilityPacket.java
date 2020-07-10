@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import io.github.novarch129.jojomod.entities.FakePlayerEntity;
-import io.github.novarch129.jojomod.events.custom.AbilityEvent;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.FakePlayerEntity;
+import io.github.novarch129.jojomod.event.custom.AbilityEvent;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.PlayerEntity;

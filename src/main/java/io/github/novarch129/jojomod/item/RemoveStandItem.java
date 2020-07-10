@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capabilities.stand.IStand;
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
+import io.github.novarch129.jojomod.capability.stand.IStand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;

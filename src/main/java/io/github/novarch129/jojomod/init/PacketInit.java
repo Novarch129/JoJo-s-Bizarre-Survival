@@ -6,8 +6,6 @@ import io.github.novarch129.jojomod.network.message.server.SSyncSilverChariotArm
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
 import io.github.novarch129.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
-import com.novarch.jojomod.network.message.client.*;
-import novarch.jojomod.network.message.client.*;
 
 @SuppressWarnings("ALL")
 public class PacketInit {

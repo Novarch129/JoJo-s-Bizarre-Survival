@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import io.github.novarch129.jojomod.entities.stands.attacks.CMoonPunchEntity;
+import io.github.novarch129.jojomod.entity.stands.attacks.CMoonPunchEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 

@@ -1,11 +1,10 @@
 package io.github.novarch129.jojomod;
 
+import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.*;
 import io.github.novarch129.jojomod.proxy.ClientProxy;
 import io.github.novarch129.jojomod.proxy.IProxy;
 import io.github.novarch129.jojomod.proxy.ServerProxy;
-import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import com.novarch.jojomod.init.*;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -16,15 +15,13 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import novarch.jojomod.init.*;
 
 /**
  * @author Novarch
- * @since 1.15.2-0.0.1.0
+ * @since 1.15.2-1.0.0.0
  * <p>
  * The main {@link Mod} {@link Class}, used mostly for registering objects.
  */
@@ -43,7 +40,6 @@ public class JojoBizarreSurvival {
     public JojoBizarreSurvival() {
         final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setup);
-        eventBus.addListener(this::onServerStarting);
 
         EventInit.register(MinecraftForge.EVENT_BUS);
         ItemInit.ITEMS.register(eventBus);
@@ -57,17 +53,6 @@ public class JojoBizarreSurvival {
 
     private void setup(final FMLCommonSetupEvent event) {
         CapabilityInit.register();
-//        DeferredWorkQueue.runLater(() -> {
-//            Iterator<Biome> biomes = ForgeRegistries.BIOMES.iterator();
-//            biomes.forEachRemaining(biome -> {
-//                biome.addStructure(FeatureInit.JOJO_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
-//                biome.addFeature(GenerationStage.Decoration.UNDERGROUND_DECORATION, FeatureInit.JOJO_TEMPLE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-//            });
-//        });
-    }
-
-    public void onServerStarting(FMLServerStartingEvent event) {
-
     }
 
     @MethodsReturnNonnullByDefault

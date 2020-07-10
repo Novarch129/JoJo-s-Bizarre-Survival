@@ -5,7 +5,7 @@ package io.github.novarch129.jojomod.client.entity.model;// Made with Blockbench
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import io.github.novarch129.jojomod.entities.stands.AerosmithEntity;
+import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 

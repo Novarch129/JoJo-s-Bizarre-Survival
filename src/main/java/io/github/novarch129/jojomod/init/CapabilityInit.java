@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.init;
 
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import io.github.novarch129.jojomod.capabilities.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import mcp.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

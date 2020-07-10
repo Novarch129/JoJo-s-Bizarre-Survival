@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.client.entity.model.FakePlayerModel;
-import io.github.novarch129.jojomod.entities.FakePlayerEntity;
+import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.entity.player.ClientPlayerEntity;

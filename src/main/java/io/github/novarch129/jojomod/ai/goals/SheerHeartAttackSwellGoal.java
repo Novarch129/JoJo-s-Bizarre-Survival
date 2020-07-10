@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.ai.goals;
 
-import io.github.novarch129.jojomod.entities.stands.SheerHeartAttackEntity;
+import io.github.novarch129.jojomod.entity.stands.SheerHeartAttackEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 

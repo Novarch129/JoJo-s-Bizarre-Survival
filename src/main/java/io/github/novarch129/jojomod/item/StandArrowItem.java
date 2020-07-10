@@ -1,12 +1,12 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capabilities.stand.IStand;
-import io.github.novarch129.jojomod.capabilities.stand.Stand;
-import io.github.novarch129.jojomod.entities.FakePlayerEntity;
-import io.github.novarch129.jojomod.entities.stands.AbstractStandEntity;
-import io.github.novarch129.jojomod.entities.stands.GoldExperienceEntity;
-import io.github.novarch129.jojomod.entities.stands.GoldExperienceRequiemEntity;
-import io.github.novarch129.jojomod.entities.StandArrowEntity;
+import io.github.novarch129.jojomod.capability.stand.IStand;
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.FakePlayerEntity;
+import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stands.GoldExperienceEntity;
+import io.github.novarch129.jojomod.entity.stands.GoldExperienceRequiemEntity;
+import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;

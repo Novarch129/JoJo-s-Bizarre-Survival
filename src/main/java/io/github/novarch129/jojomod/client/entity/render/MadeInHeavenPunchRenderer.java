@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entities.stands.attacks.MadeInHeavenPunchEntity;
+import io.github.novarch129.jojomod.entity.stands.attacks.MadeInHeavenPunchEntity;
 import io.github.novarch129.jojomod.client.entity.model.MadeInHeavenPunchModel;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
