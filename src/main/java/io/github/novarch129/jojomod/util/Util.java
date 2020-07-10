@@ -65,7 +65,13 @@ public class Util {
         return null;
     }
 
-    public static AbstractStandEntity getStand(int standID, World world) {
+    /**
+     * Returns an {@link AbstractStandEntity} based on the StandID inputted.
+     *
+     * @param standID The StandID of the Stand, see {@link StandID}.
+     * @param world   The {@link World} the Stand will be summoned in.
+     */
+    public static AbstractStandEntity getStandByID(int standID, World world) {
         switch (standID) {
             default:
                 return Null();

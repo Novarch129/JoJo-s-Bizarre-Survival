@@ -79,7 +79,7 @@ public class CSyncStandSummonPacket {
 							}
 							if (!player.isSpectator())
 								if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
-									AbstractStandEntity stand = Util.getStand(props.getStandID(), player.world);
+									AbstractStandEntity stand = Util.getStandByID(props.getStandID(), player.world);
 									if (stand != null) {
 										if (!player.world.getEntitiesInAABBexcluding(player, player.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof AbstractStandEntity).contains(stand)) {
 											if (props.getStandID() == Util.StandID.AEROSMITH && props.getAbility())

@@ -61,7 +61,7 @@ public class StandArrowItem extends ArrowItem {
                 else
                     props.setStandID(standID);
                 props.setStandOn(true);
-                final AbstractStandEntity stand = Util.getStand(newStandID, world);
+                final AbstractStandEntity stand = Util.getStandByID(newStandID, world);
                 if (stand != null) {
                     stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                     stand.setMaster(player);
