@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
+import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -29,7 +30,7 @@ import java.util.function.Supplier;
  * @variable yaw, pitch  Define Aerosmith's rotation relative to the mouse position(<code>Minecraft#mouseHelper#getMouseX/getMouseY</code>).
  */
 @SuppressWarnings("ConstantConditions")
-public class CSyncAerosmithPacket {
+public class CSyncAerosmithPacket implements IMessage<CSyncAerosmithPacket> {
     private Action action;
     private Direction direction;
     private boolean sprint;
@@ -76,25 +77,11 @@ public class CSyncAerosmithPacket {
         this.pitch = pitch;
     }
 
-    public static void encode(CSyncAerosmithPacket msg, PacketBuffer buffer) {
-        buffer.writeEnumValue(msg.action);
-        buffer.writeEnumValue(msg.direction);
-        buffer.writeBoolean(msg.sprint);
-        buffer.writeFloat(msg.yaw);
-        buffer.writeFloat(msg.pitch);
+    public CSyncAerosmithPacket() {
     }
 
-    public static CSyncAerosmithPacket decode(PacketBuffer buffer) {
-        return new CSyncAerosmithPacket(
-                buffer.readEnumValue(Action.class),
-                buffer.readEnumValue(Direction.class),
-                buffer.readBoolean(),
-                buffer.readFloat(),
-                buffer.readFloat()
-        );
-    }
-
-    public static void handle(CSyncAerosmithPacket message, Supplier<Context> ctx) {
+    @Override
+    public void handle(CSyncAerosmithPacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
@@ -179,6 +166,26 @@ public class CSyncAerosmithPacket {
             });
         }
         ctx.get().setPacketHandled(true);
+    }
+
+    @Override
+    public void encode(CSyncAerosmithPacket msg, PacketBuffer buffer) {
+        buffer.writeEnumValue(msg.action);
+        buffer.writeEnumValue(msg.direction);
+        buffer.writeBoolean(msg.sprint);
+        buffer.writeFloat(msg.yaw);
+        buffer.writeFloat(msg.pitch);
+    }
+
+    @Override
+    public CSyncAerosmithPacket decode(PacketBuffer buffer) {
+        return new CSyncAerosmithPacket(
+                buffer.readEnumValue(Action.class),
+                buffer.readEnumValue(Direction.class),
+                buffer.readBoolean(),
+                buffer.readFloat(),
+                buffer.readFloat()
+        );
     }
 
     public enum Action {MOVE, ROTATE, RENDER}

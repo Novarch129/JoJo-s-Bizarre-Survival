@@ -8,23 +8,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public class ClientProxy implements IProxy
-{
+public class ClientProxy implements IProxy {
     @Override
-    public PlayerEntity getPlayer()
-    {
+    public PlayerEntity getPlayer() {
         return Minecraft.getInstance().player;
     }
 
     @Override
-    public World getWorld()
-    {
+    public World getWorld() {
         return Minecraft.getInstance().world;
     }
 
     @Override
-    public MinecraftServer getServer()
-    {
+    public MinecraftServer getServer() {
         return null;
     }
 }

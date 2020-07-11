@@ -3,14 +3,10 @@ package io.github.novarch129.jojomod.init;
 import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
 import io.github.novarch129.jojomod.event.*;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class EventInit {
     public static void register(@Nonnull IEventBus bus) {
         bus.register(EventAttachCapabilities.class);

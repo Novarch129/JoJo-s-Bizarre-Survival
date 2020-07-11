@@ -1,7 +1,10 @@
 package io.github.novarch129.jojomod;
 
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.*;
+import io.github.novarch129.jojomod.network.message.PacketHandler;
 import io.github.novarch129.jojomod.proxy.ClientProxy;
 import io.github.novarch129.jojomod.proxy.IProxy;
 import io.github.novarch129.jojomod.proxy.ServerProxy;
@@ -48,11 +51,12 @@ public class JojoBizarreSurvival {
         DimensionInit.DIMENSIONS.register(eventBus);
         EffectInit.EFFECTS.register(eventBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
-        PacketInit.register();
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        CapabilityInit.register();
+    private void setup(FMLCommonSetupEvent event) {
+        Stand.register();
+        Timestop.register();
+        PacketHandler.register();
     }
 
     @MethodsReturnNonnullByDefault

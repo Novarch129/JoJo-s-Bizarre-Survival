@@ -1,14 +1,9 @@
 package io.github.novarch129.jojomod.init;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.glfw.GLFW;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class KeyInit {
     public static final KeyBinding SPAWN_STAND = new KeyBinding("key.spawnstand.desc", GLFW.GLFW_KEY_V, "key.categories.jojobizarresurvival");
     public static final KeyBinding TOGGLE_ABILITY = new KeyBinding("key.ability.desc", GLFW.GLFW_KEY_Z, "key.categories.jojobizarresurvival");
