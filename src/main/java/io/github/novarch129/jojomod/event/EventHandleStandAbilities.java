@@ -1,17 +1,16 @@
 package io.github.novarch129.jojomod.event;
 
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
-import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.FakePlayerEntity;
-import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
 import io.github.novarch129.jojomod.event.custom.AbilityEvent;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.event.custom.StandPunchEvent;
+import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
@@ -41,15 +40,12 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
     public static List<PlayerEntity> teleportQueue = new ArrayList<>();
-    public static List<Entity> entityList;
-    public static AerosmithEntity playerStand;
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -57,23 +53,6 @@ public class EventHandleStandAbilities {
 
         if (!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
             player.setGlowing(false);
-
-        if (!player.world.isRemote) {
-            player.world.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                if (entity instanceof AerosmithEntity)
-                    if (((AerosmithEntity) entity).getMaster() == player)
-                        playerStand = (AerosmithEntity) entity;
-            });
-            if (playerStand != null)
-                entityList = player.world.getServer().getWorld(player.dimension)
-                        .getEntities()
-                        .filter(entity -> entity != player)
-                        .filter(entity -> entity != playerStand)
-                        .filter(entity -> !(entity instanceof FakePlayerEntity))
-                        .filter(Util.Predicates.BREATHS)
-                        .filter(entity -> entity.getDistance(playerStand) < 16)
-                        .collect(Collectors.toList());
-        }
 
         Stand.getLazyOptional(player).ifPresent(props -> {
             int standID = props.getStandID();

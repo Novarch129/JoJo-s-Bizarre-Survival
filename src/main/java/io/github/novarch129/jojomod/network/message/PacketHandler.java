@@ -23,7 +23,7 @@ public class PacketHandler {
         registerPacket(SSyncSilverChariotArmorPacket.class, new SSyncSilverChariotArmorPacket());
     }
 
-    private static <P> void registerPacket(Class<P> clazz, IMessage<P> message) {
+    public static <P> void registerPacket(Class<P> clazz, IMessage<P> message) {
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++, clazz, message::encode, message::decode, message::handle);
     }
 }

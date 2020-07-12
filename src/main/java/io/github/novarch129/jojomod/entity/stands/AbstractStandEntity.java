@@ -1,10 +1,10 @@
 package io.github.novarch129.jojomod.entity.stands;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
-import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

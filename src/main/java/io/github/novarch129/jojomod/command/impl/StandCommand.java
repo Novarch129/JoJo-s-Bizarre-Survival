@@ -11,6 +11,9 @@ import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
 
+/**
+ * Loving the Brigadier command syntax, really simple and fun.
+ */
 @SuppressWarnings("unused")
 public class StandCommand {
     public static void register(CommandDispatcher<CommandSource> dispatcher) {

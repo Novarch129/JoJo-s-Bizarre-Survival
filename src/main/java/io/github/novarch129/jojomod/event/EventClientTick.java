@@ -20,9 +20,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static io.github.novarch129.jojomod.event.EventHandleStandAbilities.entityList;
-import static io.github.novarch129.jojomod.event.EventHandleStandAbilities.playerStand;
-
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class EventClientTick {
@@ -69,8 +66,7 @@ public class EventClientTick {
         standGui.render();
 
         CarbonDioxideRadarGUI carbonDioxideRadarGUI = new CarbonDioxideRadarGUI();
-        if (entityList != null && playerStand != null)
-            carbonDioxideRadarGUI.renderRadar(entityList, playerStand);
+        carbonDioxideRadarGUI.renderRadar();
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

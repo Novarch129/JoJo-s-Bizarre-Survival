@@ -5,6 +5,9 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
+/**
+ * Mostly just used so I don't screw up a method in my packets, also vital to {@link PacketHandler#registerPacket(Class, IMessage)}.
+ */
 public interface IMessage<P> {
     void encode(P message, PacketBuffer buffer);
 
