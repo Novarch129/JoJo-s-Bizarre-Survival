@@ -53,26 +53,21 @@ public class StandArrowItem extends ArrowItem {
             else
                 newStandID = standID;
             if (props.getStandID() == 0) {
-                if (!player.isCreative()) {
+                if (!player.isCreative())
                     stack.shrink(1);
-                }
-                if (standID == 0)
-                    props.setStandID(newStandID);
-                else
-                    props.setStandID(standID);
+                props.setStandID(newStandID);
                 props.setStandOn(true);
                 final AbstractStandEntity stand = Util.getStandByID(newStandID, world);
-                if (stand != null) {
-                    stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                    stand.setMaster(player);
-                    if (this.standID == Util.StandID.AEROSMITH) {
-                        FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
-                        fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-                        world.addEntity(fakePlayer);
-                    }
-                    world.addEntity(stand);
-                    stand.playSpawnSound();
+                stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+                stand.setMasterUUID(player.getUniqueID());
+                stand.setMaster(player);
+                if (this.standID == Util.StandID.AEROSMITH) {
+                    FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
+                    fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
+                    world.addEntity(fakePlayer);
                 }
+                world.addEntity(stand);
+                stand.playSpawnSound();
             } else if (props.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
                 props.removeStand();
                 if (!world.isRemote) {
@@ -85,6 +80,7 @@ public class StandArrowItem extends ArrowItem {
                 props.setStandOn(true);
                 GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(world);
                 goldExperienceRequiem.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+                goldExperienceRequiem.setMasterUUID(player.getUniqueID());
                 goldExperienceRequiem.setMaster(player);
                 world.addEntity(goldExperienceRequiem);
                 goldExperienceRequiem.playSpawnSound();

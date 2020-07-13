@@ -50,10 +50,6 @@ public class EventHandleStandAbilities {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
-
-        if (!player.isPotionActive(Effects.GLOWING) && !player.isPotionActive(EffectInit.CRIMSON.get()))
-            player.setGlowing(false);
-
         Stand.getLazyOptional(player).ifPresent(props -> {
             int standID = props.getStandID();
             boolean standOn = props.getStandOn();

@@ -34,7 +34,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private int standAct = 0;
     private boolean standOn = false;
     private double cooldown = 0;
-    private double timeleft = 1000;
+    private double timeLeft = 1000;
     private String diavolo = "";
     private boolean ability = true;
     private int transformed = 0;
@@ -170,24 +170,24 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public double getTimeLeft() {
-        return this.timeleft;
+        return this.timeLeft;
     }
 
     @Override
     public void setTimeLeft(double timeleft) {
-        this.timeleft = timeleft;
+        this.timeLeft = timeleft;
         onDataUpdated();
     }
 
     @Override
     public void addTimeLeft(double addition) {
-        this.timeleft += addition;
+        this.timeLeft += addition;
         onDataUpdated();
     }
 
     @Override
     public void subtractTimeLeft(double subtraction) {
-        this.timeleft -= subtraction;
+        this.timeLeft -= subtraction;
         onDataUpdated();
     }
 
@@ -258,7 +258,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public void putTimeLeft(double timeleft) {
-        this.timeleft = timeleft;
+        this.timeLeft = timeleft;
     }
 
     @Override
@@ -323,16 +323,16 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-        return capability == Stand.STAND ? holder.cast() : LazyOptional.empty();
+        return capability == STAND ? holder.cast() : LazyOptional.empty();
     }
 
     @Override
     public INBT serializeNBT() {
-        return Stand.STAND.getStorage().writeNBT(Stand.STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
+        return Stand.STAND.getStorage().writeNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
     }
 
     @Override
     public void deserializeNBT(INBT nbt) {
-        Stand.STAND.getStorage().readNBT(Stand.STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
+        Stand.STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
     }
 }

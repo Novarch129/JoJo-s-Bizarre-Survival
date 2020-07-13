@@ -12,7 +12,6 @@ import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacke
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
@@ -67,17 +66,15 @@ public class CSyncStandSummonPacket implements IMessage<CSyncStandSummonPacket> 
                                     if (!sender.isSpectator())
                                         if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
                                             AbstractStandEntity stand = Util.getStandByID(props.getStandID(), sender.world);
-                                            if (!sender.world.getEntitiesInAABBexcluding(sender, sender.getBoundingBox().expand(1000.0, 1000.0, 1000.0), entity -> entity instanceof AbstractStandEntity).contains(stand)) {
+                                            if (!sender.getServerWorld().getEntities(null, entity -> entity instanceof AbstractStandEntity).contains(stand)) {
                                                 if (props.getStandID() == Util.StandID.AEROSMITH && props.getAbility())
                                                     sender.world.addEntity(fakePlayer);
                                                 props.setStandOn(true);
                                                 stand.setLocationAndAngles(sender.getPosX() + 0.1, sender.getPosY(), sender.getPosZ(), sender.rotationYaw, sender.rotationPitch);
                                                 stand.setMaster(sender);
+                                                stand.setMasterUUID(sender.getUniqueID());
                                                 if (!sender.world.isRemote)
                                                     JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
-                                                CompoundNBT nbt = new CompoundNBT();
-                                                nbt.putInt("MasterID", sender.getEntityId());
-                                                stand.writeAdditional(nbt);
                                                 sender.world.addEntity(stand);
                                                 stand.playSpawnSound();
                                             } else {

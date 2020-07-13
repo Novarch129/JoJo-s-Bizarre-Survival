@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.event;
 
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stands.SheerHeartAttackEntity;
@@ -61,7 +61,6 @@ public class EventSyncCapability {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> {
-            props.putStandOn(false);
             props.putAct(0);
             if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()

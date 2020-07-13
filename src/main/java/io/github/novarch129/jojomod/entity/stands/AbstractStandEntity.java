@@ -17,6 +17,10 @@ import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -27,12 +31,16 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
+    private static final DataParameter<Optional<UUID>> MASTER_UNIQUE_ID = EntityDataManager.createKey(AbstractStandEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     public boolean ability, attackRush, standOn;
     public int attackTick, attackTicker;
     protected SoundEvent spawnSound;
@@ -70,6 +78,22 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     public void setMaster(@Nonnull PlayerEntity master) {
         this.master = master;
+    }
+
+    /**
+     * @return The {@link UUID} of the Stand's master from it's {@link EntityDataManager}.
+     */
+    public UUID getMasterUUID() {
+        return dataManager.get(MASTER_UNIQUE_ID).orElse(null);
+    }
+
+    /**
+     * Sets the Stand's master's {@link UUID} to the {@link EntityDataManager}.
+     *
+     * @param masterUUID The {@link UUID} that will be set as the Stand's {@link AbstractStandEntity#MASTER_UNIQUE_ID}
+     */
+    public void setMasterUUID(@Nullable UUID masterUUID) {
+        dataManager.set(MASTER_UNIQUE_ID, Optional.ofNullable(masterUUID));
     }
 
     /**
@@ -161,8 +185,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         super.tick(); //Queues the tick method to run, code in tick() method won't run if removed.
         if (!world.isRemote) {
             if (getMaster() == null) { //Don't listen to your IDE, this can be null after a relog.
-                remove();
-                return; //Code will continue executing and crash if this is removed.
+                dataManager.get(MASTER_UNIQUE_ID).ifPresent(uuid -> setMaster(world.getPlayerByUuid(uuid)));
+                return; //Code will continue executing and may crash if this is removed.
             }
             if (!getMaster().isAlive()) {
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
@@ -191,9 +215,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        if (!standOn || damageSource.getTrueSource() == getMaster() || damageSource == DamageSource.CACTUS || damageSource == DamageSource.FALL)
+        if (master == null || damageSource.getTrueSource() == master || damageSource == DamageSource.CACTUS || damageSource == DamageSource.FALL)
             return false; //Prevents Stands from taking damage they shouldn't, fall damage, cactus damage, etc.
-        getMaster().attackEntityFrom(damageSource, damage * 0.5f);
+        master.attackEntityFrom(damageSource, damage * 0.5f);
         return false;
     }
 
@@ -227,18 +251,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
-    }
-
-    @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        compound.putUniqueId("MasterID", getMaster().getUniqueID());
-    }
-
-    @Override //Has caused some ClassCastExceptions in the past, be wary of that.
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        setMaster(world.getPlayerByUuid(compound.getUniqueId("MasterID")));
     }
 
     /**
@@ -299,6 +311,42 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         Entity entity = world.getEntityByID(entityID);
         if (entity instanceof PlayerEntity)
             setMaster((PlayerEntity) entity);
+    }
+
+    /**
+     * Registers the Stand's master's UUID to the {@link EntityDataManager}.
+     */
+    @Override
+    protected void registerData() {
+        super.registerData();
+        dataManager.register(MASTER_UNIQUE_ID, Optional.empty());
+    }
+
+    /**
+     * Writes the Stand's master's UUID to the {@link CompoundNBT} for future use.
+     */
+    @Override
+    public void writeAdditional(CompoundNBT compoundNBT) {
+        super.writeAdditional(compoundNBT);
+        if (getMasterUUID() != null)
+            compoundNBT.putString("MasterUUID", getMasterUUID().toString());
+    }
+
+    /**
+     * Sets the Stand's master to the one written to the {@link CompoundNBT}.
+     */
+    @Override
+    public void readAdditional(CompoundNBT compoundNBT) {
+        super.readAdditional(compoundNBT);
+        String s;
+        if (compoundNBT.contains("MasterUUID", 8))
+            s = compoundNBT.getString("MasterUUID");
+        else {
+            String s1 = compoundNBT.getString("MasterUUID");
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), s1);
+        }
+        if (!s.isEmpty())
+            setMasterUUID(UUID.fromString(s));
     }
 
     /**
