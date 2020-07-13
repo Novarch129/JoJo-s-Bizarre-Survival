@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.client.gui.overlay;
+package io.github.novarch129.jojomod.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;

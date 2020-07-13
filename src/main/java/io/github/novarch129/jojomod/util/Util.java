@@ -22,28 +22,22 @@ import java.util.function.Predicate;
 @SuppressWarnings("unused")
 public class Util {
     public static int getHighestBlock(World world, BlockPos pos) {
-        for (int height = world.getActualHeight(); height > 0; height--) {
-            if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR) {
+        for (int height = world.getActualHeight(); height > 0; height--)
+            if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
                 return height;
-            }
-        }
         return -1;
     }
 
     public static BlockPos getNearestBlockEnd(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--) {
             if (pos.getX() > 0) {
-                for (int x = pos.getX(); x > 0; x--) {
-                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                for (int x = pos.getX(); x > 0; x--)
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR)
                         return new BlockPos(x, height, pos.getZ());
-                    }
-                }
             } else if (pos.getX() < 0) {
-                for (int x = pos.getX(); x < 0; x++) {
-                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                for (int x = pos.getX(); x < 0; x++)
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR)
                         return new BlockPos(x, height, pos.getZ());
-                    }
-                }
             }
         }
         return new BlockPos(0, 65, 0);
