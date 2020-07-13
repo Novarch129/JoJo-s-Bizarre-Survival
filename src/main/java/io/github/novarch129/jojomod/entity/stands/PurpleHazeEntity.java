@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.entity.stands.attacks.PurpleHazePunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,7 +13,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
 public class PurpleHazeEntity extends AbstractStandEntity {
     public PurpleHazeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

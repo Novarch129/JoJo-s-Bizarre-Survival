@@ -1,14 +1,13 @@
 package io.github.novarch129.jojomod.entity.stands;
 
-import io.github.novarch129.jojomod.entity.stands.attacks.D4CPunchEntity;
-import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.D4CPunchEntity;
 import io.github.novarch129.jojomod.event.EventD4CTeleportProcessor;
+import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.DimensionHopTeleporter;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,11 +21,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class D4CEntity extends AbstractStandEntity {
     public D4CEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

@@ -27,6 +27,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
  * @since 1.15.2-1.0.0.0
  * <p>
  * The main {@link Mod} class, used mostly for registering objects.
+ * Just a note, I mostly use these Javadocs to make snarky remarks and jokes.
  */
 @Mod("jojomod")
 public class JojoBizarreSurvival {

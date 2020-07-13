@@ -1,11 +1,10 @@
 package io.github.novarch129.jojomod.entity.stands;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.stands.attacks.MagiciansRedFlameEntity;
-import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
+import io.github.novarch129.jojomod.entity.stands.attacks.MagiciansRedFlameEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
-import mcp.MethodsReturnNonnullByDefault;
+import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
@@ -13,11 +12,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings({"ConstantConditions", "unused"})
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class MagiciansRedEntity extends AbstractStandEntity {
     public MagiciansRedEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

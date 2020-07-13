@@ -1,29 +1,21 @@
 package io.github.novarch129.jojomod.entity.stands;
 
-import io.github.novarch129.jojomod.ai.goals.SheerHeartAttackSwellGoal;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IChargeableMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
@@ -31,26 +23,17 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 
 /**
- * 99% same as {@link CreeperEntity}, but doesn't extend it due to some private methods getting in the way
+ * 99% same as {@link CreeperEntity}.
  */
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
-public class SheerHeartAttackEntity extends MonsterEntity implements IChargeableMob {
-    private static final DataParameter<Integer> STATE = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.VARINT);
-    private static final DataParameter<Boolean> POWERED = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Boolean> IGNITED = EntityDataManager.createKey(SheerHeartAttackEntity.class, DataSerializers.BOOLEAN);
+public class SheerHeartAttackEntity extends CreeperEntity {
     private KillerQueenEntity masterStand;
     private PlayerEntity master;
-    private int timeSinceIgnited;
-    private int fuseTime = 30;
-    private int explosionRadius = 3;
 
-    public SheerHeartAttackEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
+    public SheerHeartAttackEntity(EntityType<? extends CreeperEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
@@ -68,7 +51,7 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new SheerHeartAttackSwellGoal(this));
+        this.goalSelector.addGoal(2, new CreeperSwellGoal(this));
         this.goalSelector.addGoal(11, new AvoidEntityGoal<>(this, GoldExperienceRequiemEntity.class, 6.0f, 1.0f, 1.2f));
         this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0f, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8));
@@ -117,24 +100,6 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
                                 remove();
                         });
                 });
-
-                if (this.hasIgnited())
-                    this.setSheerHeartAttackState(1);
-
-                int i = this.getSheerHeartAttackState();
-                if (i > 0 && this.timeSinceIgnited == 0) {
-                    this.playSound(SoundInit.LOOK_HERE.get(), 1.0F, 1.0F);
-                }
-
-                this.timeSinceIgnited += i;
-                if (this.timeSinceIgnited < 0) {
-                    this.timeSinceIgnited = 0;
-                }
-
-                if (this.timeSinceIgnited >= this.fuseTime) {
-                    this.timeSinceIgnited = this.fuseTime;
-                    explode();
-                }
             }
         }
     }
@@ -156,58 +121,6 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
     @Override
     public int getMaxFallHeight() {
         return Integer.MAX_VALUE;
-    }
-
-    @Override
-    public boolean onLivingFall(float distance, float damageMultiplier) {
-        boolean flag = super.onLivingFall(distance, damageMultiplier);
-        this.timeSinceIgnited = (int) ((float) this.timeSinceIgnited + distance * 1.5F);
-        if (this.timeSinceIgnited > this.fuseTime - 5) {
-            this.timeSinceIgnited = this.fuseTime - 5;
-        }
-
-        return flag;
-    }
-
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(STATE, -1);
-        this.dataManager.register(POWERED, false);
-        this.dataManager.register(IGNITED, false);
-    }
-
-    @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        if (this.dataManager.get(POWERED)) {
-            compound.putBoolean("powered", true);
-        }
-
-        compound.putShort("Fuse", (short) this.fuseTime);
-        compound.putByte("ExplosionRadius", (byte) this.explosionRadius);
-        compound.putBoolean("ignited", this.hasIgnited());
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        this.dataManager.set(POWERED, compound.getBoolean("powered"));
-        if (compound.contains("Fuse", 99)) {
-            this.fuseTime = compound.getShort("Fuse");
-        }
-
-        if (compound.contains("ExplosionRadius", 99)) {
-            this.explosionRadius = compound.getByte("ExplosionRadius");
-        }
-
-        if (compound.getBoolean("ignited")) {
-            this.ignite();
-        }
-
     }
 
     @Override
@@ -239,32 +152,12 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
         return true;
     }
 
-    @Override
-    public boolean isCharged() {
-        return this.dataManager.get(POWERED);
-    }
-
-    /**
-     * Returns the current state of creeper, -1 is idle, 1 is 'in fuse'
-     */
-    public int getSheerHeartAttackState() {
-        return this.dataManager.get(STATE);
-    }
-
-    /**
-     * Sets the state of creeper, -1 to idle and 1 to be 'in fuse'
-     */
-    public void setSheerHeartAttackState(int state) {
-        this.dataManager.set(STATE, state);
-    }
-
     /**
      * Called when a lightning bolt hits the entity.
      */
     @Override
     public void onStruckByLightning(LightningBoltEntity lightningBolt) {
         super.onStruckByLightning(lightningBolt);
-        this.dataManager.set(POWERED, true);
         destroy();
     }
 
@@ -277,21 +170,20 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
                 explode();
                 itemstack.damageItem(1, player, (p_213625_1_) -> p_213625_1_.sendBreakAnimation(hand));
             }
-
             return true;
-        } else {
+        } else
             return super.processInteract(player, hand);
-        }
     }
 
     /**
      * Creates an explosion as determined by this creeper's power and explosion radius.
      */
-    private void explode() {
+    @Override
+    public void explode() {
         if (!this.world.isRemote) {
-            Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            float f = this.isCharged() ? 2.0F : 1.0F;
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionRadius * f * 3, explosion$mode);
+            Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+            float f = isCharged() ? 2.0F : 1.0F;
+            this.world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * f * 3, explosion$mode);
         }
 
     }
@@ -301,20 +193,17 @@ public class SheerHeartAttackEntity extends MonsterEntity implements IChargeable
      */
     private void destroy() {
         if (!this.world.isRemote) {
-            Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+            Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
             float f = this.isCharged() ? 2.0F : 1.0F;
-            this.dead = true;
-            this.world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), (float) this.explosionRadius * f * 100, explosion$mode);
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * f * 100, explosion$mode);
             remove();
         }
-
     }
 
-    public boolean hasIgnited() {
-        return this.dataManager.get(IGNITED);
-    }
-
-    public void ignite() {
-        this.dataManager.set(IGNITED, true);
+    @Override
+    public void remove() {
+        super.remove();
+        if (masterStand != null)
+            masterStand.shaCount--;
     }
 }

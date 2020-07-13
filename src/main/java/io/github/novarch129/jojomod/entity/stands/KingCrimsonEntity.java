@@ -1,14 +1,13 @@
 package io.github.novarch129.jojomod.entity.stands;
 
+import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.effects.CrimsonEffect;
 import io.github.novarch129.jojomod.effects.CrimsonEffectUser;
 import io.github.novarch129.jojomod.entity.stands.attacks.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.effects.CrimsonEffect;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -20,14 +19,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 /**
  * You shouldn't be surprised if you're confused by this code, even I can barely read it now.
  */
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class KingCrimsonEntity extends AbstractStandEntity {
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

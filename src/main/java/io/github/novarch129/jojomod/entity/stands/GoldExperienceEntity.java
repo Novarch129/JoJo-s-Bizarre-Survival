@@ -1,10 +1,9 @@
 package io.github.novarch129.jojomod.entity.stands;
 
-import io.github.novarch129.jojomod.entity.stands.attacks.GoldExperiencePunchEntity;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.GoldExperiencePunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
@@ -12,7 +11,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 
 @SuppressWarnings({"ConstantConditions", "unused"})
-@MethodsReturnNonnullByDefault
 public class GoldExperienceEntity extends AbstractStandEntity {
     private boolean transforming;
     private int transformTick;
@@ -27,6 +25,7 @@ public class GoldExperienceEntity extends AbstractStandEntity {
         spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
     }
 
+    //4 methods below are currently redundant, will be used in the future.
     public boolean isTransforming() {
         return transforming;
     }
@@ -68,7 +67,6 @@ public class GoldExperienceEntity extends AbstractStandEntity {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
                 ability = props.getAbility();
-
                 if (props.getTransformed() > 0)
                     props.subtractCooldown(1);
                 if (props.getCooldown() <= 0) {

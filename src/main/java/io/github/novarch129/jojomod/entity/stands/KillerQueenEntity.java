@@ -5,7 +5,7 @@ import io.github.novarch129.jojomod.entity.stands.attacks.KillerQueenPunchEntity
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -17,15 +17,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class KillerQueenEntity extends AbstractStandEntity {
+    protected int shaCount;
     SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
-    private LivingEntity bombEntity = null;
-    private int shaCount;
+    private LivingEntity bombEntity;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -82,24 +78,21 @@ public class KillerQueenEntity extends AbstractStandEntity {
     }
 
     public void toggleSheerHeartAttack() {
-        if (getMaster() != null)
-            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if (shaCount <= 0) {
-                    sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
-                    world.addEntity(sheerHeartAttack);
-                    shaCount++;
-                    props.setCooldown(300);
-                } else {
-                    if (!world.isRemote)
-                        world.getServer().getWorld(dimension).getEntities()
-                                .filter(entity -> entity instanceof SheerHeartAttackEntity)
-                                .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster().getEntityId() == getMaster().getEntityId())
-                                .forEach(entity -> {
-                                    entity.remove();
-                                    shaCount--;
-                                });
-                }
-            });
+        if (getMaster() == null || world.isRemote) return;
+        Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+            if (shaCount <= 0) {
+                sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
+                world.addEntity(sheerHeartAttack);
+                shaCount++;
+                props.setCooldown(300);
+            } else {
+                if (!world.isRemote)
+                    world.getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> entity instanceof SheerHeartAttackEntity)
+                            .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster().getEntityId() == getMaster().getEntityId())
+                            .forEach(Entity::remove);
+            }
+        });
     }
 
     @Override

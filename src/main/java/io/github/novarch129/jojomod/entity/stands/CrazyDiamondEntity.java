@@ -1,10 +1,9 @@
 package io.github.novarch129.jojomod.entity.stands;
 
-import io.github.novarch129.jojomod.entity.stands.attacks.CrazyDiamondPunchEntity;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.CrazyDiamondPunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,12 +11,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.WeakHashMap;
 
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class CrazyDiamondEntity extends AbstractStandEntity {
     private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
 

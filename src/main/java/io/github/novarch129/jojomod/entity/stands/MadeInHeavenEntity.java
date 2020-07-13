@@ -25,8 +25,6 @@ import net.minecraft.world.server.ServerWorld;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class MadeInHeavenEntity extends AbstractStandEntity {
     public int heavenTick = 3600;
 

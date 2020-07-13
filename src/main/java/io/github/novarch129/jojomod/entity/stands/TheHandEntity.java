@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.entity.stands.attacks.TheHandPunchEntity;
 import io.github.novarch129.jojomod.event.EventHandleStandAbilities;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,11 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TheHandEntity extends AbstractStandEntity {
     public TheHandEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);

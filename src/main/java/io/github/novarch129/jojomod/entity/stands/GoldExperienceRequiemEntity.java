@@ -1,10 +1,9 @@
 package io.github.novarch129.jojomod.entity.stands;
 
-import io.github.novarch129.jojomod.entity.stands.attacks.GoldExperienceRequiemPunchEntity;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.entity.stands.attacks.GoldExperienceRequiemPunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -16,11 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class GoldExperienceRequiemEntity extends AbstractStandEntity {
     private StringTextComponent truthname = new StringTextComponent("You will never reach the truth.");
     private boolean truth;
