@@ -17,18 +17,18 @@ import net.minecraftforge.fml.network.NetworkEvent;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class CSyncAbilityPacket implements IMessage<CSyncAbilityPacket> {
+public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
     @Override
-    public void encode(CSyncAbilityPacket msg, PacketBuffer buffer) {
+    public void encode(CToggleAbilityPacket msg, PacketBuffer buffer) {
     }
 
     @Override
-    public CSyncAbilityPacket decode(PacketBuffer buffer) {
-        return new CSyncAbilityPacket();
+    public CToggleAbilityPacket decode(PacketBuffer buffer) {
+        return new CToggleAbilityPacket();
     }
 
     @Override
-    public void handle(CSyncAbilityPacket msg, Supplier<NetworkEvent.Context> supplier) {
+    public void handle(CToggleAbilityPacket msg, Supplier<NetworkEvent.Context> supplier) {
         final NetworkEvent.Context ctx = supplier.get();
         if (ctx.getDirection().getReceptionSide().isServer()) {
             ctx.enqueueWork(() ->

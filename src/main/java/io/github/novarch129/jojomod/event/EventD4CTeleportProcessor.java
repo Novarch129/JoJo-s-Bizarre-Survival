@@ -24,9 +24,7 @@ public class EventD4CTeleportProcessor {
             if (!passenger.world.isRemote)
                 passenger.changeDimension(
                         type,
-                        new DimensionHopTeleporter(
-                                (ServerWorld) passenger.getEntityWorld()
-                        )
+                        new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld())
                 );
         });
         d4cPassengers.clear();
@@ -36,9 +34,7 @@ public class EventD4CTeleportProcessor {
             if (!passenger.world.isRemote) {
                 passenger.changeDimension(
                         Objects.requireNonNull(DimensionType.byName(DimensionInit.MADE_IN_HEAVEN_DIMENSION_TYPE)),
-                        new DimensionHopTeleporter(
-                                (ServerWorld) passenger.getEntityWorld()
-                        )
+                        new DimensionHopTeleporter((ServerWorld) passenger.getEntityWorld())
                 );
                 passenger.setPositionAndUpdate(
                         rand.nextBoolean() ? passenger.getPosX() + rand.nextInt(100000) : passenger.getPosX() - rand.nextInt(100000),

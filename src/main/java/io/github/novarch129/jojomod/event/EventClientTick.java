@@ -6,7 +6,7 @@ import io.github.novarch129.jojomod.client.gui.overlay.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.overlay.StandGUI;
 import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
-import io.github.novarch129.jojomod.network.message.client.CSyncAerosmithPacket;
+import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
@@ -47,7 +47,7 @@ public class EventClientTick {
                             pitch = -89.0f;
 
                         if (entity.rotationYaw != yaw && entity.rotationPitch != pitch)
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(yaw, pitch));
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(yaw, pitch));
                     }
         });
     }

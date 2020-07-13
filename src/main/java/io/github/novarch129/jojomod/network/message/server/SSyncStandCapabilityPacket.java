@@ -19,34 +19,33 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
     public SSyncStandCapabilityPacket() {
     }
 
+    private SSyncStandCapabilityPacket(CompoundNBT compoundNBT) {
+        data = compoundNBT;
+    }
+
     public SSyncStandCapabilityPacket(IStand props) {
-        this.data = new CompoundNBT();
-        this.data = Stand.STAND.getStorage().writeNBT(Stand.STAND, props, null);
+        data = Stand.STAND.getStorage().writeNBT(Stand.STAND, props, null);
     }
 
     @Override
     public SSyncStandCapabilityPacket decode(PacketBuffer buffer) {
-        SSyncStandCapabilityPacket msg = new SSyncStandCapabilityPacket();
-        msg.data = buffer.readCompoundTag();
-        return msg;
+        return new SSyncStandCapabilityPacket(buffer.readCompoundTag());
     }
 
     @Override
-    public void handle(SSyncStandCapabilityPacket message, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncStandCapabilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-            ctx.get().enqueueWork(() ->
-            {
+            ctx.get().enqueueWork(() -> {
                 PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 if (player == null) return;
-                Stand.getLazyOptional(player).ifPresent(props ->
-                        Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, message.data));
+                Stand.getLazyOptional(player).ifPresent(props -> Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, msg.data));
             });
         }
         ctx.get().setPacketHandled(true);
     }
 
     @Override
-    public void encode(SSyncStandCapabilityPacket message, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) message.data);
+    public void encode(SSyncStandCapabilityPacket msg, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) msg.data);
     }
 }

@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.item;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -13,10 +12,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class StandDiscItem extends Item {
     public StandDiscItem(Properties properties) {
         super(properties);
@@ -57,7 +52,6 @@ public class StandDiscItem extends Item {
                             props.removeStand();
                             stack.setTag(nbt);
                         } else if (props.getStandID() == 0 && props.getStandID() != Util.StandID.GER && nbt.getInt("StandID") != 0) {
-
                             props.setStandID(nbt.getInt("StandID"));
                             nbt.putInt("StandID", 0);
                         }

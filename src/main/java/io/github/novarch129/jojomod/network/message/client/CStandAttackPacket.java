@@ -12,18 +12,18 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class CSyncStandAttackPacket implements IMessage<CSyncStandAttackPacket> {
+public class CStandAttackPacket implements IMessage<CStandAttackPacket> {
     @Override
-    public void encode(CSyncStandAttackPacket msg, PacketBuffer buffer) {
+    public void encode(CStandAttackPacket msg, PacketBuffer buffer) {
     }
 
     @Override
-    public CSyncStandAttackPacket decode(PacketBuffer buffer) {
-        return new CSyncStandAttackPacket();
+    public CStandAttackPacket decode(PacketBuffer buffer) {
+        return new CStandAttackPacket();
     }
 
     @Override
-    public void handle(CSyncStandAttackPacket message, Supplier<Context> ctx) {
+    public void handle(CStandAttackPacket message, Supplier<Context> ctx) {
         ServerPlayerEntity player = (ctx.get().getSender());
         if (player != null) {
             World world = player.world;

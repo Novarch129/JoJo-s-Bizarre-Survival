@@ -12,10 +12,10 @@ public class PacketHandler {
     static int networkId = 0;
 
     public static void register() {
-        registerPacket(CSyncStandSummonPacket.class, new CSyncStandSummonPacket());
-        registerPacket(CSyncStandAttackPacket.class, new CSyncStandAttackPacket());
-        registerPacket(CSyncAbilityPacket.class, new CSyncAbilityPacket());
-        registerPacket(CSyncAerosmithPacket.class, new CSyncAerosmithPacket());
+        registerPacket(CStandSummonPacket.class, new CStandSummonPacket());
+        registerPacket(CStandAttackPacket.class, new CStandAttackPacket());
+        registerPacket(CToggleAbilityPacket.class, new CToggleAbilityPacket());
+        registerPacket(CAerosmithControlPacket.class, new CAerosmithControlPacket());
         registerPacket(CSyncStandAbilitiesPacket.class, new CSyncStandAbilitiesPacket());
         registerPacket(SSyncStandCapabilityPacket.class, new SSyncStandCapabilityPacket());
         registerPacket(SSyncTimestopCapabilityPacket.class, new SSyncTimestopCapabilityPacket());

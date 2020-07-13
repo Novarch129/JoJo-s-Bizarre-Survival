@@ -7,9 +7,8 @@ import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
-import io.github.novarch129.jojomod.event.custom.AbilityEvent;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
-import io.github.novarch129.jojomod.event.custom.StandPunchEvent;
+import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -110,8 +109,7 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event) {
-        if (event.getPotionEffect().getPotion() == null)
-            return;
+        if (event.getPotionEffect().getPotion() == null) return;
         if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
             event.getEntityLiving().setGlowing(false);
         if (event.getPotionEffect().getPotion() == Effects.GLOWING)
@@ -212,6 +210,10 @@ public class EventHandleStandAbilities {
                     standName = "Magician's Red";
                     break;
                 }
+                case Util.StandID.THE_HAND: {
+                    standName = "The Hand";
+                    break;
+                }
             }
         if (event.getItemStack().getItem() instanceof StandDiscItem)
             if (!standName.equals(""))
@@ -304,26 +306,13 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void abilityOff(AbilityEvent.AbilityDeactivated event) {
-        PlayerEntity player = event.getPlayer();
-        assert player != null;
-        Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.AEROSMITH)
-                if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
-                    Minecraft.getInstance().setRenderViewEntity(player);
-                    Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                }
-        });
-    }
-
-    @SubscribeEvent
-    public static void standPunchEntityEvent(StandPunchEvent.EntityHit event) {
+    public static void standPunchEntityEvent(StandAttackEvent.EntityHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchDamage.get())
             event.setCanceled(true);
     }
 
     @SubscribeEvent
-    public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
+    public static void standPunchBlockEvent(StandAttackEvent.BlockHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
     }

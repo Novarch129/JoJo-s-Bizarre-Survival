@@ -5,7 +5,7 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stands.attacks.AerosmithBulletEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import io.github.novarch129.jojomod.network.message.client.CSyncAerosmithPacket;
+import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -77,7 +77,7 @@ public class AerosmithEntity extends AbstractStandEntity {
             Stand.getLazyOptional(player).ifPresent(props -> {
                 if (ability != props.getAbility()) {
                     if (!ability)
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(CAerosmithControlPacket.Action.RENDER));
                     ability = props.getAbility();
                 }
                 if (ability)
@@ -124,7 +124,7 @@ public class AerosmithEntity extends AbstractStandEntity {
         if (getMaster() != null)
             Stand.getLazyOptional(getMaster()).ifPresent(props -> {
                 if (props.getAbility())
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncAerosmithPacket(CSyncAerosmithPacket.Action.RENDER));
+                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(CAerosmithControlPacket.Action.RENDER));
             });
     }
 }

@@ -51,7 +51,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     * @return Returns a the Stand's {@link AbstractStandEntity#spawnSound}.
+     * @return Returns the Stand's {@link AbstractStandEntity#spawnSound}.
      */
     public SoundEvent getSpawnSound() {
         return spawnSound;

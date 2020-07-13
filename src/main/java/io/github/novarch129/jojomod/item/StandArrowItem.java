@@ -3,12 +3,11 @@ package io.github.novarch129.jojomod.item;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.FakePlayerEntity;
+import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stands.GoldExperienceEntity;
 import io.github.novarch129.jojomod.entity.stands.GoldExperienceRequiemEntity;
-import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -25,12 +24,9 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Objects;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class StandArrowItem extends ArrowItem {
     final int standID;
     final String tooltip;

@@ -6,6 +6,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 
+/**
+ * For some reason, this doesn't work in the main mod class, {@link JojoBizarreSurvival}.
+ */
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID)
 public class EventRegisterCommands {
     @SubscribeEvent

@@ -23,7 +23,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import static io.github.novarch129.jojomod.util.Util.StandID.THE_WORLD;
 
 /**
- * Syncs the {@link Stand} capability to the client, for things like GUIs.
+ * Syncs the {@link Stand} capability to the client, for use in GUIs, {@link Timestop} is not synced because it's info is disposable and useless to the client.
  */
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -61,7 +61,7 @@ public class EventSyncCapability {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> {
-            props.putAct(0);
+            props.putAct(0); //Prevents some stupidly obvious issues with the wrong Stand being summoned, IStand#putAct used because line 123 syncs to the client anyway.
             if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)

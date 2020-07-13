@@ -20,13 +20,14 @@ import javax.annotation.Nullable;
  */
 @SuppressWarnings("unused")
 @Cancelable
-public class StandPunchEvent extends Event {
+public class StandAttackEvent extends Event {
     private final AbstractStandAttackEntity punch;
     private final RayTraceResult rayTraceResult;
-    @Nullable private final Entity target;
+    @Nullable
+    private final Entity target;
     private final RayTraceResult.Type type;
 
-    public StandPunchEvent(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable Entity target, RayTraceResult.Type type) {
+    public StandAttackEvent(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable Entity target, RayTraceResult.Type type) {
         this.punch = punch;
         this.rayTraceResult = rayTraceResult;
         this.target = target;
@@ -58,7 +59,7 @@ public class StandPunchEvent extends Event {
      * This Event does not have a result.
      */
     @Cancelable
-    public static class EntityHit extends StandPunchEvent {
+    public static class EntityHit extends StandAttackEvent {
         public EntityHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nonnull Entity target) {
             super(punch, rayTraceResult, target, RayTraceResult.Type.ENTITY);
         }
@@ -72,7 +73,7 @@ public class StandPunchEvent extends Event {
      * This Event does not have a result.
      */
     @Cancelable
-    public static class BlockHit extends StandPunchEvent {
+    public static class BlockHit extends StandAttackEvent {
         public BlockHit(AbstractStandAttackEntity punch, RayTraceResult rayTraceResult, @Nullable Entity target) {
             super(punch, rayTraceResult, target, RayTraceResult.Type.BLOCK);
         }

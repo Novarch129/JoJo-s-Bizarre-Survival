@@ -24,18 +24,18 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public class CSyncStandSummonPacket implements IMessage<CSyncStandSummonPacket> {
+public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
     @Override
-    public void encode(CSyncStandSummonPacket msg, PacketBuffer buffer) {
+    public void encode(CStandSummonPacket msg, PacketBuffer buffer) {
     }
 
     @Override
-    public CSyncStandSummonPacket decode(PacketBuffer buffer) {
-        return new CSyncStandSummonPacket();
+    public CStandSummonPacket decode(PacketBuffer buffer) {
+        return new CStandSummonPacket();
     }
 
     @Override
-    public void handle(CSyncStandSummonPacket msg, Supplier<NetworkEvent.Context> supplier) {
+    public void handle(CStandSummonPacket msg, Supplier<NetworkEvent.Context> supplier) {
         final NetworkEvent.Context ctx = supplier.get();
         if (ctx.getDirection().getReceptionSide().isServer()) {
             ctx.enqueueWork(() ->

@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.entity.stands.attacks;
 
 import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
-import io.github.novarch129.jojomod.event.custom.StandPunchEvent;
+import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
@@ -226,7 +226,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     private void onHit(RayTraceResult result) {
         if (result.getType() != RayTraceResult.Type.MISS)
-            if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent(
+            if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent(
                     this,
                     result,
                     result.getType() == RayTraceResult.Type.ENTITY ? ((EntityRayTraceResult) result).getEntity() : null,
@@ -250,7 +250,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                         if (!world.isRemote) {
                             world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1.0d, 0.0d, 0.0d);
                             if (!world.isRemote) {
-                                if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.EntityHit(this, result, entity)))
+                                if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.EntityHit(this, result, entity)))
                                     return;
                                 onEntityHit((EntityRayTraceResult) result);
                             }
@@ -273,7 +273,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             inGround = true;
             arrowShake = 7;
             if (!world.isRemote) {
-                if (MinecraftForge.EVENT_BUS.post(new StandPunchEvent.BlockHit(this, result, null))) return;
+                if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.BlockHit(this, result, null))) return;
                 onBlockHit((BlockRayTraceResult) result);
                 if (state.getMaterial() != Material.AIR) {
                     state.getBlock().onProjectileCollision(world, state, (BlockRayTraceResult) result, this);

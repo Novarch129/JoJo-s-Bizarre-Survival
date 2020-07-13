@@ -18,35 +18,34 @@ public class SSyncTimestopCapabilityPacket implements IMessage<SSyncTimestopCapa
     public SSyncTimestopCapabilityPacket() {
     }
 
+    private SSyncTimestopCapabilityPacket(CompoundNBT compoundNBT) {
+        data = compoundNBT;
+    }
+
     public SSyncTimestopCapabilityPacket(ITimestop props) {
-        data = new CompoundNBT();
         data = Timestop.TIMESTOP.getStorage().writeNBT(Timestop.TIMESTOP, props, null);
     }
 
     @Override
     public SSyncTimestopCapabilityPacket decode(PacketBuffer buffer) {
-        SSyncTimestopCapabilityPacket msg = new SSyncTimestopCapabilityPacket();
-        msg.data = buffer.readCompoundTag();
-        return msg;
+        return new SSyncTimestopCapabilityPacket(buffer.readCompoundTag());
     }
 
     @Override
-    public void handle(SSyncTimestopCapabilityPacket message, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncTimestopCapabilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-            ctx.get().enqueueWork(() ->
-            {
-                assert Minecraft.getInstance().world != null;
-                Minecraft.getInstance().world.getAllEntities().forEach(entity -> {
-                    ITimestop props = Timestop.getCapabilityFromEntity(entity);
-                    Timestop.TIMESTOP.getStorage().readNBT(Timestop.TIMESTOP, props, null, message.data);
-                });
+            ctx.get().enqueueWork(() -> {
+                if (Minecraft.getInstance().world == null) return;
+                Minecraft.getInstance().world.getAllEntities().forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props ->
+                        Timestop.TIMESTOP.getStorage().readNBT(Timestop.TIMESTOP, props, null, msg.data)
+                ));
             });
         }
         ctx.get().setPacketHandled(true);
     }
 
     @Override
-    public void encode(SSyncTimestopCapabilityPacket message, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) message.data);
+    public void encode(SSyncTimestopCapabilityPacket msg, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) msg.data);
     }
 }
