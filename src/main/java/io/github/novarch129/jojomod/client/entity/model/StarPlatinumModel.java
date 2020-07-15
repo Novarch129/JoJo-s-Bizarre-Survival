@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.model;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
+import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;

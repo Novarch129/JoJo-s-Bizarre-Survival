@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.SilverChariotModel;
-import io.github.novarch129.jojomod.entity.stands.SilverChariotEntity;
+import io.github.novarch129.jojomod.entity.stand.SilverChariotEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

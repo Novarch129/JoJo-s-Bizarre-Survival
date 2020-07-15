@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.util;
 
-import io.github.novarch129.jojomod.entity.stands.*;
-import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.entity.stand.*;
+import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
 import net.minecraft.block.material.Material;

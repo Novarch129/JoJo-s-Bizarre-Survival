@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.event.custom;
 
-import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.RayTraceResult;

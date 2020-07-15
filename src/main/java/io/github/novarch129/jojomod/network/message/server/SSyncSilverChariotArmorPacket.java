@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.network.message.server;
 
-import io.github.novarch129.jojomod.entity.stands.SilverChariotEntity;
+import io.github.novarch129.jojomod.entity.stand.SilverChariotEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

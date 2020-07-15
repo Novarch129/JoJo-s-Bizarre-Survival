@@ -3,7 +3,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.client.entity.model.GoldExperienceRequiemModel;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entity.stands.GoldExperienceRequiemEntity;
+import io.github.novarch129.jojomod.entity.stand.GoldExperienceRequiemEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;

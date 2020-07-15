@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.PurpleHazeModel;
-import io.github.novarch129.jojomod.entity.stands.PurpleHazeEntity;
+import io.github.novarch129.jojomod.entity.stand.PurpleHazeEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

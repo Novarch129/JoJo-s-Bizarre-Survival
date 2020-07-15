@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;

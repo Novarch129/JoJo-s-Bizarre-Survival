@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.init;
 
-import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
-import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
+import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
+import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.event.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 
@@ -18,6 +18,5 @@ public class EventInit {
         bus.register(TheWorldEntity.class);
         bus.register(StarPlatinumEntity.class);
         bus.register(EventClientTick.class);
-        bus.register(EventRegisterCommands.class);
     }
 }

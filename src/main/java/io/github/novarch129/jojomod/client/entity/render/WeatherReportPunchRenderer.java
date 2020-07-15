@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.client.entity.model.WeatherReportPunchModel;
-import io.github.novarch129.jojomod.entity.stands.attacks.WeatherReportPunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.WeatherReportPunchEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

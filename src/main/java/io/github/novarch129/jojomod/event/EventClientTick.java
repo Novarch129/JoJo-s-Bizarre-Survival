@@ -4,7 +4,7 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
-import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
+import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
 import io.github.novarch129.jojomod.util.Util;

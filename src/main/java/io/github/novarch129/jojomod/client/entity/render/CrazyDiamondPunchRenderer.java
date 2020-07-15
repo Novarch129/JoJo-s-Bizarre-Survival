@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.novarch129.jojomod.entity.stands.attacks.CrazyDiamondPunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.CrazyDiamondPunchEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.CrazyDiamondPunchModel;
 import mcp.MethodsReturnNonnullByDefault;

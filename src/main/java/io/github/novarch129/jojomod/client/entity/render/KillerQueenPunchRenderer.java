@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.client.entity.model.KillerQueenPunchModel;
-import io.github.novarch129.jojomod.entity.stands.attacks.KillerQueenPunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

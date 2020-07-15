@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.entity.stands.AerosmithEntity;
+import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;

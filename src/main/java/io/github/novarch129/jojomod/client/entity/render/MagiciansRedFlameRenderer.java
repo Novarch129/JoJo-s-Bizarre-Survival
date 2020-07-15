@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.novarch129.jojomod.entity.stands.attacks.MagiciansRedFlameEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.MagiciansRedFlameEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.MagiciansRedFlameModel;
 import mcp.MethodsReturnNonnullByDefault;

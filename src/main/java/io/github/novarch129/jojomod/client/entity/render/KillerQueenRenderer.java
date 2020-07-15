@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.KillerQueenModel;
-import io.github.novarch129.jojomod.entity.stands.KillerQueenEntity;
+import io.github.novarch129.jojomod.entity.stand.KillerQueenEntity;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

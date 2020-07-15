@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entity.stands.attacks.PurpleHazePunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.PurpleHazePunchEntity;
 import io.github.novarch129.jojomod.client.entity.model.PurpleHazePunchModel;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
