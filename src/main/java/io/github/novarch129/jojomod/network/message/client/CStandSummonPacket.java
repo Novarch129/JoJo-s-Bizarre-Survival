@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
-import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.network.message.IMessage;
@@ -17,7 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -77,10 +75,8 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                                     JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
                                                 sender.world.addEntity(stand);
                                                 stand.playSpawnSound();
-                                            } else {
-                                                FMLJavaModLoadingContext.get().getModEventBus().post(new StandEvent.StandRemovedEvent(sender, stand));
+                                            } else
                                                 stand.remove();
-                                            }
                                         } else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
                                             ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
 

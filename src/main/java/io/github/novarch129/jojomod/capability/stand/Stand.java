@@ -1,7 +1,8 @@
 package io.github.novarch129.jojomod.capability.stand;
 
-import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,17 +29,21 @@ import static io.github.novarch129.jojomod.util.Util.StandID.MADE_IN_HEAVEN;
 @ParametersAreNonnullByDefault
 public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @CapabilityInject(IStand.class)
-    public static final Capability<IStand> STAND = Null();
+    public static final Capability<IStand> STAND = Null(); //Null method suppresses warnings
     private final PlayerEntity player;
-    private int standID = 0;
-    private int standAct = 0;
-    private boolean standOn = false;
-    private double cooldown = 0;
+    private int standID;
+    /**
+     * The {@link Entity#getEntityId()} of the player's Stand, can be used in conjunction with a {@link net.minecraft.world.World} to get the entity.
+     */
+    private int standEntityID;
+    private int standAct;
+    private boolean standOn;
+    private double cooldown;
     private double timeLeft = 1000;
     private String diavolo = "";
     private boolean ability = true;
     private int transformed = 0;
-    private boolean noClip = false;
+    private boolean noClip;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -68,21 +73,23 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putInt("Transformed", instance.getTransformed());
                 props.putString("Diavolo", instance.getDiavolo());
                 props.putBoolean("NoClip", instance.getNoClip());
+                props.putInt("StandEntityID", instance.getPlayerStand());
                 return props;
             }
 
             @Override
             public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt) {
-                CompoundNBT propertyData = (CompoundNBT) nbt;
-                instance.putStandID(propertyData.getInt("StandID"));
-                instance.putAct(propertyData.getInt("StandAct"));
-                instance.putStandOn(propertyData.getBoolean("StandOn"));
-                instance.putCooldown(propertyData.getDouble("Cooldown"));
-                instance.putTimeLeft(propertyData.getDouble("TimeLeft"));
-                instance.putAbility(propertyData.getBoolean("Ability"));
-                instance.putTransformed(propertyData.getInt("Transformed"));
-                instance.putDiavolo(propertyData.getString("Diavolo"));
-                instance.putNoClip(propertyData.getBoolean("NoClip"));
+                CompoundNBT compoundNBT = (CompoundNBT) nbt;
+                instance.putStandID(compoundNBT.getInt("StandID"));
+                instance.putAct(compoundNBT.getInt("StandAct"));
+                instance.putStandOn(compoundNBT.getBoolean("StandOn"));
+                instance.putCooldown(compoundNBT.getDouble("Cooldown"));
+                instance.putTimeLeft(compoundNBT.getDouble("TimeLeft"));
+                instance.putAbility(compoundNBT.getBoolean("Ability"));
+                instance.putTransformed(compoundNBT.getInt("Transformed"));
+                instance.putDiavolo(compoundNBT.getString("Diavolo"));
+                instance.putNoClip(compoundNBT.getBoolean("NoClip"));
+                instance.putPlayerStand(compoundNBT.getInt("StandEntityID"));
             }
         }, () -> new Stand(Null()));
     }
@@ -101,6 +108,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     public void setStandID(int value) {
         this.standID = value;
         onDataUpdated();
+    }
+
+    @Override
+    public int getPlayerStand() {
+        return standEntityID;
+    }
+
+    @Override
+    public void setPlayerStand(int standEntityID) {
+        this.standEntityID = standEntityID;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putPlayerStand(int standEntityID) {
+        this.standEntityID = standEntityID;
     }
 
     @Override
@@ -308,6 +331,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         setDiavolo("");
         setAbility(true);
         setNoClip(false);
+        setPlayerStand(0);
         onDataUpdated();
     }
 

@@ -100,7 +100,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * Plays the Stand's {@link AbstractStandEntity#spawnSound}.
      */
     public void playSpawnSound() {
-        world.playSound(null, getMaster().getPosition(), spawnSound, SoundCategory.NEUTRAL, 1, 1);
+        world.playSound(null, master.getPosition(), spawnSound, SoundCategory.NEUTRAL, 1, 1);
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     private void dodgeAttacks() {
         if (!world.isRemote) {
             world.getServer().getWorld(dimension).getEntities().forEach(entity -> {
-                double distance = entity.getDistance(getMaster());
+                double distance = entity.getDistance(master);
 
                 if ((entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity || entity instanceof ProjectileItemEntity) && distance <= Math.PI * 8) {
                     double distanceX = getPosX() - entity.getPosX();
@@ -184,21 +184,21 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     public void tick() {
         super.tick(); //Queues the tick method to run, code in tick() method won't run if removed.
         if (!world.isRemote) {
-            if (getMaster() == null) { //Don't listen to your IDE, this can be null after a relog.
+            if (master == null) { //Don't listen to your IDE, this can be null after a relog.
                 dataManager.get(MASTER_UNIQUE_ID).ifPresent(uuid -> setMaster(world.getPlayerByUuid(uuid)));
                 return; //Code will continue executing and may crash if this is removed.
             }
-            if (!getMaster().isAlive()) {
-                MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(getMaster(), this));
+            if (!master.isAlive()) {
+                MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(master, this));
                 remove();
             }
-            if (getMaster().isSpectator()) remove();
-            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(getMaster(), this)); //Fired after all death checks are passed to avoid confusion.
+            if (master.isSpectator()) remove();
+            MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(master, this)); //Fired after all death checks are passed to avoid confusion.
 
-            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 standOn = props.getStandOn(); //If set to false, Stand will die next tick.
                 if (!props.getStandOn()) {
-                    MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(getMaster(), this));
+                    MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(master, this));
                     remove();
                 }
             });
@@ -238,10 +238,12 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(getMaster(), this)))
+        if (MinecraftForge.EVENT_BUS.post(new StandEvent.StandSummonedEvent(master, this)))
             remove(); //Removes the Stand if the Stand summon event is cancelled.
-        if (!world.isRemote && getMaster() != null)
-            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), getMaster().getEntityId()));
+        if (!world.isRemote && master != null) {
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), master.getEntityId()));
+            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(getEntityId())); //Sets the Stand's Entity#getEntityID to the player's capability.
+        }
     }
 
     /**
@@ -250,7 +252,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
-        MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(getMaster(), this));
+        MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(master, this));
+        if (master != null)
+            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(0)); //Resets the IStand#getPlayerStand for easier null checks.
     }
 
     /**
@@ -296,8 +300,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        if (getMaster() != null)
-            buffer.writeInt(getMaster().getEntityId());
+        if (master != null)
+            buffer.writeInt(master.getEntityId());
     }
 
     /**
@@ -346,11 +350,11 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
             s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), s1);
         }
         if (!s.isEmpty())
-            setMasterUUID(UUID.fromString(s));
+            setMasterUUID(UUID.fromString(s)); //Got most of this code from AbstractHorseEntity, though I improved it a bit.
     }
 
     /**
-     * Very important for custom entities, if not implemented the game will crash with a {@link NullPointerException}.
+     * Very important for custom entities, if not implemented the game can crash with a {@link NullPointerException} and/or the entity won't render.
      */
     @Override
     public IPacket<?> createSpawnPacket() {

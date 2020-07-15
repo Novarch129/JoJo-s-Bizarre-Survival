@@ -9,6 +9,12 @@ public interface IStand {
 
     void setStandID(int standID);
 
+    int getPlayerStand();
+
+    void setPlayerStand(int standEntityID);
+
+    void putPlayerStand(int standEntityID);
+
     int getAct();
 
     void setAct(int act);

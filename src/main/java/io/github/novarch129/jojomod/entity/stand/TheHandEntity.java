@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -63,6 +64,7 @@ public class TheHandEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
+            setCustomName(new StringTextComponent("1234567"));
 
             followMaster();
             setRotationYawHead(player.getRotationYawHead());
