@@ -10,10 +10,8 @@ import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -21,7 +19,7 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class Util {
-    public static int getHighestBlock(World world, BlockPos pos) {
+    public static int getHighestBlockInXZ(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--)
             if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
                 return height;
@@ -41,10 +39,6 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0);
-    }
-
-    public static void sendStringMessage(PlayerEntity player, String message) {
-        player.sendMessage(new StringTextComponent(message));
     }
 
     /**

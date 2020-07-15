@@ -51,6 +51,7 @@ public class StandCommand {
         IStand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != standID) {
             props.setStandID(standID);
+            props.setStandOn(false);
             source.sendFeedback(new StringTextComponent("Successfully set StandID for " + target.getDisplayName().getFormattedText() + "."), true);
         } else
             source.sendErrorMessage(new StringTextComponent(target.getDisplayName().getFormattedText() + " already has that Stand."));

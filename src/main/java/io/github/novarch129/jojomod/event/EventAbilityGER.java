@@ -26,7 +26,7 @@ public class EventAbilityGER {
                     if (event.getSource().getTrueSource() instanceof PlayerEntity)
                         props.setDiavolo(event.getSource().getTrueSource().getDisplayName().toString());
                     else if (event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension != DimensionType.THE_END)
-                        player.setPositionAndUpdate(player.getPosX(), Util.getHighestBlock(player.world, player.getPosition()) + 1, player.getPosZ());
+                        player.setPositionAndUpdate(player.getPosX(), Util.getHighestBlockInXZ(player.world, player.getPosition()) + 1, player.getPosZ());
                     else if (event.getSource() == DamageSource.OUT_OF_WORLD && player.dimension == DimensionType.THE_END) {
                         BlockPos pos = Util.getNearestBlockEnd(player.world, player.getPosition());
                         player.setPositionAndUpdate(pos.getX(), pos.getY() + 1, pos.getZ());

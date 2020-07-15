@@ -44,6 +44,7 @@ public class D4CEntity extends AbstractStandEntity {
     }
 
     private void transportEntity(Entity entity) {
+        if (entity.world.isRemote) return;
         if (entity.world.getDimension().getType() == DimensionType.OVERWORLD)
             changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE), entity);
         else if (entity.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
@@ -59,6 +60,7 @@ public class D4CEntity extends AbstractStandEntity {
     }
 
     private void changePlayerDimension(PlayerEntity player) {
+        if (player.world.isRemote) return;
         if (player.world.getDimension().getType() == DimensionType.OVERWORLD)
             EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE));
         else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE))
@@ -103,20 +105,20 @@ public class D4CEntity extends AbstractStandEntity {
                     if (player.isCrouching() || player.isAirBorne) {
                         if (ability && props.getCooldown() <= 0) {
                             changePlayerDimension(player);
+                            if (!world.isRemote) {
+                                world.getServer().getWorld(dimension).getEntities()
+                                        .filter(entity -> entity instanceof LivingEntity)
+                                        .filter(entity -> !(entity instanceof PlayerEntity))
+                                        .filter(entity -> !(entity instanceof AbstractStandEntity))
+                                        .filter(entity -> entity.getDistance(player) < 3.0f || entity.getDistance(this) < 3.0f)
+                                        .forEach(this::transportEntity);
 
-                            world.getServer().getWorld(dimension).getEntities()
-                                    .filter(entity -> entity instanceof LivingEntity)
-                                    .filter(entity -> !(entity instanceof PlayerEntity))
-                                    .filter(entity -> !(entity instanceof AbstractStandEntity))
-                                    .filter(entity -> entity.getDistance(player) < 3.0f || entity.getDistance(this) < 3.0f)
-                                    .forEach(this::transportEntity);
-
-                            world.getPlayers()
-                                    .stream()
-                                    .filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
-                                    .filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
-                                    .forEach(this::changePlayerDimension);
-
+                                world.getPlayers()
+                                        .stream()
+                                        .filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
+                                        .filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
+                                        .forEach(this::changePlayerDimension);
+                            }
                             player.getFoodStats().addStats(-3, 0.0f);
                             props.setStandOn(false);
                             props.setCooldown(200);

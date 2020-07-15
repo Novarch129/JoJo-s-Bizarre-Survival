@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.event;
 
+import com.google.common.collect.Maps;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
@@ -39,12 +40,13 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
-    public static List<PlayerEntity> teleportQueue = new ArrayList<>();
+    public static Map<PlayerEntity, TeleportType> teleportQueue = Maps.newHashMap();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -116,6 +118,8 @@ public class EventHandleStandAbilities {
             event.getEntityLiving().setGlowing(false);
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    //Used so the switch statement on line 130 doesn't give a warning, please don't kill me diesieben07.
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
@@ -124,15 +128,22 @@ public class EventHandleStandAbilities {
                 removalQueue.clear();
             }
             if (teleportQueue.size() > 0) {
-                teleportQueue.forEach(playerEntity -> {
-                    int distance = 5;
-                    float f1 = MathHelper.cos(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
-                    float f2 = MathHelper.sin(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI);
-                    float f3 = -MathHelper.cos(-playerEntity.rotationPitch * 0.017453292f);
-                    float f4 = MathHelper.sin(-playerEntity.rotationPitch * 0.017453292f);
-                    playerEntity.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
+                teleportQueue.forEach((playerEntity, teleportType) -> {
+                    switch (teleportType) {
+                        case THE_HAND: {
+                            int distance = 5;
+                            float f1 = MathHelper.cos(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
+                            float f2 = MathHelper.sin(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI);
+                            float f3 = -MathHelper.cos(-playerEntity.rotationPitch * 0.017453292f);
+                            float f4 = MathHelper.sin(-playerEntity.rotationPitch * 0.017453292f);
+                            playerEntity.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
+                            break;
+                        }
+                        default:
+                            break;
+                    }
                 });
-                teleportQueue.clear();
+                teleportQueue = Maps.newHashMap();
             }
         }
     }
@@ -316,4 +327,6 @@ public class EventHandleStandAbilities {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
     }
+
+    public enum TeleportType {THE_HAND} //Will add new types later
 }

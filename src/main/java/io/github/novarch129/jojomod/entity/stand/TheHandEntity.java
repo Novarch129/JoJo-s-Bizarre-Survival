@@ -41,7 +41,7 @@ public class TheHandEntity extends AbstractStandEntity {
         if (world.isRemote) return;
         PlayerEntity master = getMaster();
         if (master != null)
-            EventHandleStandAbilities.teleportQueue.add(master); //Deferred the teleport logic to ServerTickEvent
+            EventHandleStandAbilities.teleportQueue.put(master, EventHandleStandAbilities.TeleportType.THE_HAND); //Deferred the teleport logic to ServerTickEvent
     }
 
     @Override

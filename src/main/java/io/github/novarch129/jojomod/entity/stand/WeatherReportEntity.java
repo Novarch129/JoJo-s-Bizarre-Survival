@@ -6,14 +6,13 @@ import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -98,7 +97,7 @@ public class WeatherReportEntity extends AbstractStandEntity {
                     world.getServer().getWorld(dimension).getEntities().filter(entity -> entity != player)
                             .filter(entity -> entity instanceof LivingEntity)
                             .filter(entity -> !(entity instanceof AbstractStandEntity))
-                            .filter(entity -> entity.world.getBlockState(new BlockPos(entity.getPosX(), entity.getPosY() + 1, entity.getPosZ())).getMaterial() != Material.WATER)
+                            .filter(entity -> !entity.areEyesInFluid(FluidTags.WATER))
                             .forEach(entity -> {
                                 if (entity.getDistance(player) <= 10) {
                                     ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
