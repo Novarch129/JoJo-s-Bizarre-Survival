@@ -16,7 +16,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -95,13 +94,14 @@ public class D4CEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
-                if (props.getCooldown() > 0)
+                ability = props.getAbility();
+                if (props.getCooldown() > 0 && ability)
                     props.subtractCooldown(1);
                 player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 
-                if ((player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() - 1)).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX(), player.getPosition().getY(), player.getPosition().getZ() + 1)).getMaterial() != Material.AIR) || (player.world.getBlockState(new BlockPos(player.getPosition().getX() - 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR && player.world.getBlockState(new BlockPos(player.getPosition().getX() + 1, player.getPosition().getY(), player.getPosition().getZ())).getMaterial() != Material.AIR)) {
+                if ((player.world.getBlockState(player.getPosition().add(0, 0, -1)).getMaterial() != Material.AIR && player.world.getBlockState(player.getPosition().add(0, 0, 1)).getMaterial() != Material.AIR) || (player.world.getBlockState(player.getPosition().add(-1, 0, 0)).getMaterial() != Material.AIR && player.world.getBlockState(player.getPosition().add(1, 0, 0)).getMaterial() != Material.AIR)) {
                     if (player.isCrouching() || player.isAirBorne) {
-                        if (props.getAbility() && props.getCooldown() <= 0) {
+                        if (ability && props.getCooldown() <= 0) {
                             changePlayerDimension(player);
 
                             world.getServer().getWorld(dimension).getEntities()

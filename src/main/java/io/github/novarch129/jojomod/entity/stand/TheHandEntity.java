@@ -23,7 +23,7 @@ public class TheHandEntity extends AbstractStandEntity {
         spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
-    public void dragEntityToStand(final int entityID) {
+    public void dragEntityToStand(final int entityID) { //Final because it should NEVER be changed, as it would completely break the method.
         Entity entity = world.getEntityByID(entityID);
         if (entity == null || getMaster() == null) return;
         float yaw = getMaster().rotationYaw;
