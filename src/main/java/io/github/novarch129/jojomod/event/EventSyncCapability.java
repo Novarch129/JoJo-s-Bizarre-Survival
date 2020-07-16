@@ -60,8 +60,7 @@ public class EventSyncCapability {
     public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
-        Stand.getLazyOptional(player).ifPresent(props -> {
-            props.putAct(0); //Prevents some stupidly obvious issues with the wrong Stand being summoned, IStand#putAct used because line 123 syncs to the client anyway.
+        Stand.getLazyOptional(player).ifPresent(props -> { //It's a lot of code to run on logout, but some horrible bugs occur without it.
             if (!player.world.isRemote) {
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof FakePlayerEntity)

@@ -35,9 +35,9 @@ public class EventHandleKeybinds {
             Stand.getLazyOptional(mc.player).ifPresent(props -> {
                 if (props.getStandOn()) {
                     if (KeyInit.ABILITY1.isPressed())
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(1));
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 1));
                     if (KeyInit.ABILITY2.isPressed())
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket(2));
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 2));
                 }
 
                 if (props.getStandID() == Util.StandID.AEROSMITH) {

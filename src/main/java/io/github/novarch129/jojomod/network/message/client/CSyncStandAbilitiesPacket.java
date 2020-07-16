@@ -24,23 +24,23 @@ import java.util.function.Supplier;
 import static io.github.novarch129.jojomod.util.Util.StandID.*;
 
 public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPacket> {
-    private int action;
+    private byte action;
 
     public CSyncStandAbilitiesPacket() {
     }
 
-    public CSyncStandAbilitiesPacket(int action) {
+    public CSyncStandAbilitiesPacket(byte action) {
         this.action = action;
     }
 
     @Override
     public void encode(CSyncStandAbilitiesPacket msg, PacketBuffer buffer) {
-        buffer.writeInt(msg.action);
+        buffer.writeByte(msg.action);
     }
 
     @Override
     public CSyncStandAbilitiesPacket decode(PacketBuffer buffer) {
-        return new CSyncStandAbilitiesPacket(buffer.readInt());
+        return new CSyncStandAbilitiesPacket(buffer.readByte());
     }
 
     @Override

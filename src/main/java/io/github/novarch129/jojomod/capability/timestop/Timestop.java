@@ -308,11 +308,11 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
 
     @Override
     public INBT serializeNBT() {
-        return TIMESTOP.getStorage().writeNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
+        return TIMESTOP.getStorage().writeNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty!")), null);
     }
 
     @Override
     public void deserializeNBT(INBT nbt) {
-        TIMESTOP.getStorage().readNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
+        TIMESTOP.getStorage().readNBT(TIMESTOP, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty!")), null, nbt);
     }
 }

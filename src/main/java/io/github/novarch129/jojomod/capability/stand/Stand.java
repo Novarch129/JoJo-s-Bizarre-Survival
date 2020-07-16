@@ -352,11 +352,11 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public INBT serializeNBT() {
-        return Stand.STAND.getStorage().writeNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null);
+        return Stand.STAND.getStorage().writeNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty!")), null);
     }
 
     @Override
     public void deserializeNBT(INBT nbt) {
-        Stand.STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty.")), null, nbt);
+        Stand.STAND.getStorage().readNBT(STAND, holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional is empty!")), null, nbt);
     }
 }
