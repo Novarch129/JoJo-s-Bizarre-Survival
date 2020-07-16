@@ -3,25 +3,24 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.PurpleHazePunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class PurpleHazeEntity extends AbstractStandEntity {
     public PurpleHazeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
     }
 
-    public PurpleHazeEntity(World world) {
-        super(EntityInit.PURPLE_HAZE.get(), world);
-        spawnSound = SoundInit.SPAWN_PURPLE_HAZE.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_PURPLE_HAZE.get();
     }
 
     public void burstCapsule() {

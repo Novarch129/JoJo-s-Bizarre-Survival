@@ -3,9 +3,7 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.WeatherReportPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -13,24 +11,20 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class WeatherReportEntity extends AbstractStandEntity {
     private int weatherTick;
 
     public WeatherReportEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
-        spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
     }
 
-    public WeatherReportEntity(World worldIn) {
-        super(EntityInit.WEATHER_REPORT.get(), worldIn);
-        spawnSound = SoundInit.SPAWN_WEATHER_REPORT.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_WEATHER_REPORT.get();
     }
 
     public void changeWeather() {

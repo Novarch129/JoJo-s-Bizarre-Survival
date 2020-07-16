@@ -1,16 +1,14 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.ITimestop;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
-import io.github.novarch129.jojomod.entity.stand.attack.StarPlatinumPunchEntity;
-import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.entity.stand.attack.StarPlatinumPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -22,6 +20,7 @@ import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -32,11 +31,7 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class StarPlatinumEntity extends AbstractStandEntity {
     public static StarPlatinumEntity starPlatinum;
@@ -46,12 +41,6 @@ public class StarPlatinumEntity extends AbstractStandEntity {
 
     public StarPlatinumEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
-    }
-
-    public StarPlatinumEntity(World world) {
-        super(EntityInit.STAR_PLATINUM.get(), world);
-        spawnSound = SoundInit.SPAWN_STAR_PLATINUM.get();
     }
 
     @SubscribeEvent
@@ -168,6 +157,11 @@ public class StarPlatinumEntity extends AbstractStandEntity {
             if (starPlatinum.ability && !starPlatinum.cooldown)
                 if (event.getEntity().getUniqueID() != starPlatinum.getMaster().getUniqueID())
                     event.setCanceled(true);
+    }
+
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_STAR_PLATINUM.get();
     }
 
     @Override

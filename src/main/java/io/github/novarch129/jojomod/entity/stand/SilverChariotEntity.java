@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.SilverChariotSwordEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
 import mcp.MethodsReturnNonnullByDefault;
@@ -13,6 +12,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -21,19 +21,16 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings({"ConstantConditions", "unused"})
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class SilverChariotEntity extends AbstractStandEntity {
     private boolean hasArmor;
 
     public SilverChariotEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_SILVER_CHARIOT.get();
     }
 
-    public SilverChariotEntity(World world) {
-        super(EntityInit.SILVER_CHARIOT.get(), world);
-        spawnSound = SoundInit.SPAWN_SILVER_CHARIOT.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_SILVER_CHARIOT.get();
     }
 
     public boolean hasArmor() {

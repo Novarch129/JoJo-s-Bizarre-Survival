@@ -2,12 +2,12 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.GoldExperiencePunchEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings({"ConstantConditions", "unused"})
@@ -17,12 +17,11 @@ public class GoldExperienceEntity extends AbstractStandEntity {
 
     public GoldExperienceEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
     }
 
-    public GoldExperienceEntity(World world) {
-        super(EntityInit.GOLD_EXPERIENCE.get(), world);
-        spawnSound = SoundInit.SPAWN_GOLD_EXPERIENCE.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_GOLD_EXPERIENCE.get();
     }
 
     //4 methods below are currently redundant, will be used in the future.

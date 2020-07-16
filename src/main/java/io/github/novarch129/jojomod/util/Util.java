@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.util;
 
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
 import net.minecraft.block.material.Material;
@@ -64,39 +65,39 @@ public class Util {
             default:
                 return Null();
             case StandID.KING_CRIMSON:
-                return new KingCrimsonEntity(world);
+                return new KingCrimsonEntity(EntityInit.KING_CRIMSON.get(), world);
             case StandID.D4C:
-                return new D4CEntity(world);
+                return new D4CEntity(EntityInit.D4C.get(), world);
             case StandID.GOLD_EXPERIENCE:
-                return new GoldExperienceEntity(world);
+                return new GoldExperienceEntity(EntityInit.GOLD_EXPERIENCE.get(), world);
             case StandID.MADE_IN_HEAVEN:
-                return new MadeInHeavenEntity(world);
+                return new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), world);
             case StandID.GER:
-                return new GoldExperienceRequiemEntity(world);
+                return new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
             case StandID.AEROSMITH:
-                return new AerosmithEntity(world);
+                return new AerosmithEntity(EntityInit.AEROSMITH.get(), world);
             case StandID.WEATHER_REPORT:
-                return new WeatherReportEntity(world);
+                return new WeatherReportEntity(EntityInit.WEATHER_REPORT.get(), world);
             case StandID.KILLER_QUEEN:
-                return new KillerQueenEntity(world);
+                return new KillerQueenEntity(EntityInit.KILLER_QUEEN.get(), world);
             case StandID.CRAZY_DIAMOND:
-                return new CrazyDiamondEntity(world);
+                return new CrazyDiamondEntity(EntityInit.CRAZY_DIAMOND.get(), world);
             case StandID.PURPLE_HAZE:
-                return new PurpleHazeEntity(world);
+                return new PurpleHazeEntity(EntityInit.PURPLE_HAZE.get(), world);
             case StandID.WHITESNAKE:
-                return new WhitesnakeEntity(world);
+                return new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
             case StandID.CMOON:
-                return new CMoonEntity(world);
+                return new CMoonEntity(EntityInit.CMOON.get(), world);
             case StandID.THE_WORLD:
-                return new TheWorldEntity(world);
+                return new TheWorldEntity(EntityInit.THE_WORLD.get(), world);
             case StandID.STAR_PLATINUM:
-                return new StarPlatinumEntity(world);
+                return new StarPlatinumEntity(EntityInit.STAR_PLATINUM.get(), world);
             case StandID.SILVER_CHARIOT:
-                return new SilverChariotEntity(world);
+                return new SilverChariotEntity(EntityInit.SILVER_CHARIOT.get(), world);
             case StandID.MAGICIANS_RED:
-                return new MagiciansRedEntity(world);
+                return new MagiciansRedEntity(EntityInit.MAGICIANS_RED.get(), world);
             case StandID.THE_HAND:
-                return new TheHandEntity(world);
+                return new TheHandEntity(EntityInit.THE_HAND.get(), world);
         }
     }
 

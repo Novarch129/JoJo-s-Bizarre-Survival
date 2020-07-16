@@ -1,29 +1,23 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class WhitesnakeEntity extends AbstractStandEntity {
     public WhitesnakeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
     }
 
-    public WhitesnakeEntity(World world) {
-        super(EntityInit.WHITESNAKE.get(), world);
-        spawnSound = SoundInit.SPAWN_WHITESNAKE.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_WHITESNAKE.get();
     }
 
     @Override

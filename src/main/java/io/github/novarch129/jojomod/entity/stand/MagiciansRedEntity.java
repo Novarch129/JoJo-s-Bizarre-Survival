@@ -3,25 +3,24 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.MagiciansRedFlameEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-@SuppressWarnings({"ConstantConditions", "unused"})
+@SuppressWarnings("ConstantConditions")
 public class MagiciansRedEntity extends AbstractStandEntity {
     public MagiciansRedEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
-    public MagiciansRedEntity(World world) {
-        super(EntityInit.MAGICIANS_RED.get(), world);
-        spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
     public void crossfireHurricane() {

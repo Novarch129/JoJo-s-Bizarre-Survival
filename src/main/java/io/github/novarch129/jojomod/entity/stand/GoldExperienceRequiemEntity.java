@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.GoldExperienceRequiemPunchEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
@@ -22,12 +22,11 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
 
     public GoldExperienceRequiemEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_GER.get();
     }
 
-    public GoldExperienceRequiemEntity(World world) {
-        super(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
-        spawnSound = SoundInit.SPAWN_GER.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_GER.get();
     }
 
     public void toggleFlight() {

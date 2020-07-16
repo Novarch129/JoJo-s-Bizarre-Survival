@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.D4CPunchEntity;
 import io.github.novarch129.jojomod.event.EventD4CTeleportProcessor;
 import io.github.novarch129.jojomod.init.DimensionInit;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.DimensionHopTeleporter;
 import io.github.novarch129.jojomod.util.Util;
@@ -16,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -24,12 +24,11 @@ import net.minecraft.world.server.ServerWorld;
 public class D4CEntity extends AbstractStandEntity {
     public D4CEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_D4C.get();
     }
 
-    public D4CEntity(World world) {
-        super(EntityInit.D4C.get(), world);
-        spawnSound = SoundInit.SPAWN_D4C.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_D4C.get();
     }
 
     /**

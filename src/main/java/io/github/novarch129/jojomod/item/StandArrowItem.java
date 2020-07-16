@@ -7,6 +7,7 @@ import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceRequiemEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
@@ -77,7 +78,7 @@ public class StandArrowItem extends ArrowItem {
                 }
                 props.setStandID(Util.StandID.GER);
                 props.setStandOn(true);
-                GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(world);
+                GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
                 goldExperienceRequiem.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                 goldExperienceRequiem.setMasterUUID(player.getUniqueID());
                 goldExperienceRequiem.setMaster(player);

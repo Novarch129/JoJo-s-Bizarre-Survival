@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -32,18 +31,14 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "ConstantConditions"})
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
     private static final DataParameter<Optional<UUID>> MASTER_UNIQUE_ID = EntityDataManager.createKey(AbstractStandEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     public boolean ability, attackRush;
     public int attackTick, attackTicker;
-    protected SoundEvent spawnSound;
     private PlayerEntity master;
 
     public AbstractStandEntity(EntityType<? extends MobEntity> type, World worldIn) {
@@ -51,11 +46,9 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     * @return Returns the Stand's {@link AbstractStandEntity#spawnSound}.
+     * @return Returns the Stand's spawn sound.
      */
-    public SoundEvent getSpawnSound() {
-        return spawnSound;
-    }
+    public abstract SoundEvent getSpawnSound();
 
     /**
      * Initiates the Stand's default attack, usually a punch ({@link AbstractStandAttackEntity}).
@@ -67,8 +60,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     /**
      * @return The Stand's current {@link AbstractStandEntity#master}, also makes sure it isn't <code>null</code>.
      */
-    public PlayerEntity getMaster() { //Don't listen to your IDE, this can be null after a relog.
-        return master == null ? setMaster(world.getPlayerByUuid(dataManager.get(MASTER_UNIQUE_ID).orElse(UUID.randomUUID()))) : master;
+    public PlayerEntity getMaster() { //Don't listen to your IDE, this can be null during a relog.
+        return master == null ? master = world.getPlayerByUuid(dataManager.get(MASTER_UNIQUE_ID).orElse(UUID.randomUUID())) : master;
     }
 
     /**
@@ -76,8 +69,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      *
      * @param master The {@link PlayerEntity} that will be set as the Stand's {@link AbstractStandEntity#master}.
      */
-    public PlayerEntity setMaster(@Nonnull PlayerEntity master) {
-        return this.master = master;
+    public void setMaster(@Nonnull PlayerEntity master) {
+        this.master = master;
     }
 
     /**
@@ -97,10 +90,10 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     * Plays the Stand's {@link AbstractStandEntity#spawnSound}.
+     * Plays the Stand's {@link AbstractStandEntity#getSpawnSound()}.
      */
     public void playSpawnSound() {
-        world.playSound(null, master.getPosition(), spawnSound, SoundCategory.NEUTRAL, 1, 1);
+        world.playSound(null, master.getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 1, 1);
     }
 
     /**

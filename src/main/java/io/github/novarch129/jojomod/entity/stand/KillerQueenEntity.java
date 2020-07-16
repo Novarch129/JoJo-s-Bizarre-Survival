@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
@@ -12,6 +11,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -20,17 +20,16 @@ import net.minecraft.world.World;
 @SuppressWarnings("ConstantConditions")
 public class KillerQueenEntity extends AbstractStandEntity {
     protected int shaCount;
-    SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
+    private SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
     private LivingEntity bombEntity;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
     }
 
-    public KillerQueenEntity(World world) {
-        super(EntityInit.KILLER_QUEEN.get(), world);
-        spawnSound = SoundInit.SPAWN_KILLER_QUEEN.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_KILLER_QUEEN.get();
     }
 
     public LivingEntity getBombEntity() {

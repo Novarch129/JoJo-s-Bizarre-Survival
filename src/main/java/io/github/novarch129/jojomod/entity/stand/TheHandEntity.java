@@ -2,12 +2,12 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.entity.stand.attack.TheHandPunchEntity;
 import io.github.novarch129.jojomod.event.EventHandleStandAbilities;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -16,12 +16,11 @@ import net.minecraft.world.World;
 public class TheHandEntity extends AbstractStandEntity {
     public TheHandEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
-    public TheHandEntity(World world) {
-        super(EntityInit.THE_HAND.get(), world);
-        spawnSound = SoundInit.SPAWN_MAGICIANS_RED.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_MAGICIANS_RED.get();
     }
 
     public void dragEntityToStand(final int entityID) { //Final because it should NEVER be changed, as it would completely break the method.

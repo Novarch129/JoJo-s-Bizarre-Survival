@@ -1,10 +1,10 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.entity.stand.attack.MadeInHeavenPunchEntity;
-import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
+import io.github.novarch129.jojomod.entity.stand.attack.MadeInHeavenPunchEntity;
 import io.github.novarch129.jojomod.event.EventD4CTeleportProcessor;
+import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -14,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
@@ -27,12 +28,11 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
 
     public MadeInHeavenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
     }
 
-    public MadeInHeavenEntity(World world) {
-        super(EntityInit.MADE_IN_HEAVEN.get(), world);
-        spawnSound = SoundInit.SPAWN_MADE_IN_HEAVEN.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_MADE_IN_HEAVEN.get();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                 props.setTimeLeft(heavenTick - 1200);
                 if (props.getAct() == 1) {
                     remove();
-                    CMoonEntity cMoon = new CMoonEntity(world);
+                    CMoonEntity cMoon = new CMoonEntity(EntityInit.CMOON.get(), world);
                     cMoon.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
                     cMoon.setMaster(getMaster());
                     world.addEntity(cMoon);

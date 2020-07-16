@@ -10,18 +10,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class CMoonEntity extends AbstractStandEntity {
     public CMoonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_CMOON.get();
     }
 
-    public CMoonEntity(World world) {
-        super(EntityInit.CMOON.get(), world);
-        spawnSound = SoundInit.SPAWN_CMOON.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_CMOON.get();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CMoonEntity extends AbstractStandEntity {
                 if ((props.getStandID() == Util.StandID.CMOON && props.getAct() == 1) || (props.getStandID() == Util.StandID.MADE_IN_HEAVEN && props.getAct() == 2)) {
                     player.setNoGravity(false);
                     remove();
-                    WhitesnakeEntity whitesnake = new WhitesnakeEntity(world);
+                    WhitesnakeEntity whitesnake = new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
                     whitesnake.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
                     whitesnake.setMaster(getMaster());
                     world.addEntity(whitesnake);

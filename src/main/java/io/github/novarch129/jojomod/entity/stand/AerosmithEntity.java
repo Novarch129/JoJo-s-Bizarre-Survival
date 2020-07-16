@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AerosmithBulletEntity;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
 import net.minecraft.entity.EntityType;
@@ -11,6 +10,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -19,12 +19,11 @@ public class AerosmithEntity extends AbstractStandEntity {
 
     public AerosmithEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
-        spawnSound = SoundInit.SPAWN_AEROSMITH.get();
     }
 
-    public AerosmithEntity(World worldIn) {
-        super(EntityInit.AEROSMITH.get(), worldIn);
-        spawnSound = SoundInit.SPAWN_AEROSMITH.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_AEROSMITH.get();
     }
 
     @Override

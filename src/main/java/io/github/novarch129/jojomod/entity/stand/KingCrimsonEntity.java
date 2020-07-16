@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.effect.CrimsonEffect;
 import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
 import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
-import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
@@ -16,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
@@ -26,12 +26,11 @@ import net.minecraft.world.World;
 public class KingCrimsonEntity extends AbstractStandEntity {
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
     }
 
-    public KingCrimsonEntity(World world) {
-        super(EntityInit.KING_CRIMSON.get(), world);
-        spawnSound = SoundInit.SPAWN_KING_CRIMSON.get();
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_KING_CRIMSON.get();
     }
 
     @Override

@@ -1,13 +1,12 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.timestop.ITimestop;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
-import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.timestop.ITimestop;
+import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
@@ -22,6 +21,7 @@ import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
@@ -43,16 +43,10 @@ public class TheWorldEntity extends AbstractStandEntity {
     public static long dayTime = -1, gameTime = -1;
     public static TheWorldEntity theWorld;
     public int timestopTick;
-    public boolean cooldown ;
+    public boolean cooldown;
 
     public TheWorldEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
-        spawnSound = SoundInit.SPAWN_THE_WORLD.get();
-    }
-
-    public TheWorldEntity(World world) {
-        super(EntityInit.THE_WORLD.get(), world);
-        spawnSound = SoundInit.SPAWN_THE_WORLD.get();
     }
 
     @SubscribeEvent
@@ -170,6 +164,11 @@ public class TheWorldEntity extends AbstractStandEntity {
             if (theWorld.ability && !theWorld.cooldown)
                 if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
                     event.setCanceled(true);
+    }
+
+    @Override
+    public SoundEvent getSpawnSound() {
+        return SoundInit.SPAWN_THE_WORLD.get();
     }
 
     @Override
