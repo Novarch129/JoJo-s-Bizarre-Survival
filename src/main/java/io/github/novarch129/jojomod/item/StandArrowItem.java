@@ -37,6 +37,7 @@ public class StandArrowItem extends ArrowItem {
         this.tooltip = tooltip;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override //TODO add an animation when obtaining GER
     public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof PlayerEntity)) return;
@@ -54,16 +55,18 @@ public class StandArrowItem extends ArrowItem {
                 props.setStandID(newStandID);
                 props.setStandOn(true);
                 final AbstractStandEntity stand = Util.getStandByID(newStandID, world);
-                stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                stand.setMasterUUID(player.getUniqueID());
-                stand.setMaster(player);
-                if (this.standID == Util.StandID.AEROSMITH) {
-                    FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
-                    fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-                    world.addEntity(fakePlayer);
+                if (stand != null) { //Can be null if Stand is The Emperor
+                    stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+                    stand.setMasterUUID(player.getUniqueID());
+                    stand.setMaster(player);
+                    if (this.standID == Util.StandID.AEROSMITH) {
+                        FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
+                        fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
+                        world.addEntity(fakePlayer);
+                    }
+                    world.addEntity(stand);
+                    stand.playSpawnSound();
                 }
-                world.addEntity(stand);
-                stand.playSpawnSound();
             } else if (props.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
                 props.removeStand();
                 if (!world.isRemote) {

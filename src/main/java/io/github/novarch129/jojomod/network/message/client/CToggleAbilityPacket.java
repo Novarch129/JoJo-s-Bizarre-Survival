@@ -16,7 +16,6 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
     @Override
     public void encode(CToggleAbilityPacket msg, PacketBuffer buffer) {
@@ -28,14 +27,11 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
     }
 
     @Override
-    public void handle(CToggleAbilityPacket msg, Supplier<NetworkEvent.Context> supplier) {
-        final NetworkEvent.Context ctx = supplier.get();
-        if (ctx.getDirection().getReceptionSide().isServer()) {
-            ctx.enqueueWork(() ->
-            {
-                ServerPlayerEntity sender = ctx.getSender();
-                if (sender == null)
-                    return;
+    public void handle(CToggleAbilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
+        if (ctx.get().getDirection().getReceptionSide().isServer()) {
+            ctx.get().enqueueWork(() -> {
+                ServerPlayerEntity sender = ctx.get().getSender();
+                if (sender == null) return;
                 Stand.getLazyOptional(sender).ifPresent(props -> {
                     FakePlayerEntity fakePlayer = new FakePlayerEntity(sender.world, sender);
                     fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
@@ -98,6 +94,6 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                 });
             });
         }
-        ctx.setPacketHandled(true);
+        ctx.get().setPacketHandled(true);
     }
 }

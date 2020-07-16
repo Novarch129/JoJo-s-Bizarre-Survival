@@ -41,7 +41,7 @@ import java.util.UUID;
 @ParametersAreNonnullByDefault
 public abstract class AbstractStandEntity extends MobEntity implements IEntityAdditionalSpawnData {
     private static final DataParameter<Optional<UUID>> MASTER_UNIQUE_ID = EntityDataManager.createKey(AbstractStandEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    public boolean ability, attackRush, standOn;
+    public boolean ability, attackRush;
     public int attackTick, attackTicker;
     protected SoundEvent spawnSound;
     private PlayerEntity master;
@@ -192,7 +192,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
             MinecraftForge.EVENT_BUS.post(new StandEvent.StandTickEvent(master, this)); //Fired after all death checks are passed to avoid confusion.
 
             Stand.getLazyOptional(master).ifPresent(props -> {
-                standOn = props.getStandOn(); //If set to false, Stand will die next tick.
                 if (!props.getStandOn()) {
                     MinecraftForge.EVENT_BUS.post(new StandEvent.StandUnsummonedEvent(master, this));
                     remove();
@@ -287,6 +286,13 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public boolean canBeCollidedWith() {
         return false;
+    }
+
+    /**
+     * Mutes the annoying fall sound.
+     */
+    @Override
+    protected void playFallSound() {
     }
 
     /**

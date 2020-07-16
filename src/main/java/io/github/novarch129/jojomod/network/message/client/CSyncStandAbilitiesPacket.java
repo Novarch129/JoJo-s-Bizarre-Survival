@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 
 import static io.github.novarch129.jojomod.util.Util.StandID.*;
 
-@SuppressWarnings("ConstantConditions")
 public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPacket> {
     private int action;
 
@@ -45,6 +44,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void handle(CSyncStandAbilitiesPacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {

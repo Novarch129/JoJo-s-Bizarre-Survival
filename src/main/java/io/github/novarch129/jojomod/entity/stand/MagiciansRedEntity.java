@@ -42,7 +42,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
      */
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        if (!standOn || damageSource.getTrueSource() == getMaster() || damageSource == DamageSource.CACTUS || damageSource == DamageSource.ON_FIRE || damageSource == DamageSource.IN_FIRE)
+        if (damageSource.getTrueSource() == getMaster() || damageSource == DamageSource.CACTUS || damageSource == DamageSource.ON_FIRE || damageSource == DamageSource.IN_FIRE)
             return false;
         getMaster().attackEntityFrom(damageSource, damage * 0.5f);
         return false;
