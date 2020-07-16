@@ -119,7 +119,7 @@ public class D4CEntity extends AbstractStandEntity {
                                         .filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
                                         .forEach(this::changePlayerDimension);
                             }
-                            player.getFoodStats().addStats(-3, 0.0f);
+                            if (!player.isCreative()) player.getFoodStats().addStats(-3, 0.0f);
                             props.setStandOn(false);
                             props.setCooldown(200);
                             remove();

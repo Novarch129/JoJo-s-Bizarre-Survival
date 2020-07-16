@@ -65,10 +65,10 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     public abstract void attack(boolean special);
 
     /**
-     * @return The Stand's current {@link AbstractStandEntity#master}.
+     * @return The Stand's current {@link AbstractStandEntity#master}, also makes sure it isn't <code>null</code>.
      */
-    public PlayerEntity getMaster() {
-        return master;
+    public PlayerEntity getMaster() { //Don't listen to your IDE, this can be null after a relog.
+        return master == null ? setMaster(world.getPlayerByUuid(dataManager.get(MASTER_UNIQUE_ID).orElse(UUID.randomUUID()))) : master;
     }
 
     /**
@@ -76,8 +76,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      *
      * @param master The {@link PlayerEntity} that will be set as the Stand's {@link AbstractStandEntity#master}.
      */
-    public void setMaster(@Nonnull PlayerEntity master) {
-        this.master = master;
+    public PlayerEntity setMaster(@Nonnull PlayerEntity master) {
+        return this.master = master;
     }
 
     /**
@@ -183,11 +183,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void tick() {
         super.tick(); //Queues the tick method to run, code in tick() method won't run if removed.
-        if (!world.isRemote) {
-            if (master == null) { //Don't listen to your IDE, this can be null after a relog.
-                dataManager.get(MASTER_UNIQUE_ID).ifPresent(uuid -> setMaster(world.getPlayerByUuid(uuid)));
-                return; //Code will continue executing and may crash if this is removed.
-            }
+        if (!world.isRemote && getMaster() != null) { //Calls getMaster to set the master to a Nonnull value.
             if (!master.isAlive()) {
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(master, this));
                 remove();
@@ -301,7 +297,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
         if (master != null)
-            buffer.writeInt(master.getEntityId());
+            buffer.writeInt(getMaster().getEntityId());
     }
 
     /**
