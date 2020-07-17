@@ -77,4 +77,39 @@ public class EventClientTick {
                 event.setCanceled(true);
         event.setDensity(5f);
     }
+
+//    @SubscribeEvent
+//    public static void onRenderWorldLast(RenderWorldLastEvent event) {
+//        World world = Minecraft.getInstance().world;
+//        ClientPlayerEntity player = Minecraft.getInstance().player;
+//        if (world == null) return;
+//        Stand.getLazyOptional(player).ifPresent(props -> {
+//            if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility()) {
+//                float partialTicks = event.getPartialTicks();
+//                double d0 = MathHelper.lerp(partialTicks, player.lastTickPosX, player.getPosX());
+//                double d1 = MathHelper.lerp(partialTicks, player.lastTickPosY, player.getPosY());
+//                double d2 = MathHelper.lerp(partialTicks, player.lastTickPosZ, player.getPosZ());
+//                double v0 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getX();
+//                double v1 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getY();
+//                double v2 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getZ();
+//                float f = MathHelper.lerp(partialTicks, player.prevRotationYaw, player.rotationYaw);
+//
+//                event.getMatrixStack().push();
+//                event.getMatrixStack().translate(d0 - v0, d1 - v1, d2 - v2);
+//                event.getMatrixStack().scale(1, 1, 1);
+//                Minecraft.getInstance().getRenderManager().renderEntityStatic(
+//                        player,
+//                        d0 - v0,
+//                        d1 - v1,
+//                        d2 - v2,
+//                        f,
+//                        event.getPartialTicks(),
+//                        event.getMatrixStack(),
+//                        Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(),
+//                        Minecraft.getInstance().getRenderManager().getPackedLight(player, event.getPartialTicks())
+//                );
+//                event.getMatrixStack().pop();
+//            }
+//        });
+//    }
 }

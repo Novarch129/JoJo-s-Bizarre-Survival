@@ -23,6 +23,7 @@ import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -61,7 +62,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * @return The Stand's current {@link AbstractStandEntity#master}, also makes sure it isn't <code>null</code>.
      */
     public PlayerEntity getMaster() { //Don't listen to your IDE, this can be null during a relog.
-        return master == null ? master = world.getPlayerByUuid(dataManager.get(MASTER_UNIQUE_ID).orElse(UUID.randomUUID())) : master;
+        return master == null ? master = world.getPlayerByUuid(getMasterUUID()) : master;
     }
 
     /**
@@ -105,38 +106,32 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         double maximum = 3;
 
         if (distance < minimum)
-            moveStand(distance);
+            moveStand();
         else if (distance > minimum)
             if (distance < maximum && distance > minimum + 0.3)
-                moveStand(distance);
+                moveStand();
             else if (distance > maximum && !world.isRemote)
                 setPosition(master.getPosX(), master.getPosY(), master.getPosZ());
     }
 
     /**
      * Used in followMaster() to shorten code, moves the Stand based on the,
-     *
-     * @param distance The Stand's distance from it's master.
      */
-    public void moveStand(double distance) {
-        double distanceX = getPosX() - master.getPosX();
-        double distanceY = getPosY() - master.getPosY();
-        double distanceZ = getPosZ() - master.getPosZ();
-        float speed = (float) (distance / 45); //The speed at which the Stand should move towards it's master
-
-        if (distance < 0.5)
-            speed = -0.1f;
-        if (distanceX > 0)
+    private void moveStand() {
+        double distanceFromMaster = master.getDistance(this);
+        Vec3d distance = getPositionVec().subtract(master.getPositionVec());
+        float speed = distanceFromMaster < 0.5 ? -0.1f : (float) distanceFromMaster / 45; //The speed at which the Stand should move towards it's master
+        if (distance.getX() > 0)
             moveForward -= speed;
-        if (distanceX < 0)
+        else if (distance.getX() < 0)
             moveForward += speed;
-        if (distanceY > 0)
+        if (distance.getY() > 0)
             moveVertical -= speed;
-        if (distanceY < 0)
+        else if (distance.getY() < 0)
             moveVertical += speed;
-        if (distanceZ > 0)
+        if (distance.getZ() > 0)
             moveStrafing -= speed;
-        if (distanceZ < 0)
+        else if (distance.getZ() < 0)
             moveStrafing += speed;
     }
 
@@ -144,30 +139,27 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      * Makes the Stand dodge oncoming attacks, such as TNT, arrows and falling blocks.
      */
     private void dodgeAttacks() {
-        if (!world.isRemote) {
-            world.getServer().getWorld(dimension).getEntities().forEach(entity -> {
-                double distance = entity.getDistance(master);
-
-                if ((entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity || entity instanceof ProjectileItemEntity) && distance <= Math.PI * 8) {
+        if (world.isRemote) return;
+        world.getServer().getWorld(dimension).getEntities()
+                .filter(entity -> entity instanceof TNTEntity || entity instanceof ArrowEntity || entity instanceof FallingBlockEntity || entity instanceof ProjectileItemEntity)
+                .filter(entity -> entity.getDistance(master) <= Math.PI * 8)
+                .forEach(entity -> {
                     double distanceX = getPosX() - entity.getPosX();
                     double distanceY = getPosY() - entity.getPosY();
                     double distanceZ = getPosZ() - entity.getPosZ();
-
                     if (distanceX > 0)
                         moveForward -= 0.3;
-                    if (distanceX < 0)
+                    else if (distanceX < 0)
                         moveForward += 0.3;
                     if (distanceY > 0)
                         moveVertical -= 0.3;
-                    if (distanceY < 0)
+                    else if (distanceY < 0)
                         moveVertical += 0.3;
                     if (distanceZ > 0)
                         moveStrafing -= 0.3;
-                    if (distanceZ < 0)
+                    else if (distanceZ < 0)
                         moveStrafing += 0.3;
-                }
-            });
-        }
+                });
     }
 
     /**

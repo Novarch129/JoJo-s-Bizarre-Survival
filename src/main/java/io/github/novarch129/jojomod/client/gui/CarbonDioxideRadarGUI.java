@@ -44,33 +44,34 @@ public class CarbonDioxideRadarGUI extends AbstractGui {
                         setAerosmith((AerosmithEntity) entity);
                 }
 
-                mc.world.getAllEntities().forEach(entity -> {
-                    if (Util.Predicates.BREATHS.test(entity) && entity != player && entity != aerosmith && !(entity instanceof FakePlayerEntity) && entity.getDistance(aerosmith) < 16) {
-                        int x = (int) entity.getPosX(), y = (int) entity.getPosY(), z = (int) entity.getPosZ();
+                if (aerosmith != null)
+                    mc.world.getAllEntities().forEach(entity -> {
+                        if (Util.Predicates.BREATHS.test(entity) && entity != player && entity != aerosmith && !(entity instanceof FakePlayerEntity) && entity.getDistance(aerosmith) < 16) {
+                            int x = (int) entity.getPosX(), y = (int) entity.getPosY(), z = (int) entity.getPosZ();
 
-                        if (aerosmith != null) {
-                            GlStateManager.pushMatrix();
-                            int xDistance = (aerosmith.getPosition().getX() - x) * 5;
-                            double yDistance = aerosmith.getPosition().getY() - y;
-                            int zDistance = (aerosmith.getPosition().getZ() - z) * 5;
+                            if (aerosmith != null) {
+                                GlStateManager.pushMatrix();
+                                int xDistance = (aerosmith.getPosition().getX() - x) * 5;
+                                double yDistance = aerosmith.getPosition().getY() - y;
+                                int zDistance = (aerosmith.getPosition().getZ() - z) * 5;
 
-                            double size = 0.05;
-                            if (yDistance >= 5)
-                                size = 0.025;
-                            else if ((yDistance > 0 && yDistance < 5) || (yDistance < 0 && yDistance > -5))
-                                size = 0.05;
-                            else if (yDistance <= -5)
-                                size = 0.075;
+                                double size = 0.05;
+                                if (yDistance >= 5)
+                                    size = 0.025;
+                                else if ((yDistance > 0 && yDistance < 5) || (yDistance < 0 && yDistance > -5))
+                                    size = 0.05;
+                                else if (yDistance <= -5)
+                                    size = 0.075;
 
-                            GlStateManager.translated(115 + xDistance, 115 + zDistance, 100);
-                            GlStateManager.scaled(size, size, 0);
-                            Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/gui/aerosmith_target.png"));
-                            GuiUtils.drawTexturedModalRect(0, 0, 0, 0, 256, 256, 0);
+                                GlStateManager.translated(115 + xDistance, 115 + zDistance, 100);
+                                GlStateManager.scaled(size, size, 0);
+                                Minecraft.getInstance().getTextureManager().bindTexture(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/gui/aerosmith_target.png"));
+                                GuiUtils.drawTexturedModalRect(0, 0, 0, 0, 256, 256, 0);
 
-                            GlStateManager.popMatrix();
+                                GlStateManager.popMatrix();
+                            }
                         }
-                    }
-                });
+                    });
                 GlStateManager.popMatrix();
             }
         });

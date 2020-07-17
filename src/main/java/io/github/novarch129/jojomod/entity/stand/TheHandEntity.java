@@ -9,7 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -39,7 +38,7 @@ public class TheHandEntity extends AbstractStandEntity {
     public void teleportMaster() {
         if (world.isRemote) return;
         PlayerEntity master = getMaster();
-        if (master != null)
+        if (master != null) //Probably not necessary, but I'll leave it here anyway.
             EventHandleStandAbilities.teleportQueue.put(master, EventHandleStandAbilities.TeleportType.THE_HAND); //Deferred the teleport logic to ServerTickEvent
     }
 
@@ -63,7 +62,6 @@ public class TheHandEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
-            setCustomName(new StringTextComponent("1234567"));
 
             followMaster();
             setRotationYawHead(player.getRotationYawHead());
