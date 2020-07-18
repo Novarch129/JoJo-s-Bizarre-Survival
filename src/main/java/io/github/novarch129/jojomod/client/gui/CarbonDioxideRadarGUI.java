@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.client.gui;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
@@ -46,7 +45,7 @@ public class CarbonDioxideRadarGUI extends AbstractGui {
 
                 if (aerosmith != null)
                     mc.world.getAllEntities().forEach(entity -> {
-                        if (Util.Predicates.BREATHS.test(entity) && entity != player && entity != aerosmith && !(entity instanceof FakePlayerEntity) && entity.getDistance(aerosmith) < 16) {
+                        if (Util.Predicates.BREATHS.test(entity) && entity != player && entity != aerosmith && entity.getDistance(aerosmith) < 16) {
                             int x = (int) entity.getPosX(), y = (int) entity.getPosY(), z = (int) entity.getPosZ();
 
                             if (aerosmith != null) {

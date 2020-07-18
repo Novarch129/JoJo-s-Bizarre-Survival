@@ -1,11 +1,18 @@
 package io.github.novarch129.jojomod.util;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
@@ -13,9 +20,12 @@ import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.EmptyModelData;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
@@ -40,6 +50,30 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0);
+    }
+
+    /**
+     * Statically renders the given {@link BlockState} at the given {@link BlockPos}, like {@link net.minecraft.client.renderer.entity.EntityRendererManager#renderEntityStatic(Entity, double, double, double, float, float, MatrixStack, IRenderTypeBuffer, int)}, but for blocks.
+     */
+    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl renderTypeBuffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView) {
+        matrixStack.push();
+        matrixStack.translate(projectedView.x - blockPos.getX(), projectedView.getY() - blockPos.getY(), -projectedView.z - blockPos.getZ());
+        for (RenderType renderType : RenderType.getBlockRenderTypes())
+            if (RenderTypeLookup.canRenderInLayer(blockState, renderType))
+                Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+                        world,
+                        Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(blockState),
+                        blockState,
+                        blockPos,
+                        matrixStack,
+                        renderTypeBuffer.getBuffer(renderType),
+                        true,
+                        new Random(),
+                        blockState.getPositionRandom(blockPos),
+                        OverlayTexture.NO_OVERLAY,
+                        EmptyModelData.INSTANCE
+                );
+        matrixStack.pop();
     }
 
     /**

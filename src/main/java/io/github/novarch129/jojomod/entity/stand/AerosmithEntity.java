@@ -1,10 +1,8 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AerosmithBulletEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
-import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -28,7 +26,7 @@ public class AerosmithEntity extends AbstractStandEntity {
 
     @Override
     public void playSpawnSound() {
-        world.playSound(null, getMaster().getPosition(), getSpawnSound(), getSoundCategory(), 3, 1);
+        world.playSound(null, getMaster().getPosition(), getSpawnSound(), SoundCategory.NEUTRAL, 3, 1);
     }
 
     public void shootBomb() {
@@ -69,11 +67,8 @@ public class AerosmithEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
             Stand.getLazyOptional(player).ifPresent(props -> {
-                if (ability != props.getAbility()) {
-                    if (!ability)
-                        JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(CAerosmithControlPacket.Action.RENDER));
+                if (ability != props.getAbility())
                     ability = props.getAbility();
-                }
                 if (ability)
                     if (props.getCooldown() > 0)
                         props.subtractCooldown(1);
@@ -88,8 +83,6 @@ public class AerosmithEntity extends AbstractStandEntity {
             if (attackRush) {
                 if (!ability)
                     player.setSprinting(false);
-                else
-                    setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
@@ -110,15 +103,5 @@ public class AerosmithEntity extends AbstractStandEntity {
                 }
             }
         }
-    }
-
-    @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld();
-        if (getMaster() != null)
-            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if (props.getAbility())
-                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(CAerosmithControlPacket.Action.RENDER));
-            });
     }
 }

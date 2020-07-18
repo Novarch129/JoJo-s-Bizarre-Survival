@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -42,8 +41,6 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                 ServerPlayerEntity sender = ctx.get().getSender();
                 if (sender == null || sender.isSpectator()) return;
                 World world = sender.world;
-                FakePlayerEntity fakePlayer = new FakePlayerEntity(world, sender);
-                fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
                 if (!world.isRemote) {
                     Stand.getLazyOptional(sender).ifPresent(props -> {
                         if (props.hasAct())
@@ -55,8 +52,6 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                 AbstractStandEntity stand = Util.getStandByID(props.getStandID(), sender.world);
                                 if (Collections.frequency(Objects.requireNonNull(world.getServer()).getWorld(sender.dimension).getEntities().collect(Collectors.toList()), stand) > 0)
                                     return;
-                                if (props.getStandID() == Util.StandID.AEROSMITH && props.getAbility())
-                                    sender.world.addEntity(fakePlayer);
                                 stand.setLocationAndAngles(sender.getPosX() + 0.1, sender.getPosY(), sender.getPosZ(), sender.rotationYaw, sender.rotationPitch);
                                 stand.setMaster(sender);
                                 stand.setMasterUUID(sender.getUniqueID());
@@ -79,9 +74,6 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                     props.setStandOn(false);
                                 }
                             }
-                        } else { //Kinda looks like an else if without the braces
-                            if (fakePlayer.isAlive())
-                                fakePlayer.remove();
                         }
                     });
                 }

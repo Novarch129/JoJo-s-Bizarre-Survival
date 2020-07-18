@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
@@ -249,12 +248,6 @@ public class EventHandleStandAbilities {
                 player.setGameType(GameType.SURVIVAL);
             if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            if (!player.world.isRemote) {
-                player.world.getServer().getWorld(player.dimension).getEntities()
-                        .filter(entity -> entity instanceof FakePlayerEntity)
-                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                        .forEach(Entity::remove);
-            }
             if (player.world.isRemote) {
                 if (props.getStandID() == Util.StandID.AEROSMITH)
                     if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {

@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.stand.SheerHeartAttackEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
@@ -62,10 +61,6 @@ public class EventSyncCapability {
         player.setInvulnerable(false);
         Stand.getLazyOptional(player).ifPresent(props -> { //It's a lot of code to run on logout, but some horrible bugs occur without it.
             if (!player.world.isRemote) {
-                player.getServerWorld().getEntities()
-                        .filter(entity -> entity instanceof FakePlayerEntity)
-                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                        .forEach(Entity::remove);
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof SheerHeartAttackEntity)
                         .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster() == player)

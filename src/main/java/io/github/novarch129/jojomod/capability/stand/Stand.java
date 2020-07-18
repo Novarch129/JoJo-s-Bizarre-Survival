@@ -280,8 +280,8 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     }
 
     @Override
-    public void putTimeLeft(double timeleft) {
-        this.timeLeft = timeleft;
+    public void putTimeLeft(double timeLeft) {
+        this.timeLeft = timeLeft;
     }
 
     @Override

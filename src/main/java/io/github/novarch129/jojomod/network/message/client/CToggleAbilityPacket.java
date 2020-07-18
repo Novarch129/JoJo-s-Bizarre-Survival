@@ -1,7 +1,6 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.event.custom.AbilityEvent;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.network.message.IMessage;
@@ -33,11 +32,8 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                 ServerPlayerEntity sender = ctx.get().getSender();
                 if (sender == null) return;
                 Stand.getLazyOptional(sender).ifPresent(props -> {
-                    FakePlayerEntity fakePlayer = new FakePlayerEntity(sender.world, sender);
-                    fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
                     int standID = props.getStandID();
                     int act = props.getAct();
-                    boolean standOn = props.getStandOn();
 
                     props.setAbility(!props.getAbility());
 
@@ -55,11 +51,6 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                             case Util.StandID.GER: {
                                 sender.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
                                 break;
-                            }
-                            case Util.StandID.AEROSMITH: {
-                                sender.sendMessage(new StringTextComponent("Ability: ON"));
-                                if (standOn)
-                                    sender.world.addEntity(fakePlayer);
                             }
                             default: {
                                 if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)

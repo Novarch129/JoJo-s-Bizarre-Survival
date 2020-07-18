@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.item;
 
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;
@@ -60,11 +59,6 @@ public class StandArrowItem extends ArrowItem {
                     stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                     stand.setMasterUUID(player.getUniqueID());
                     stand.setMaster(player);
-                    if (this.standID == Util.StandID.AEROSMITH) {
-                        FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
-                        fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-                        world.addEntity(fakePlayer);
-                    }
                     world.addEntity(stand);
                     stand.playSpawnSound();
                 }

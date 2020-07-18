@@ -61,21 +61,21 @@ public interface IStand {
 
     void setNoClip(boolean noClip);
 
-    void putStandID(final int standID);
+    void putStandID(int standID);
 
-    void putAct(final int act);
+    void putAct(int act);
 
-    void putStandOn(final boolean standOn);
+    void putStandOn(boolean standOn);
 
-    void putTimeLeft(final double timeleft);
+    void putTimeLeft(double timeLeft);
 
-    void putCooldown(final double cooldown);
+    void putCooldown(double cooldown);
 
-    void putAbility(final boolean ability);
+    void putAbility(boolean ability);
 
-    void putTransformed(final int transformed);
+    void putTransformed(int transformed);
 
-    void putDiavolo(final String truth);
+    void putDiavolo(String truth);
 
     void putNoClip(boolean noClip);
 
