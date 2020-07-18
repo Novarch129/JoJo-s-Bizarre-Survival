@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -96,7 +97,6 @@ public class EventClientTick {
                 double v0 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getX();
                 double v1 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getY();
                 double v2 = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView().getZ();
-
                 event.getMatrixStack().push();
                 Minecraft.getInstance().getRenderManager().renderEntityStatic(
                         player,
@@ -112,14 +112,9 @@ public class EventClientTick {
                 event.getMatrixStack().pop();
             }
         });
-//        Util.renderBlockStatic(
-//                event.getMatrixStack(),
-//                IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()),
-//                world,
-//                Blocks.REDSTONE_BLOCK.getDefaultState(),
-//                player.getPosition().add(0, -1, 0),
-//                Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView()
-//        );
-//        IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()).finish();
+//        if (event.getPhase() != EventPriority.NORMAL) return;
+//        IRenderTypeBuffer.Impl buffer = IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer());
+//        Util.renderBlockStatic(event.getMatrixStack(), buffer, world, Blocks.REDSTONE_BLOCK.getDefaultState(), new BlockPos(0, 128, 0), Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView());
+//        buffer.finish();
     }
 }

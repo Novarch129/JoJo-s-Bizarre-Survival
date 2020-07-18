@@ -57,8 +57,8 @@ public class Util {
      */
     public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl renderTypeBuffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView) {
         matrixStack.push();
-        matrixStack.translate(projectedView.x - blockPos.getX(), projectedView.getY() - blockPos.getY(), -projectedView.z - blockPos.getZ());
-        for (RenderType renderType : RenderType.getBlockRenderTypes())
+        matrixStack.translate(-projectedView.x + blockPos.getX(), -projectedView.y + blockPos.getY(), -projectedView.z + blockPos.getZ());
+        for (RenderType renderType : RenderType.getBlockRenderTypes()) {
             if (RenderTypeLookup.canRenderInLayer(blockState, renderType))
                 Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
                         world,
@@ -73,6 +73,7 @@ public class Util {
                         OverlayTexture.NO_OVERLAY,
                         EmptyModelData.INSTANCE
                 );
+        }
         matrixStack.pop();
     }
 
