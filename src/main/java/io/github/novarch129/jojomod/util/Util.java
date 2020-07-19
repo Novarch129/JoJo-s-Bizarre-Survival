@@ -55,7 +55,7 @@ public class Util {
     /**
      * Statically renders the given {@link BlockState} at the given {@link BlockPos}, like {@link net.minecraft.client.renderer.entity.EntityRendererManager#renderEntityStatic(Entity, double, double, double, float, float, MatrixStack, IRenderTypeBuffer, int)}, but for blocks.
      */
-    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl renderTypeBuffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView) {
+    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl buffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView, boolean occlusionCulling) {
         matrixStack.push();
         matrixStack.translate(-projectedView.x + blockPos.getX(), -projectedView.y + blockPos.getY(), -projectedView.z + blockPos.getZ());
         for (RenderType renderType : RenderType.getBlockRenderTypes()) {
@@ -66,8 +66,8 @@ public class Util {
                         blockState,
                         blockPos,
                         matrixStack,
-                        renderTypeBuffer.getBuffer(renderType),
-                        true,
+                        buffer.getBuffer(renderType),
+                        occlusionCulling,
                         new Random(),
                         blockState.getPositionRandom(blockPos),
                         OverlayTexture.NO_OVERLAY,
@@ -75,6 +75,27 @@ public class Util {
                 );
         }
         matrixStack.pop();
+        buffer.finish();
+    }
+
+    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl buffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView, boolean occlusionCulling, RenderType renderType) {
+        matrixStack.push();
+        matrixStack.translate(-projectedView.x + blockPos.getX(), -projectedView.y + blockPos.getY(), -projectedView.z + blockPos.getZ());
+        Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+                world,
+                Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(blockState),
+                blockState,
+                blockPos,
+                matrixStack,
+                buffer.getBuffer(renderType),
+                occlusionCulling,
+                new Random(),
+                blockState.getPositionRandom(blockPos),
+                OverlayTexture.NO_OVERLAY,
+                EmptyModelData.INSTANCE
+        );
+        matrixStack.pop();
+        buffer.finish();
     }
 
     /**

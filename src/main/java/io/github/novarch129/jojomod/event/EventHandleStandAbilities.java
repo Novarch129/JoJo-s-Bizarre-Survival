@@ -14,6 +14,7 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.block.OreBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -77,6 +78,15 @@ public class EventHandleStandAbilities {
 
                 if (timeLeft < 1000)
                     props.addTimeLeft(0.5);
+            }
+
+            StringTextComponent shulkerName = new StringTextComponent(player.getName().getFormattedText() + player.getUniqueID());
+
+            if (standOn && !player.world.isRemote) {
+                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(20, -20, 20))
+                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
+                        .forEach(blockPos -> {
+                        });
             }
 
             if ((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
