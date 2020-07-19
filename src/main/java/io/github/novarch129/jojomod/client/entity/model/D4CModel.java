@@ -6,8 +6,7 @@ import io.github.novarch129.jojomod.entity.stand.D4CEntity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class D4CModel<T extends D4CEntity> extends EntityModel<T>
-{
+public class D4CModel extends EntityModel<D4CEntity> {
     private final ModelRenderer Head;
     private final ModelRenderer Ear1;
     private final ModelRenderer Ear2;
@@ -99,7 +98,7 @@ public class D4CModel<T extends D4CEntity> extends EntityModel<T>
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
+    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         Head.render(matrixStack, buffer, packedLight, packedOverlay);
         Ear1.render(matrixStack, buffer, packedLight, packedOverlay);
         RightArm.render(matrixStack, buffer, packedLight, packedOverlay);

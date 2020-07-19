@@ -1,19 +1,15 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import io.github.novarch129.jojomod.entity.stand.attack.GoldExperiencePunchEntity;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.model.GoldExperiencePunchModel;
-import mcp.MethodsReturnNonnullByDefault;
+import io.github.novarch129.jojomod.entity.stand.attack.GoldExperiencePunchEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class GoldExperiencePunchRenderer extends StandPunchRenderer<GoldExperiencePunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/gold_experience_punch.png");
 

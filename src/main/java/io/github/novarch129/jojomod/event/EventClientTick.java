@@ -115,34 +115,8 @@ public class EventClientTick {
                 );
                 matrixStack.pop();
             }
-//            if (props.getStandOn()) {
-//                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(20, -20, 20))
-//                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
-//                        .forEach(blockPos -> {
-//                            ShulkerEntity shulker = new ShulkerEntity(EntityType.SHULKER, world);
-//                            shulker.setPosition(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-//                            shulker.setGlowing(true);
-//                            double posX = shulker.getPosX();
-//                            double posY = shulker.getPosY();
-//                            double posZ = shulker.getPosZ();
-//                            float yaw = MathHelper.lerp(partialTicks, shulker.prevRotationYaw, shulker.rotationYaw);
-//                            matrixStack.push();
-//                            Minecraft.getInstance().getRenderManager().renderEntityStatic(
-//                                    shulker,
-//                                    posX - projectedView.getX(),
-//                                    posY - projectedView.getY(),
-//                                    posZ - projectedView.getZ(),
-//                                    yaw,
-//                                    partialTicks,
-//                                    matrixStack,
-//                                    Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(),
-//                                    Minecraft.getInstance().getRenderManager().getPackedLight(shulker, partialTicks)
-//                            );
-//                            matrixStack.pop();
-//                        });
-//            }
-//        });
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
+            //Code below is *very* experimental, not final in any way.
             if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
                 BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(50, -100, 50))
                         .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)

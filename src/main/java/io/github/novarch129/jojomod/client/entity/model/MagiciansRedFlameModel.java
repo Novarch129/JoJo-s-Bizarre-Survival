@@ -3,14 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.attack.MagiciansRedFlameEntity;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class MagiciansRedFlameModel extends EntityModel<MagiciansRedFlameEntity> {
     public final ModelRenderer Flames;
     public final ModelRenderer Flames2;

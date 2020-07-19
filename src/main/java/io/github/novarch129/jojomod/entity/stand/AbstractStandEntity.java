@@ -115,7 +115,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     }
 
     /**
-     * Used in followMaster() to shorten code, moves the Stand based on the,
+     * Used in followMaster() to shorten code, moves the Stand based on it's distance from it's master.
      */
     private void moveStand() {
         double distanceFromMaster = master.getDistance(this);
