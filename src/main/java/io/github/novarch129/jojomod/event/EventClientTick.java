@@ -71,11 +71,9 @@ public class EventClientTick {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void renderGameOverlay(RenderGameOverlayEvent.Post event) {
-        StandGUI standGui = new StandGUI();
-        standGui.render();
-
-        CarbonDioxideRadarGUI carbonDioxideRadarGUI = new CarbonDioxideRadarGUI();
-        carbonDioxideRadarGUI.renderRadar();
+        if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
+        new StandGUI().render();
+        new CarbonDioxideRadarGUI().renderRadar();
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

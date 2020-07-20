@@ -1,199 +1,326 @@
 {
-    "canzoni_preferite":
-    {
-        "category": "record",
-        "sounds": [{"name": "jojomod:canzoni_preferite", "stream": true}]
-    },
-
-    "punch_miss":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:punch_miss", "stream": false}]
-    },
-
-    "spawn_king_crimson":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_king_crimson", "stream": false}]
-    },
-
-    "spawn_d4c":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_d4c", "stream": false}]
-    },
-
-    "spawn_gold_experience":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_gold_experience", "stream": false}]
-    },
-
-    "mudagiorno":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:mudagiorno", "stream": false}]
-    },
-    
-    "transmute":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:transmute", "stream": false}]
-    },
-
-    "spawn_made_in_heaven":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_made_in_heaven", "stream": false}]
-    },
-
-    "spawn_ger":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_ger", "stream": false}]
-    },
-
-    "spawn_aerosmith":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_aerosmith", "stream": false}]
-    },
-
-    "volarush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:volarush", "stream": false}]
-    },
-
-    "spawn_weather_report":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_weather_report", "stream": false}]
-    },
-
-    "spawn_killer_queen":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_killer_queen", "stream": false}]
-    },
-
-    "look_here":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:look_here", "stream": false}]
-    },
-
-    "spawn_crazy_diamond":
-    {
-        "category": "neutral", 
-        "sounds": [{"name": "jojomod:spawn_crazy_diamond", "stream": false}]
-    },
-
-    "dorarush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:dorarush", "stream": false}]
-    },
-
-    "spawn_purple_haze":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_purple_haze", "stream": false}]
-    },
-
-    "purple_haze_rush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:purple_haze_rush", "stream": false}]
-    },
-
-    "spawn_the_emperor":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_the_emperor", "stream": false}]
-    },
-
-    "spawn_whitesnake":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_whitesnake", "stream": false}]
-    },
-
-    "spawn_cmoon":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_cmoon", "stream": false}]
-    },
-
-    "spawn_the_world":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_the_world", "stream": false}]
-    },
-
-    "stoptime":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:stoptime", "stream": false}]
-    },
-
-    "resumetime":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:resumetime", "stream": false}]
-    },
-
-    "mudarush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:mudarush", "stream": false}]
-    },
-
-    "spawn_star_platinum":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_star_platinum", "stream": false}]
-    },
-
-    "orarush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:orarush", "stream": false}]
-    },
-
-    "star_platinum_the_world":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:star_platinum_the_world", "stream": false}]
-    },
-
-    "time_resume_star_platinum":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:time_resume_star_platinum", "stream": false}]
-    },
-
-    "spawn_silver_chariot":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_silver_chariot", "stream": false}]
-    },
-
-    "silver_chariot_rush":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:silver_chariot_rush", "stream": false}]
-    },
-
-    "spawn_magicians_red":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:spawn_magicians_red", "stream": false}]
-    },
-
-    "crossfire_hurricane_special":
-    {
-        "category": "neutral",
-        "sounds": [{"name": "jojomod:crossfire_hurricane_special", "stream": false}]
-    }
+  "canzoni_preferite": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "jojomod:canzoni_preferite",
+        "stream": true
+      }
+    ]
+  },
+  "punch_miss": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:punch_miss",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_king_crimson": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_king_crimson",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_d4c": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_d4c",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_gold_experience": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_gold_experience",
+        "stream": false
+      }
+    ]
+  },
+  "mudagiorno": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:mudagiorno",
+        "stream": false
+      }
+    ]
+  },
+  "transmute": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:transmute",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_made_in_heaven": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_made_in_heaven",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_ger": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_ger",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_aerosmith": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_aerosmith",
+        "stream": false
+      }
+    ]
+  },
+  "volarush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:volarush",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_weather_report": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_weather_report",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_killer_queen": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_killer_queen",
+        "stream": false
+      }
+    ]
+  },
+  "look_here": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:look_here",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_crazy_diamond": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_crazy_diamond",
+        "stream": false
+      }
+    ]
+  },
+  "dorarush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:dorarush",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_purple_haze": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_purple_haze",
+        "stream": false
+      }
+    ]
+  },
+  "purple_haze_rush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:purple_haze_rush",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_the_emperor": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_the_emperor",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_whitesnake": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_whitesnake",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_cmoon": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_cmoon",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_the_world": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_the_world",
+        "stream": false
+      }
+    ]
+  },
+  "stoptime": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:stoptime",
+        "stream": false
+      }
+    ]
+  },
+  "resumetime": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:resumetime",
+        "stream": false
+      }
+    ]
+  },
+  "mudarush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:mudarush",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_star_platinum": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_star_platinum",
+        "stream": false
+      }
+    ]
+  },
+  "orarush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:orarush",
+        "stream": false
+      }
+    ]
+  },
+  "star_platinum_the_world": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:star_platinum_the_world",
+        "stream": false
+      }
+    ]
+  },
+  "time_resume_star_platinum": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:time_resume_star_platinum",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_silver_chariot": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_silver_chariot",
+        "stream": false
+      }
+    ]
+  },
+  "silver_chariot_rush": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:silver_chariot_rush",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_magicians_red": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_magicians_red",
+        "stream": false
+      }
+    ]
+  },
+  "crossfire_hurricane_special": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:crossfire_hurricane_special",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_the_hand": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_the_hand",
+        "stream": false
+      }
+    ]
+  },
+  "the_hand_teleport": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:the_hand_teleport",
+        "stream": false
+      }
+    ]
+  },
+  "the_hand_pull": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:the_hand_pull",
+        "stream": false
+      }
+    ]
+  }
 }

@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.TheHandPunchEntity;
-import io.github.novarch129.jojomod.event.EventHandleStandAbilities;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -19,27 +20,42 @@ public class TheHandEntity extends AbstractStandEntity {
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_MAGICIANS_RED.get();
+        return SoundInit.SPAWN_THE_HAND.get();
     }
 
     public void dragEntityToStand(final int entityID) { //Final because it should NEVER be changed, as it would completely break the method.
         Entity entity = world.getEntityByID(entityID);
         if (entity == null || getMaster() == null) return;
-        float yaw = getMaster().rotationYaw;
-        float pitch = getMaster().rotationPitch;
-        double motionX = (-MathHelper.sin(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
-        double motionZ = (MathHelper.cos(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
-        double motionY = (-MathHelper.sin((pitch) / 180 * (float) Math.PI));
-        double strength = entity.getDistance(getMaster()) / 4;
-        if (!world.isRemote)
-            entity.setMotion(-motionX * strength, -motionY * strength, -motionZ * strength);
+        Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+            if (props.getCooldown() <= 0) {
+                float yaw = getMaster().rotationYaw;
+                float pitch = getMaster().rotationPitch;
+                double motionX = (-MathHelper.sin(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
+                double motionZ = (MathHelper.cos(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI));
+                double motionY = (-MathHelper.sin((pitch) / 180 * (float) Math.PI));
+                double strength = entity.getDistance(getMaster()) / 4;
+                if (!world.isRemote) {
+                    entity.setMotion(-motionX * strength, -motionY * strength, -motionZ * strength);
+                    world.playSound(null, getPosition(), SoundInit.THE_HAND_PULL.get(), SoundCategory.NEUTRAL, 1, 1);
+                    props.setCooldown(100);
+                }
+            }
+        });
     }
 
     public void teleportMaster() {
         if (world.isRemote) return;
         PlayerEntity master = getMaster();
         if (master != null) //Probably not necessary, but I'll leave it here anyway.
-            EventHandleStandAbilities.teleportQueue.put(master, EventHandleStandAbilities.TeleportType.THE_HAND); //Deferred the teleport logic to ServerTickEvent
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                if (props.getCooldown() <= 0) {
+                    double distance = 5; //The distance the player will teleport, feel free to change this.
+                    Vec3d position = master.getLookVec().mul(distance, distance, distance).add(master.getPositionVec());
+                    master.setPositionAndUpdate(position.getX(), position.getY() + 1, position.getZ());
+                    world.playSound(null, getPosition(), SoundInit.THE_HAND_TELEPORT.get(), SoundCategory.NEUTRAL, 1, 1);
+                    props.setCooldown(75);
+                }
+            });
     }
 
     @Override

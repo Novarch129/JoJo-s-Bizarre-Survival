@@ -35,8 +35,6 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                     int standID = props.getStandID();
                     int act = props.getAct();
 
-                    props.setAbility(!props.getAbility());
-
                     if (props.getAbility()) {
                         switch (standID) {
                             case Util.StandID.THE_HAND:
@@ -45,16 +43,20 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                             case Util.StandID.THE_EMPEROR:
                                 break;
                             case Util.StandID.GOLD_EXPERIENCE: {
+                                props.setAbility(!props.getAbility());
                                 sender.sendMessage(new StringTextComponent("Mode: Lifegiver"));
                                 break;
                             }
                             case Util.StandID.GER: {
+                                props.setAbility(!props.getAbility());
                                 sender.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
                                 break;
                             }
                             default: {
-                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
+                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0) {
+                                    props.setAbility(!props.getAbility());
                                     sender.sendMessage(new StringTextComponent("Ability: ON"));
+                                }
                             }
                         }
                     } else {
@@ -66,12 +68,15 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                                 break;
                             case Util.StandID.GOLD_EXPERIENCE:
                             case Util.StandID.GER: {
+                                props.setAbility(!props.getAbility());
                                 sender.sendMessage(new StringTextComponent("Mode: Normal"));
                                 break;
                             }
                             default: {
-                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
+                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0) {
+                                    props.setAbility(!props.getAbility());
                                     sender.sendMessage(new StringTextComponent("Ability: OFF"));
+                                }
                                 if (props.getStandID() == Util.StandID.THE_WORLD && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
                                     sender.world.playSound(null, new BlockPos(sender.getPosX(), sender.getPosY(), sender.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
 
@@ -80,7 +85,6 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                             }
                         }
                     }
-
                     MinecraftForge.EVENT_BUS.post(props.getAbility() ? new AbilityEvent.AbilityActivated(sender) : new AbilityEvent.AbilityDeactivated(sender));
                 });
             });

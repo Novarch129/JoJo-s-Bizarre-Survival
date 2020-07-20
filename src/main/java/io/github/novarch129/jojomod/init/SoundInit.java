@@ -43,4 +43,7 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> SILVER_CHARIOT_RUSH = SOUNDS.register("silver_chariot_rush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot_rush")));
     public static final RegistryObject<SoundEvent> SPAWN_MAGICIANS_RED = SOUNDS.register("spawn_magicians_red", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_magicians_red")));
     public static final RegistryObject<SoundEvent> CROSSFIRE_HURRICANE_SPECIAL = SOUNDS.register("crossfire_hurricane_special", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crossfire_hurricane_special")));
+    public static final RegistryObject<SoundEvent> SPAWN_THE_HAND = SOUNDS.register("spawn_the_hand", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_hand")));
+    public static final RegistryObject<SoundEvent> THE_HAND_TELEPORT = SOUNDS.register("the_hand_teleport", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand_teleport")));
+    public static final RegistryObject<SoundEvent> THE_HAND_PULL = SOUNDS.register("the_hand_pull", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand_pull")));
 }
