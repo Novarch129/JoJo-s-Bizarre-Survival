@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 public abstract class StandPunchRenderer<T extends AbstractStandAttackEntity> extends EntityRenderer<T> {
-    protected StandPunchRenderer(EntityRendererManager manager) {
+    public StandPunchRenderer(EntityRendererManager manager) {
         super(manager);
     }
 
@@ -29,7 +29,9 @@ public abstract class StandPunchRenderer<T extends AbstractStandAttackEntity> ex
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
-    @Deprecated //Safe to @Override, do not call, use method above instead, it's the entire purpose of this class
+    /**
+     * Safe to {@link Override}, do not call, use method above instead, it's the entire purpose of this class
+     */
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }

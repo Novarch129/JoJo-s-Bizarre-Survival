@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
@@ -25,14 +24,14 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
-@SuppressWarnings({"ConstantConditions", "unused", "UnusedAssignment"})
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
+/**
+ * This class is a mess, I can barely read it.
+ */
+@SuppressWarnings("ALL")
 public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
-    public int xTile, yTile, zTile, arrowShake, ticksInAir, longTick = 2;
+    public int xTile, yTile, zTile, arrowShake, ticksInAir;
     public Entity shootingEntity;
     public AbstractStandEntity shootingStand;
     public PlayerEntity standMaster;
@@ -62,6 +61,13 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     protected abstract void onEntityHit(EntityRayTraceResult result);
 
     protected abstract void onBlockHit(BlockRayTraceResult result);
+
+    /**
+     * Defines the range of the Stand attack, override to change.
+     */
+    protected int getRange() {
+        return 2;
+    }
 
     private void setXYZ(BlockPos blockPos) {
         xTile = blockPos.getX();
@@ -146,19 +152,16 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         }
         if (shootingEntity == null && !world.isRemote)
             remove();
-        baseTick();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
         BlockState blockState = world.getBlockState(blockPos);
-        if (blockState.getMaterial() != Material.AIR && !blockState.getCollisionShape(world, blockPos).isEmpty()) {
-            AxisAlignedBB axisalignedbb = blockState.getCollisionShape(world, blockPos).getBoundingBox();
-            if (axisalignedbb.offset(blockPos).contains(new Vec3d(getPosX(), getPosY(), getPosZ())))
+        if (blockState.getMaterial() != Material.AIR && !blockState.getCollisionShape(world, blockPos).isEmpty())
+            if (blockState.getCollisionShape(world, blockPos).getBoundingBox().offset(blockPos).contains(new Vec3d(getPosX(), getPosY(), getPosZ())))
                 inGround = true;
-        }
         if (arrowShake > 0)
             arrowShake--;
         if (!inGround) {
             ticksInAir++;
-            if (ticksInAir >= longTick)
+            if (ticksInAir >= getRange())
                 if (!world.isRemote)
                     remove();
             Vec3d vec3d1 = new Vec3d(getPosX(), getPosY(), getPosZ());
@@ -166,9 +169,6 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, this));
             EntityRayTraceResult entityRayTraceResult = null;
             vec3d1 = new Vec3d(getPosX(), getPosY(), getPosZ());
-            vec3d = new Vec3d(getPosX() + getMotion().x, getPosY() + getMotion().y, getPosZ() + getMotion().z);
-            if (raytraceresult != null)
-                vec3d = new Vec3d(raytraceresult.getHitVec().x, raytraceresult.getHitVec().y, raytraceresult.getHitVec().z);
             Entity entity = findEntityOnPath(vec3d1);
             if (entity != null) {
                 entityRayTraceResult = new EntityRayTraceResult(entity);
@@ -179,24 +179,19 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 }
                 if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof PlayerEntity) {
                     PlayerEntity playerEntity = (PlayerEntity) entityRayTraceResult.getEntity();
-                    if (playerEntity.isEntityEqual(standMaster)) {
+                    if (playerEntity.isEntityEqual(standMaster))
                         raytraceresult = null;
-                    } else {
+                    else
                         entityRayTraceResult = new EntityRayTraceResult(playerEntity);
-                    }
                 }
-                if (entityRayTraceResult != null && entityRayTraceResult.getEntity() instanceof AbstractStandEntity) {
-                    AbstractStandEntity stand = (AbstractStandEntity) entityRayTraceResult.getEntity();
-                    if (stand.isEntityEqual(shootingStand))
+                if (entityRayTraceResult != null && entityRayTraceResult.getEntity() instanceof AbstractStandEntity)
+                    if (entityRayTraceResult.getEntity() == shootingStand)
                         entityRayTraceResult = null;
-                }
             }
-            if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult)) {
+            if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult))
                 onHit(entityRayTraceResult);
-            }
-            if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
+            if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
                 onHit(raytraceresult);
-            }
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
             rotationYaw = (float) (MathHelper.atan2(getMotion().x, getMotion().z) * 57.29577951308232);
             while (rotationPitch - prevRotationPitch >= 180)
@@ -209,9 +204,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2f;
             float f1 = 0.99f;
             if (isInWater()) {
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 4; i++)
                     world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().x * 0.25, getPosY() - getMotion().y * 0.25d, getPosZ() - getMotion().z * 0.25d, getMotion().x, getMotion().y, getMotion().z);
-                }
                 f1 = 0.8f;
             }
             if (isWet())
@@ -296,8 +290,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Nullable
     protected Entity findEntityOnPath(Vec3d start) {
         Entity entity = null;
-        List<Entity> list = world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(getMotion().x, getMotion().y, getMotion().z).grow(1.0d), Util.Predicates.STAND_PUNCH_TARGET);
-        double d0 = 0.0d;
+        List<Entity> list = world.getEntitiesInAABBexcluding(this, getBoundingBox().expand(getMotion().getX(), getMotion().getY(), getMotion().getZ()).grow(1), Util.Predicates.STAND_PUNCH_TARGET);
+        double d0 = 0;
         for (Entity entity1 : list) {
             AbstractStandAttackEntity punch = null;
             if (entity1 instanceof AbstractStandAttackEntity)
@@ -306,7 +300,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 RayTraceResult raytraceresult = new EntityRayTraceResult(entity1);
                 if (raytraceresult != null) {
                     double d1 = start.squareDistanceTo(raytraceresult.getHitVec());
-                    if (d1 < d0 || d0 == 0.0d) {
+                    if (d1 < d0 || d0 == 0) {
                         entity = entity1;
                         d0 = d1;
                     }

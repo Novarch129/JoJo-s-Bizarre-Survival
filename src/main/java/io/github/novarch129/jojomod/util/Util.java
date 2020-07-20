@@ -154,6 +154,8 @@ public class Util {
                 return new MagiciansRedEntity(EntityInit.MAGICIANS_RED.get(), world);
             case StandID.THE_HAND:
                 return new TheHandEntity(EntityInit.THE_HAND.get(), world);
+            case StandID.HIEROPHANT_GREEN:
+                return new HierophantGreenEntity(EntityInit.HIEROPHANT_GREEN.get(), world);
         }
     }
 
@@ -221,6 +223,8 @@ public class Util {
 
         public static final int THE_HAND = 18;
 
+        public static final int HIEROPHANT_GREEN = 19;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -239,7 +243,8 @@ public class Util {
                 STAR_PLATINUM,
                 SILVER_CHARIOT,
                 MAGICIANS_RED,
-                THE_HAND
+                THE_HAND,
+                HIEROPHANT_GREEN
         };
     }
 

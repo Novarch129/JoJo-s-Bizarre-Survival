@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.EmeraldSplashEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,14 +10,14 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
-public class WhitesnakeEntity extends AbstractStandEntity {
-    public WhitesnakeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
+public class HierophantGreenEntity extends AbstractStandEntity {
+    public HierophantGreenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_WHITESNAKE.get();
+        return SoundInit.SPAWN_THE_HAND.get();
     }
 
     @Override
@@ -29,9 +29,9 @@ public class WhitesnakeEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                WhitesnakePunchEntity whitesnakePunchEntity = new WhitesnakePunchEntity(world, this, getMaster());
-                whitesnakePunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1.5f, 0.2f);
-                world.addEntity(whitesnakePunchEntity);
+                HierophantGreenTailEntity hierophantGreenTailEntity = new HierophantGreenTailEntity(world, this, getMaster());
+                hierophantGreenTailEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.15f);
+                world.addEntity(hierophantGreenTailEntity);
             }
     }
 
@@ -40,11 +40,9 @@ public class WhitesnakeEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
-            player.setNoGravity(false);
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
+            setRotationYawHead(player.getRotationYawHead());
             setRotation(player.rotationYaw, player.rotationPitch);
 
             if (player.swingProgressInt == 0 && !attackRush)
@@ -55,14 +53,14 @@ public class WhitesnakeEntity extends AbstractStandEntity {
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
                         player.setSprinting(false);
-                        WhitesnakePunchEntity whitesnake1 = new WhitesnakePunchEntity(world, this, player);
-                        whitesnake1.setRandomPositions();
-                        whitesnake1.shoot(player, player.rotationPitch, player.rotationYaw, 1, 0.25f);
-                        world.addEntity(whitesnake1);
-                        WhitesnakePunchEntity whitesnake2 = new WhitesnakePunchEntity(world, this, player);
-                        whitesnake2.setRandomPositions();
-                        whitesnake2.shoot(player, player.rotationPitch, player.rotationYaw, 1, 0.25f);
-                        world.addEntity(whitesnake2);
+                        EmeraldSplashEntity emeraldSplashEntity = new EmeraldSplashEntity(world, this, player);
+                        emeraldSplashEntity.setRandomPositions();
+                        emeraldSplashEntity.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.25f);
+                        world.addEntity(emeraldSplashEntity);
+                        EmeraldSplashEntity emeraldSplashEntity1 = new EmeraldSplashEntity(world, this, player);
+                        emeraldSplashEntity1.setRandomPositions();
+                        emeraldSplashEntity1.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.25f);
+                        world.addEntity(emeraldSplashEntity1);
                     }
                 if (attackTicker >= 80) {
                     attackRush = false;

@@ -59,6 +59,8 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.MAGICIANS_RED)))
                                 .then(Commands.literal("the_hand")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.THE_HAND)))
+                                .then(Commands.literal("hierophant_green")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.HIEROPHANT_GREEN)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())

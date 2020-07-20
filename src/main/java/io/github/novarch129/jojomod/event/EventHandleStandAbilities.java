@@ -14,7 +14,6 @@ import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -33,14 +32,9 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
-    public static List<Entity> removalQueue = new ArrayList<>();
-
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
@@ -109,16 +103,6 @@ public class EventHandleStandAbilities {
             event.getEntityLiving().setGlowing(false);
         if (event.getPotionEffect().getPotion() == Effects.GLOWING)
             event.getEntityLiving().setGlowing(false);
-    }
-
-    @SubscribeEvent
-    public static void serverTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            if (removalQueue.size() > 0) {
-                removalQueue.forEach(Entity::remove);
-                removalQueue.clear();
-            }
-        }
     }
 
     @SubscribeEvent
@@ -196,6 +180,10 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.THE_HAND: {
                     standName = "The Hand";
+                    break;
+                }
+                case Util.StandID.HIEROPHANT_GREEN: {
+                    standName = "Hierophant Green";
                     break;
                 }
             }

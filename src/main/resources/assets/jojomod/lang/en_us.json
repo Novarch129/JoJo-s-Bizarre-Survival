@@ -17,14 +17,18 @@
   "item.jojomod.summon_silver_chariot": "Silver Chariot",
   "item.jojomod.summon_magicians_red": "Magician's Red",
   "item.jojomod.summon_the_hand": "The Hand",
+  "item.jojomod.summon_hierophant_green": "Hierophant Green",
+
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
   "item.jojomod.remove_stand": "Remove Stand",
   "item.jojomod.stand_disc": "Stand Disc",
   "item.jojomod.canzoni_preferite.desc": "Yugo Kanno, Daisuke Hasegawa - canzoni preferite",
+
   "effect.jojomod.crimson_effect_user": "The Results",
   "effect.jojomod.crimson_effect": "Crimson",
   "effect.jojomod.oxygen_poisoning": "Oxygen Poisoning",
+
   "effect.jojomod.haze": "Purple Haze",
   "entity.jojomod.king_crimson": "King Crimson",
   "entity.jojomod.king_crimson_punch": "King Crimson's punch",
@@ -61,7 +65,14 @@
   "entity.jojomod.silver_chariot_sword": "Silver Chariot's sword",
   "entity.jojomod.magicians_red": "Magician's Red",
   "entity.jojomod.magicians_red_flames": "Magician's Red's flames",
+  "entity.jojomod.the_hand": "The Hand",
+  "entity.jojomod.the_hand_punch": "The Hand's punch",
+  "entity.jojomod.hierophant_green": "Hierophant Green",
+  "entity.jojomod.emerald_splash": "Emerald Splash",
+  "entity.jojomod.hierophant_green_tail": "Hierophant Green's tail",
+
   "key.categories.jojomod": "JoJo's Bizarre Survival",
+
   "key.spawnstand.desc": "Spawn Stand",
   "key.ability.desc": "Ability Toggle",
   "key.ability2.desc": "Stand Ability",

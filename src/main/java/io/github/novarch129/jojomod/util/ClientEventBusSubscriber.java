@@ -73,5 +73,9 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_HAND_PUNCH.get(), TheHandPunchRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STAND_ARROW.get(), StandArrowRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN.get(), HierophantGreenRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMERALD_SPLASH.get(), EmeraldSplashRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN_TAIL.get(), HierophantGreenTailRenderer::new);
     }
 }

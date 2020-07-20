@@ -228,4 +228,22 @@ public class EntityInit {
                     () -> EntityType.Builder.<StandArrowEntity>create(StandArrowEntity::new, EntityClassification.MISC)
                             .size(0.5f, 0.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stand_arrow").toString()));
+
+    public static final RegistryObject<EntityType<HierophantGreenEntity>> HIEROPHANT_GREEN = ENTITY_TYPES
+            .register("hierophant_green",
+                    () -> EntityType.Builder.<HierophantGreenEntity>create(HierophantGreenEntity::new, EntityClassification.CREATURE)
+                            .size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "hierophant_green").toString()));
+
+    public static final RegistryObject<EntityType<EmeraldSplashEntity>> EMERALD_SPLASH = ENTITY_TYPES
+            .register("emerald_splash",
+                    () -> EntityType.Builder.<EmeraldSplashEntity>create(EmeraldSplashEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emerald_splash").toString()));
+
+    public static final RegistryObject<EntityType<HierophantGreenTailEntity>> HIEROPHANT_GREEN_TAIL = ENTITY_TYPES
+            .register("hierophant_green_tail",
+                    () -> EntityType.Builder.<HierophantGreenTailEntity>create(HierophantGreenTailEntity::new, EntityClassification.CREATURE)
+                            .size(0.4f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "hierophant_green_tail").toString()));
 }
