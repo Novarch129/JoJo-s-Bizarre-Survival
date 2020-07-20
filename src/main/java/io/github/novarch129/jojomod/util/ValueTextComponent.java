@@ -1,11 +1,13 @@
 package io.github.novarch129.jojomod.util;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
 
-@MethodsReturnNonnullByDefault
+/**
+ * Used for testing, shorter than using {@link String#valueOf(Object)}.
+ */
+@SuppressWarnings("unused")
 public class ValueTextComponent extends TextComponent {
     private final Object msg;
 
@@ -15,12 +17,12 @@ public class ValueTextComponent extends TextComponent {
 
     @Override
     public String getUnformattedComponentText() {
-        return String.valueOf(this.msg);
+        return String.valueOf(msg);
     }
 
     @Override
     public ITextComponent shallowCopy() {
-        return new StringTextComponent(String.valueOf(this.msg));
+        return new StringTextComponent(String.valueOf(msg));
     }
 
     @Override

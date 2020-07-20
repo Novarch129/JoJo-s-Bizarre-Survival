@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.stands.*;
-import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.entity.stand.*;
+import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
@@ -23,28 +23,28 @@ import java.util.function.Supplier;
 
 import static io.github.novarch129.jojomod.util.Util.StandID.*;
 
-@SuppressWarnings("ConstantConditions")
 public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPacket> {
-    private int action;
+    private byte action;
 
     public CSyncStandAbilitiesPacket() {
     }
 
-    public CSyncStandAbilitiesPacket(int action) {
+    public CSyncStandAbilitiesPacket(byte action) {
         this.action = action;
     }
 
     @Override
     public void encode(CSyncStandAbilitiesPacket msg, PacketBuffer buffer) {
-        buffer.writeInt(msg.action);
+        buffer.writeByte(msg.action);
     }
 
     @Override
     public CSyncStandAbilitiesPacket decode(PacketBuffer buffer) {
-        return new CSyncStandAbilitiesPacket(buffer.readInt());
+        return new CSyncStandAbilitiesPacket(buffer.readByte());
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void handle(CSyncStandAbilitiesPacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {

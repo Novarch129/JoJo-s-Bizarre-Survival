@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.command.impl.StandCommand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.*;
 import io.github.novarch129.jojomod.network.message.PacketHandler;
@@ -18,6 +19,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -26,7 +28,8 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
  * @author Novarch
  * @since 1.15.2-1.0.0.0
  * <p>
- * The main {@link Mod} {@link Class}, used mostly for registering objects.
+ * The main {@link Mod} class, used mostly for registering objects.
+ * Just a note, I mostly use these Javadocs to make snarky remarks and jokes.
  */
 @Mod("jojomod")
 public class JojoBizarreSurvival {
@@ -41,15 +44,17 @@ public class JojoBizarreSurvival {
     );
 
     public JojoBizarreSurvival() {
-        final IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::setup);
+        IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        IEventBus forgeBus = MinecraftForge.EVENT_BUS;
+        modBus.addListener(this::setup);
+        forgeBus.addListener(this::onServerStarting); //FMLServerStartingEvent is fired on the Forge bus.
 
         EventInit.register(MinecraftForge.EVENT_BUS);
-        ItemInit.ITEMS.register(eventBus);
-        EntityInit.ENTITY_TYPES.register(eventBus);
-        SoundInit.SOUNDS.register(eventBus);
-        DimensionInit.DIMENSIONS.register(eventBus);
-        EffectInit.EFFECTS.register(eventBus);
+        ItemInit.ITEMS.register(modBus);
+        EntityInit.ENTITY_TYPES.register(modBus);
+        SoundInit.SOUNDS.register(modBus);
+        DimensionInit.DIMENSIONS.register(modBus);
+        EffectInit.EFFECTS.register(modBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
     }
 
@@ -59,17 +64,26 @@ public class JojoBizarreSurvival {
         PacketHandler.register();
     }
 
+    private void onServerStarting(FMLServerStartingEvent event) {
+        StandCommand.register(event.getCommandDispatcher());
+    }
+
     @MethodsReturnNonnullByDefault
     public static class JojoItemGroup extends ItemGroup {
-        public static final ItemGroup INSTANCE = new JojoItemGroup(ItemGroup.GROUPS.length, "jojotab");
+        public static final ItemGroup INSTANCE = new JojoItemGroup();
 
-        private JojoItemGroup(int index, String label) {
-            super(index, label);
+        private JojoItemGroup() {
+            super(MOD_ID);
         }
 
         @Override
         public ItemStack createIcon() {
             return new ItemStack(ItemInit.STAND_ARROW.get());
+        }
+
+        @Override
+        public boolean hasSearchBar() {
+            return true;
         }
     }
 }

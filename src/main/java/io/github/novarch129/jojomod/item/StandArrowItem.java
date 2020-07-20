@@ -2,13 +2,12 @@ package io.github.novarch129.jojomod.item;
 
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
-import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
-import io.github.novarch129.jojomod.entity.stands.GoldExperienceEntity;
-import io.github.novarch129.jojomod.entity.stands.GoldExperienceRequiemEntity;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
+import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;
+import io.github.novarch129.jojomod.entity.stand.GoldExperienceRequiemEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -25,12 +24,9 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Objects;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class StandArrowItem extends ArrowItem {
     final int standID;
     final String tooltip;
@@ -41,6 +37,7 @@ public class StandArrowItem extends ArrowItem {
         this.tooltip = tooltip;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override //TODO add an animation when obtaining GER
     public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof PlayerEntity)) return;
@@ -58,16 +55,13 @@ public class StandArrowItem extends ArrowItem {
                 props.setStandID(newStandID);
                 props.setStandOn(true);
                 final AbstractStandEntity stand = Util.getStandByID(newStandID, world);
-                stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                stand.setMasterUUID(player.getUniqueID());
-                stand.setMaster(player);
-                if (this.standID == Util.StandID.AEROSMITH) {
-                    FakePlayerEntity fakePlayer = new FakePlayerEntity(player.world, player);
-                    fakePlayer.setPosition(fakePlayer.getParent().getPosX(), fakePlayer.getParent().getPosY(), fakePlayer.getParent().getPosZ());
-                    world.addEntity(fakePlayer);
+                if (stand != null) { //Can be null if Stand is The Emperor
+                    stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+                    stand.setMasterUUID(player.getUniqueID());
+                    stand.setMaster(player);
+                    world.addEntity(stand);
+                    stand.playSpawnSound();
                 }
-                world.addEntity(stand);
-                stand.playSpawnSound();
             } else if (props.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
                 props.removeStand();
                 if (!world.isRemote) {
@@ -78,7 +72,7 @@ public class StandArrowItem extends ArrowItem {
                 }
                 props.setStandID(Util.StandID.GER);
                 props.setStandOn(true);
-                GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(world);
+                GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
                 goldExperienceRequiem.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                 goldExperienceRequiem.setMasterUUID(player.getUniqueID());
                 goldExperienceRequiem.setMaster(player);

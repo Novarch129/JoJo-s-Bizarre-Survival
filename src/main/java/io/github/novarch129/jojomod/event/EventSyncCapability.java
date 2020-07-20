@@ -4,9 +4,8 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
-import io.github.novarch129.jojomod.entity.stands.SheerHeartAttackEntity;
-import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
+import io.github.novarch129.jojomod.entity.stand.SheerHeartAttackEntity;
+import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
@@ -23,7 +22,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import static io.github.novarch129.jojomod.util.Util.StandID.THE_WORLD;
 
 /**
- * Syncs the {@link Stand} capability to the client, for things like GUIs.
+ * Syncs the {@link Stand} capability to the client, for use in GUIs, {@link Timestop} is not synced because it's info is disposable and useless to the client.
  */
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -60,13 +59,8 @@ public class EventSyncCapability {
     public static void playerLogOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
         player.setInvulnerable(false);
-        Stand.getLazyOptional(player).ifPresent(props -> {
-            props.putAct(0);
+        Stand.getLazyOptional(player).ifPresent(props -> { //It's a lot of code to run on logout, but some horrible bugs occur without it.
             if (!player.world.isRemote) {
-                player.getServerWorld().getEntities()
-                        .filter(entity -> entity instanceof FakePlayerEntity)
-                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                        .forEach(Entity::remove);
                 player.getServerWorld().getEntities()
                         .filter(entity -> entity instanceof SheerHeartAttackEntity)
                         .filter(entity -> ((SheerHeartAttackEntity) entity).getMaster() == player)

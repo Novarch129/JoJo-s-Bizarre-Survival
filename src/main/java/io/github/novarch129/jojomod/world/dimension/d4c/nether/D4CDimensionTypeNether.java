@@ -7,8 +7,7 @@ import net.minecraftforge.common.ModDimension;
 
 import java.util.function.BiFunction;
 
-public class D4CDimensionTypeNether extends ModDimension
-{
+public class D4CDimensionTypeNether extends ModDimension {
     @Override
     public BiFunction<World, DimensionType, ? extends Dimension> getFactory() {
         return D4CDimensionNether::new;

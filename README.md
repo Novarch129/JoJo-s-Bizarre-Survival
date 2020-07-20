@@ -22,7 +22,7 @@
 - [ ] Beach Boy
 - [x] Crazy Diamond
 - [x] Killer Queen
-- [ ] The Hand
+- [x] The Hand
 - [ ] Echoes
 - [x] 「THE WORLD」
 - [x] Star Platinum

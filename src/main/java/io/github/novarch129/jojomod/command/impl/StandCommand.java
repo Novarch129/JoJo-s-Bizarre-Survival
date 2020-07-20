@@ -35,6 +35,30 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.GER)))
                                 .then(Commands.literal("aerosmith")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.AEROSMITH)))
+                                .then(Commands.literal("weather_report")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.WEATHER_REPORT)))
+                                .then(Commands.literal("killer_queen")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.KILLER_QUEEN)))
+                                .then(Commands.literal("crazy_diamond")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.CRAZY_DIAMOND)))
+                                .then(Commands.literal("purple_haze")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.PURPLE_HAZE)))
+                                .then(Commands.literal("the_emperor")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.THE_EMPEROR)))
+                                .then(Commands.literal("whitesnake")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.WHITESNAKE)))
+                                .then(Commands.literal("c-moon")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.CMOON)))
+                                .then(Commands.literal("the_world")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.THE_WORLD)))
+                                .then(Commands.literal("star_platinum")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.STAR_PLATINUM)))
+                                .then(Commands.literal("silver_chariot")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.SILVER_CHARIOT)))
+                                .then(Commands.literal("magicians_red")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.MAGICIANS_RED)))
+                                .then(Commands.literal("the_hand")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.THE_HAND)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())
@@ -51,6 +75,7 @@ public class StandCommand {
         IStand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != standID) {
             props.setStandID(standID);
+            props.setStandOn(false);
             source.sendFeedback(new StringTextComponent("Successfully set StandID for " + target.getDisplayName().getFormattedText() + "."), true);
         } else
             source.sendErrorMessage(new StringTextComponent(target.getDisplayName().getFormattedText() + " already has that Stand."));

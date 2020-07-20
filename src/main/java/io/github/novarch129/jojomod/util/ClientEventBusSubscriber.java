@@ -35,8 +35,6 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.AEROSMITH.get(), AerosmithRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.AEROSMITH_BULLET.get(), AerosmithBulletRenderer::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.FAKE_PLAYER.get(), FakePlayerRenderer::new);
-
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.WEATHER_REPORT.get(), WeatherReportRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.WEATHER_REPORT_PUNCH.get(), WeatherReportPunchRenderer::new);
 

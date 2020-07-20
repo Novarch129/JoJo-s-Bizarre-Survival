@@ -1,10 +1,10 @@
 package io.github.novarch129.jojomod.event.custom;
 
-import io.github.novarch129.jojomod.entity.stands.AbstractStandEntity;
+import io.github.novarch129.jojomod.capability.stand.IStand;
+import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Cancelable;
-import io.github.novarch129.jojomod.capability.stand.IStand;
 
 import javax.annotation.Nullable;
 

@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.network.message.server;
 
-import io.github.novarch129.jojomod.entity.stands.SilverChariotEntity;
+import io.github.novarch129.jojomod.entity.stand.SilverChariotEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -30,9 +30,8 @@ public class SSyncSilverChariotArmorPacket implements IMessage<SSyncSilverChario
     @Override
     public void handle(SSyncSilverChariotArmorPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-            ctx.get().enqueueWork(() ->
-            {
-                assert Minecraft.getInstance().world != null;
+            ctx.get().enqueueWork(() -> {
+                if (Minecraft.getInstance().world == null) return;
                 Entity entity = Minecraft.getInstance().world.getEntityByID(message.standID);
                 if (entity != null)
                     if (entity instanceof SilverChariotEntity)

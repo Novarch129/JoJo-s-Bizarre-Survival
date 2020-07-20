@@ -1,56 +1,101 @@
 package io.github.novarch129.jojomod.util;
 
-import io.github.novarch129.jojomod.entity.stands.*;
-import io.github.novarch129.jojomod.entity.stands.attacks.AbstractStandAttackEntity;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import io.github.novarch129.jojomod.entity.stand.*;
+import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.EmptyModelData;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class Util {
-    public static int getHighestBlock(World world, BlockPos pos) {
-        for (int height = world.getActualHeight(); height > 0; height--) {
-            if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR) {
+    public static int getHighestBlockInXZ(World world, BlockPos pos) {
+        for (int height = world.getActualHeight(); height > 0; height--)
+            if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
                 return height;
-            }
-        }
         return -1;
     }
 
     public static BlockPos getNearestBlockEnd(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--) {
             if (pos.getX() > 0) {
-                for (int x = pos.getX(); x > 0; x--) {
-                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                for (int x = pos.getX(); x > 0; x--)
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR)
                         return new BlockPos(x, height, pos.getZ());
-                    }
-                }
             } else if (pos.getX() < 0) {
-                for (int x = pos.getX(); x < 0; x++) {
-                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR) {
+                for (int x = pos.getX(); x < 0; x++)
+                    if (world.getBlockState(new BlockPos(x, height, pos.getZ())).getMaterial() != Material.AIR)
                         return new BlockPos(x, height, pos.getZ());
-                    }
-                }
             }
         }
         return new BlockPos(0, 65, 0);
     }
 
-    public static void sendStringMessage(PlayerEntity player, String message) {
-        player.sendMessage(new StringTextComponent(message));
+    /**
+     * Statically renders the given {@link BlockState} at the given {@link BlockPos}, like {@link net.minecraft.client.renderer.entity.EntityRendererManager#renderEntityStatic(Entity, double, double, double, float, float, MatrixStack, IRenderTypeBuffer, int)}, but for blocks.
+     */
+    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl buffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView, boolean occlusionCulling) {
+        matrixStack.push();
+        matrixStack.translate(-projectedView.x + blockPos.getX(), -projectedView.y + blockPos.getY(), -projectedView.z + blockPos.getZ());
+        for (RenderType renderType : RenderType.getBlockRenderTypes()) {
+            if (RenderTypeLookup.canRenderInLayer(blockState, renderType))
+                Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+                        world,
+                        Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(blockState),
+                        blockState,
+                        blockPos,
+                        matrixStack,
+                        buffer.getBuffer(renderType),
+                        occlusionCulling,
+                        new Random(),
+                        blockState.getPositionRandom(blockPos),
+                        OverlayTexture.NO_OVERLAY,
+                        EmptyModelData.INSTANCE
+                );
+        }
+        matrixStack.pop();
+        buffer.finish();
+    }
+
+    public static void renderBlockStatic(MatrixStack matrixStack, IRenderTypeBuffer.Impl buffer, World world, BlockState blockState, BlockPos blockPos, Vec3d projectedView, boolean occlusionCulling, RenderType renderType) {
+        matrixStack.push();
+        matrixStack.translate(-projectedView.x + blockPos.getX(), -projectedView.y + blockPos.getY(), -projectedView.z + blockPos.getZ());
+        Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModel(
+                world,
+                Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(blockState),
+                blockState,
+                blockPos,
+                matrixStack,
+                buffer.getBuffer(renderType),
+                occlusionCulling,
+                new Random(),
+                blockState.getPositionRandom(blockPos),
+                OverlayTexture.NO_OVERLAY,
+                EmptyModelData.INSTANCE
+        );
+        matrixStack.pop();
+        buffer.finish();
     }
 
     /**
@@ -76,39 +121,39 @@ public class Util {
             default:
                 return Null();
             case StandID.KING_CRIMSON:
-                return new KingCrimsonEntity(world);
+                return new KingCrimsonEntity(EntityInit.KING_CRIMSON.get(), world);
             case StandID.D4C:
-                return new D4CEntity(world);
+                return new D4CEntity(EntityInit.D4C.get(), world);
             case StandID.GOLD_EXPERIENCE:
-                return new GoldExperienceEntity(world);
+                return new GoldExperienceEntity(EntityInit.GOLD_EXPERIENCE.get(), world);
             case StandID.MADE_IN_HEAVEN:
-                return new MadeInHeavenEntity(world);
+                return new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), world);
             case StandID.GER:
-                return new GoldExperienceRequiemEntity(world);
+                return new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
             case StandID.AEROSMITH:
-                return new AerosmithEntity(world);
+                return new AerosmithEntity(EntityInit.AEROSMITH.get(), world);
             case StandID.WEATHER_REPORT:
-                return new WeatherReportEntity(world);
+                return new WeatherReportEntity(EntityInit.WEATHER_REPORT.get(), world);
             case StandID.KILLER_QUEEN:
-                return new KillerQueenEntity(world);
+                return new KillerQueenEntity(EntityInit.KILLER_QUEEN.get(), world);
             case StandID.CRAZY_DIAMOND:
-                return new CrazyDiamondEntity(world);
+                return new CrazyDiamondEntity(EntityInit.CRAZY_DIAMOND.get(), world);
             case StandID.PURPLE_HAZE:
-                return new PurpleHazeEntity(world);
+                return new PurpleHazeEntity(EntityInit.PURPLE_HAZE.get(), world);
             case StandID.WHITESNAKE:
-                return new WhitesnakeEntity(world);
+                return new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
             case StandID.CMOON:
-                return new CMoonEntity(world);
+                return new CMoonEntity(EntityInit.CMOON.get(), world);
             case StandID.THE_WORLD:
-                return new TheWorldEntity(world);
+                return new TheWorldEntity(EntityInit.THE_WORLD.get(), world);
             case StandID.STAR_PLATINUM:
-                return new StarPlatinumEntity(world);
+                return new StarPlatinumEntity(EntityInit.STAR_PLATINUM.get(), world);
             case StandID.SILVER_CHARIOT:
-                return new SilverChariotEntity(world);
+                return new SilverChariotEntity(EntityInit.SILVER_CHARIOT.get(), world);
             case StandID.MAGICIANS_RED:
-                return new MagiciansRedEntity(world);
+                return new MagiciansRedEntity(EntityInit.MAGICIANS_RED.get(), world);
             case StandID.THE_HAND:
-                return new TheHandEntity(world);
+                return new TheHandEntity(EntityInit.THE_HAND.get(), world);
         }
     }
 

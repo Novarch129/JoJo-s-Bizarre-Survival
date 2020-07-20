@@ -1,11 +1,9 @@
 package io.github.novarch129.jojomod.init;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
-import io.github.novarch129.jojomod.entity.stands.*;
-import io.github.novarch129.jojomod.entity.stands.attacks.*;
-import net.minecraft.client.Minecraft;
+import io.github.novarch129.jojomod.entity.stand.*;
+import io.github.novarch129.jojomod.entity.stand.attack.*;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +11,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "RedundantTypeArguments"})
 public class EntityInit {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
 
@@ -82,12 +80,6 @@ public class EntityInit {
             .register("aerosmith_bullet", () -> EntityType.Builder.<AerosmithBulletEntity>create(AerosmithBulletEntity::new, EntityClassification.MISC)
                     .size(0.1f, 0.1f)
                     .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith_bullet").toString()));
-
-    public static final RegistryObject<EntityType<FakePlayerEntity>> FAKE_PLAYER = ENTITY_TYPES
-            .register("fake_player_jojo",
-                    () -> EntityType.Builder.<FakePlayerEntity>create((p_i48576_1_, p_i48576_2_) -> new FakePlayerEntity(p_i48576_1_, p_i48576_2_, Minecraft.getInstance().player), EntityClassification.CREATURE)
-                            .size(1.0f, 2.0f)
-                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "fake_player_jojo").toString()));
 
     public static final RegistryObject<EntityType<WeatherReportEntity>> WEATHER_REPORT = ENTITY_TYPES
             .register("weather_report",

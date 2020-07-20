@@ -1,10 +1,10 @@
 package io.github.novarch129.jojomod.init;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.effects.CrimsonEffect;
-import io.github.novarch129.jojomod.effects.CrimsonEffectUser;
-import io.github.novarch129.jojomod.effects.HazeEffect;
-import io.github.novarch129.jojomod.effects.OxygenPoisoningEffect;
+import io.github.novarch129.jojomod.effect.CrimsonEffect;
+import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
+import io.github.novarch129.jojomod.effect.HazeEffect;
+import io.github.novarch129.jojomod.effect.OxygenPoisoningEffect;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Effect;

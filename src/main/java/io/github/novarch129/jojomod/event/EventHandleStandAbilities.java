@@ -4,12 +4,10 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
-import io.github.novarch129.jojomod.entity.FakePlayerEntity;
-import io.github.novarch129.jojomod.entity.stands.StarPlatinumEntity;
-import io.github.novarch129.jojomod.entity.stands.TheWorldEntity;
-import io.github.novarch129.jojomod.event.custom.AbilityEvent;
+import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
+import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
+import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
-import io.github.novarch129.jojomod.event.custom.StandPunchEvent;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -19,15 +17,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
@@ -45,7 +40,6 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
     public static List<Entity> removalQueue = new ArrayList<>();
-    public static List<PlayerEntity> teleportQueue = new ArrayList<>();
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -110,8 +104,7 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event) {
-        if (event.getPotionEffect().getPotion() == null)
-            return;
+        if (event.getPotionEffect().getPotion() == null) return;
         if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
             event.getEntityLiving().setGlowing(false);
         if (event.getPotionEffect().getPotion() == Effects.GLOWING)
@@ -124,17 +117,6 @@ public class EventHandleStandAbilities {
             if (removalQueue.size() > 0) {
                 removalQueue.forEach(Entity::remove);
                 removalQueue.clear();
-            }
-            if (teleportQueue.size() > 0) {
-                teleportQueue.forEach(playerEntity -> {
-                    int distance = 5;
-                    float f1 = MathHelper.cos(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI); //0.017453292f is approximately Math.PI/180.
-                    float f2 = MathHelper.sin(-playerEntity.rotationYaw * 0.017453292f - (float) Math.PI);
-                    float f3 = -MathHelper.cos(-playerEntity.rotationPitch * 0.017453292f);
-                    float f4 = MathHelper.sin(-playerEntity.rotationPitch * 0.017453292f);
-                    playerEntity.move(MoverType.PLAYER, new Vec3d(distance * f2 * f3, distance * f4, distance * f1 * f3));
-                });
-                teleportQueue.clear();
             }
         }
     }
@@ -212,6 +194,10 @@ public class EventHandleStandAbilities {
                     standName = "Magician's Red";
                     break;
                 }
+                case Util.StandID.THE_HAND: {
+                    standName = "The Hand";
+                    break;
+                }
             }
         if (event.getItemStack().getItem() instanceof StandDiscItem)
             if (!standName.equals(""))
@@ -236,12 +222,6 @@ public class EventHandleStandAbilities {
                 player.setGameType(GameType.SURVIVAL);
             if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            if (!player.world.isRemote) {
-                player.world.getServer().getWorld(player.dimension).getEntities()
-                        .filter(entity -> entity instanceof FakePlayerEntity)
-                        .filter(entity -> ((FakePlayerEntity) entity).getParent() == player)
-                        .forEach(Entity::remove);
-            }
             if (player.world.isRemote) {
                 if (props.getStandID() == Util.StandID.AEROSMITH)
                     if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
@@ -304,26 +284,13 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void abilityOff(AbilityEvent.AbilityDeactivated event) {
-        PlayerEntity player = event.getPlayer();
-        assert player != null;
-        Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.AEROSMITH)
-                if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
-                    Minecraft.getInstance().setRenderViewEntity(player);
-                    Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                }
-        });
-    }
-
-    @SubscribeEvent
-    public static void standPunchEntityEvent(StandPunchEvent.EntityHit event) {
+    public static void standPunchEntityEvent(StandAttackEvent.EntityHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchDamage.get())
             event.setCanceled(true);
     }
 
     @SubscribeEvent
-    public static void standPunchBlockEvent(StandPunchEvent.BlockHit event) {
+    public static void standPunchBlockEvent(StandAttackEvent.BlockHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
     }

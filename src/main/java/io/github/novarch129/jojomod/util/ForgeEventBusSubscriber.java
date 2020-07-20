@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.util;
 
-import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.init.DimensionInit;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.RegisterDimensionsEvent;
