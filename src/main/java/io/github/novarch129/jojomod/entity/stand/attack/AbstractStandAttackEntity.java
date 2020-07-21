@@ -63,7 +63,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     protected abstract void onBlockHit(BlockRayTraceResult result);
 
     /**
-     * Defines the range of the Stand attack, override to change.
+     * Defines the range of a Stand attack, {@link Override} to change, default is 2.
      */
     protected int getRange() {
         return 2;
@@ -296,7 +296,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             AbstractStandAttackEntity punch = null;
             if (entity1 instanceof AbstractStandAttackEntity)
                 punch = (AbstractStandAttackEntity) entity1;
-            if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || entity1 != shootingStand || entity1 != standMaster || (entity1 instanceof AbstractStandAttackEntity && punch != null && punch.shootingEntity != shootingEntity) || ticksInAir >= 6)) {
+            if (entity1.canBeCollidedWith() && (entity1 != shootingEntity || entity1 != shootingStand || entity1 != standMaster || (entity1 instanceof AbstractStandAttackEntity && punch != null && punch.shootingEntity != shootingEntity) || ticksInAir >= getRange())) {
                 RayTraceResult raytraceresult = new EntityRayTraceResult(entity1);
                 if (raytraceresult != null) {
                     double d1 = start.squareDistanceTo(raytraceresult.getHitVec());

@@ -15,9 +15,11 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.function.Supplier;
 
@@ -45,7 +47,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void handle(CSyncStandAbilitiesPacket message, Supplier<Context> ctx) {
+    public void handle(CSyncStandAbilitiesPacket msg, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
@@ -60,7 +62,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1)
+                                                if (msg.action == 1)
                                                     ((KillerQueenEntity) entity).detonate();
                                                 else
                                                     ((KillerQueenEntity) entity).toggleSheerHeartAttack();
@@ -72,7 +74,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof GoldExperienceRequiemEntity)
                                             .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1)
+                                                if (msg.action == 1)
                                                     ((GoldExperienceRequiemEntity) entity).toggleTruth();
                                                 else
                                                     ((GoldExperienceRequiemEntity) entity).toggleFlight();
@@ -111,7 +113,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof TheHandEntity)
                                             .filter(entity -> ((TheHandEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1) {
+                                                if (msg.action == 1) {
                                                     Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
                                                     float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
                                                     if (entity1 != null) {
@@ -150,6 +152,58 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                     }
                                                 } else
                                                     ((TheHandEntity) entity).teleportMaster();
+                                            });
+                                    break;
+                                }
+                                case HIEROPHANT_GREEN: {
+                                    world.getServer().getWorld(player.dimension).getEntities()
+                                            .filter(entity -> entity instanceof HierophantGreenEntity)
+                                            .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .forEach(stand -> {
+                                                LogManager.getLogger().debug("Running!");
+                                                if (msg.action == 1) {
+                                                    Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
+                                                    float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
+                                                    if (entity1 != null) {
+                                                        if (Minecraft.getInstance().world != null) {
+                                                            Minecraft.getInstance().getProfiler().startSection("pick");
+                                                            Minecraft.getInstance().pointedEntity = null;
+                                                            Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
+                                                            Vec3d vec3d = entity1.getEyePosition(partialTicks);
+                                                            double range = 3;
+                                                            Vec3d vec3d1 = entity1.getLook(1.0f);
+                                                            Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
+                                                            AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(range)).grow(1.0D, 1.0D, 1.0D);
+                                                            EntityRayTraceResult entityRayTraceResult =
+                                                                    ProjectileHelper.rayTraceEntities(
+                                                                            entity1,
+                                                                            vec3d,
+                                                                            vec3d2,
+                                                                            axisalignedbb,
+                                                                            Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != stand && !(predicateEntity instanceof AbstractStandAttackEntity)),
+                                                                            3000);
+                                                            if (entityRayTraceResult != null) {
+                                                                Entity entity11 = entityRayTraceResult.getEntity();
+                                                                Vec3d vec3d3 = entityRayTraceResult.getHitVec();
+                                                                if (entity11 instanceof LivingEntity) {
+                                                                    ((HierophantGreenEntity) stand).possessedEntity.setCustomName(new StringTextComponent("Hierophant"));
+                                                                    ((HierophantGreenEntity) stand).possessedEntity = (LivingEntity) entity11;
+                                                                }
+                                                                double d2 = vec3d.squareDistanceTo(vec3d3);
+                                                                if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
+                                                                    Minecraft.getInstance().objectMouseOver = entityRayTraceResult;
+                                                                    if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
+                                                                        Minecraft.getInstance().pointedEntity = entity11;
+                                                                    }
+                                                                }
+                                                            }
+                                                            Minecraft.getInstance().getProfiler().endSection();
+                                                        }
+                                                    }
+                                                } else {
+                                                    ((HierophantGreenEntity) stand).possessedEntity.setCustomName(new StringTextComponent(""));
+                                                    ((HierophantGreenEntity) stand).possessedEntity = null;
+                                                }
                                             });
                                     break;
                                 }

@@ -40,22 +40,34 @@ public class EventHandleKeybinds {
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 2));
                 }
 
-                if (props.getStandID() == Util.StandID.AEROSMITH) {
-                    if (props.getStandOn() && props.getAbility()) {
-                        if (mc.gameSettings.keyBindForward.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, FORWARDS, mc.gameSettings.keyBindSprint.isKeyDown()));
-                        if (mc.gameSettings.keyBindBack.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, BACKWARDS));
-                        if (mc.gameSettings.keyBindRight.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, RIGHT));
-                        if (mc.gameSettings.keyBindLeft.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, LEFT));
-                        if (mc.gameSettings.keyBindJump.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, UP));
-                        if (mc.gameSettings.keyBindSneak.isKeyDown())
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, DOWN));
+                if (props.getStandOn())
+                    switch (props.getStandID()) {
+                        default:
+                            break;
+                        case Util.StandID.AEROSMITH: {
+                            if (props.getAbility()) {
+                                if (mc.gameSettings.keyBindForward.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, FORWARDS, mc.gameSettings.keyBindSprint.isKeyDown()));
+                                if (mc.gameSettings.keyBindBack.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, BACKWARDS));
+                                if (mc.gameSettings.keyBindRight.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, RIGHT));
+                                if (mc.gameSettings.keyBindLeft.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, LEFT));
+                                if (mc.gameSettings.keyBindJump.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, UP));
+                                if (mc.gameSettings.keyBindSneak.isKeyDown())
+                                    JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(MOVE, DOWN));
+                            }
+                            break;
+                        }
+                        case Util.StandID.HIEROPHANT_GREEN: {
+                            if (mc.gameSettings.keyBindForward.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.FORWARDS));
+                            if (mc.gameSettings.keyBindJump.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.JUMP));
+                        }
                     }
-                }
             });
         }
     }

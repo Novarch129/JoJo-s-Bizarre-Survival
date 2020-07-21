@@ -81,7 +81,7 @@ public class CAerosmithControlPacket implements IMessage<CAerosmithControlPacket
     }
 
     @Override
-    public void handle(CAerosmithControlPacket message, Supplier<Context> ctx) {
+    public void handle(CAerosmithControlPacket msg, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
@@ -98,13 +98,13 @@ public class CAerosmithControlPacket implements IMessage<CAerosmithControlPacket
                                     double motionX = (-MathHelper.sin(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
                                     double motionZ = (MathHelper.cos(yaw / 180.0F * (float) Math.PI) * MathHelper.cos(pitch / 180.0F * (float) Math.PI) * 1.0f);
                                     double motionY = (-MathHelper.sin((pitch) / 180.0F * (float) Math.PI) * 1.0f);
-                                    switch (message.action) {
+                                    switch (msg.action) {
                                         //Movement
                                         case MOVE: {
-                                            switch (message.direction) {
+                                            switch (msg.direction) {
                                                 //Forwards
                                                 case FORWARDS: {
-                                                    if (message.sprint) {
+                                                    if (msg.sprint) {
                                                         entity.setVelocity(motionX, motionY, motionZ);
                                                         entity.setSprinting(true);
                                                     } else
@@ -143,13 +143,13 @@ public class CAerosmithControlPacket implements IMessage<CAerosmithControlPacket
                                         }
                                         //Rotation
                                         case ROTATE: {
-                                            ((AerosmithEntity) entity).yaw = message.yaw;
-                                            ((AerosmithEntity) entity).pitch = message.pitch;
+                                            ((AerosmithEntity) entity).yaw = msg.yaw;
+                                            ((AerosmithEntity) entity).pitch = msg.pitch;
                                             break;
                                         }
                                         //Set RenderViewEntity
                                         case RENDER: {
-                                            if (message.direction == Direction.FORWARDS) {
+                                            if (msg.direction == Direction.FORWARDS) {
                                                 Minecraft.getInstance().setRenderViewEntity(entity);
                                                 Minecraft.getInstance().gameSettings.thirdPersonView = 1;
                                             } else {

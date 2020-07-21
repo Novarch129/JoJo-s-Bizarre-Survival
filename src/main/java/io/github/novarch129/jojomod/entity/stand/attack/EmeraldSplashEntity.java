@@ -38,4 +38,9 @@ public class EmeraldSplashEntity extends AbstractStandAttackEntity {
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
         }
     }
+
+    @Override
+    protected int getRange() {
+        return 3;
+    }
 }

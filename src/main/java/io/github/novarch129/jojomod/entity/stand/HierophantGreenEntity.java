@@ -4,6 +4,7 @@ import io.github.novarch129.jojomod.entity.stand.attack.EmeraldSplashEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -11,6 +12,8 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class HierophantGreenEntity extends AbstractStandEntity {
+    public LivingEntity possessedEntity;
+
     public HierophantGreenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
@@ -41,6 +44,8 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             PlayerEntity player = getMaster();
 
+            if (player.getLastAttackedEntity() != null)
+                possessedEntity = player.getLastAttackedEntity();
             followMaster();
             setRotationYawHead(player.getRotationYawHead());
             setRotation(player.rotationYaw, player.rotationPitch);

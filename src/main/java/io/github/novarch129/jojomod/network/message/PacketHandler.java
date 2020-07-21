@@ -24,6 +24,7 @@ public class PacketHandler {
         registerPacket(SSyncTimestopCapabilityPacket.class, new SSyncTimestopCapabilityPacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(SSyncStandMasterPacket.class, new SSyncStandMasterPacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(SSyncSilverChariotArmorPacket.class, new SSyncSilverChariotArmorPacket(), NetworkDirection.PLAY_TO_CLIENT);
+        registerPacket(CHierophantGreenPossessionPacket.class, new CHierophantGreenPossessionPacket(), NetworkDirection.PLAY_TO_SERVER);
     }
 
     public static <P> void registerPacket(Class<P> clazz, IMessage<P> message) {
