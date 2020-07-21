@@ -40,7 +40,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     private static final DataParameter<Optional<UUID>> MASTER_UNIQUE_ID = EntityDataManager.createKey(AbstractStandEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     public boolean ability, attackRush;
     public int attackTick, attackTicker;
-    private PlayerEntity master;
+    protected PlayerEntity master;
 
     public AbstractStandEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);

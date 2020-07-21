@@ -2,9 +2,11 @@ package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -12,22 +14,57 @@ import java.util.function.Supplier;
 
 public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGreenPossessionPacket> {
     private Direction direction;
+    private byte action;
+    private float yaw;
+    private float pitch;
 
     public CHierophantGreenPossessionPacket() {
     }
 
+    public CHierophantGreenPossessionPacket(Direction direction, byte action, float yaw, float pitch) {
+        this.direction = direction;
+        this.action = action;
+        this.yaw = yaw;
+        this.pitch = pitch;
+    }
+
+    public CHierophantGreenPossessionPacket(byte action) {
+        this.action = action;
+        direction = Direction.FORWARDS;
+        yaw = 0;
+        pitch = 0;
+    }
+
     public CHierophantGreenPossessionPacket(Direction direction) {
         this.direction = direction;
+        action = 0;
+        yaw = 0;
+        pitch = 0;
+    }
+
+    public CHierophantGreenPossessionPacket(float yaw, float pitch) {
+        direction = Direction.FORWARDS;
+        action = 1;
+        this.yaw = yaw;
+        this.pitch = pitch;
     }
 
     @Override
     public void encode(CHierophantGreenPossessionPacket msg, PacketBuffer buffer) {
         buffer.writeEnumValue(msg.direction);
+        buffer.writeByte(msg.action);
+        buffer.writeFloat(msg.yaw);
+        buffer.writeFloat(msg.pitch);
     }
 
     @Override
     public CHierophantGreenPossessionPacket decode(PacketBuffer buffer) {
-        return new CHierophantGreenPossessionPacket(buffer.readEnumValue(Direction.class));
+        return new CHierophantGreenPossessionPacket(
+                buffer.readEnumValue(Direction.class),
+                buffer.readByte(),
+                buffer.readFloat(),
+                buffer.readFloat()
+        );
     }
 
     @Override
@@ -43,23 +80,44 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                             .forEach(entity -> {
                                 if (((HierophantGreenEntity) entity).possessedEntity != null) {
                                     LivingEntity possessedEntity = ((HierophantGreenEntity) entity).possessedEntity;
-                                    switch (msg.direction) {
+                                    switch (msg.action) {
                                         default:
                                             break;
-                                        case JUMP: {
-                                            possessedEntity.setMotion(
-                                                    possessedEntity.getMotion().getX(),
-                                                    (possessedEntity.getMotion().getY() + 2) * 10,
-                                                    possessedEntity.getMotion().getZ()
-                                            );
+                                        case 0: {
+                                            double motionX = (-MathHelper.sin(possessedEntity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(possessedEntity.rotationPitch / 180 * (float) Math.PI));
+                                            double motionZ = (MathHelper.cos(possessedEntity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(possessedEntity.rotationPitch / 180 * (float) Math.PI));
+                                            double motionY = (-MathHelper.sin((possessedEntity.rotationPitch) / 180 * (float) Math.PI));
+                                            switch (msg.direction) {
+                                                default:
+                                                    break;
+                                                case JUMP: {
+                                                    if (possessedEntity.onGround)
+                                                        possessedEntity.setMotion(
+                                                                possessedEntity.getMotion().getX(),
+                                                                0.4,
+                                                                possessedEntity.getMotion().getZ()
+                                                        );
+                                                    break;
+                                                }
+                                                case CROUCH: {
+                                                    possessedEntity.setSneaking(!possessedEntity.isSneaking());
+                                                    break;
+                                                }
+                                                case FORWARDS: {
+                                                    possessedEntity.setMotion(motionX / 2, motionY / 2, motionZ / 2);
+                                                    break;
+                                                }
+                                            }
                                             break;
                                         }
-                                        case CROUCH: {
-                                            possessedEntity.setSneaking(true);
+                                        case 1: {
+                                            possessedEntity.rotationYaw = msg.yaw % 360;
+                                            possessedEntity.rotationPitch = msg.pitch % 360;
+                                            possessedEntity.setRotationYawHead(msg.yaw);
                                             break;
                                         }
-                                        case FORWARDS: {
-                                            possessedEntity.moveForward += 5;
+                                        case 2: {
+                                            Minecraft.getInstance().setRenderViewEntity(possessedEntity);
                                             break;
                                         }
                                     }

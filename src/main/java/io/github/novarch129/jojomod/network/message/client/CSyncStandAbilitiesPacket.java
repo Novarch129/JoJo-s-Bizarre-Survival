@@ -19,7 +19,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
-import org.apache.logging.log4j.LogManager;
 
 import java.util.function.Supplier;
 
@@ -160,7 +159,6 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof HierophantGreenEntity)
                                             .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(stand -> {
-                                                LogManager.getLogger().debug("Running!");
                                                 if (msg.action == 1) {
                                                     Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
                                                     float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
@@ -200,10 +198,8 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                             Minecraft.getInstance().getProfiler().endSection();
                                                         }
                                                     }
-                                                } else {
-                                                    ((HierophantGreenEntity) stand).possessedEntity.setCustomName(new StringTextComponent(""));
+                                                } else
                                                     ((HierophantGreenEntity) stand).possessedEntity = null;
-                                                }
                                             });
                                     break;
                                 }

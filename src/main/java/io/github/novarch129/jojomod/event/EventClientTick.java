@@ -6,8 +6,10 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
+import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CAerosmithControlPacket;
+import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.OreBlock;
@@ -66,6 +68,31 @@ public class EventClientTick {
                             if (entity.rotationYaw != yaw && entity.rotationPitch != pitch)
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(yaw, pitch));
                         });
+            if (props.getStandID() == Util.StandID.HIEROPHANT_GREEN && props.getStandOn() && props.getAbility())
+                StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
+                        .filter(entity -> entity instanceof HierophantGreenEntity)
+                        .filter(entity -> ((HierophantGreenEntity) entity).getMaster() != null)
+                        .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                        .forEach(entity -> {
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket((byte) 2));
+                            if (((HierophantGreenEntity) entity).possessedEntity != null) {
+                                Minecraft.getInstance().setRenderViewEntity(((HierophantGreenEntity) entity).possessedEntity);
+
+                                float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
+                                float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
+
+                                if (pitch > 89.0f)
+                                    pitch = 89.0f;
+                                else if (pitch < -89.0f)
+                                    pitch = -89.0f;
+
+//                                ((HierophantGreenEntity) entity).possessedEntity.rotateTowards(yaw, pitch);
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
+                            }
+                        });
+            if (!props.getStandOn() || !props.getAbility())
+                if (Minecraft.getInstance().renderViewEntity != player)
+                    Minecraft.getInstance().setRenderViewEntity(player);
         });
     }
 

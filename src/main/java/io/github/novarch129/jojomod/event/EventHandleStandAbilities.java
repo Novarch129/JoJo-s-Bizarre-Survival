@@ -13,7 +13,6 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -210,13 +209,6 @@ public class EventHandleStandAbilities {
                 player.setGameType(GameType.SURVIVAL);
             if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            if (player.world.isRemote) {
-                if (props.getStandID() == Util.StandID.AEROSMITH)
-                    if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
-                        Minecraft.getInstance().setRenderViewEntity(player);
-                        Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                    }
-            }
             if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);

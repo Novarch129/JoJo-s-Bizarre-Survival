@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = project.getVersion() + "-1.15.2"
+version = "1.15.2-0.0.1.0"
 group = 'io.github.novarch129.jojomod'
 archivesBaseName = 'JoJoBizarreSurvival'
 

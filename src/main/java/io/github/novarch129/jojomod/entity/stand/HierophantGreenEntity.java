@@ -5,7 +5,7 @@ import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntit
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -41,30 +41,31 @@ public class HierophantGreenEntity extends AbstractStandEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getMaster() != null) {
-            PlayerEntity player = getMaster();
+        if (master != null) {
+            if (master.getLastAttackedEntity() != null)
+                possessedEntity = master.getLastAttackedEntity();
+            if (possessedEntity instanceof MobEntity)
+                ((MobEntity) possessedEntity).setNoAI(true);
 
-            if (player.getLastAttackedEntity() != null)
-                possessedEntity = player.getLastAttackedEntity();
             followMaster();
-            setRotationYawHead(player.getRotationYawHead());
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.getRotationYawHead());
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        EmeraldSplashEntity emeraldSplashEntity = new EmeraldSplashEntity(world, this, player);
+                        master.setSprinting(false);
+                        EmeraldSplashEntity emeraldSplashEntity = new EmeraldSplashEntity(world, this, master);
                         emeraldSplashEntity.setRandomPositions();
-                        emeraldSplashEntity.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.25f);
+                        emeraldSplashEntity.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.25f);
                         world.addEntity(emeraldSplashEntity);
-                        EmeraldSplashEntity emeraldSplashEntity1 = new EmeraldSplashEntity(world, this, player);
+                        EmeraldSplashEntity emeraldSplashEntity1 = new EmeraldSplashEntity(world, this, master);
                         emeraldSplashEntity1.setRandomPositions();
-                        emeraldSplashEntity1.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.25f);
+                        emeraldSplashEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.25f);
                         world.addEntity(emeraldSplashEntity1);
                     }
                 if (attackTicker >= 80) {
