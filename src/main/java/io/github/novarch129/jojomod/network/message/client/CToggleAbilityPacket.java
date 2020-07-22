@@ -35,7 +35,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                     int standID = props.getStandID();
                     int act = props.getAct();
 
-                    if (props.getAbility()) {
+                    if (!props.getAbility()) {
                         switch (standID) {
                             case Util.StandID.THE_HAND:
                             case Util.StandID.MAGICIANS_RED:
@@ -57,6 +57,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                                     props.setAbility(!props.getAbility());
                                     sender.sendMessage(new StringTextComponent("Ability: ON"));
                                 }
+                                break;
                             }
                         }
                     } else {
@@ -82,6 +83,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
 
                                 if (props.getStandID() == Util.StandID.STAR_PLATINUM && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
                                     sender.world.playSound(null, new BlockPos(sender.getPosX(), sender.getPosY(), sender.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                                break;
                             }
                         }
                     }

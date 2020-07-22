@@ -9,6 +9,7 @@ import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -75,7 +76,7 @@ public class AerosmithEntity extends AbstractStandEntity {
             });
 
             setRotation(yaw, pitch);
-            if (getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
+            if (getMotion() == Vec3d.ZERO)
                 setRotationYawHead(yaw);
 
             if (player.swingProgressInt == 0 && !ability && !attackRush)

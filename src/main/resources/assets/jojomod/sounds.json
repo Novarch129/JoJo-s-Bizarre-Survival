@@ -322,5 +322,14 @@
         "stream": false
       }
     ]
+  },
+  "spawn_hierophant_green": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_hierophant_green",
+        "stream": false
+      }
+    ]
   }
 }

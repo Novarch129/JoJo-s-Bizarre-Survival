@@ -56,7 +56,7 @@ public class EventClientTick {
                         .filter(entity -> ((AerosmithEntity) entity).getMaster() != null)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
                         .forEach(entity -> {
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithControlPacket(CAerosmithControlPacket.Action.RENDER));
+                            Minecraft.getInstance().setRenderViewEntity(entity);
 
                             float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
                             float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();

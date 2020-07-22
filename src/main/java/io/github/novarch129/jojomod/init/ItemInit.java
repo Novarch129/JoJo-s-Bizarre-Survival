@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.init;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.JojoBizarreSurvival.JojoItemGroup;
 import io.github.novarch129.jojomod.item.EmperorItem;
-import io.github.novarch129.jojomod.item.RemoveStandItem;
 import io.github.novarch129.jojomod.item.StandArrowItem;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
@@ -44,6 +43,5 @@ public class ItemInit {
 
     public static final RegistryObject<Item> STAND_DISC = ITEMS.register("stand_disc", () -> new StandDiscItem(new Item.Properties().maxStackSize(1).group(JojoItemGroup.INSTANCE)));
     public static final RegistryObject<Item> THE_EMPEROR = ITEMS.register("the_emperor", () -> new EmperorItem(new Item.Properties().maxStackSize(1)));
-    public static final RegistryObject<Item> REMOVE_STAND = ITEMS.register("remove_stand", () -> new RemoveStandItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("stand_disc", TextFormatting.GRAY)).group(JojoItemGroup.INSTANCE)));
     public static final RegistryObject<Item> CANZONI_PREFERITE = ITEMS.register("canzoni_preferite", () -> new MusicDiscItem(1, SoundInit.CANZONI_PREFERITE, new Item.Properties().maxStackSize(1).rarity(Rarity.RARE).group(JojoItemGroup.INSTANCE)));
 }

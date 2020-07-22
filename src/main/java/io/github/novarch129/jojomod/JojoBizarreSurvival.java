@@ -49,7 +49,7 @@ public class JojoBizarreSurvival {
         modBus.addListener(this::setup);
         forgeBus.addListener(this::onServerStarting); //FMLServerStartingEvent is fired on the Forge bus.
 
-        EventInit.register(MinecraftForge.EVENT_BUS);
+        EventInit.registerForgeBus(MinecraftForge.EVENT_BUS);
         ItemInit.ITEMS.register(modBus);
         EntityInit.ENTITY_TYPES.register(modBus);
         SoundInit.SOUNDS.register(modBus);

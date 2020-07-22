@@ -11,13 +11,12 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@SuppressWarnings({"unused", "RedundantTypeArguments"})
 public class EntityInit {
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, JojoBizarreSurvival.MOD_ID);
 
     public static final RegistryObject<EntityType<KingCrimsonEntity>> KING_CRIMSON = ENTITY_TYPES
             .register("king_crimson",
-                    () -> EntityType.Builder.<KingCrimsonEntity>create(KingCrimsonEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(KingCrimsonEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson").toString()));
 
@@ -28,7 +27,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<D4CEntity>> D4C = ENTITY_TYPES
             .register("d4c",
-                    () -> EntityType.Builder.<D4CEntity>create(D4CEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(D4CEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "d4c").toString()));
 
@@ -39,7 +38,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<GoldExperienceEntity>> GOLD_EXPERIENCE = ENTITY_TYPES
             .register("gold_experience",
-                    () -> EntityType.Builder.<GoldExperienceEntity>create(GoldExperienceEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(GoldExperienceEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience").toString()));
 
@@ -50,7 +49,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<MadeInHeavenEntity>> MADE_IN_HEAVEN = ENTITY_TYPES
             .register("made_in_heaven",
-                    () -> EntityType.Builder.<MadeInHeavenEntity>create(MadeInHeavenEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(MadeInHeavenEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "made_in_heaven").toString()));
 
@@ -61,7 +60,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<GoldExperienceRequiemEntity>> GOLD_EXPERIENCE_REQUIEM = ENTITY_TYPES
             .register("gold_experience_requiem",
-                    () -> EntityType.Builder.<GoldExperienceRequiemEntity>create(GoldExperienceRequiemEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(GoldExperienceRequiemEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "gold_experience_requiem").toString()));
 
@@ -72,7 +71,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<AerosmithEntity>> AEROSMITH = ENTITY_TYPES
             .register("aerosmith",
-                    () -> EntityType.Builder.<AerosmithEntity>create(AerosmithEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(AerosmithEntity::new, EntityClassification.CREATURE)
                             .size(0.8f, 0.8f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "aerosmith").toString()));
 
@@ -83,7 +82,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<WeatherReportEntity>> WEATHER_REPORT = ENTITY_TYPES
             .register("weather_report",
-                    () -> EntityType.Builder.<WeatherReportEntity>create(WeatherReportEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(WeatherReportEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "weather_report").toString()));
 
@@ -94,7 +93,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<KillerQueenEntity>> KILLER_QUEEN = ENTITY_TYPES
             .register("killer_queen",
-                    () -> EntityType.Builder.<KillerQueenEntity>create(KillerQueenEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(KillerQueenEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "killer_queen").toString()));
 
@@ -112,7 +111,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<CrazyDiamondEntity>> CRAZY_DIAMOND = ENTITY_TYPES
             .register("crazy_diamond",
-                    () -> EntityType.Builder.<CrazyDiamondEntity>create(CrazyDiamondEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(CrazyDiamondEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "crazy_diamond").toString()));
 
@@ -124,7 +123,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<PurpleHazeEntity>> PURPLE_HAZE = ENTITY_TYPES
             .register("purple_haze",
-                    () -> EntityType.Builder.<PurpleHazeEntity>create(PurpleHazeEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(PurpleHazeEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze").toString()));
 
@@ -141,7 +140,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<WhitesnakeEntity>> WHITESNAKE = ENTITY_TYPES
             .register("whitesnake",
-                    () -> EntityType.Builder.<WhitesnakeEntity>create(WhitesnakeEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(WhitesnakeEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "whitesnake").toString()));
 
@@ -153,7 +152,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<CMoonEntity>> CMOON = ENTITY_TYPES
             .register("cmoon",
-                    () -> EntityType.Builder.<CMoonEntity>create(CMoonEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(CMoonEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "cmoon").toString()));
 
@@ -165,7 +164,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<TheWorldEntity>> THE_WORLD = ENTITY_TYPES
             .register("the_world",
-                    () -> EntityType.Builder.<TheWorldEntity>create(TheWorldEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(TheWorldEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world").toString()));
 
@@ -177,7 +176,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<StarPlatinumEntity>> STAR_PLATINUM = ENTITY_TYPES
             .register("star_platinum",
-                    () -> EntityType.Builder.<StarPlatinumEntity>create(StarPlatinumEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(StarPlatinumEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum").toString()));
 
@@ -189,7 +188,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<SilverChariotEntity>> SILVER_CHARIOT = ENTITY_TYPES
             .register("silver_chariot",
-                    () -> EntityType.Builder.<SilverChariotEntity>create(SilverChariotEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(SilverChariotEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "silver_chariot").toString()));
 
@@ -201,7 +200,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<MagiciansRedEntity>> MAGICIANS_RED = ENTITY_TYPES
             .register("magicians_red",
-                    () -> EntityType.Builder.<MagiciansRedEntity>create(MagiciansRedEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(MagiciansRedEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "magicians_red").toString()));
 
@@ -213,7 +212,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<TheHandEntity>> THE_HAND = ENTITY_TYPES
             .register("the_hand",
-                    () -> EntityType.Builder.<TheHandEntity>create(TheHandEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(TheHandEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand").toString()));
 
@@ -231,7 +230,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<HierophantGreenEntity>> HIEROPHANT_GREEN = ENTITY_TYPES
             .register("hierophant_green",
-                    () -> EntityType.Builder.<HierophantGreenEntity>create(HierophantGreenEntity::new, EntityClassification.CREATURE)
+                    () -> EntityType.Builder.create(HierophantGreenEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "hierophant_green").toString()));
 

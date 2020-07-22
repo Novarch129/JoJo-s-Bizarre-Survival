@@ -10,7 +10,6 @@ import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.util.Optional;
 
-@SuppressWarnings("unused")
 public class PacketHandler {
     static int networkId = 0;
 

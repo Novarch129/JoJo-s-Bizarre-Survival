@@ -20,7 +20,7 @@ public class HierophantGreenEntity extends AbstractStandEntity {
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_THE_HAND.get();
+        return SoundInit.SPAWN_HIEROPHANT_GREEN.get();
     }
 
     @Override
