@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -86,11 +87,10 @@ public class EventClientTick {
                                 else if (pitch < -89.0f)
                                     pitch = -89.0f;
 
-//                                ((HierophantGreenEntity) entity).possessedEntity.rotateTowards(yaw, pitch);
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
                             }
                         });
-            if (!props.getStandOn() || !props.getAbility())
+            if (!player.isSpectator() && (!props.getStandOn() || !props.getAbility()))
                 if (Minecraft.getInstance().renderViewEntity != player)
                     Minecraft.getInstance().setRenderViewEntity(player);
         });
@@ -112,6 +112,24 @@ public class EventClientTick {
         event.setDensity(5);
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    @SubscribeEvent
+    public static void renderHand(RenderHandEvent event) {
+        ClientPlayerEntity player = Minecraft.getInstance().player;
+        if (player == null) return;
+        Stand.getLazyOptional(player).ifPresent(props -> {
+            if (props.getStandOn() && props.getAbility())
+                switch (props.getStandID()) {
+                    default:
+                        break;
+                    case Util.StandID.AEROSMITH: {
+                        event.setCanceled(true);
+                        break;
+                    }
+                }
+        });
+    }
+
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
         World world = Minecraft.getInstance().world;
@@ -121,7 +139,7 @@ public class EventClientTick {
         float partialTicks = event.getPartialTicks();
         if (world == null) return;
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility()) {
+            if ((props.getStandID() == Util.StandID.AEROSMITH || props.getStandID() == Util.StandID.HIEROPHANT_GREEN) && props.getStandOn() && props.getAbility()) {
                 double posX = MathHelper.lerp(partialTicks, player.lastTickPosX, player.getPosX());
                 double posY = MathHelper.lerp(partialTicks, player.lastTickPosY, player.getPosY());
                 double posZ = MathHelper.lerp(partialTicks, player.lastTickPosZ, player.getPosZ());

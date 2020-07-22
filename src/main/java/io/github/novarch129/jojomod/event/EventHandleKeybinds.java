@@ -64,8 +64,16 @@ public class EventHandleKeybinds {
                         case Util.StandID.HIEROPHANT_GREEN: {
                             if (mc.gameSettings.keyBindForward.isKeyDown())
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.FORWARDS));
+                            if (mc.gameSettings.keyBindBack.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.BACKWARDS));
+                            if (mc.gameSettings.keyBindRight.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.RIGHT));
+                            if (mc.gameSettings.keyBindLeft.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.LEFT));
                             if (mc.gameSettings.keyBindJump.isKeyDown())
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.JUMP));
+                            if (mc.gameSettings.keyBindSneak.isKeyDown())
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.CROUCH));
                         }
                     }
             });

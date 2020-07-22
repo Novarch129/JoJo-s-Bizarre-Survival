@@ -86,7 +86,6 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                         case 0: {
                                             double motionX = (-MathHelper.sin(possessedEntity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(possessedEntity.rotationPitch / 180 * (float) Math.PI));
                                             double motionZ = (MathHelper.cos(possessedEntity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(possessedEntity.rotationPitch / 180 * (float) Math.PI));
-                                            double motionY = (-MathHelper.sin((possessedEntity.rotationPitch) / 180 * (float) Math.PI));
                                             switch (msg.direction) {
                                                 default:
                                                     break;
@@ -104,16 +103,45 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                                     break;
                                                 }
                                                 case FORWARDS: {
-                                                    possessedEntity.setMotion(motionX / 2, motionY / 2, motionZ / 2);
+                                                    possessedEntity.setMotion(
+                                                            motionX / 2.3,
+                                                            entity.getMotion().getY(),
+                                                            motionZ / 2.3
+                                                    );
+                                                    break;
+                                                }
+                                                case BACKWARDS: {
+                                                    possessedEntity.setMotion(
+                                                            -motionX / 2.3,
+                                                            entity.getMotion().getY(),
+                                                            -motionZ / 2.3
+                                                    );
+                                                    break;
+                                                }
+                                                case RIGHT: {
+                                                    possessedEntity.setMotion(
+                                                            -motionZ / 2.3,
+                                                            entity.getMotion().getY(),
+                                                            motionX / 2.3
+
+                                                    );
+                                                    break;
+                                                }
+                                                case LEFT: {
+                                                    possessedEntity.setMotion(
+                                                            motionZ / 2.3,
+                                                            entity.getMotion().getY(),
+                                                            -motionX / 2.3
+
+                                                    );
                                                     break;
                                                 }
                                             }
                                             break;
                                         }
                                         case 1: {
-                                            possessedEntity.rotationYaw = msg.yaw % 360;
-                                            possessedEntity.rotationPitch = msg.pitch % 360;
-                                            possessedEntity.setRotationYawHead(msg.yaw);
+                                            ((HierophantGreenEntity) entity).yaw = msg.yaw;
+                                            ((HierophantGreenEntity) entity).pitch = msg.pitch;
                                             break;
                                         }
                                         case 2: {

@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntit
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -13,6 +12,7 @@ import net.minecraft.world.World;
 @SuppressWarnings("ConstantConditions")
 public class HierophantGreenEntity extends AbstractStandEntity {
     public LivingEntity possessedEntity;
+    public float yaw, pitch;
 
     public HierophantGreenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -32,8 +32,8 @@ public class HierophantGreenEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                HierophantGreenTailEntity hierophantGreenTailEntity = new HierophantGreenTailEntity(world, this, getMaster());
-                hierophantGreenTailEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.15f);
+                HierophantGreenTailEntity hierophantGreenTailEntity = new HierophantGreenTailEntity(world, this, master);
+                hierophantGreenTailEntity.shoot(master, rotationPitch, rotationYaw, 3, 0.15f);
                 world.addEntity(hierophantGreenTailEntity);
             }
     }
@@ -44,8 +44,10 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (master != null) {
             if (master.getLastAttackedEntity() != null)
                 possessedEntity = master.getLastAttackedEntity();
-            if (possessedEntity instanceof MobEntity)
-                ((MobEntity) possessedEntity).setNoAI(true);
+            if (possessedEntity != null) {
+                possessedEntity.setRotation(yaw, pitch);
+                possessedEntity.setRotationYawHead(yaw);
+            }
 
             followMaster();
             setRotationYawHead(master.getRotationYawHead());
