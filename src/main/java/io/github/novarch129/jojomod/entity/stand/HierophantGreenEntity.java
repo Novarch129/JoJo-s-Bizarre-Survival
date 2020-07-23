@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.EmeraldSplashEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -45,6 +46,7 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (master != null) {
             if (master.getLastAttackedEntity() != null)
                 possessedEntity = master.getLastAttackedEntity();
+            Stand.getLazyOptional(master).ifPresent(props -> props.setAbilityActive(possessedEntity != null));
             if (possessedEntity != null) {
                 possessedEntity.setRotation(yaw, pitch);
                 if (possessedEntity.getMotion() == Vec3d.ZERO)

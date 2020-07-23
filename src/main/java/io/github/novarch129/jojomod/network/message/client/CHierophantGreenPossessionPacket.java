@@ -103,34 +103,34 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                                 }
                                                 case FORWARDS: {
                                                     possessedEntity.setMotion(
-                                                            motionX / 2.3,
+                                                            motionX / 2.5,
                                                             entity.getMotion().getY(),
-                                                            motionZ / 2.3
+                                                            motionZ / 2.5
                                                     );
                                                     break;
                                                 }
                                                 case BACKWARDS: {
                                                     possessedEntity.setMotion(
-                                                            -motionX / 2.3,
+                                                            -motionX / 2.5,
                                                             entity.getMotion().getY(),
-                                                            -motionZ / 2.3
+                                                            -motionZ / 2.5
                                                     );
                                                     break;
                                                 }
                                                 case RIGHT: {
                                                     possessedEntity.setMotion(
-                                                            -motionZ / 2.3,
+                                                            -motionZ / 2.5,
                                                             entity.getMotion().getY(),
-                                                            motionX / 2.3
+                                                            motionX / 2.5
 
                                                     );
                                                     break;
                                                 }
                                                 case LEFT: {
                                                     possessedEntity.setMotion(
-                                                            motionZ / 2.3,
+                                                            motionZ / 2.5,
                                                             entity.getMotion().getY(),
-                                                            -motionX / 2.3
+                                                            -motionX / 2.5
 
                                                     );
                                                     break;
@@ -145,6 +145,7 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                         }
                                         case 2: {
                                             Minecraft.getInstance().setRenderViewEntity(possessedEntity);
+                                            break;
                                         }
                                     }
                                 }

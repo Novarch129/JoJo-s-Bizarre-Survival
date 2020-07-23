@@ -69,10 +69,8 @@ public class TheWorldEntity extends AbstractStandEntity {
                             if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                 entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                 entity.setNoGravity(false);
-                            } else {
-                                if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
-                                    entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-                            }
+                            } else if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                             if (entity instanceof MobEntity)
                                 ((MobEntity) entity).setNoAI(false);
                             entity.velocityChanged = true;

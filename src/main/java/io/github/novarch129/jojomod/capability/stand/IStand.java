@@ -17,7 +17,7 @@ public interface IStand {
 
     int getAct();
 
-    void setAct(int act);
+    void setAct(int standAct);
 
     void changeAct();
 
@@ -49,7 +49,7 @@ public interface IStand {
 
     boolean getAbility();
 
-    void setAbility(boolean value);
+    void setAbility(boolean ability);
 
     int getTransformed();
 
@@ -78,6 +78,12 @@ public interface IStand {
     void putDiavolo(String truth);
 
     void putNoClip(boolean noClip);
+
+    boolean getAbilityActive();
+
+    void setAbilityActive(boolean abilityActive);
+
+    void putAbilityActive(boolean abilityActive);
 
     void clone(IStand props);
 

@@ -95,7 +95,6 @@ public class EventClientTick {
         event.setDensity(5);
     }
 
-    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @SubscribeEvent
     public static void renderHand(RenderHandEvent event) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
@@ -107,6 +106,11 @@ public class EventClientTick {
                         break;
                     case Util.StandID.AEROSMITH: {
                         event.setCanceled(true);
+                        break;
+                    }
+                    case Util.StandID.HIEROPHANT_GREEN: {
+                        if (props.getAbilityActive())
+                            event.setCanceled(true);
                         break;
                     }
                 }
@@ -122,7 +126,8 @@ public class EventClientTick {
         float partialTicks = event.getPartialTicks();
         if (world == null) return;
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if ((props.getStandID() == Util.StandID.AEROSMITH || props.getStandID() == Util.StandID.HIEROPHANT_GREEN) && props.getStandOn() && props.getAbility()) {
+            if ((props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility()) ||
+                    (props.getStandID() == Util.StandID.HIEROPHANT_GREEN && props.getStandOn() && props.getAbility() && props.getAbilityActive())) {
                 double posX = MathHelper.lerp(partialTicks, player.lastTickPosX, player.getPosX());
                 double posY = MathHelper.lerp(partialTicks, player.lastTickPosY, player.getPosY());
                 double posZ = MathHelper.lerp(partialTicks, player.lastTickPosZ, player.getPosZ());
