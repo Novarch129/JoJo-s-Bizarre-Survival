@@ -251,11 +251,11 @@
       }
     ]
   },
-  "time_resume_star_platinum": {
+  "resume_time_star_platinum": {
     "category": "neutral",
     "sounds": [
       {
-        "name": "jojomod:time_resume_star_platinum",
+        "name": "jojomod:resume_time_star_platinum",
         "stream": false
       }
     ]

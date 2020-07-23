@@ -20,6 +20,7 @@ import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -250,11 +251,11 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                             }
                         }
                         if (standMaster != null && livingEntity != standMaster && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
-                            ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0.0f));
+                            ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0));
                     }
                     if (!(entity instanceof EndermanEntity))
                         remove();
-                } else if (!world.isRemote && getMotion().x * getMotion().x + getMotion().y * getMotion().y + getMotion().z * getMotion().z < 0.0010000000474974513d)
+                } else if (!world.isRemote && getMotion().x * getMotion().x + getMotion().y * getMotion().y + getMotion().z * getMotion().z < 0.0010000000474974513)
                     remove();
             }
         } else if (result.getType() == RayTraceResult.Type.BLOCK) {
@@ -263,11 +264,12 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             setXYZ(pos);
             setMotion((float) (result.getHitVec().x - getPosX()), (float) (result.getHitVec().y - getPosY()), (float) (result.getHitVec().z - getPosZ()));
             float f2 = MathHelper.sqrt(getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ());
-            setPosition(getPosX() - getMotion().getX() / f2 * 0.05000000074505806d, getPosY() - getMotion().getY() / f2 * 0.05000000074505806d, getPosZ() - getMotion().getZ() / f2 * 0.05000000074505806d);
+            setPosition(getPosX() - getMotion().getX() / f2 * 0.05000000074505806d, getPosY() - getMotion().getY() / f2 * 0.05000000074505806, getPosZ() - getMotion().getZ() / f2 * 0.05000000074505806d);
             inGround = true;
             arrowShake = 7;
             if (!world.isRemote) {
                 if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.BlockHit(this, result, null))) return;
+                if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, standMaster))) return;
                 onBlockHit((BlockRayTraceResult) result);
                 if (state.getMaterial() != Material.AIR) {
                     state.getBlock().onProjectileCollision(world, state, (BlockRayTraceResult) result, this);

@@ -44,10 +44,10 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (master != null) {
             if (master.getLastAttackedEntity() != null)
                 possessedEntity = master.getLastAttackedEntity();
-            if (possessedEntity != null) {
-                possessedEntity.setRotation(yaw, pitch);
-                possessedEntity.setRotationYawHead(yaw);
-            }
+//            if (possessedEntity != null) {
+//                possessedEntity.setRotation(yaw, pitch);
+//                possessedEntity.setRotationYawHead(yaw);
+//            }
 
             followMaster();
             setRotationYawHead(master.getRotationYawHead());

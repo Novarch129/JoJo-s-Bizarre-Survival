@@ -9,7 +9,6 @@ import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -32,12 +31,7 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
-
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TheWorldEntity extends AbstractStandEntity {
     public static long dayTime = -1, gameTime = -1;
@@ -62,9 +56,9 @@ public class TheWorldEntity extends AbstractStandEntity {
                     gameTime = world.getGameTime();
                 }
             }
-        } else if (theWorld == null && StarPlatinumEntity.starPlatinum == null) {
+        } else if (theWorld == null && StarPlatinumEntity.starPlatinumList.size() <= 0) {
             if (!world.isRemote) {
-                Objects.requireNonNull(world.getServer(), "Null MinecraftServer on line 66 of EventTheWorldStopTime.").getWorld(world.dimension.getType()).getEntities()
+                world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
                         .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                             if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {

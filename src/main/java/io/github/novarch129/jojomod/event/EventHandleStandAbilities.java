@@ -13,6 +13,7 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
@@ -20,7 +21,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
@@ -211,7 +211,7 @@ public class EventHandleStandAbilities {
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
             if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
-                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                    player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
                 TheWorldEntity.theWorld = null;
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
@@ -236,8 +236,10 @@ public class EventHandleStandAbilities {
                             }));
             } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                 if (props.getAbility() && props.getTimeLeft() > 900)
-                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
-                StarPlatinumEntity.starPlatinum = null;
+                    player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
+                Entity starPlatinum = player.world.getEntityByID(props.getPlayerStand());
+                if (starPlatinum instanceof StarPlatinumEntity)
+                    StarPlatinumEntity.starPlatinumList.remove(starPlatinum);
                 StarPlatinumEntity.dayTime = -1;
                 StarPlatinumEntity.gameTime = -1;
                 if (!player.world.isRemote)
