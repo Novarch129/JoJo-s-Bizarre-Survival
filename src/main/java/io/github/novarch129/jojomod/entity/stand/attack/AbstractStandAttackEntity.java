@@ -361,8 +361,12 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        shootingStand = (AbstractStandEntity) world.getEntityByID(additionalData.readInt());
-        standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
+        try {
+            shootingStand = (AbstractStandEntity) world.getEntityByID(additionalData.readInt());
+            standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
+        } catch (IndexOutOfBoundsException exception) {
+            exception.printStackTrace();
+        }
         rotationYaw = additionalData.readFloat();
         rotationPitch = additionalData.readFloat();
     }

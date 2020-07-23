@@ -287,8 +287,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        if (master != null)
-            buffer.writeInt(getMaster().getEntityId());
+        buffer.writeInt(getMaster() == null ? -1 : master.getEntityId());
     }
 
     /**
@@ -298,8 +297,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        int entityID = additionalData.readInt();
-        Entity entity = world.getEntityByID(entityID);
+        Entity entity = world.getEntityByID(additionalData.readInt());
         if (entity instanceof PlayerEntity)
             setMaster((PlayerEntity) entity);
     }
