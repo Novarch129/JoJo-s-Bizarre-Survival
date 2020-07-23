@@ -64,7 +64,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                     }
                 }
             });
-        } else if (starPlatinumList.size() <= 0 && TheWorldEntity.theWorld == null) {
+        } else if (starPlatinumList.size() <= 0 && TheWorldEntity.theWorldList.size() <= 0) {
             if (!world.isRemote) {
                 world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
@@ -112,9 +112,14 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
         if (starPlatinumList.size() > 0)
             starPlatinumList.forEach(starPlatinum -> {
-                if (starPlatinum.ability && !starPlatinum.cooldown)
-                    if (event.getEntity().getUniqueID() != starPlatinum.master.getUniqueID())
+                if (starPlatinum.ability && !starPlatinum.cooldown) {
+                    if (event.getEntity() == null)
                         event.setCanceled(true);
+                    else {
+                        if (event.getEntity().getUniqueID() != starPlatinum.master.getUniqueID())
+                            event.setCanceled(true);
+                    }
+                }
             });
     }
 

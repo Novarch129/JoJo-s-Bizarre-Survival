@@ -5,6 +5,7 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.SheerHeartAttackEntity;
+import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import io.github.novarch129.jojomod.util.Util;
@@ -85,8 +86,7 @@ public class EventSyncCapability {
 
                                 });
                                 if (entity instanceof TheWorldEntity)
-                                    if (entity == TheWorldEntity.theWorld)
-                                        TheWorldEntity.theWorld = null;
+                                    TheWorldEntity.theWorldList.remove(entity);
                             });
                 } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                     player.getServerWorld().getEntities()
@@ -108,9 +108,8 @@ public class EventSyncCapability {
                                     props2.clear();
 
                                 });
-                                if (entity instanceof TheWorldEntity)
-                                    if (entity == TheWorldEntity.theWorld)
-                                        TheWorldEntity.theWorld = null;
+                                if (entity instanceof StarPlatinumEntity)
+                                    StarPlatinumEntity.starPlatinumList.remove(entity);
                             });
                 }
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));

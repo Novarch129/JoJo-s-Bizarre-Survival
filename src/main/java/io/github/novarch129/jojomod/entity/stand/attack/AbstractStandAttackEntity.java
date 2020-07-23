@@ -147,10 +147,9 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Override
     public void tick() {
         super.tick();
-        if (standMaster != null) {
-            rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
-            setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
-        }
+        if (standMaster == null) return;
+        rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
+        setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
         if (shootingEntity == null && !world.isRemote)
             remove();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
@@ -269,7 +268,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             arrowShake = 7;
             if (!world.isRemote) {
                 if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.BlockHit(this, result, null))) return;
-                if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, standMaster))) return;
+                if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, standMaster)))
+                    return;
                 onBlockHit((BlockRayTraceResult) result);
                 if (state.getMaterial() != Material.AIR) {
                     state.getBlock().onProjectileCollision(world, state, (BlockRayTraceResult) result, this);
@@ -352,11 +352,11 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
+        if (shootingStand == null || standMaster == null) return;
         buffer.writeInt(shootingStand.getEntityId());
         buffer.writeInt(standMaster.getEntityId());
         buffer.writeFloat(rotationYaw);
         buffer.writeFloat(rotationPitch);
-        buffer.writeFloat(getRotationYawHead());
     }
 
     @Override
@@ -365,7 +365,6 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
         rotationYaw = additionalData.readFloat();
         rotationPitch = additionalData.readFloat();
-        setRotationYawHead(additionalData.readFloat());
     }
 
 }

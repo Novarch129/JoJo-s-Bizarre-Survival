@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
@@ -31,11 +32,13 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TheWorldEntity extends AbstractStandEntity {
+    public static List<TheWorldEntity> theWorldList = Lists.newArrayList();
     public static long dayTime = -1, gameTime = -1;
-    public static TheWorldEntity theWorld;
     public int timestopTick;
     public boolean cooldown;
 
@@ -46,17 +49,19 @@ public class TheWorldEntity extends AbstractStandEntity {
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         World world = event.world;
-        if (theWorld != null) {
-            if (theWorld.ability && !theWorld.cooldown) {
-                if (dayTime != -1 && gameTime != -1) {
-                    world.setDayTime(dayTime);
-                    world.setGameTime(gameTime);
-                } else {
-                    dayTime = world.getDayTime();
-                    gameTime = world.getGameTime();
+        if (theWorldList.size() > 0) {
+            theWorldList.forEach(theWorld -> {
+                if (theWorld.ability && !theWorld.cooldown) {
+                    if (dayTime != -1 && gameTime != -1) {
+                        world.setDayTime(dayTime);
+                        world.setGameTime(gameTime);
+                    } else {
+                        dayTime = world.getDayTime();
+                        gameTime = world.getGameTime();
+                    }
                 }
-            }
-        } else if (theWorld == null && StarPlatinumEntity.starPlatinumList.size() <= 0) {
+            });
+        } else if (theWorldList.size() <= 0 && StarPlatinumEntity.starPlatinumList.size() <= 0) {
             if (!world.isRemote) {
                 world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
@@ -83,81 +88,106 @@ public class TheWorldEntity extends AbstractStandEntity {
 
     @SubscribeEvent
     public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    event.setCanceled(true);
+            });
+
     }
 
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getEntity() != null)
-                    if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown) {
+                    if (event.getEntity() == null)
                         event.setCanceled(true);
+                    else {
+                        if (event.getEntity().getUniqueID() != theWorldEntity.master.getUniqueID())
+                            event.setCanceled(true);
+                    }
+                }
+            });
     }
 
     @SubscribeEvent
     public static void pistonEvent(PistonEvent.Pre event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract1(PlayerInteractEvent.EntityInteractSpecific event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract2(PlayerInteractEvent.EntityInteract event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void enderTeleport(EnderTeleportEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getEntity().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @Override
@@ -206,7 +236,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                     player.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
                         world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 5.0f, 1.0f);
-                    theWorld = this;
+                    theWorldList.add(this);
 
                     if (!world.isRemote) {
                         if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -291,7 +321,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                 } else if (!ability || props2.getTimeLeft() <= 780) {
                     timestopTick = 0;
                     player.setInvulnerable(false);
-                    theWorld = null;
+                    theWorldList.remove(this);
                     if (!this.world.isRemote) {
                         this.world.getServer().getWorld(this.dimension).getEntities()
                                 .filter(entity -> entity != this)
@@ -379,7 +409,7 @@ public class TheWorldEntity extends AbstractStandEntity {
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         ability = false;
-        theWorld = null;
+        theWorldList.remove(this);
         dayTime = -1;
         gameTime = -1;
         if (!this.world.isRemote)

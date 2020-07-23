@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -44,10 +45,11 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (master != null) {
             if (master.getLastAttackedEntity() != null)
                 possessedEntity = master.getLastAttackedEntity();
-//            if (possessedEntity != null) {
-//                possessedEntity.setRotation(yaw, pitch);
-//                possessedEntity.setRotationYawHead(yaw);
-//            }
+            if (possessedEntity != null) {
+                possessedEntity.setRotation(yaw, pitch);
+                if (possessedEntity.getMotion() == Vec3d.ZERO)
+                    possessedEntity.setRotationYawHead(yaw);
+            }
 
             followMaster();
             setRotationYawHead(master.getRotationYawHead());

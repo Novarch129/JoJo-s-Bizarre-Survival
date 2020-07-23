@@ -17,7 +17,7 @@ public class PacketHandler {
         registerPacket(CStandSummonPacket.class, new CStandSummonPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(CStandAttackPacket.class, new CStandAttackPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(CToggleAbilityPacket.class, new CToggleAbilityPacket(), NetworkDirection.PLAY_TO_SERVER);
-        registerPacket(CAerosmithControlPacket.class, new CAerosmithControlPacket(), NetworkDirection.PLAY_TO_SERVER);
+        registerPacket(CAerosmithMovePacket.class, new CAerosmithMovePacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(CSyncStandAbilitiesPacket.class, new CSyncStandAbilitiesPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(SSyncStandCapabilityPacket.class, new SSyncStandCapabilityPacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(SSyncTimestopCapabilityPacket.class, new SSyncTimestopCapabilityPacket(), NetworkDirection.PLAY_TO_CLIENT);

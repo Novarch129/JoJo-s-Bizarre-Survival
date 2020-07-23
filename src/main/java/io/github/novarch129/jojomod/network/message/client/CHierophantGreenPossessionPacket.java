@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -141,6 +142,9 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                             ((HierophantGreenEntity) entity).yaw = msg.yaw;
                                             ((HierophantGreenEntity) entity).pitch = msg.pitch;
                                             break;
+                                        }
+                                        case 2: {
+                                            Minecraft.getInstance().setRenderViewEntity(possessedEntity);
                                         }
                                     }
                                 }

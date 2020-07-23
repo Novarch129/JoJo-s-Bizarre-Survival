@@ -212,7 +212,9 @@ public class EventHandleStandAbilities {
             if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
-                TheWorldEntity.theWorld = null;
+                Entity theWorld = player.world.getEntityByID(props.getPlayerStand());
+                if (theWorld instanceof TheWorldEntity)
+                    TheWorldEntity.theWorldList.remove(theWorld);
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
                 if (!player.world.isRemote)
