@@ -41,7 +41,7 @@ public class SSyncStandMasterPacket implements IMessage<SSyncStandMasterPacket> 
                 if (Minecraft.getInstance().world == null) return;
                 Entity stand = Minecraft.getInstance().world.getEntityByID(msg.standID);
                 Entity master = Minecraft.getInstance().world.getEntityByID(msg.masterID);
-                if (stand != null && master != null && stand.world.isRemote)
+                if (stand != null && master != null)
                     ((AbstractStandEntity) stand).setMaster((PlayerEntity) master);
             });
         }

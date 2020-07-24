@@ -2,10 +2,7 @@ package io.github.novarch129.jojomod.network.message;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.network.message.client.*;
-import io.github.novarch129.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
-import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
-import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
-import io.github.novarch129.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
+import io.github.novarch129.jojomod.network.message.server.*;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.util.Optional;

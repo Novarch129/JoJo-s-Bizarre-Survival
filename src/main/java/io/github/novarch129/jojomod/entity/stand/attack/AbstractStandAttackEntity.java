@@ -147,9 +147,10 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Override
     public void tick() {
         super.tick();
-        if (standMaster == null) return;
-        rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
-        setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
+        if (standMaster != null) {
+            rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
+            setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
+        }
         if (shootingEntity == null && !world.isRemote)
             remove();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
@@ -352,23 +353,18 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        if (shootingStand == null || standMaster == null) return;
-        buffer.writeInt(shootingStand.getEntityId());
-        buffer.writeInt(standMaster.getEntityId());
-        buffer.writeFloat(rotationYaw);
-        buffer.writeFloat(rotationPitch);
+        buffer.writeInt(shootingStand == null ? -1 : shootingStand.getEntityId());
+        buffer.writeInt(standMaster == null ? -1 : standMaster.getEntityId());
     }
 
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        try {
-            shootingStand = (AbstractStandEntity) world.getEntityByID(additionalData.readInt());
-            standMaster = (PlayerEntity) world.getEntityByID(additionalData.readInt());
-        } catch (IndexOutOfBoundsException exception) {
-            exception.printStackTrace();
-        }
-        rotationYaw = additionalData.readFloat();
-        rotationPitch = additionalData.readFloat();
+        Entity stand = world.getEntityByID(additionalData.readInt());
+        Entity master = world.getEntityByID(additionalData.readInt());
+        if (stand instanceof AbstractStandEntity)
+            shootingStand = (AbstractStandEntity) stand;
+        if (master instanceof PlayerEntity)
+            standMaster = (PlayerEntity) master;
     }
 
 }
