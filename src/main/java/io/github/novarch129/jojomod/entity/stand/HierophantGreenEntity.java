@@ -6,6 +6,8 @@ import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntit
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
@@ -50,6 +52,10 @@ public class HierophantGreenEntity extends AbstractStandEntity {
                 possessedEntity.setRotation(yaw, pitch);
                 if (possessedEntity.getMotion() == Vec3d.ZERO)
                     possessedEntity.setRotationYawHead(yaw);
+                if (possessedEntity instanceof MobEntity) {
+                    ((MobEntity) possessedEntity).goalSelector.disableFlag(Goal.Flag.LOOK);
+                    ((MobEntity) possessedEntity).goalSelector.disableFlag(Goal.Flag.MOVE);
+                }
             }
 
             followMaster();
@@ -78,6 +84,15 @@ public class HierophantGreenEntity extends AbstractStandEntity {
                     attackTicker = 0;
                 }
             }
+        }
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        if (possessedEntity instanceof MobEntity) {
+            ((MobEntity) possessedEntity).goalSelector.enableFlag(Goal.Flag.LOOK);
+            ((MobEntity) possessedEntity).goalSelector.enableFlag(Goal.Flag.MOVE);
         }
     }
 }

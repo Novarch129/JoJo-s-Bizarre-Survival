@@ -17,13 +17,13 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -43,11 +43,7 @@ public class EventClientTick {
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null) return;
         PlayerEntity player = Minecraft.getInstance().player;
-
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if (!props.getStandOn() || !props.getAbility())
-                if (!player.isSpectator())
-                    Minecraft.getInstance().setRenderViewEntity(player);
             if (Minecraft.getInstance().world == null) return;
             if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
@@ -62,15 +58,12 @@ public class EventClientTick {
                         .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == player.getEntityId())
                         .forEach(entity -> {
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket((byte) 2));
-
                             float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
                             float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
-
-                            if (pitch > 89.0f)
-                                pitch = 89.0f;
-                            else if (pitch < -89.0f)
-                                pitch = -89.0f;
-
+                            if (pitch > 89)
+                                pitch = 89;
+                            else if (pitch < -89)
+                                pitch = -89;
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
                         });
             if (!player.isSpectator() && (!props.getStandOn() || !props.getAbility()))
@@ -119,7 +112,7 @@ public class EventClientTick {
 
     @SubscribeEvent
     public static void onRenderWorldLast(RenderWorldLastEvent event) {
-        World world = Minecraft.getInstance().world;
+        ClientWorld world = Minecraft.getInstance().world;
         Vec3d projectedView = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
         MatrixStack matrixStack = event.getMatrixStack();
         ClientPlayerEntity player = Minecraft.getInstance().player;
@@ -145,6 +138,30 @@ public class EventClientTick {
                         Minecraft.getInstance().getRenderManager().getPackedLight(player, partialTicks)
                 );
                 matrixStack.pop();
+            }
+            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
+                StreamSupport.stream(world.getAllEntities().spliterator(), false)
+                        .filter(entity -> entity instanceof LivingEntity)
+                        .filter(entity -> ((LivingEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
+                        .forEach(entity -> {
+                            double posX = MathHelper.lerp(partialTicks, entity.lastTickPosX, entity.getPosX());
+                            double posY = MathHelper.lerp(partialTicks, entity.lastTickPosY, entity.getPosY());
+                            double posZ = MathHelper.lerp(partialTicks, entity.lastTickPosZ, entity.getPosZ());
+                            float yaw = MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw);
+                            matrixStack.push();
+                            Minecraft.getInstance().getRenderManager().renderEntityStatic(
+                                    entity,
+                                    posX - projectedView.getX(),
+                                    posY - projectedView.getY(),
+                                    posZ - projectedView.getZ(),
+                                    yaw,
+                                    partialTicks,
+                                    matrixStack,
+                                    Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(),
+                                    Minecraft.getInstance().getRenderManager().getPackedLight(entity, partialTicks)
+                            );
+                            matrixStack.pop();
+                        });
             }
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
             //Code below is *very* experimental, not final in any way.

@@ -57,7 +57,7 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
 
                 player.setInvulnerable(false);
-            } else if (standOn && !ability) {
+            } else if (!props.getAbilityActive()) {
                 if (cooldown > 0)
                     props.subtractCooldown(0.5);
 
@@ -72,8 +72,8 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void effectAddedEvent(PotionEvent.PotionAddedEvent event) {
-        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(true);
+//        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
+//            event.getEntityLiving().setGlowing(true);
     }
 
     @SubscribeEvent

@@ -7,6 +7,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -27,8 +29,13 @@ public class HierophantGreenTailEntity extends AbstractStandAttackEntity {
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 3);
-        if (entity instanceof LivingEntity)
+        if (entity instanceof LivingEntity) {
+            if (((HierophantGreenEntity) shootingStand).possessedEntity instanceof MobEntity) {
+                ((MobEntity) ((HierophantGreenEntity) shootingStand).possessedEntity).goalSelector.enableFlag(Goal.Flag.LOOK);
+                ((MobEntity) ((HierophantGreenEntity) shootingStand).possessedEntity).goalSelector.enableFlag(Goal.Flag.MOVE);
+            }
             ((HierophantGreenEntity) shootingStand).possessedEntity = (LivingEntity) entity;
+        }
         entity.hurtResistantTime = 0;
     }
 
