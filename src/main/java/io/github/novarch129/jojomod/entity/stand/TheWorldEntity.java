@@ -37,13 +37,20 @@ import java.util.List;
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TheWorldEntity extends AbstractStandEntity {
-    public static List<TheWorldEntity> theWorldList = Lists.newArrayList();
     public static long dayTime = -1, gameTime = -1;
+    /**
+     * A list of every {@link TheWorldEntity} in the {@link World}, used to cancel events and unfreeze entities on logout.
+     */
+    private static List<TheWorldEntity> theWorldList = Lists.newArrayList();
     public int timestopTick;
     public boolean cooldown;
 
     public TheWorldEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
+    }
+
+    public static List<TheWorldEntity> getTheWorldList() {
+        return theWorldList;
     }
 
     @SubscribeEvent
@@ -61,7 +68,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                     }
                 }
             });
-        } else if (theWorldList.size() <= 0 && StarPlatinumEntity.starPlatinumList.size() <= 0) {
+        } else if (theWorldList.size() <= 0 && StarPlatinumEntity.getStarPlatinumList().size() <= 0) {
             if (!world.isRemote) {
                 world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))

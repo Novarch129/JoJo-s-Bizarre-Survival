@@ -25,7 +25,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 /**
- * @author Novarch
+ * @author Novarch129
  * @since 1.15.2-1.0.0.0
  * <p>
  * The main {@link Mod} class, used mostly for registering objects.

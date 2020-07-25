@@ -86,7 +86,7 @@ public class EventSyncCapability {
 
                                 });
                                 if (entity instanceof TheWorldEntity)
-                                    TheWorldEntity.theWorldList.remove(entity);
+                                    TheWorldEntity.getTheWorldList().remove(entity);
                             });
                 } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                     player.getServerWorld().getEntities()
@@ -109,7 +109,7 @@ public class EventSyncCapability {
 
                                 });
                                 if (entity instanceof StarPlatinumEntity)
-                                    StarPlatinumEntity.starPlatinumList.remove(entity);
+                                    StarPlatinumEntity.getStarPlatinumList().remove(entity);
                             });
                 }
                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SSyncStandCapabilityPacket(props));

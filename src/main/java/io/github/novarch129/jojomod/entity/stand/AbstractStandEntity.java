@@ -330,10 +330,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         String s;
         if (compoundNBT.contains("MasterUUID", 8))
             s = compoundNBT.getString("MasterUUID");
-        else {
-            String s1 = compoundNBT.getString("MasterUUID");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), s1);
-        }
+        else
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), compoundNBT.getString("MasterUUID"));
         if (!s.isEmpty())
             setMasterUUID(UUID.fromString(s)); //Got most of this code from AbstractHorseEntity, though I improved it a bit.
     }

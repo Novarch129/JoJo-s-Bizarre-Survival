@@ -44,9 +44,8 @@ public class HierophantGreenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (master != null) {
-            if (master.getLastAttackedEntity() != null)
-                possessedEntity = master.getLastAttackedEntity();
             Stand.getLazyOptional(master).ifPresent(props -> props.setAbilityActive(possessedEntity != null));
+
             if (possessedEntity != null) {
                 possessedEntity.setRotation(yaw, pitch);
                 if (possessedEntity.getMotion() == Vec3d.ZERO)

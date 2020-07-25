@@ -214,7 +214,7 @@ public class EventHandleStandAbilities {
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
                 Entity theWorld = player.world.getEntityByID(props.getPlayerStand());
                 if (theWorld instanceof TheWorldEntity)
-                    TheWorldEntity.theWorldList.remove(theWorld);
+                    TheWorldEntity.getTheWorldList().remove(theWorld);
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
                 if (!player.world.isRemote)
@@ -241,7 +241,7 @@ public class EventHandleStandAbilities {
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
                 Entity starPlatinum = player.world.getEntityByID(props.getPlayerStand());
                 if (starPlatinum instanceof StarPlatinumEntity)
-                    StarPlatinumEntity.starPlatinumList.remove(starPlatinum);
+                    StarPlatinumEntity.getStarPlatinumList().remove(starPlatinum);
                 StarPlatinumEntity.dayTime = -1;
                 StarPlatinumEntity.gameTime = -1;
                 if (!player.world.isRemote)

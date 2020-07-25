@@ -2,9 +2,10 @@ package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
+import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
@@ -57,28 +58,26 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
                                 .filter(entity -> entity instanceof AerosmithEntity)
                                 .filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                 .forEach(entity -> {
-                                    double motionX = -MathHelper.sin(entity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(entity.rotationPitch / 180 * (float) Math.PI);
-                                    double motionZ = MathHelper.cos(entity.rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(entity.rotationPitch / 180 * (float) Math.PI);
-                                    double motionY = -MathHelper.sin(entity.rotationPitch / 180 * (float) Math.PI);
+                                    Vec3d motion = Util.getEntityForwardsMotion(entity);
                                     switch (msg.direction) {
                                         case FORWARDS: {
                                             if (msg.sprint) {
-                                                entity.setVelocity(motionX, motionY, motionZ);
+                                                entity.setVelocity(motion.getX(), motion.getY(), motion.getZ());
                                                 entity.setSprinting(true);
                                             } else
-                                                entity.setVelocity(motionX * 0.5, entity.getMotion().getY(), motionZ * 0.5);
+                                                entity.setVelocity(motion.getX() * 0.5, entity.getMotion().getY(), motion.getZ() * 0.5);
                                             break;
                                         }
                                         case BACKWARDS: {
-                                            entity.setVelocity(-motionX * 0.6, entity.getMotion().getY(), -motionZ * 0.6);
+                                            entity.setVelocity(-motion.getX() * 0.6, entity.getMotion().getY(), -motion.getZ() * 0.6);
                                             break;
                                         }
                                         case RIGHT: {
-                                            entity.setVelocity(-motionZ * 0.5, entity.getMotion().getY(), motionX * 0.5);
+                                            entity.setVelocity(-motion.getZ() * 0.5, entity.getMotion().getY(), motion.getX() * 0.5);
                                             break;
                                         }
                                         case LEFT: {
-                                            entity.setVelocity(motionZ * 0.5, entity.getMotion().getY(), -motionX * 0.5);
+                                            entity.setVelocity(motion.getZ() * 0.5, entity.getMotion().getY(), -motion.getX() * 0.5);
                                             break;
                                         }
                                         case UP: {
