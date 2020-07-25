@@ -64,6 +64,7 @@ public class JojoBizarreSurvival {
         PacketHandler.register();
     }
 
+    @Deprecated //Replace with RegisterCommandsEvent in 1.16, todo.
     private void onServerStarting(FMLServerStartingEvent event) {
         StandCommand.register(event.getCommandDispatcher());
     }

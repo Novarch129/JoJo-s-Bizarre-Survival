@@ -11,7 +11,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-//TODO Overhaul in 1.16
+@Deprecated //Replace with .json dimensions in 1.16.
 public class DimensionInit {
     public static final DeferredRegister<ModDimension> DIMENSIONS = DeferredRegister.create(ForgeRegistries.MOD_DIMENSIONS, JojoBizarreSurvival.MOD_ID);
 
