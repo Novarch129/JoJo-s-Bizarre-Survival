@@ -227,18 +227,15 @@ public class TheWorldEntity extends AbstractStandEntity {
     @Override
     public void tick() {
         super.tick();
-        fallDistance = 0.0f;
-
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props2 -> {
+            Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
 
                 if (ability && props2.getTimeLeft() > 780) {
                     props2.subtractTimeLeft(1);
-                    Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
+                    Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
-                    player.setInvulnerable(true);
+                    master.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
                         world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 5.0f, 1.0f);
                     theWorldList.add(this);
@@ -250,7 +247,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                         }
                         world.getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                 .forEach(entity -> {
                                     if (entity instanceof PlayerEntity) {
@@ -263,7 +260,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                                             return;
                                     }
                                     if (entity instanceof MobEntity) {
-                                        if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
                                             ((MobEntity) entity).setAttackTarget(null);
                                             ((MobEntity) entity).setRevengeTarget(null);
                                         }
@@ -325,12 +322,12 @@ public class TheWorldEntity extends AbstractStandEntity {
                     }
                 } else if (!ability || props2.getTimeLeft() <= 780) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                     theWorldList.remove(this);
                     if (!this.world.isRemote) {
                         this.world.getServer().getWorld(this.dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
@@ -377,29 +374,29 @@ public class TheWorldEntity extends AbstractStandEntity {
 
                 if (!ability) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                 }
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, master);
                         theWorld1.setRandomPositions();
-                        theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+                        theWorld1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld1);
-                        TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, player);
+                        TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, master);
                         theWorld2.setRandomPositions();
-                        theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+                        theWorld2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld2);
                     }
                 if (attackTicker >= 80) {

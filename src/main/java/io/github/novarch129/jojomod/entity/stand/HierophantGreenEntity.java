@@ -59,7 +59,7 @@ public class HierophantGreenEntity extends AbstractStandEntity {
             }
 
             followMaster();
-            setRotationYawHead(master.getRotationYawHead());
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             if (master.swingProgressInt == 0 && !attackRush)

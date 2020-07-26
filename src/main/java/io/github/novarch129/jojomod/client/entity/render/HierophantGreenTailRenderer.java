@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 
-public class HierophantGreenTailRenderer extends StandPunchRenderer<HierophantGreenTailEntity> {
+public class HierophantGreenTailRenderer extends AbstractStandPunchRenderer<HierophantGreenTailEntity> {
     protected static ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/hierophant_green_tail.png");
 
     public HierophantGreenTailRenderer(EntityRendererManager manager) {

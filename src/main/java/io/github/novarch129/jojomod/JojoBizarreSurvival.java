@@ -53,7 +53,7 @@ public class JojoBizarreSurvival {
         ItemInit.ITEMS.register(modBus);
         EntityInit.ENTITY_TYPES.register(modBus);
         SoundInit.SOUNDS.register(modBus);
-        DimensionInit.DIMENSIONS.register(modBus);
+        DimensionInit.DIMENSIONS.register(modBus); //Deprecated in preparation for 1.16.
         EffectInit.EFFECTS.register(modBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
     }

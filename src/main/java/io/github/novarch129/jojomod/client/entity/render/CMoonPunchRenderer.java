@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class CMoonPunchRenderer extends StandPunchRenderer<CMoonPunchEntity> {
+public class CMoonPunchRenderer extends AbstractStandPunchRenderer<CMoonPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon_punch.png");
 
     public CMoonPunchRenderer(EntityRendererManager renderManagerIn) {

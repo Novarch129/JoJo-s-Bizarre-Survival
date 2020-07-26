@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.PurpleHazeEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class PurpleHazeModel extends EntityModel<PurpleHazeEntity> {
+public class PurpleHazeModel extends AbstractStandModel<PurpleHazeEntity> {
     private final ModelRenderer PurpleHaze;
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
@@ -421,9 +420,8 @@ public class PurpleHazeModel extends EntityModel<PurpleHazeEntity> {
         PurpleHaze.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    public ModelRenderer getHead() {
+        return HeadBase;
     }
 }

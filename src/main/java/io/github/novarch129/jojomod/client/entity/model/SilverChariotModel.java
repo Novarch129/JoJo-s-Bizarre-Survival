@@ -3,67 +3,66 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.SilverChariotEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class SilverChariotModel extends EntityModel<SilverChariotEntity> {
-    public final ModelRenderer HeadBase;
-    public final ModelRenderer Head;
-    public final ModelRenderer Eyes;
-    public final ModelRenderer Helmet;
-    public final ModelRenderer Removable;
-    public final ModelRenderer NoArmor;
-    public final ModelRenderer Ears;
-    public final ModelRenderer BodyBase;
-    public final ModelRenderer Torso;
-    public final ModelRenderer ChestPads;
-    public final ModelRenderer ShoulderPads;
-    public final ModelRenderer ShoulderPad1;
-    public final ModelRenderer Spikes;
-    public final ModelRenderer Spike;
-    public final ModelRenderer Spike2;
-    public final ModelRenderer Spike3;
-    public final ModelRenderer Spike4;
-    public final ModelRenderer Spike5;
-    public final ModelRenderer ShoulderPad2;
-    public final ModelRenderer Spikes2;
-    public final ModelRenderer Spike6;
-    public final ModelRenderer Spike7;
-    public final ModelRenderer Spike8;
-    public final ModelRenderer Spike9;
-    public final ModelRenderer Spike10;
-    public final ModelRenderer Chest;
-    public final ModelRenderer NoArmorChest;
-    public final ModelRenderer Abs;
-    public final ModelRenderer Pipes;
-    public final ModelRenderer Pipe1;
-    public final ModelRenderer Pipe3;
-    public final ModelRenderer Pipe2;
-    public final ModelRenderer Pipe4;
-    public final ModelRenderer Arms;
-    public final ModelRenderer RightArm;
-    public final ModelRenderer RightHand;
-    public final ModelRenderer Sword;
-    public final ModelRenderer RightArm2;
-    public final ModelRenderer RightHand2;
-    public final ModelRenderer Crotch;
-    public final ModelRenderer Circle;
-    public final ModelRenderer Legs;
-    public final ModelRenderer RightLeg;
-    public final ModelRenderer RightFoot;
-    public final ModelRenderer LeftLeg;
-    public final ModelRenderer LeftFoot;
+public class SilverChariotModel extends AbstractStandModel<SilverChariotEntity> {
+    private final ModelRenderer HeadBase;
+    private final ModelRenderer Head;
+    private final ModelRenderer Eyes;
+    private final ModelRenderer Helmet;
+    private final ModelRenderer Removable;
+    private final ModelRenderer NoArmor;
+    private final ModelRenderer Ears;
+    private final ModelRenderer BodyBase;
+    private final ModelRenderer Torso;
+    private final ModelRenderer ChestPads;
+    private final ModelRenderer ShoulderPads;
+    private final ModelRenderer ShoulderPad1;
+    private final ModelRenderer Spikes;
+    private final ModelRenderer Spike;
+    private final ModelRenderer Spike2;
+    private final ModelRenderer Spike3;
+    private final ModelRenderer Spike4;
+    private final ModelRenderer Spike5;
+    private final ModelRenderer ShoulderPad2;
+    private final ModelRenderer Spikes2;
+    private final ModelRenderer Spike6;
+    private final ModelRenderer Spike7;
+    private final ModelRenderer Spike8;
+    private final ModelRenderer Spike9;
+    private final ModelRenderer Spike10;
+    private final ModelRenderer Chest;
+    private final ModelRenderer NoArmorChest;
+    private final ModelRenderer Abs;
+    private final ModelRenderer Pipes;
+    private final ModelRenderer Pipe1;
+    private final ModelRenderer Pipe3;
+    private final ModelRenderer Pipe2;
+    private final ModelRenderer Pipe4;
+    private final ModelRenderer Arms;
+    private final ModelRenderer RightArm;
+    private final ModelRenderer RightHand;
+    private final ModelRenderer Sword;
+    private final ModelRenderer RightArm2;
+    private final ModelRenderer RightHand2;
+    private final ModelRenderer Crotch;
+    private final ModelRenderer Circle;
+    private final ModelRenderer Legs;
+    private final ModelRenderer RightLeg;
+    private final ModelRenderer RightFoot;
+    private final ModelRenderer LeftLeg;
+    private final ModelRenderer LeftFoot;
 
     public SilverChariotModel() {
         textureWidth = 128;
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -5.0F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -7.25F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 2.25F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -11.2F, -4.0F, 8.0F, 9.0F, 8.0F, 0.0F, false);
 
@@ -353,10 +352,6 @@ public class SilverChariotModel extends EntityModel<SilverChariotEntity> {
     }
 
     @Override
-    public void setRotationAngles(SilverChariotEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void setLivingAnimations(SilverChariotEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
         if (!entityIn.hasArmor()) {
             Removable.showModel = false;
@@ -379,9 +374,8 @@ public class SilverChariotModel extends EntityModel<SilverChariotEntity> {
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    protected ModelRenderer getHead() {
+        return HeadBase;
     }
 }

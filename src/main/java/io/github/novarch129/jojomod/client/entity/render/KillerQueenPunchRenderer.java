@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class KillerQueenPunchRenderer extends StandPunchRenderer<KillerQueenPunchEntity> {
+public class KillerQueenPunchRenderer extends AbstractStandPunchRenderer<KillerQueenPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
 
     public KillerQueenPunchRenderer(EntityRendererManager renderManagerIn) {

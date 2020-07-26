@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.WeatherReportEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class WeatherReportModel extends EntityModel<WeatherReportEntity> {
+public class WeatherReportModel extends AbstractStandModel<WeatherReportEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Eyes;
@@ -27,7 +26,6 @@ public class WeatherReportModel extends EntityModel<WeatherReportEntity> {
     private final ModelRenderer RightArm2;
     private final ModelRenderer RightHand2;
     private final ModelRenderer Crotch;
-    private final ModelRenderer Circle;
     private final ModelRenderer Legs;
     private final ModelRenderer RightLeg;
     private final ModelRenderer RightFoot;
@@ -39,11 +37,11 @@ public class WeatherReportModel extends EntityModel<WeatherReportEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -6.5F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 2.5F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -10.2F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
@@ -148,12 +146,6 @@ public class WeatherReportModel extends EntityModel<WeatherReportEntity> {
         BodyBase.addChild(Crotch);
         Crotch.setTextureOffset(32, 68).addBox(-4.5F, -19.2058F, -4.347F, 9.0F, 5.0F, 5.0F, 0.0F, false);
 
-        Circle = new ModelRenderer(this);
-        Circle.setRotationPoint(0.0F, 0.0F, 0.0F);
-        Crotch.addChild(Circle);
-        setRotationAngle(Circle, -0.0873F, 0.0F, 0.0F);
-
-
         Legs = new ModelRenderer(this);
         Legs.setRotationPoint(0.0F, 0.0F, 0.0F);
         BodyBase.addChild(Legs);
@@ -185,18 +177,13 @@ public class WeatherReportModel extends EntityModel<WeatherReportEntity> {
     }
 
     @Override
-    public void setRotationAngles(WeatherReportEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    protected ModelRenderer getHead() {
+        return HeadBase;
     }
 }

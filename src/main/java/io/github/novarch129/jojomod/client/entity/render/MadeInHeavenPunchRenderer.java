@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class MadeInHeavenPunchRenderer extends StandPunchRenderer<MadeInHeavenPunchEntity> {
+public class MadeInHeavenPunchRenderer extends AbstractStandPunchRenderer<MadeInHeavenPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/made_in_heaven_punch.png");
 
     public MadeInHeavenPunchRenderer(EntityRendererManager renderManagerIn) {

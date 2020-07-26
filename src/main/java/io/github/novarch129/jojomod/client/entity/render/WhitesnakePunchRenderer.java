@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class WhitesnakePunchRenderer extends StandPunchRenderer<WhitesnakePunchEntity> {
+public class WhitesnakePunchRenderer extends AbstractStandPunchRenderer<WhitesnakePunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
 
     public WhitesnakePunchRenderer(EntityRendererManager renderManagerIn) {

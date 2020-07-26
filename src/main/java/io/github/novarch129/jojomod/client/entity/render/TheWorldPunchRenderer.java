@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class TheWorldPunchRenderer extends StandPunchRenderer<TheWorldPunchEntity> {
+public class TheWorldPunchRenderer extends AbstractStandPunchRenderer<TheWorldPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world_punch.png");
 
     public TheWorldPunchRenderer(EntityRendererManager renderManagerIn) {

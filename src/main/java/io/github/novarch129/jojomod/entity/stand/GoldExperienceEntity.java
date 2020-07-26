@@ -74,7 +74,7 @@ public class GoldExperienceEntity extends AbstractStandEntity {
             master.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
 
             followMaster();
-            setRotationYawHead(master.rotationYaw);
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             if (master.swingProgressInt == 0 && !attackRush)

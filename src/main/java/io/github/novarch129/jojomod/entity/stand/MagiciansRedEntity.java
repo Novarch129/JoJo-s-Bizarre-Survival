@@ -75,7 +75,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
             }
 
             followMaster();
-            setRotationYawHead(master.rotationYaw);
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             if (master.getFireTimer() > 0)

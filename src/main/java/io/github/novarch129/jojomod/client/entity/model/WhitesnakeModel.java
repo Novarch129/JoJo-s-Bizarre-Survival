@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.WhitesnakeEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
+public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Eyes;
@@ -14,7 +13,6 @@ public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
     private final ModelRenderer Mask1;
     private final ModelRenderer Mask2;
     private final ModelRenderer Spikes;
-    private final ModelRenderer Neck;
     private final ModelRenderer BodyBase;
     private final ModelRenderer Torso;
     private final ModelRenderer Chest;
@@ -38,11 +36,11 @@ public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.65F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -8.4F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.1F, 0.0F);
+        Head.setRotationPoint(0.0F, 3.85F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -11.65F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
@@ -56,7 +54,7 @@ public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
         Helmet.setRotationPoint(0.1977F, -7.35F, -0.1818F);
         Head.addChild(Helmet);
         Helmet.setTextureOffset(53, 0).addBox(-4.6977F, -4.3F, -4.3182F, 9.0F, 3.0F, 9.0F, 0.0F, false);
-        Helmet.setTextureOffset(53, 0).addBox(-4.6977F, -4.575F, -4.3182F, 9.0F, 1.0F, 9.0F, 0.0F, false);
+        Helmet.setTextureOffset(53, 0).addBox(-4.6977F, -4.3F, -4.3182F, 9.0F, 0.0F, 9.0F, 0.0F, false);
         Helmet.setTextureOffset(53, 0).addBox(-4.6977F, -1.725F, 3.6818F, 9.0F, 3.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(53, 0).addBox(-1.1977F, -1.3F, -4.3182F, 2.0F, 1.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(53, 0).addBox(1.3023F, -0.3F, -4.3182F, 3.0F, 1.0F, 8.0F, 0.0F, false);
@@ -98,11 +96,6 @@ public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
         Spikes.setTextureOffset(0, 74).addBox(3.3023F, -8.3F, 3.6818F, 1.0F, 4.0F, 1.0F, 0.0F, false);
         Spikes.setTextureOffset(0, 74).addBox(-4.6977F, -8.3F, 3.6818F, 1.0F, 4.0F, 1.0F, 0.0F, true);
         Spikes.setTextureOffset(0, 74).addBox(-1.0227F, -8.3F, 3.6818F, 2.0F, 4.0F, 1.0F, 0.0F, false);
-
-        Neck = new ModelRenderer(this);
-        Neck.setRotationPoint(0.0F, 0.0F, 0.0F);
-        Head.addChild(Neck);
-        Neck.setTextureOffset(0, 0).addBox(-1.75F, -4.45F, -1.25F, 3.0F, 2.0F, 3.0F, 0.0F, false);
 
         BodyBase = new ModelRenderer(this);
         BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -210,18 +203,13 @@ public class WhitesnakeModel extends EntityModel<WhitesnakeEntity> {
     }
 
     @Override
-    public void setRotationAngles(WhitesnakeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    protected ModelRenderer getHead() {
+        return HeadBase;
     }
 }

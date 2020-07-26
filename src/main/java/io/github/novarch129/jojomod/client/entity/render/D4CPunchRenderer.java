@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class D4CPunchRenderer extends StandPunchRenderer<D4CPunchEntity> {
+public class D4CPunchRenderer extends AbstractStandPunchRenderer<D4CPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/d4c_punch.png");
 
     public D4CPunchRenderer(EntityRendererManager renderManagerIn) {

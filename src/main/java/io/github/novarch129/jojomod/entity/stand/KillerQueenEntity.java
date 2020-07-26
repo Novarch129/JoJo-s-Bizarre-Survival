@@ -115,7 +115,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
 
             followMaster();
-            setRotationYawHead(master.rotationYaw);
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             if (master.swingProgressInt == 0 && !attackRush)

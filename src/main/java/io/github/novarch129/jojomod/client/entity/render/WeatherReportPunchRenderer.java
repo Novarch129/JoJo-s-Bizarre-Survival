@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class WeatherReportPunchRenderer extends StandPunchRenderer<WeatherReportPunchEntity> {
+public class WeatherReportPunchRenderer extends AbstractStandPunchRenderer<WeatherReportPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report_punch.png");
 
     public WeatherReportPunchRenderer(EntityRendererManager renderManagerIn) {

@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class TheWorldModel extends EntityModel<TheWorldEntity> {
+public class TheWorldModel extends AbstractStandModel<TheWorldEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Eyes;
@@ -82,11 +81,11 @@ public class TheWorldModel extends EntityModel<TheWorldEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -6.25F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 2.25F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -10.1F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -10.1F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, true);
@@ -95,8 +94,8 @@ public class TheWorldModel extends EntityModel<TheWorldEntity> {
         Eyes = new ModelRenderer(this);
         Eyes.setRotationPoint(0.0F, 0.0F, -0.225F);
         Head.addChild(Eyes);
-        Eyes.setTextureOffset(0, 0).addBox(-3.0F, -7.1F, -3.9F, 2.0F, 1.0F, 1.0F, 0.0F, true);
-        Eyes.setTextureOffset(0, 0).addBox(1.0F, -7.1F, -3.9F, 2.0F, 1.0F, 1.0F, 0.0F, false);
+        Eyes.setTextureOffset(0, 0).addBox(-3.0F, -7.1F, -4.225F, 2.0F, 1.0F, 1.0F, 0.0F, true);
+        Eyes.setTextureOffset(0, 0).addBox(1.0F, -7.1F, -4.225F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
         Helmet = new ModelRenderer(this);
         Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -107,13 +106,13 @@ public class TheWorldModel extends EntityModel<TheWorldEntity> {
         Helmet.setTextureOffset(81, 117).addBox(3.675F, -11.375F, -5.25F, 1.0F, 1.0F, 10.0F, 0.0F, false);
         Helmet.setTextureOffset(96, 112).addBox(-4.675F, -6.275F, -5.25F, 1.0F, 1.0F, 6.0F, 0.0F, true);
         Helmet.setTextureOffset(96, 112).addBox(3.675F, -6.275F, -5.25F, 1.0F, 1.0F, 6.0F, 0.0F, false);
-        Helmet.setTextureOffset(42, 118).addBox(-4.0F, -11.375F, -5.25F, 8.0F, 1.0F, 9.0F, 0.0F, false);
+        Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, -5.25F, 8.0F, 1.0F, 9.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.125F, -5.25F, 8.0F, 4.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-1.0F, -8.025F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(109, 104).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
 
         Mask = new ModelRenderer(this);
         Mask.setRotationPoint(-3.5F, -2.25F, -0.3F);
@@ -214,7 +213,7 @@ public class TheWorldModel extends EntityModel<TheWorldEntity> {
         Tube11.setTextureOffset(110, 123).addBox(-1.2421F, 1.0997F, -1.7946F, 1.0F, 4.0F, 1.0F, 0.0F, false);
 
         Heart = new ModelRenderer(this);
-        Heart.setRotationPoint(-0.25F, 15.65F, 0.6F);
+        Heart.setRotationPoint(-0.25F, 15.275F, 0.6F);
         Head.addChild(Heart);
 
 
@@ -548,18 +547,13 @@ public class TheWorldModel extends EntityModel<TheWorldEntity> {
     }
 
     @Override
-    public void setRotationAngles(TheWorldEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    protected ModelRenderer getHead() {
+        return HeadBase;
     }
 }

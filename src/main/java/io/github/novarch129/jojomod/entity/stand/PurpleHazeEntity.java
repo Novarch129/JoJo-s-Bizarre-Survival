@@ -59,7 +59,7 @@ public class PurpleHazeEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
 
             followMaster();
-            setRotationYawHead(master.rotationYaw);
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             if (master.swingProgressInt == 0 && !attackRush)

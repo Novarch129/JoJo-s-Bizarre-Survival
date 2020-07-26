@@ -59,9 +59,8 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-
             followMaster();
-            setRotationYawHead(master.rotationYaw);
+            setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
             master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));

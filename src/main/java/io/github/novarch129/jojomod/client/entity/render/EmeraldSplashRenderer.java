@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 
-public class EmeraldSplashRenderer extends StandPunchRenderer<EmeraldSplashEntity> {
+public class EmeraldSplashRenderer extends AbstractStandPunchRenderer<EmeraldSplashEntity> {
     protected static ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/emerald_splash.png");
 
     public EmeraldSplashRenderer(EntityRendererManager manager) {

@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class StandPunchRenderer<T extends AbstractStandAttackEntity> extends EntityRenderer<T> {
-    public StandPunchRenderer(EntityRendererManager manager) {
+public abstract class AbstractStandPunchRenderer<T extends AbstractStandAttackEntity> extends EntityRenderer<T> {
+    public AbstractStandPunchRenderer(EntityRendererManager manager) {
         super(manager);
     }
 

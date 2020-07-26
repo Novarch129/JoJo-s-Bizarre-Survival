@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class CrazyDiamondPunchRenderer extends StandPunchRenderer<CrazyDiamondPunchEntity> {
+public class CrazyDiamondPunchRenderer extends AbstractStandPunchRenderer<CrazyDiamondPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
 
     public CrazyDiamondPunchRenderer(EntityRendererManager renderManagerIn) {

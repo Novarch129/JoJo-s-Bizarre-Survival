@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class GoldExperienceRequiemPunchRenderer extends StandPunchRenderer<GoldExperienceRequiemPunchEntity> {
+public class GoldExperienceRequiemPunchRenderer extends AbstractStandPunchRenderer<GoldExperienceRequiemPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger_punch.png");
 
     public GoldExperienceRequiemPunchRenderer(EntityRendererManager renderManagerIn) {
