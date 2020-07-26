@@ -4,6 +4,7 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.client.entity.render.*;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.KeyInit;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -75,7 +76,7 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STAND_ARROW.get(), StandArrowRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN.get(), HierophantGreenRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMERALD_SPLASH.get(), EmeraldSplashRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMERALD_SPLASH.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer())); //This renders as an emerald.
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN_TAIL.get(), HierophantGreenTailRenderer::new);
     }
 }

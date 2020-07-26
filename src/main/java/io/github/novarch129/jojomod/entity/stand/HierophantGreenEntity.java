@@ -32,9 +32,10 @@ public class HierophantGreenEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         attackTick++;
         if (attackTick == 1)
-            if (special)
+            if (special) {
+                world.playSound(null, getPosition(), SoundInit.EMERALD_SPLASH.get(), SoundCategory.NEUTRAL, 1, 1);
                 attackRush = true;
-            else {
+            } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 HierophantGreenTailEntity hierophantGreenTailEntity = new HierophantGreenTailEntity(world, this, master);
                 hierophantGreenTailEntity.shoot(master, rotationPitch, rotationYaw, 3, 0.15f);

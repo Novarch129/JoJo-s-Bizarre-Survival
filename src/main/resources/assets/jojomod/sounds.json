@@ -331,5 +331,14 @@
         "stream": false
       }
     ]
+  },
+  "emerald_splash": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:emerald_splash",
+        "stream": false
+      }
+    ]
   }
 }

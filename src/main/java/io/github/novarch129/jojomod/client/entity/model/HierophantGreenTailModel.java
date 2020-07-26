@@ -7,15 +7,15 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class HierophantGreenTailModel extends EntityModel<HierophantGreenTailEntity> {
-    private final ModelRenderer Punch;
+    private final ModelRenderer Tail;
 
     public HierophantGreenTailModel() {
         textureWidth = 64;
         textureHeight = 32;
 
-        Punch = new ModelRenderer(this);
-        Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
-        Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
+        Tail = new ModelRenderer(this);
+        Tail.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Tail.setTextureOffset(0, 0).addBox(-1.5F, -2.0F, -7.5F, 3.0F, 2.0F, 15.0F, 0.0F, false);
     }
 
     @Override
@@ -24,12 +24,6 @@ public class HierophantGreenTailModel extends EntityModel<HierophantGreenTailEnt
 
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Punch.render(matrixStack, buffer, packedLight, packedOverlay);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+        Tail.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 }
