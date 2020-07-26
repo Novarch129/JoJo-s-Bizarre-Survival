@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.GoldExperiencePunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundEvent;
@@ -53,7 +52,7 @@ public class GoldExperienceEntity extends AbstractStandEntity {
             } else {
                 if (attackRush) return;
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), getSoundCategory(), 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                GoldExperiencePunchEntity goldExperience = new GoldExperiencePunchEntity(world, this, getMaster());
+                GoldExperiencePunchEntity goldExperience = new GoldExperiencePunchEntity(world, this, master);
                 goldExperience.shoot(getMaster(), getMaster().rotationPitch, getMaster().rotationYaw, 2, 0.2f);
                 world.addEntity(goldExperience);
             }
@@ -63,8 +62,7 @@ public class GoldExperienceEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getTransformed() > 0)
                     props.subtractCooldown(1);
@@ -73,27 +71,27 @@ public class GoldExperienceEntity extends AbstractStandEntity {
                     props.setCooldown(80);
                 }
             });
-            player.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
+            master.addPotionEffect(new EffectInstance(Effects.REGENERATION, 40, 2));
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        GoldExperiencePunchEntity goldExperience1 = new GoldExperiencePunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        GoldExperiencePunchEntity goldExperience1 = new GoldExperiencePunchEntity(world, this, master);
                         goldExperience1.setRandomPositions();
-                        goldExperience1.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
+                        goldExperience1.shoot(master, master.rotationPitch, master.rotationYaw, 2.0F, 0.2F);
                         world.addEntity(goldExperience1);
-                        GoldExperiencePunchEntity goldExperience2 = new GoldExperiencePunchEntity(world, this, player);
+                        GoldExperiencePunchEntity goldExperience2 = new GoldExperiencePunchEntity(world, this, master);
                         goldExperience2.setRandomPositions();
-                        goldExperience2.shoot(player, player.rotationPitch, player.rotationYaw, 2.0F, 0.2F);
+                        goldExperience2.shoot(master, master.rotationPitch, master.rotationYaw, 2.0F, 0.2F);
                         world.addEntity(goldExperience2);
                     }
                 if (attackTicker >= 110) {

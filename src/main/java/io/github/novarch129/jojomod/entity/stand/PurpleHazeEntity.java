@@ -6,7 +6,6 @@ import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -24,12 +23,12 @@ public class PurpleHazeEntity extends AbstractStandEntity {
     }
 
     public void burstCapsule() {
-        if (!world.isRemote)
-            world.getServer().getWorld(dimension).getEntities()
-                    .filter(entity -> entity instanceof LivingEntity)
-                    .filter(entity -> !(entity instanceof AbstractStandEntity))
-                    .filter(entity -> entity.getDistance(this) < 80)
-                    .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
+        if (world.isRemote) return;
+        getServer().getWorld(dimension).getEntities()
+                .filter(entity -> entity instanceof LivingEntity)
+                .filter(entity -> !(entity instanceof AbstractStandEntity))
+                .filter(entity -> entity.getDistance(this) < 80)
+                .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
     }
 
     @Override
@@ -47,7 +46,7 @@ public class PurpleHazeEntity extends AbstractStandEntity {
                 attackRush = true;
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                PurpleHazePunchEntity purpleHazePunchEntity = new PurpleHazePunchEntity(world, this, getMaster());
+                PurpleHazePunchEntity purpleHazePunchEntity = new PurpleHazePunchEntity(world, this, master);
                 purpleHazePunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2.5f, 0.3f);
                 world.addEntity(purpleHazePunchEntity);
             }
@@ -57,33 +56,27 @@ public class PurpleHazeEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
-                ability = props.getAbility();
-
-                if (props.getCooldown() > 0 && ability)
-                    props.subtractCooldown(1);
-            });
+            Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        PurpleHazePunchEntity purpleHaze1 = new PurpleHazePunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        PurpleHazePunchEntity purpleHaze1 = new PurpleHazePunchEntity(world, this, master);
                         purpleHaze1.setRandomPositions();
-                        purpleHaze1.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.4f);
+                        purpleHaze1.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.4f);
                         world.addEntity(purpleHaze1);
-                        PurpleHazePunchEntity purpleHaze2 = new PurpleHazePunchEntity(world, this, player);
+                        PurpleHazePunchEntity purpleHaze2 = new PurpleHazePunchEntity(world, this, master);
                         purpleHaze2.setRandomPositions();
-                        purpleHaze2.shoot(player, player.rotationPitch, player.rotationYaw, 2.2f, 0.4f);
+                        purpleHaze2.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.4f);
                         world.addEntity(purpleHaze2);
                     }
                 if (attackTicker >= 120) {

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE)
 public class ForgeEventBusSubscriber {
     @SubscribeEvent
-    public static void registerDimensions(final RegisterDimensionsEvent event) {
+    public static void registerDimensions(RegisterDimensionsEvent event) {
         if (DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE) == null)
             DimensionManager.registerDimension(DimensionInit.D4C_DIMENSION_TYPE, DimensionInit.D4C_DIMENSION.get(), null, true);
 

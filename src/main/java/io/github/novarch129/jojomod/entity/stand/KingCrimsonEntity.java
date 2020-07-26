@@ -36,14 +36,14 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     @Override
     public void attack(boolean special) {
         if (getMaster() == null) return;
-        if (!ability || !Stand.getCapabilityFromPlayer(getMaster()).getAbility()) {
+        if (!Stand.getCapabilityFromPlayer(master).getAbilityActive()) {
             attackTick++;
             if (attackTick == 1)
                 if (special)
                     attackRush = true;
                 else {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, getMaster());
+                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
                     kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
                     world.addEntity(kingCrimsonPunchEntity);
                 }

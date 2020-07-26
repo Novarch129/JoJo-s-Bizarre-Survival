@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "deprecation"})
 public class D4CEntity extends AbstractStandEntity {
     public D4CEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -83,7 +83,7 @@ public class D4CEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                D4CPunchEntity d4CPunchEntity = new D4CPunchEntity(world, this, getMaster());
+                D4CPunchEntity d4CPunchEntity = new D4CPunchEntity(world, this, master);
                 d4CPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2, 0.3f);
                 world.addEntity(d4CPunchEntity);
             }
@@ -93,32 +93,31 @@ public class D4CEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getCooldown() > 0 && ability)
                     props.subtractCooldown(1);
-                player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
+                master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 
-                if ((player.world.getBlockState(player.getPosition().add(0, 0, -1)).getMaterial() != Material.AIR && player.world.getBlockState(player.getPosition().add(0, 0, 1)).getMaterial() != Material.AIR) || (player.world.getBlockState(player.getPosition().add(-1, 0, 0)).getMaterial() != Material.AIR && player.world.getBlockState(player.getPosition().add(1, 0, 0)).getMaterial() != Material.AIR)) {
-                    if (player.isCrouching() || player.isAirBorne) {
+                if ((master.world.getBlockState(master.getPosition().add(0, 0, -1)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(0, 0, 1)).getMaterial() != Material.AIR) || (master.world.getBlockState(master.getPosition().add(-1, 0, 0)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(1, 0, 0)).getMaterial() != Material.AIR)) {
+                    if (master.isCrouching() || master.isAirBorne) {
                         if (ability && props.getCooldown() <= 0) {
-                            changePlayerDimension(player);
+                            changePlayerDimension(master);
                             if (!world.isRemote) {
                                 world.getServer().getWorld(dimension).getEntities()
                                         .filter(entity -> entity instanceof LivingEntity)
                                         .filter(entity -> !(entity instanceof PlayerEntity))
                                         .filter(entity -> !(entity instanceof AbstractStandEntity))
-                                        .filter(entity -> entity.getDistance(player) < 3.0f || entity.getDistance(this) < 3.0f)
+                                        .filter(entity -> entity.getDistance(master) < 3.0f || entity.getDistance(this) < 3.0f)
                                         .forEach(this::transportEntity);
 
                                 world.getPlayers()
                                         .stream()
                                         .filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
-                                        .filter(playerEntity -> player.getDistance(player) < 3.0f || playerEntity.getDistance(this) < 3.0f)
+                                        .filter(playerEntity -> master.getDistance(master) < 3.0f || playerEntity.getDistance(this) < 3.0f)
                                         .forEach(this::changePlayerDimension);
                             }
-                            if (!player.isCreative()) player.getFoodStats().addStats(-3, 0.0f);
+                            if (!master.isCreative()) master.getFoodStats().addStats(-3, 0.0f);
                             props.setStandOn(false);
                             props.setCooldown(200);
                             remove();
@@ -127,24 +126,24 @@ public class D4CEntity extends AbstractStandEntity {
                 }
             });
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        D4CPunchEntity dirtyDeedsDoneDirtCheap1 = new D4CPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        D4CPunchEntity dirtyDeedsDoneDirtCheap1 = new D4CPunchEntity(world, this, master);
                         dirtyDeedsDoneDirtCheap1.setRandomPositions();
-                        dirtyDeedsDoneDirtCheap1.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.35f);
+                        dirtyDeedsDoneDirtCheap1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.35f);
                         world.addEntity(dirtyDeedsDoneDirtCheap1);
-                        D4CPunchEntity dirtyDeedsDoneDirtCheap2 = new D4CPunchEntity(world, this, player);
+                        D4CPunchEntity dirtyDeedsDoneDirtCheap2 = new D4CPunchEntity(world, this, master);
                         dirtyDeedsDoneDirtCheap2.setRandomPositions();
-                        dirtyDeedsDoneDirtCheap2.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.35f);
+                        dirtyDeedsDoneDirtCheap2.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.35f);
                         world.addEntity(dirtyDeedsDoneDirtCheap2);
                     }
                 if (attackTicker >= 80) {

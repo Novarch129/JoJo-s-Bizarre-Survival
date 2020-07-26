@@ -6,7 +6,6 @@ import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
@@ -33,7 +32,7 @@ public class CMoonEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                CMoonPunchEntity cMoonPunchEntity = new CMoonPunchEntity(world, this, getMaster());
+                CMoonPunchEntity cMoonPunchEntity = new CMoonPunchEntity(world, this, master);
                 cMoonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.15f);
                 world.addEntity(cMoonPunchEntity);
             }
@@ -43,12 +42,10 @@ public class CMoonEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if ((props.getStandID() == Util.StandID.CMOON && props.getAct() == 1) || (props.getStandID() == Util.StandID.MADE_IN_HEAVEN && props.getAct() == 2)) {
-                    player.setNoGravity(false);
+                    master.setNoGravity(false);
                     remove();
                     WhitesnakeEntity whitesnake = new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
                     whitesnake.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
@@ -59,34 +56,34 @@ public class CMoonEntity extends AbstractStandEntity {
             });
 
             if (ability) {
-                player.setNoGravity(true);
-                player.addPotionEffect(new EffectInstance(Effects.LEVITATION, 100, 1));
+                master.setNoGravity(true);
+                master.addPotionEffect(new EffectInstance(Effects.LEVITATION, 100, 1));
             } else {
-                player.setNoGravity(false);
-                player.removePotionEffect(Effects.LEVITATION);
-                player.stopFallFlying();
-                player.fallDistance = 0;
+                master.setNoGravity(false);
+                master.removePotionEffect(Effects.LEVITATION);
+                master.stopFallFlying();
+                master.fallDistance = 0;
             }
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        CMoonPunchEntity cMoon1 = new CMoonPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        CMoonPunchEntity cMoon1 = new CMoonPunchEntity(world, this, master);
                         cMoon1.setRandomPositions();
-                        cMoon1.shoot(player, player.rotationPitch, player.rotationYaw, 2.15f, 0.2F);
+                        cMoon1.shoot(master, master.rotationPitch, master.rotationYaw, 2.15f, 0.2F);
                         world.addEntity(cMoon1);
-                        CMoonPunchEntity cMoon2 = new CMoonPunchEntity(world, this, player);
+                        CMoonPunchEntity cMoon2 = new CMoonPunchEntity(world, this, master);
                         cMoon2.setRandomPositions();
-                        cMoon2.shoot(player, player.rotationPitch, player.rotationYaw, 2.15f, 0.2F);
+                        cMoon2.shoot(master, master.rotationPitch, master.rotationYaw, 2.15f, 0.2F);
                         world.addEntity(cMoon2);
                     }
                 if (attackTicker >= 80) {

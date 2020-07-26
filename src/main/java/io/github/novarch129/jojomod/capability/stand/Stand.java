@@ -344,17 +344,17 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public void removeStand() {
-        setStandOn(false);
-        setAct(0);
-        setStandID(0);
-        setCooldown(0);
-        setTimeLeft(1000);
-        setTransformed(0);
-        setDiavolo("");
-        setAbility(true);
-        setNoClip(false);
-        setPlayerStand(0);
-        setAbilityActive(false);
+        putStandOn(false);
+        putAct(0);
+        putStandID(0);
+        putCooldown(0);
+        putTimeLeft(1000);
+        putTransformed(0);
+        putDiavolo("");
+        putAbility(true);
+        putNoClip(false);
+        putPlayerStand(0);
+        putAbilityActive(false);
         onDataUpdated();
     }
 

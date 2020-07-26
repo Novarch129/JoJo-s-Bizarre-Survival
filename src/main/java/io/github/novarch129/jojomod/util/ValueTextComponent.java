@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.util;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
@@ -7,7 +8,7 @@ import net.minecraft.util.text.TextComponent;
 /**
  * Used for testing, shorter than using {@link String#valueOf(Object)}.
  */
-@SuppressWarnings("unused")
+@VisibleForTesting
 public class ValueTextComponent extends TextComponent {
     private final Object msg;
 

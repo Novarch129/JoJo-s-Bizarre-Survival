@@ -229,14 +229,14 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props2 -> {
+            Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
-                if (ability && props2.getTimeLeft() > 900) {
+                props2.setAbilityActive(props2.getTimeLeft() > 900 && props2.getAbility());
+                if (props2.getAbilityActive()) {
                     props2.subtractTimeLeft(1);
-                    Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
+                    Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
-                    player.setInvulnerable(true);
+                    master.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
                         world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 2.0f, 1.0f);
                     starPlatinumList.add(this);
@@ -248,7 +248,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                         }
                         world.getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                 .forEach(entity -> {
                                     if (entity instanceof PlayerEntity) {
@@ -261,7 +261,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                             return;
                                     }
                                     if (entity instanceof MobEntity) {
-                                        if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
                                             ((MobEntity) entity).setAttackTarget(null);
                                             ((MobEntity) entity).setRevengeTarget(null);
                                         }
@@ -322,14 +322,14 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                     }
                                 });
                     }
-                } else if (!ability || props2.getTimeLeft() <= 900) {
+                } else {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                     starPlatinumList.remove(this);
                     if (!this.world.isRemote) {
                         this.world.getServer().getWorld(this.dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
@@ -359,44 +359,38 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                 }
 
                 if (props2.getTimeLeft() == 960)
-                    world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
-
-                if (props2.getCooldown() > 0)
-                    props2.subtractCooldown(1);
+                    world.playSound(null, getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), getSoundCategory(), 5, 1);
 
                 if (props2.getCooldown() == 1) {
                     props2.setTimeLeft(1000);
                     cooldown = false;
                 }
 
-                if (!ability && props2.getTimeLeft() < 1000)
-                    props2.addTimeLeft(1);
-
                 if (!ability) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                 }
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        StarPlatinumPunchEntity starPlatinum1 = new StarPlatinumPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        StarPlatinumPunchEntity starPlatinum1 = new StarPlatinumPunchEntity(world, this, master);
                         starPlatinum1.setRandomPositions();
-                        starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
+                        starPlatinum1.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum1);
-                        StarPlatinumPunchEntity starPlatinum2 = new StarPlatinumPunchEntity(world, this, player);
+                        StarPlatinumPunchEntity starPlatinum2 = new StarPlatinumPunchEntity(world, this, master);
                         starPlatinum2.setRandomPositions();
-                        starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
+                        starPlatinum2.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum2);
                     }
                 if (attackTicker >= 160) {
@@ -414,27 +408,27 @@ public class StarPlatinumEntity extends AbstractStandEntity {
         starPlatinumList.remove(this);
         dayTime = -1;
         gameTime = -1;
-        if (!this.world.isRemote)
-            this.world.getServer().getWorld(this.dimension).getEntities()
-                    .filter(entity -> entity != this)
-                    .forEach(entity ->
-                            Timestop.getLazyOptional(entity).ifPresent(props2 -> {
-                                if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
-                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                    entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
-                                if (entity instanceof PlayerEntity)
-                                    ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
-                                if (entity instanceof MobEntity)
-                                    ((MobEntity) entity).setNoAI(false);
+        if (world.isRemote) return;
+        getServer().getWorld(this.dimension).getEntities()
+                .filter(entity -> entity != this)
+                .forEach(entity ->
+                        Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                            if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                entity.velocityChanged = true;
-                                entity.fallDistance = props2.getFallDistance();
-                                entity.setInvulnerable(false);
-                                props2.clear();
-                            }));
+                                entity.setNoGravity(false);
+                            } else {
+                                if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                            }
+                            if (entity instanceof PlayerEntity)
+                                ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
+                            if (entity instanceof MobEntity)
+                                ((MobEntity) entity).setNoAI(false);
+                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                            entity.velocityChanged = true;
+                            entity.fallDistance = props2.getFallDistance();
+                            entity.setInvulnerable(false);
+                            props2.clear();
+                        }));
     }
 }

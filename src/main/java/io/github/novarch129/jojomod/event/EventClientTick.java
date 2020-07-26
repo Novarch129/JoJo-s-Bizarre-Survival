@@ -7,6 +7,7 @@ import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
+import io.github.novarch129.jojomod.entity.stand.KingCrimsonEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
@@ -141,6 +142,8 @@ public class EventClientTick {
             }
             if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
                 StreamSupport.stream(world.getAllEntities().spliterator(), false)
+                        .filter(entity -> entity != player)
+                        .filter(entity -> !(entity instanceof KingCrimsonEntity))
                         .filter(entity -> entity instanceof LivingEntity)
                         .filter(entity -> ((LivingEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
                         .forEach(entity -> {
