@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class SilverChariotSwordRenderer extends StandPunchRenderer<SilverChariotSwordEntity> {
+public class SilverChariotSwordRenderer extends AbstractStandPunchRenderer<SilverChariotSwordEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot_sword.png");
 
     public SilverChariotSwordRenderer(EntityRendererManager renderManagerIn) {

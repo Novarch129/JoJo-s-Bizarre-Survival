@@ -45,7 +45,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void handle(CSyncStandAbilitiesPacket message, Supplier<Context> ctx) {
+    public void handle(CSyncStandAbilitiesPacket msg, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = ctx.get().getSender();
@@ -60,7 +60,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1)
+                                                if (msg.action == 1)
                                                     ((KillerQueenEntity) entity).detonate();
                                                 else
                                                     ((KillerQueenEntity) entity).toggleSheerHeartAttack();
@@ -72,7 +72,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof GoldExperienceRequiemEntity)
                                             .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1)
+                                                if (msg.action == 1)
                                                     ((GoldExperienceRequiemEntity) entity).toggleTruth();
                                                 else
                                                     ((GoldExperienceRequiemEntity) entity).toggleFlight();
@@ -111,7 +111,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof TheHandEntity)
                                             .filter(entity -> ((TheHandEntity) entity).getMaster().getEntityId() == player.getEntityId())
                                             .forEach(entity -> {
-                                                if (message.action == 1) {
+                                                if (msg.action == 1) {
                                                     Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
                                                     float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
                                                     if (entity1 != null) {
@@ -120,10 +120,10 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                             Minecraft.getInstance().pointedEntity = null;
                                                             Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
                                                             Vec3d vec3d = entity1.getEyePosition(partialTicks);
-                                                            double range = 30.0D;
-                                                            Vec3d vec3d1 = entity1.getLook(1.0f);
+                                                            double range = 30.0;
+                                                            Vec3d vec3d1 = entity1.getLook(1);
                                                             Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
-                                                            AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(range)).grow(1.0D, 1.0D, 1.0D);
+                                                            AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
                                                             EntityRayTraceResult entityRayTraceResult =
                                                                     ProjectileHelper.rayTraceEntities(
                                                                             entity1,

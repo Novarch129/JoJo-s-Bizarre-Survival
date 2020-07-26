@@ -9,9 +9,9 @@ import java.util.function.Supplier;
  * Mostly just used so I don't screw up a method in my packets, also vital to {@link PacketHandler#registerPacket(Class, IMessage)}.
  */
 public interface IMessage<P> {
-    void encode(P message, PacketBuffer buffer);
+    void encode(P msg, PacketBuffer buffer);
 
     P decode(PacketBuffer buffer);
 
-    void handle(P message, Supplier<NetworkEvent.Context> ctx);
+    void handle(P msg, Supplier<NetworkEvent.Context> ctx);
 }

@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.CrazyDiamondEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
+public class CrazyDiamondModel extends AbstractStandModel<CrazyDiamondEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Eyes;
@@ -92,11 +91,11 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -6.5F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 2.5F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -10.2F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
@@ -119,28 +118,29 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         ChinPart1.setTextureOffset(0, 0).addBox(0.596F, -0.8889F, 0.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
 
         Helmet = new ModelRenderer(this);
-        Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Helmet.setRotationPoint(0.0F, -2.25F, 0.0F);
         Head.addChild(Helmet);
-        Helmet.setTextureOffset(92, 0).addBox(3.5F, -11.375F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, false);
-        Helmet.setTextureOffset(83, 1).addBox(3.5F, -11.475F, -5.25F, 1.0F, 1.0F, 10.0F, 0.0F, false);
-        Helmet.setTextureOffset(92, 0).addBox(-4.5F, -11.475F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, true);
-        Helmet.setTextureOffset(93, 2).addBox(-4.5F, -11.475F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, true);
-        Helmet.setTextureOffset(96, 9).addBox(3.5F, -11.375F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(94, 5).addBox(3.5F, -6.375F, -5.25F, 1.0F, 2.0F, 6.0F, 0.0F, false);
-        Helmet.setTextureOffset(94, 5).addBox(-4.5F, -7.375F, -5.25F, 1.0F, 3.0F, 6.0F, 0.0F, true);
-        Helmet.setTextureOffset(94, 5).addBox(3.5F, -4.375F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, false);
-        Helmet.setTextureOffset(94, 5).addBox(-4.5F, -4.375F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, true);
-        Helmet.setTextureOffset(83, 1).addBox(-4.0F, -11.475F, -5.25F, 8.0F, 2.0F, 9.0F, 0.0F, false);
-        Helmet.setTextureOffset(99, 7).addBox(1.0F, -4.225F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(99, 7).addBox(-4.0F, -4.225F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, true);
-        Helmet.setTextureOffset(99, 7).addBox(2.0F, -5.725F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(99, 7).addBox(-4.0F, -5.725F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, true);
-        Helmet.setTextureOffset(94, 6).addBox(-4.0F, -9.725F, -5.25F, 8.0F, 2.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(92, 5).addBox(-4.0F, -11.475F, 3.0F, 8.0F, 5.0F, 2.0F, 0.0F, false);
+        Helmet.setTextureOffset(92, 0).addBox(3.5F, -9.125F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, false);
+        Helmet.setTextureOffset(83, 1).addBox(3.5F, -9.225F, -5.25F, 1.0F, 1.0F, 10.0F, 0.0F, false);
+        Helmet.setTextureOffset(92, 0).addBox(-4.5F, -9.225F, -5.25F, 1.0F, 5.0F, 10.0F, 0.0F, true);
+        Helmet.setTextureOffset(93, 2).addBox(-4.5F, -9.225F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, true);
+        Helmet.setTextureOffset(96, 9).addBox(3.5F, -9.125F, 4.0F, 1.0F, 5.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(94, 5).addBox(3.5F, -4.125F, -5.25F, 1.0F, 2.0F, 6.0F, 0.0F, false);
+        Helmet.setTextureOffset(94, 5).addBox(-4.5F, -5.125F, -5.25F, 1.0F, 3.0F, 6.0F, 0.0F, true);
+        Helmet.setTextureOffset(94, 5).addBox(3.5F, -2.125F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, false);
+        Helmet.setTextureOffset(94, 5).addBox(-4.5F, -2.125F, -5.25F, 1.0F, 2.0F, 3.0F, 0.0F, true);
+        Helmet.setTextureOffset(83, 1).addBox(-4.0F, -9.225F, -5.25F, 8.0F, 2.0F, 9.0F, 0.0F, false);
+        Helmet.setTextureOffset(99, 7).addBox(1.0F, -1.975F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(99, 7).addBox(-4.0F, -1.975F, -5.25F, 3.0F, 2.0F, 1.0F, 0.0F, true);
+        Helmet.setTextureOffset(99, 7).addBox(2.0F, -3.475F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(99, 7).addBox(-4.0F, -3.475F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, true);
+        Helmet.setTextureOffset(94, 6).addBox(-4.0F, -7.475F, -5.25F, 8.0F, 2.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(92, 5).addBox(-4.0F, -9.225F, 3.0F, 8.0F, 5.0F, 2.0F, 0.0F, false);
 
         Pipes = new ModelRenderer(this);
-        Pipes.setRotationPoint(0.0F, 0.0F, 0.0F);
-        HeadBase.addChild(Pipes);
+        Pipes.setRotationPoint(0.0F, 2.75F, -0.4F);
+        Helmet.addChild(Pipes);
+        setRotationAngle(Pipes, 0.1178F, 0.0F, 0.0F);
 
 
         Pipes1 = new ModelRenderer(this);
@@ -153,37 +153,37 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         Pipe1.setRotationPoint(-0.5F, 1.0802F, 3.3606F);
         Pipes1.addChild(Pipe1);
         setRotationAngle(Pipe1, 0.1309F, 0.0F, 0.0F);
-        Pipe1.setTextureOffset(32, 0).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe1.setTextureOffset(32, 0).addBox(-0.5357F, -0.3083F, -0.4761F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe2 = new ModelRenderer(this);
         Pipe2.setRotationPoint(-0.5F, 0.2637F, 4.8801F);
         Pipes1.addChild(Pipe2);
         setRotationAngle(Pipe2, 0.4931F, 0.0F, 0.0F);
-        Pipe2.setTextureOffset(32, 0).addBox(-0.5F, -0.1781F, -0.967F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe2.setTextureOffset(32, 0).addBox(-0.5357F, 0.1867F, -0.545F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe3 = new ModelRenderer(this);
         Pipe3.setRotationPoint(-0.5F, -0.8841F, 7.0163F);
         Pipes1.addChild(Pipe3);
         setRotationAngle(Pipe3, 0.9774F, 0.0F, 0.0F);
-        Pipe3.setTextureOffset(32, 0).addBox(-0.5F, -0.9208F, -1.6146F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe3.setTextureOffset(32, 0).addBox(-0.5357F, -0.4014F, -1.411F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe4 = new ModelRenderer(this);
         Pipe4.setRotationPoint(-0.5F, -3.7857F, 8.9734F);
         Pipes1.addChild(Pipe4);
         setRotationAngle(Pipe4, 1.5228F, 0.0F, 0.0F);
-        Pipe4.setTextureOffset(32, 0).addBox(-0.5F, -2.5481F, -2.7038F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe4.setTextureOffset(32, 0).addBox(-0.5357F, -1.9984F, -2.7992F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe5 = new ModelRenderer(this);
         Pipe5.setRotationPoint(-0.5F, -5.7834F, 9.0694F);
         Pipes1.addChild(Pipe5);
         setRotationAngle(Pipe5, 2.282F, 0.0F, 0.0F);
-        Pipe5.setTextureOffset(32, 0).addBox(-0.5F, -3.9841F, -0.8956F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe5.setTextureOffset(32, 0).addBox(-0.5357F, -3.651F, -1.3432F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe6 = new ModelRenderer(this);
         Pipe6.setRotationPoint(-0.5F, -5.7834F, 9.0694F);
         Pipes1.addChild(Pipe6);
         setRotationAngle(Pipe6, 2.906F, 0.0F, 0.0305F);
-        Pipe6.setTextureOffset(32, 0).addBox(-0.4663F, -2.7612F, 2.6434F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe6.setTextureOffset(32, 0).addBox(-0.4983F, -2.7534F, 2.0854F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipes2 = new ModelRenderer(this);
         Pipes2.setRotationPoint(-1.35F, 0.0F, -0.475F);
@@ -195,37 +195,37 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         Pipe7.setRotationPoint(0.5F, 1.0802F, 3.3606F);
         Pipes2.addChild(Pipe7);
         setRotationAngle(Pipe7, 0.1309F, 0.0F, 0.0F);
-        Pipe7.setTextureOffset(32, 0).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe7.setTextureOffset(32, 0).addBox(-0.4643F, -0.3083F, -0.4761F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe8 = new ModelRenderer(this);
         Pipe8.setRotationPoint(0.5F, 0.2637F, 4.8801F);
         Pipes2.addChild(Pipe8);
         setRotationAngle(Pipe8, 0.4931F, 0.0F, 0.0F);
-        Pipe8.setTextureOffset(32, 0).addBox(-0.5F, -0.1781F, -0.967F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe8.setTextureOffset(32, 0).addBox(-0.4643F, 0.1867F, -0.545F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe9 = new ModelRenderer(this);
         Pipe9.setRotationPoint(0.5F, -0.8841F, 7.0163F);
         Pipes2.addChild(Pipe9);
         setRotationAngle(Pipe9, 1.0385F, 0.0F, 0.0F);
-        Pipe9.setTextureOffset(32, 0).addBox(-0.5F, -1.0195F, -1.6164F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe9.setTextureOffset(32, 0).addBox(-0.4643F, -0.4887F, -1.4449F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe10 = new ModelRenderer(this);
         Pipe10.setRotationPoint(0.5F, -3.7857F, 8.9734F);
         Pipes2.addChild(Pipe10);
         setRotationAngle(Pipe10, 1.3788F, 0.0F, 0.0F);
-        Pipe10.setTextureOffset(32, 0).addBox(-0.5F, -2.2579F, -2.8537F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe10.setTextureOffset(32, 0).addBox(-0.4643F, -1.7003F, -2.8692F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe11 = new ModelRenderer(this);
         Pipe11.setRotationPoint(0.5F, -5.7834F, 9.0694F);
         Pipes2.addChild(Pipe11);
         setRotationAngle(Pipe11, 2.282F, 0.0F, 0.0F);
-        Pipe11.setTextureOffset(32, 0).addBox(-0.5F, -3.8259F, -0.9914F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe11.setTextureOffset(32, 0).addBox(-0.4643F, -3.4928F, -1.4389F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe12 = new ModelRenderer(this);
         Pipe12.setRotationPoint(0.5F, -5.7834F, 9.0694F);
         Pipes2.addChild(Pipe12);
         setRotationAngle(Pipe12, 2.7794F, 0.0F, -0.0305F);
-        Pipe12.setTextureOffset(32, 0).addBox(-0.5328F, -2.9874F, 2.2404F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe12.setTextureOffset(32, 0).addBox(-0.5008F, -2.9092F, 1.6878F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipes3 = new ModelRenderer(this);
         Pipes3.setRotationPoint(-1.6F, 1.075F, -0.475F);
@@ -237,37 +237,37 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         Pipe13.setRotationPoint(0.5F, 1.0802F, 3.3606F);
         Pipes3.addChild(Pipe13);
         setRotationAngle(Pipe13, 0.1309F, 0.0F, 0.0F);
-        Pipe13.setTextureOffset(32, 0).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe13.setTextureOffset(32, 0).addBox(-0.3497F, -0.3128F, -0.4952F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe14 = new ModelRenderer(this);
         Pipe14.setRotationPoint(0.5F, 0.2637F, 4.8801F);
         Pipes3.addChild(Pipe14);
         setRotationAngle(Pipe14, 0.4931F, 0.0F, 0.0F);
-        Pipe14.setTextureOffset(32, 0).addBox(-0.5F, -0.1781F, -0.967F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe14.setTextureOffset(32, 0).addBox(-0.3497F, 0.1758F, -0.5612F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe15 = new ModelRenderer(this);
         Pipe15.setRotationPoint(0.5F, -0.8841F, 7.0163F);
         Pipes3.addChild(Pipe15);
         setRotationAngle(Pipe15, 1.0385F, 0.0F, 0.0F);
-        Pipe15.setTextureOffset(32, 0).addBox(-0.5F, -1.0195F, -1.6164F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe15.setTextureOffset(32, 0).addBox(-0.3497F, -0.5065F, -1.4531F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe16 = new ModelRenderer(this);
         Pipe16.setRotationPoint(0.5F, -3.7857F, 8.9734F);
         Pipes3.addChild(Pipe16);
         setRotationAngle(Pipe16, 1.3788F, 0.0F, 0.0F);
-        Pipe16.setTextureOffset(32, 0).addBox(-0.5F, -2.2579F, -2.8537F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe16.setTextureOffset(32, 0).addBox(-0.3497F, -1.7198F, -2.871F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe17 = new ModelRenderer(this);
         Pipe17.setRotationPoint(0.5F, -5.7834F, 9.0694F);
         Pipes3.addChild(Pipe17);
         setRotationAngle(Pipe17, 2.282F, 0.0F, 0.0F);
-        Pipe17.setTextureOffset(32, 0).addBox(-0.5F, -3.8259F, -0.9914F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe17.setTextureOffset(32, 0).addBox(-0.3497F, -3.5063F, -1.4247F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipe18 = new ModelRenderer(this);
         Pipe18.setRotationPoint(0.5F, -5.7834F, 9.0694F);
         Pipes3.addChild(Pipe18);
         setRotationAngle(Pipe18, 2.7794F, 0.0F, -0.0305F);
-        Pipe18.setTextureOffset(32, 0).addBox(-0.5328F, -2.9874F, 2.2404F, 1.0F, 1.0F, 2.0F, 0.0F, true);
+        Pipe18.setTextureOffset(32, 0).addBox(-0.3862F, -2.9176F, 1.7054F, 1.0F, 1.0F, 2.0F, 0.0F, true);
 
         Pipes4 = new ModelRenderer(this);
         Pipes4.setRotationPoint(1.6F, 1.075F, -0.475F);
@@ -279,37 +279,37 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
         Pipe19.setRotationPoint(-0.5F, 1.0802F, 3.3606F);
         Pipes4.addChild(Pipe19);
         setRotationAngle(Pipe19, 0.1309F, 0.0F, 0.0F);
-        Pipe19.setTextureOffset(32, 0).addBox(-0.5F, -0.5F, -1.0F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe19.setTextureOffset(32, 0).addBox(-0.6503F, -0.3128F, -0.4952F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe20 = new ModelRenderer(this);
         Pipe20.setRotationPoint(-0.5F, 0.2637F, 4.8801F);
         Pipes4.addChild(Pipe20);
         setRotationAngle(Pipe20, 0.4931F, 0.0F, 0.0F);
-        Pipe20.setTextureOffset(32, 0).addBox(-0.5F, -0.1781F, -0.967F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe20.setTextureOffset(32, 0).addBox(-0.6503F, 0.1758F, -0.5612F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe21 = new ModelRenderer(this);
         Pipe21.setRotationPoint(-0.5F, -0.8841F, 7.0163F);
         Pipes4.addChild(Pipe21);
         setRotationAngle(Pipe21, 1.0385F, 0.0F, 0.0F);
-        Pipe21.setTextureOffset(32, 0).addBox(-0.5F, -1.0195F, -1.6164F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe21.setTextureOffset(32, 0).addBox(-0.6503F, -0.5065F, -1.4531F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe22 = new ModelRenderer(this);
         Pipe22.setRotationPoint(-0.5F, -3.7857F, 8.9734F);
         Pipes4.addChild(Pipe22);
         setRotationAngle(Pipe22, 1.3788F, 0.0F, 0.0F);
-        Pipe22.setTextureOffset(32, 0).addBox(-0.5F, -2.2579F, -2.8537F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe22.setTextureOffset(32, 0).addBox(-0.6503F, -1.7198F, -2.871F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe23 = new ModelRenderer(this);
         Pipe23.setRotationPoint(-0.5F, -5.7834F, 9.0694F);
         Pipes4.addChild(Pipe23);
         setRotationAngle(Pipe23, 2.282F, 0.0F, 0.0F);
-        Pipe23.setTextureOffset(32, 0).addBox(-0.5F, -3.8259F, -0.9914F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe23.setTextureOffset(32, 0).addBox(-0.6503F, -3.5063F, -1.4247F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         Pipe24 = new ModelRenderer(this);
         Pipe24.setRotationPoint(-0.5F, -5.7834F, 9.0694F);
         Pipes4.addChild(Pipe24);
         setRotationAngle(Pipe24, 2.7794F, 0.0F, 0.0305F);
-        Pipe24.setTextureOffset(32, 0).addBox(-0.4672F, -2.9874F, 2.2404F, 1.0F, 1.0F, 2.0F, 0.0F, false);
+        Pipe24.setTextureOffset(32, 0).addBox(-0.6138F, -2.9176F, 1.7054F, 1.0F, 1.0F, 2.0F, 0.0F, false);
 
         BodyBase = new ModelRenderer(this);
         BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -615,18 +615,13 @@ public class CrazyDiamondModel extends EntityModel<CrazyDiamondEntity> {
     }
 
     @Override
-    public void setRotationAngles(CrazyDiamondEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    public ModelRenderer getHead() {
+        return HeadBase;
     }
 }

@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class StarPlatinumPunchRenderer extends StandPunchRenderer<StarPlatinumPunchEntity> {
+public class StarPlatinumPunchRenderer extends AbstractStandPunchRenderer<StarPlatinumPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/star_platinum_punch.png");
 
     public StarPlatinumPunchRenderer(EntityRendererManager renderManagerIn) {

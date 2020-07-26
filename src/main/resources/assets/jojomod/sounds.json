@@ -251,11 +251,11 @@
       }
     ]
   },
-  "time_resume_star_platinum": {
+  "resume_time_star_platinum": {
     "category": "neutral",
     "sounds": [
       {
-        "name": "jojomod:time_resume_star_platinum",
+        "name": "jojomod:resume_time_star_platinum",
         "stream": false
       }
     ]
@@ -319,6 +319,24 @@
     "sounds": [
       {
         "name": "jojomod:the_hand_pull",
+        "stream": false
+      }
+    ]
+  },
+  "spawn_hierophant_green": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_hierophant_green",
+        "stream": false
+      }
+    ]
+  },
+  "emerald_splash": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:emerald_splash",
         "stream": false
       }
     ]

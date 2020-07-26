@@ -10,7 +10,6 @@ import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
@@ -44,7 +43,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                MadeInHeavenPunchEntity madeInHeavenPunchEntity = new MadeInHeavenPunchEntity(world, this, getMaster());
+                MadeInHeavenPunchEntity madeInHeavenPunchEntity = new MadeInHeavenPunchEntity(world, this, master);
                 madeInHeavenPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 6, Float.MIN_VALUE);
                 world.addEntity(madeInHeavenPunchEntity);
             }
@@ -54,8 +53,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 props.setTimeLeft(heavenTick - 1200);
                 if (props.getAct() == 1) {
                     remove();
@@ -66,22 +64,22 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                     cMoon.playSpawnSound();
                 }
             });
-            player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
-            player.setHealth(20.0f);
-            player.getFoodStats().addStats(20, 20.0f);
+            master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
+            master.setHealth(20.0f);
+            master.getFoodStats().addStats(20, 20.0f);
 
-            if (player.isCrouching() && JojoBizarreSurvivalConfig.COMMON.madeInHeavenAbilityAccelerating.get())
+            if (master.isCrouching() && JojoBizarreSurvivalConfig.COMMON.madeInHeavenAbilityAccelerating.get())
                 heavenTick -= 200;
 
             if (heavenTick > 0)
                 heavenTick--;
 
             if (heavenTick == 1200)
-                player.sendMessage(new StringTextComponent("\"Heaven\" has begun!"));
+                master.sendMessage(new StringTextComponent("\"Heaven\" has begun!"));
 
             if (heavenTick < 1200) {
                 world.setDayTime(world.getDayTime() + 50);
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 39));
+                master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 39));
                 LightningBoltEntity lightning = new LightningBoltEntity(world, getPosX() + rand.nextInt(50), getPosY(), getPosZ() + rand.nextInt(50), false);
                 lightning.setSilent(true);
                 if (!world.isRemote)
@@ -94,12 +92,12 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                 world.setDayTime(world.getDayTime() + 80);
                 world.setRainStrength(10.0f);
                 world.getWorldInfo().setRaining(true);
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 99));
+                master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 99));
             }
 
             if (heavenTick < 400) {
-                player.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 255));
-                player.addPotionEffect(new EffectInstance(Effects.LEVITATION, 40, 2));
+                master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 255));
+                master.addPotionEffect(new EffectInstance(Effects.LEVITATION, 40, 2));
                 world.createExplosion(this, getPosX() + rand.nextInt(100), getPosY() - fallDistance, getPosZ() + rand.nextInt(100), 4.0f, Explosion.Mode.DESTROY);
                 world.setDayTime(world.getDayTime() + 500);
             }
@@ -120,24 +118,24 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
             }
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, master);
                         madeInHeaven1.setRandomPositions();
-                        madeInHeaven1.shoot(player, player.rotationPitch, player.rotationYaw, 4, 0.1f);
+                        madeInHeaven1.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
                         world.addEntity(madeInHeaven1);
-                        MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, player);
+                        MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, master);
                         madeInHeaven2.setRandomPositions();
-                        madeInHeaven2.shoot(player, player.rotationPitch, player.rotationYaw, 4, 0.1f);
+                        madeInHeaven2.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
                         world.addEntity(madeInHeaven2);
                     }
                 if (attackTicker >= 80) {

@@ -40,7 +40,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     private static final DataParameter<Optional<UUID>> MASTER_UNIQUE_ID = EntityDataManager.createKey(AbstractStandEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     public boolean ability, attackRush;
     public int attackTick, attackTicker;
-    private PlayerEntity master;
+    protected PlayerEntity master;
 
     public AbstractStandEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
@@ -168,7 +168,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public void tick() {
         super.tick(); //Queues the tick method to run, code in tick() method won't run if removed.
-        if (!world.isRemote && getMaster() != null) { //Calls getMaster to set the master to a Nonnull value.
+        fallDistance = 0; //Mutes that god forsaken fall sound, not even overriding the playFallSound method helps without this.
+        if (!world.isRemote && getMaster() != null) { //Calls getMaster to set the master to a @Nonnull value.
             if (!master.isAlive()) {
                 MinecraftForge.EVENT_BUS.post(new StandEvent.MasterDeathEvent(master, this));
                 remove();
@@ -287,8 +288,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        if (master != null)
-            buffer.writeInt(getMaster().getEntityId());
+        buffer.writeInt(getMaster() == null ? -1 : master.getEntityId());
     }
 
     /**
@@ -298,8 +298,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
      */
     @Override
     public void readSpawnData(PacketBuffer additionalData) {
-        int entityID = additionalData.readInt();
-        Entity entity = world.getEntityByID(entityID);
+        Entity entity = world.getEntityByID(additionalData.readInt());
         if (entity instanceof PlayerEntity)
             setMaster((PlayerEntity) entity);
     }
@@ -332,10 +331,8 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         String s;
         if (compoundNBT.contains("MasterUUID", 8))
             s = compoundNBT.getString("MasterUUID");
-        else {
-            String s1 = compoundNBT.getString("MasterUUID");
-            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), s1);
-        }
+        else
+            s = PreYggdrasilConverter.convertMobOwnerIfNeeded(getServer(), compoundNBT.getString("MasterUUID"));
         if (!s.isEmpty())
             setMasterUUID(UUID.fromString(s)); //Got most of this code from AbstractHorseEntity, though I improved it a bit.
     }

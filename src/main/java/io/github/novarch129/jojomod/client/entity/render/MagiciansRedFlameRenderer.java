@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class MagiciansRedFlameRenderer extends StandPunchRenderer<MagiciansRedFlameEntity> {
+public class MagiciansRedFlameRenderer extends AbstractStandPunchRenderer<MagiciansRedFlameEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/magicians_red_flames.png");
 
     public MagiciansRedFlameRenderer(EntityRendererManager renderManagerIn) {

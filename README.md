@@ -27,7 +27,7 @@
 - [x] 「THE WORLD」
 - [x] Star Platinum
 - [x] Magician's Red
-- [ ] Hierophant Green
+- [x] Hierophant Green
 - [x] Silver Chariot
 - [x] The Emperor
 

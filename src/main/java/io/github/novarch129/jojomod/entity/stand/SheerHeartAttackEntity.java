@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 import java.util.Optional;
 
 /**
- * 99% same as {@link CreeperEntity}.
+ * 99% same as {@link CreeperEntity}, had to add some ATs to extend it.
  */
 @SuppressWarnings("ConstantConditions")
 public class SheerHeartAttackEntity extends CreeperEntity {

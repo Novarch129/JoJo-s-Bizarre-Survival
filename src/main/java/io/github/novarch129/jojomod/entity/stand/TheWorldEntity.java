@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
@@ -9,7 +10,6 @@ import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -32,16 +32,16 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Objects;
+import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TheWorldEntity extends AbstractStandEntity {
     public static long dayTime = -1, gameTime = -1;
-    public static TheWorldEntity theWorld;
+    /**
+     * A list of every {@link TheWorldEntity} in the {@link World}, used to cancel events and unfreeze entities on logout.
+     */
+    private static List<TheWorldEntity> theWorldList = Lists.newArrayList();
     public int timestopTick;
     public boolean cooldown;
 
@@ -49,31 +49,35 @@ public class TheWorldEntity extends AbstractStandEntity {
         super(type, world);
     }
 
+    public static List<TheWorldEntity> getTheWorldList() {
+        return theWorldList;
+    }
+
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         World world = event.world;
-        if (theWorld != null) {
-            if (theWorld.ability && !theWorld.cooldown) {
-                if (dayTime != -1 && gameTime != -1) {
-                    world.setDayTime(dayTime);
-                    world.setGameTime(gameTime);
-                } else {
-                    dayTime = world.getDayTime();
-                    gameTime = world.getGameTime();
+        if (theWorldList.size() > 0) {
+            theWorldList.forEach(theWorld -> {
+                if (theWorld.ability && !theWorld.cooldown) {
+                    if (dayTime != -1 && gameTime != -1) {
+                        world.setDayTime(dayTime);
+                        world.setGameTime(gameTime);
+                    } else {
+                        dayTime = world.getDayTime();
+                        gameTime = world.getGameTime();
+                    }
                 }
-            }
-        } else if (theWorld == null && StarPlatinumEntity.starPlatinum == null) {
+            });
+        } else if (theWorldList.size() <= 0 && StarPlatinumEntity.getStarPlatinumList().size() <= 0) {
             if (!world.isRemote) {
-                Objects.requireNonNull(world.getServer(), "Null MinecraftServer on line 66 of EventTheWorldStopTime.").getWorld(world.dimension.getType()).getEntities()
+                world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
                         .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                             if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                 entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                 entity.setNoGravity(false);
-                            } else {
-                                if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
-                                    entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-                            }
+                            } else if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                             if (entity instanceof MobEntity)
                                 ((MobEntity) entity).setNoAI(false);
                             entity.velocityChanged = true;
@@ -89,81 +93,106 @@ public class TheWorldEntity extends AbstractStandEntity {
 
     @SubscribeEvent
     public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    event.setCanceled(true);
+            });
+
     }
 
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getEntity() != null)
-                    if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown) {
+                    if (event.getEntity() == null)
                         event.setCanceled(true);
+                    else {
+                        if (event.getEntity().getUniqueID() != theWorldEntity.master.getUniqueID())
+                            event.setCanceled(true);
+                    }
+                }
+            });
     }
 
     @SubscribeEvent
     public static void pistonEvent(PistonEvent.Pre event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract1(PlayerInteractEvent.EntityInteractSpecific event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract2(PlayerInteractEvent.EntityInteract event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getPlayer().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getPlayer().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void enderTeleport(EnderTeleportEvent event) {
-        if (theWorld != null)
-            if (theWorld.ability && !theWorld.cooldown)
-                if (event.getEntity().getUniqueID() != theWorld.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (theWorldList.size() > 0)
+            theWorldList.forEach(theWorldEntity -> {
+                if (theWorldEntity.ability && !theWorldEntity.cooldown)
+                    if (event.getEntity().getUniqueID() != theWorldEntity.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @Override
@@ -198,21 +227,18 @@ public class TheWorldEntity extends AbstractStandEntity {
     @Override
     public void tick() {
         super.tick();
-        fallDistance = 0.0f;
-
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props2 -> {
+            Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
 
                 if (ability && props2.getTimeLeft() > 780) {
                     props2.subtractTimeLeft(1);
-                    Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
+                    Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
-                    player.setInvulnerable(true);
+                    master.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
                         world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STOP_TIME.get(), getSoundCategory(), 5.0f, 1.0f);
-                    theWorld = this;
+                    theWorldList.add(this);
 
                     if (!world.isRemote) {
                         if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -221,7 +247,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                         }
                         world.getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                 .forEach(entity -> {
                                     if (entity instanceof PlayerEntity) {
@@ -234,7 +260,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                                             return;
                                     }
                                     if (entity instanceof MobEntity) {
-                                        if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
                                             ((MobEntity) entity).setAttackTarget(null);
                                             ((MobEntity) entity).setRevengeTarget(null);
                                         }
@@ -296,12 +322,12 @@ public class TheWorldEntity extends AbstractStandEntity {
                     }
                 } else if (!ability || props2.getTimeLeft() <= 780) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
-                    theWorld = null;
+                    master.setInvulnerable(false);
+                    theWorldList.remove(this);
                     if (!this.world.isRemote) {
                         this.world.getServer().getWorld(this.dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
@@ -348,29 +374,29 @@ public class TheWorldEntity extends AbstractStandEntity {
 
                 if (!ability) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                 }
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, master);
                         theWorld1.setRandomPositions();
-                        theWorld1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+                        theWorld1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld1);
-                        TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, player);
+                        TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, master);
                         theWorld2.setRandomPositions();
-                        theWorld2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.15f);
+                        theWorld2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld2);
                     }
                 if (attackTicker >= 80) {
@@ -385,7 +411,7 @@ public class TheWorldEntity extends AbstractStandEntity {
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         ability = false;
-        theWorld = null;
+        theWorldList.remove(this);
         dayTime = -1;
         gameTime = -1;
         if (!this.world.isRemote)

@@ -36,14 +36,14 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     @Override
     public void attack(boolean special) {
         if (getMaster() == null) return;
-        if (!ability || !Stand.getCapabilityFromPlayer(getMaster()).getAbility()) {
+        if (!Stand.getCapabilityFromPlayer(master).getAbilityActive()) {
             attackTick++;
             if (attackTick == 1)
                 if (special)
                     attackRush = true;
                 else {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, getMaster());
+                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
                     kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
                     world.addEntity(kingCrimsonPunchEntity);
                 }
@@ -59,40 +59,39 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            player.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-            Stand.getLazyOptional(player).ifPresent(props -> {
-                ability = !(props.getCooldown() > 0);
+            master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                ability = props.getAbility();
+                props.setAbilityActive(!(props.getCooldown() > 0));
 
                 if (!props.getAbility()) {
-                    if (!player.isCreative() && !player.isSpectator())
-                        player.setGameType(GameType.SURVIVAL);
-                    player.setInvulnerable(false);
+                    if (!master.isCreative() && !master.isSpectator())
+                        master.setGameType(GameType.SURVIVAL);
+                    master.setInvulnerable(false);
                 }
 
-                if (ability && props.getAbility() && props.getStandOn()) {
+                if (props.getAbilityActive() && props.getAbility() && props.getStandOn()) {
                     if (props.getTimeLeft() > 800) {
                         attackRush = false;
                         getMaster().setInvulnerable(true);
-                        player.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
-                        if (!player.isCreative() && !player.isSpectator())
-                            player.setGameType(GameType.ADVENTURE);
+                        master.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
+                        if (!master.isCreative() && !master.isSpectator())
+                            master.setGameType(GameType.ADVENTURE);
                         props.subtractTimeLeft(1);
 
-                        if (!world.isRemote)
-                            world.getServer().getWorld(dimension).getEntities()
+                        if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld
+                            getServer().getWorld(dimension).getEntities()
                                     .filter(entity -> entity instanceof LivingEntity)
                                     .filter(entity -> !(entity instanceof GoldExperienceEntity))
                                     .filter(entity -> entity != this)
                                     .filter(Entity::isAlive)
                                     .forEach(entity -> {
                                         if (entity instanceof MobEntity) {
-                                            if (((MobEntity) entity).getAttackTarget() == getMaster() || ((MobEntity) entity).getRevengeTarget() == getMaster()) {
+                                            if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
                                                 ((MobEntity) entity).setAttackTarget(null);
                                                 ((MobEntity) entity).setRevengeTarget(null);
                                             }
@@ -101,7 +100,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 
                                         if (entity instanceof PlayerEntity)
                                             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
-                                                if (entity != player && prs.getStandID() != Util.StandID.GER) {
+                                                if (entity != master && prs.getStandID() != Util.StandID.GER) {
                                                     if (prs.getStandID() == Util.StandID.KING_CRIMSON && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
                                                         return;
                                                     ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
@@ -109,44 +108,42 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                                             });
                                     });
                     } else {
-                        if (!player.isCreative() && !player.isSpectator())
-                            player.setGameType(GameType.SURVIVAL);
-                        player.setInvulnerable(false);
-                        ability = false;
-                        player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                        if (!master.isCreative() && !master.isSpectator())
+                            master.setGameType(GameType.SURVIVAL);
+                        master.setInvulnerable(false);
+                        props.setAbilityActive(false);
+                        master.removePotionEffect(EffectInit.CRIMSON_USER.get());
                         props.setCooldown(200);
                     }
                 }
 
-                if (!ability) {
-                    if (props.getCooldown() > 0 && props.getAbility())
-                        props.subtractCooldown(1);
+                if (!props.getAbilityActive()) {
                     if (props.getCooldown() <= 0) {
                         props.setTimeLeft(1000);
-                        ability = true;
+                        props.setAbilityActive(true);
                     }
                 }
 
                 if (!props.getAbility()) {
-                    if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                        player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                    if (master.isPotionActive(EffectInit.CRIMSON_USER.get()))
+                        master.removePotionEffect(EffectInit.CRIMSON_USER.get());
                     if (props.getTimeLeft() < 1000)
                         props.addTimeLeft(1);
                 }
-                if (player.swingProgressInt == 0 && !attackRush)
+                if (master.swingProgressInt == 0 && !attackRush)
                     attackTick = 0;
                 if (attackRush) {
                     attackTicker++;
                     if (attackTicker >= 10)
                         if (!world.isRemote) {
-                            player.setSprinting(false);
-                            KingCrimsonPunchEntity kingCrimson1 = new KingCrimsonPunchEntity(world, this, player);
+                            master.setSprinting(false);
+                            KingCrimsonPunchEntity kingCrimson1 = new KingCrimsonPunchEntity(world, this, master);
                             kingCrimson1.setRandomPositions();
-                            kingCrimson1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                            kingCrimson1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                             world.addEntity(kingCrimson1);
-                            KingCrimsonPunchEntity kingCrimson2 = new KingCrimsonPunchEntity(world, this, player);
+                            KingCrimsonPunchEntity kingCrimson2 = new KingCrimsonPunchEntity(world, this, master);
                             kingCrimson2.setRandomPositions();
-                            kingCrimson2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                            kingCrimson2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                             world.addEntity(kingCrimson2);
                         }
                     if (attackTicker >= 80) {

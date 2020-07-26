@@ -7,7 +7,6 @@ import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundCategory;
@@ -78,45 +77,43 @@ public class WeatherReportEntity extends AbstractStandEntity {
         super.tick();
         if (world.rand.nextInt(35) == 1)
             spawnExplosionParticle();
-
         if (getMaster() != null) {
             followMaster();
-            PlayerEntity player = getMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
-            Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
+            Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
 
             if (ability) {
                 if (!world.isRemote)
-                    world.getServer().getWorld(dimension).getEntities().filter(entity -> entity != player)
+                    world.getServer().getWorld(dimension).getEntities().filter(entity -> entity != master)
                             .filter(entity -> entity instanceof LivingEntity)
                             .filter(entity -> !(entity instanceof AbstractStandEntity))
                             .filter(entity -> !entity.areEyesInFluid(FluidTags.WATER))
                             .forEach(entity -> {
-                                if (entity.getDistance(player) <= 10) {
+                                if (entity.getDistance(master) <= 10) {
                                     ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.OXYGEN_POISONING.get(), 150, 5));
-                                    if (!player.isCreative()) {
-                                        player.getFoodStats().addStats(0, -0.1f);
-                                        player.getFoodStats().addExhaustion(0.05f);
+                                    if (!master.isCreative()) {
+                                        master.getFoodStats().addStats(0, -0.1f);
+                                        master.getFoodStats().addExhaustion(0.05f);
                                     }
                                 }
                             });
             }
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        WeatherReportPunchEntity weatherReportPunch1 = new WeatherReportPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        WeatherReportPunchEntity weatherReportPunch1 = new WeatherReportPunchEntity(world, this, master);
                         weatherReportPunch1.setRandomPositions();
-                        weatherReportPunch1.shoot(player, rotationPitch, rotationYaw, 1.8f, 0.2f);
+                        weatherReportPunch1.shoot(master, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch1);
-                        WeatherReportPunchEntity weatherReportPunch2 = new WeatherReportPunchEntity(world, this, player);
+                        WeatherReportPunchEntity weatherReportPunch2 = new WeatherReportPunchEntity(world, this, master);
                         weatherReportPunch2.setRandomPositions();
-                        weatherReportPunch2.shoot(player, rotationPitch, rotationYaw, 1.8f, 0.2f);
+                        weatherReportPunch2.shoot(master, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch2);
                     }
                 if (attackTicker >= 110) {

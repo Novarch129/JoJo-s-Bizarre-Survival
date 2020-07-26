@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
+public class GoldExperienceModel extends AbstractStandModel<GoldExperienceEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer FacePaint;
@@ -74,11 +73,11 @@ public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -6.0F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 2.0F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -8.2F, -4.0F, 8.0F, 6.0F, 8.0F, 0.0F, false);
         Head.setTextureOffset(0, 22).addBox(-1.0F, -4.2F, -4.125F, 2.0F, 1.0F, 1.0F, 0.0F, false);
@@ -103,7 +102,7 @@ public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
         Ears.setTextureOffset(13, 17).addBox(3.175F, -6.825F, -1.5F, 1.0F, 3.0F, 3.0F, 0.0F, true);
 
         Helmet = new ModelRenderer(this);
-        Helmet.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Helmet.setRotationPoint(0.0F, 2.0F, 0.0F);
         HeadBase.addChild(Helmet);
         Helmet.setTextureOffset(36, 0).addBox(-5.0F, -11.8F, -5.0F, 10.0F, 4.0F, 10.0F, 0.0F, false);
         Helmet.setTextureOffset(27, 0).addBox(-2.0F, -11.1F, -5.5F, 4.0F, 3.0F, 3.0F, 0.0F, false);
@@ -260,6 +259,7 @@ public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
         Beetle5.setTextureOffset(25, 44).addBox(-3.1834F, 2.1219F, -1.5596F, 1.0F, 3.0F, 2.0F, 0.0F, false);
 
         StandArrow2 = new ModelRenderer(this);
+        StandArrow2.showModel = false;
         StandArrow2.setRotationPoint(-23.0938F, 2.9179F, 4.4602F);
         RightHand.addChild(StandArrow2);
         setRotationAngle(StandArrow2, 1.4835F, 0.0F, -1.5708F);
@@ -267,7 +267,6 @@ public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
         StandArrow2.setTextureOffset(0, 97).addBox(-2.6356F, -7.1437F, -23.3087F, 1.0F, 1.0F, 1.0F, 0.0F, false);
         StandArrow2.setTextureOffset(52, 22).addBox(-2.6356F, -9.1437F, -23.3087F, 1.0F, 2.0F, 1.0F, 0.0F, false);
         StandArrow2.setTextureOffset(52, 22).addBox(-3.1356F, -10.0437F, -23.3087F, 2.0F, 1.0F, 1.0F, 0.0F, false);
-        StandArrow2.showModel = false;
 
         Right5 = new ModelRenderer(this);
         Right5.setRotationPoint(-2.0F, -11.0F, 7.0F);
@@ -474,20 +473,13 @@ public class GoldExperienceModel extends EntityModel<GoldExperienceEntity> {
     }
 
     @Override
-    public void setRotationAngles(GoldExperienceEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.isTransforming())
-            return; //Will be updated later.
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    public ModelRenderer getHead() {
+        return HeadBase;
     }
 }

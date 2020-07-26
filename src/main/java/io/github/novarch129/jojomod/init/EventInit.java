@@ -8,7 +8,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import javax.annotation.Nonnull;
 
 public class EventInit {
-    public static void register(@Nonnull IEventBus bus) {
+    public static void registerForgeBus(@Nonnull IEventBus bus) {
         bus.register(EventAttachCapabilities.class);
         bus.register(EventHandleKeybinds.class);
         bus.register(EventD4CTeleportProcessor.class);

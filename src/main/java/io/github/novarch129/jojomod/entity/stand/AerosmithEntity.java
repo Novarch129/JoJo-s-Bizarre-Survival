@@ -6,15 +6,13 @@ import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class AerosmithEntity extends AbstractStandEntity {
-    public float yaw, pitch;
-
     public AerosmithEntity(EntityType<? extends MobEntity> type, World worldIn) {
         super(type, worldIn);
     }
@@ -63,10 +61,8 @@ public class AerosmithEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         setMotion(getMotion().getX(), 0, getMotion().getZ());
-
-        if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+        if (master != null) {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 if (ability != props.getAbility())
                     ability = props.getAbility();
                 if (ability)
@@ -74,26 +70,26 @@ public class AerosmithEntity extends AbstractStandEntity {
                         props.subtractCooldown(1);
             });
 
-            setRotation(yaw, pitch);
-            if (getMotion().getX() == 0 && getMotion().getY() == 0 && getMotion().getZ() == 0)
-                setRotationYawHead(yaw);
+            setRotation(master.rotationYaw, master.rotationPitch);
+            if (getMotion() == Vec3d.ZERO)
+                setRotationYawHead(master.rotationYawHead);
 
-            if (player.swingProgressInt == 0 && !ability && !attackRush)
+            if (master.swingProgressInt == 0 && !ability && !attackRush)
                 attackTick = 0;
             if (attackRush) {
                 if (!ability)
-                    player.setSprinting(false);
+                    master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        AerosmithBulletEntity aerosmithBullet1 = new AerosmithBulletEntity(world, this, player);
+                        master.setSprinting(false);
+                        AerosmithBulletEntity aerosmithBullet1 = new AerosmithBulletEntity(world, this, master);
                         aerosmithBullet1.setRandomPositions();
-                        aerosmithBullet1.shoot(player, rotationPitch, rotationYaw, 4, 0.3f);
+                        aerosmithBullet1.shoot(master, rotationPitch, rotationYaw, 4, 0.3f);
                         world.addEntity(aerosmithBullet1);
-                        AerosmithBulletEntity aerosmithBullet2 = new AerosmithBulletEntity(world, this, player);
+                        AerosmithBulletEntity aerosmithBullet2 = new AerosmithBulletEntity(world, this, master);
                         aerosmithBullet2.setRandomPositions();
-                        aerosmithBullet2.shoot(player, rotationPitch, rotationYaw, 4, 0.3f);
+                        aerosmithBullet2.shoot(master, rotationPitch, rotationYaw, 4, 0.3f);
                         world.addEntity(aerosmithBullet2);
                     }
                 if (attackTicker >= 110) {

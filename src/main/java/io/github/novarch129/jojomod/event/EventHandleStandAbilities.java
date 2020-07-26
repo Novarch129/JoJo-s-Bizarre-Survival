@@ -13,7 +13,6 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MobEntity;
@@ -22,25 +21,18 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
-    public static List<Entity> removalQueue = new ArrayList<>();
-
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
@@ -65,9 +57,12 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
 
                 player.setInvulnerable(false);
-            } else if (standOn && !ability) {
+            } else if (!props.getAbilityActive()) {
                 if (cooldown > 0)
                     props.subtractCooldown(0.5);
+
+                if (cooldown == 0.5)
+                    props.setTimeLeft(1000);
 
                 if (timeLeft < 1000)
                     props.addTimeLeft(0.5);
@@ -76,12 +71,6 @@ public class EventHandleStandAbilities {
             if ((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
-    }
-
-    @SubscribeEvent
-    public static void livingTick(LivingEvent.LivingUpdateEvent event) {
-        if (!event.getEntityLiving().isPotionActive(EffectInit.CRIMSON.get()) || !event.getEntityLiving().isPotionActive(Effects.GLOWING))
-            event.getEntityLiving().setGlowing(false);
     }
 
     @SubscribeEvent
@@ -109,16 +98,6 @@ public class EventHandleStandAbilities {
             event.getEntityLiving().setGlowing(false);
         if (event.getPotionEffect().getPotion() == Effects.GLOWING)
             event.getEntityLiving().setGlowing(false);
-    }
-
-    @SubscribeEvent
-    public static void serverTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END) {
-            if (removalQueue.size() > 0) {
-                removalQueue.forEach(Entity::remove);
-                removalQueue.clear();
-            }
-        }
     }
 
     @SubscribeEvent
@@ -198,6 +177,10 @@ public class EventHandleStandAbilities {
                     standName = "The Hand";
                     break;
                 }
+                case Util.StandID.HIEROPHANT_GREEN: {
+                    standName = "Hierophant Green";
+                    break;
+                }
             }
         if (event.getItemStack().getItem() instanceof StandDiscItem)
             if (!standName.equals(""))
@@ -222,17 +205,12 @@ public class EventHandleStandAbilities {
                 player.setGameType(GameType.SURVIVAL);
             if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            if (player.world.isRemote) {
-                if (props.getStandID() == Util.StandID.AEROSMITH)
-                    if (!(Minecraft.getInstance().getRenderViewEntity() instanceof PlayerEntity)) {
-                        Minecraft.getInstance().setRenderViewEntity(player);
-                        Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                    }
-            }
             if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
-                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
-                TheWorldEntity.theWorld = null;
+                    player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
+                Entity theWorld = player.world.getEntityByID(props.getPlayerStand());
+                if (theWorld instanceof TheWorldEntity)
+                    TheWorldEntity.getTheWorldList().remove(theWorld);
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
                 if (!player.world.isRemote)
@@ -256,8 +234,10 @@ public class EventHandleStandAbilities {
                             }));
             } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                 if (props.getAbility() && props.getTimeLeft() > 900)
-                    player.world.playSound(null, new BlockPos(player.getPosX(), player.getPosY(), player.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
-                StarPlatinumEntity.starPlatinum = null;
+                    player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
+                Entity starPlatinum = player.world.getEntityByID(props.getPlayerStand());
+                if (starPlatinum instanceof StarPlatinumEntity)
+                    StarPlatinumEntity.getStarPlatinumList().remove(starPlatinum);
                 StarPlatinumEntity.dayTime = -1;
                 StarPlatinumEntity.gameTime = -1;
                 if (!player.world.isRemote)

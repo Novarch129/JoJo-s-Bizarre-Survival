@@ -25,7 +25,7 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 /**
- * @author Novarch
+ * @author Novarch129
  * @since 1.15.2-1.0.0.0
  * <p>
  * The main {@link Mod} class, used mostly for registering objects.
@@ -49,11 +49,11 @@ public class JojoBizarreSurvival {
         modBus.addListener(this::setup);
         forgeBus.addListener(this::onServerStarting); //FMLServerStartingEvent is fired on the Forge bus.
 
-        EventInit.register(MinecraftForge.EVENT_BUS);
+        EventInit.registerForgeBus(MinecraftForge.EVENT_BUS);
         ItemInit.ITEMS.register(modBus);
         EntityInit.ENTITY_TYPES.register(modBus);
         SoundInit.SOUNDS.register(modBus);
-        DimensionInit.DIMENSIONS.register(modBus);
+        DimensionInit.DIMENSIONS.register(modBus); //Deprecated in preparation for 1.16.
         EffectInit.EFFECTS.register(modBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
     }
@@ -64,6 +64,7 @@ public class JojoBizarreSurvival {
         PacketHandler.register();
     }
 
+    @Deprecated //Replace with RegisterCommandsEvent in 1.16, todo.
     private void onServerStarting(FMLServerStartingEvent event) {
         StandCommand.register(event.getCommandDispatcher());
     }

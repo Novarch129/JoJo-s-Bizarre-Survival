@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.entity.stand.attack.CrazyDiamondPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -57,7 +56,7 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
                 attackRush = true;
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                CrazyDiamondPunchEntity crazyDiamondPunchEntity = new CrazyDiamondPunchEntity(world, this, getMaster());
+                CrazyDiamondPunchEntity crazyDiamondPunchEntity = new CrazyDiamondPunchEntity(world, this, master);
                 crazyDiamondPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2.9f, 0.15f);
                 world.addEntity(crazyDiamondPunchEntity);
             }
@@ -67,32 +66,31 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getCooldown() > 0 && ability)
                     props.subtractCooldown(1);
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, master);
                         crazyDiamond1.setRandomPositions();
-                        crazyDiamond1.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                        crazyDiamond1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                         world.addEntity(crazyDiamond1);
-                        CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, player);
+                        CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, master);
                         crazyDiamond2.setRandomPositions();
-                        crazyDiamond2.shoot(player, player.rotationPitch, player.rotationYaw, 2.5f, 0.2f);
+                        crazyDiamond2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                         world.addEntity(crazyDiamond2);
                     }
                 if (attackTicker >= 100) {

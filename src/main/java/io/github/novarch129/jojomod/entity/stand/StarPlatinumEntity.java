@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.IStand;
 import io.github.novarch129.jojomod.capability.stand.Stand;
@@ -31,11 +32,16 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class StarPlatinumEntity extends AbstractStandEntity {
-    public static StarPlatinumEntity starPlatinum;
     public static long dayTime = -1, gameTime = -1;
+    /**
+     * A list of every {@link StarPlatinumEntity} in the {@link World}, used to cancel events and unfreeze entities on logout.
+     */
+    private static List<StarPlatinumEntity> starPlatinumList = Lists.newArrayList();
     public int timestopTick;
     public boolean cooldown;
 
@@ -43,20 +49,26 @@ public class StarPlatinumEntity extends AbstractStandEntity {
         super(type, world);
     }
 
+    public static List<StarPlatinumEntity> getStarPlatinumList() {
+        return starPlatinumList;
+    }
+
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         World world = event.world;
-        if (starPlatinum != null) {
-            if (starPlatinum.ability && !starPlatinum.cooldown) {
-                if (dayTime != -1 && gameTime != -1) {
-                    world.setDayTime(dayTime);
-                    world.setGameTime(gameTime);
-                } else {
-                    dayTime = world.getDayTime();
-                    gameTime = world.getGameTime();
+        if (starPlatinumList.size() > 0) {
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown) {
+                    if (dayTime != -1 && gameTime != -1) {
+                        world.setDayTime(dayTime);
+                        world.setGameTime(gameTime);
+                    } else {
+                        dayTime = world.getDayTime();
+                        gameTime = world.getGameTime();
+                    }
                 }
-            }
-        } else if (starPlatinum == null && TheWorldEntity.theWorld == null) {
+            });
+        } else if (starPlatinumList.size() <= 0 && TheWorldEntity.getTheWorldList().size() <= 0) {
             if (!world.isRemote) {
                 world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
@@ -83,80 +95,105 @@ public class StarPlatinumEntity extends AbstractStandEntity {
 
     @SubscribeEvent
     public static void fluidEvent(BlockEvent.FluidPlaceBlockEvent event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer() != starPlatinum.getMaster())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getEntity() != starPlatinum.getMaster())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown) {
+                    if (event.getEntity() == null)
+                        event.setCanceled(true);
+                    else {
+                        if (event.getEntity().getUniqueID() != starPlatinum.master.getUniqueID())
+                            event.setCanceled(true);
+                    }
+                }
+            });
     }
 
     @SubscribeEvent
     public static void pistonEvent(PistonEvent.Pre event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract1(PlayerInteractEvent.EntityInteractSpecific event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer() != starPlatinum.getMaster())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract2(PlayerInteractEvent.EntityInteract event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer() != starPlatinum.getMaster())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract3(PlayerInteractEvent.RightClickBlock event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract4(PlayerInteractEvent.RightClickItem event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void playerInteract5(PlayerInteractEvent.LeftClickBlock event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getPlayer().getUniqueID() != starPlatinum.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getPlayer().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @SubscribeEvent
     public static void enderTeleport(EnderTeleportEvent event) {
-        if (starPlatinum != null)
-            if (starPlatinum.ability && !starPlatinum.cooldown)
-                if (event.getEntity().getUniqueID() != starPlatinum.getMaster().getUniqueID())
-                    event.setCanceled(true);
+        if (starPlatinumList.size() > 0)
+            starPlatinumList.forEach(starPlatinum -> {
+                if (starPlatinum.ability && !starPlatinum.cooldown)
+                    if (event.getEntity().getUniqueID() != starPlatinum.master.getUniqueID())
+                        event.setCanceled(true);
+            });
     }
 
     @Override
@@ -192,17 +229,17 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props2 -> {
+            Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
-                if (ability && props2.getTimeLeft() > 900) {
+                props2.setAbilityActive(props2.getTimeLeft() > 900 && props2.getAbility());
+                if (props2.getAbilityActive()) {
                     props2.subtractTimeLeft(1);
-                    Timestop.getLazyOptional(player).ifPresent(ITimestop::clear);
+                    Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
-                    player.setInvulnerable(true);
+                    master.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
                         world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 2.0f, 1.0f);
-                    starPlatinum = this;
+                    starPlatinumList.add(this);
 
                     if (!world.isRemote) {
                         if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -211,7 +248,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                         }
                         world.getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                 .forEach(entity -> {
                                     if (entity instanceof PlayerEntity) {
@@ -224,7 +261,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                             return;
                                     }
                                     if (entity instanceof MobEntity) {
-                                        if (((MobEntity) entity).getAttackTarget() == player || ((MobEntity) entity).getRevengeTarget() == player) {
+                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
                                             ((MobEntity) entity).setAttackTarget(null);
                                             ((MobEntity) entity).setRevengeTarget(null);
                                         }
@@ -285,22 +322,20 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                     }
                                 });
                     }
-                } else if (!ability || props2.getTimeLeft() <= 900) {
+                } else {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
-                    starPlatinum = null;
+                    master.setInvulnerable(false);
+                    starPlatinumList.remove(this);
                     if (!this.world.isRemote) {
                         this.world.getServer().getWorld(this.dimension).getEntities()
                                 .filter(entity -> entity != this)
-                                .filter(entity -> entity != player)
+                                .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                         entity.setNoGravity(false);
-                                    } else {
-                                        if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
-                                            entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-                                    }
+                                    } else if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                        entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                     if (entity instanceof PlayerEntity)
                                         ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
                                     if (entity instanceof MobEntity)
@@ -324,44 +359,38 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                 }
 
                 if (props2.getTimeLeft() == 960)
-                    world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), getSoundCategory(), 5.0f, 1.0f);
-
-                if (props2.getCooldown() > 0)
-                    props2.subtractCooldown(1);
+                    world.playSound(null, getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), getSoundCategory(), 5, 1);
 
                 if (props2.getCooldown() == 1) {
                     props2.setTimeLeft(1000);
                     cooldown = false;
                 }
 
-                if (!ability && props2.getTimeLeft() < 1000)
-                    props2.addTimeLeft(1);
-
                 if (!ability) {
                     timestopTick = 0;
-                    player.setInvulnerable(false);
+                    master.setInvulnerable(false);
                 }
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        StarPlatinumPunchEntity starPlatinum1 = new StarPlatinumPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        StarPlatinumPunchEntity starPlatinum1 = new StarPlatinumPunchEntity(world, this, master);
                         starPlatinum1.setRandomPositions();
-                        starPlatinum1.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
+                        starPlatinum1.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum1);
-                        StarPlatinumPunchEntity starPlatinum2 = new StarPlatinumPunchEntity(world, this, player);
+                        StarPlatinumPunchEntity starPlatinum2 = new StarPlatinumPunchEntity(world, this, master);
                         starPlatinum2.setRandomPositions();
-                        starPlatinum2.shoot(player, player.rotationPitch, player.rotationYaw, 2.4f, 0.17f);
+                        starPlatinum2.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum2);
                     }
                 if (attackTicker >= 160) {
@@ -376,30 +405,30 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         ability = false;
-        starPlatinum = null;
+        starPlatinumList.remove(this);
         dayTime = -1;
         gameTime = -1;
-        if (!this.world.isRemote)
-            this.world.getServer().getWorld(this.dimension).getEntities()
-                    .filter(entity -> entity != this)
-                    .forEach(entity ->
-                            Timestop.getLazyOptional(entity).ifPresent(props2 -> {
-                                if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
-                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                    entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
-                                if (entity instanceof PlayerEntity)
-                                    ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
-                                if (entity instanceof MobEntity)
-                                    ((MobEntity) entity).setNoAI(false);
+        if (world.isRemote) return;
+        getServer().getWorld(this.dimension).getEntities()
+                .filter(entity -> entity != this)
+                .forEach(entity ->
+                        Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                            if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                entity.velocityChanged = true;
-                                entity.fallDistance = props2.getFallDistance();
-                                entity.setInvulnerable(false);
-                                props2.clear();
-                            }));
+                                entity.setNoGravity(false);
+                            } else {
+                                if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                            }
+                            if (entity instanceof PlayerEntity)
+                                ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
+                            if (entity instanceof MobEntity)
+                                ((MobEntity) entity).setNoAI(false);
+                            entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
+                            entity.velocityChanged = true;
+                            entity.fallDistance = props2.getFallDistance();
+                            entity.setInvulnerable(false);
+                            props2.clear();
+                        }));
     }
 }

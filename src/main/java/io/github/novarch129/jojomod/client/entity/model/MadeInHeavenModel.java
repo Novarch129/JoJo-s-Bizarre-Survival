@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.MadeInHeavenEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
+public class MadeInHeavenModel extends AbstractStandModel<MadeInHeavenEntity> {
     private final ModelRenderer Head;
     private final ModelRenderer SideLeft;
     private final ModelRenderer SideRight;
@@ -88,25 +87,25 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         textureHeight = 256;
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 12.5F, 0.0F);
-        Head.setTextureOffset(0, 0).addBox(-4.0F, -30.25F, 3.75F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+        Head.setRotationPoint(0.0F, -10.0F, 8.0F);
+        Head.setTextureOffset(0, 0).addBox(-4.0F, -7.75F, -4.25F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
         SideLeft = new ModelRenderer(this);
-        SideLeft.setRotationPoint(0.0F, 0.0F, 0.0F);
+        SideLeft.setRotationPoint(0.0F, 22.5F, -8.0F);
         Head.addChild(SideLeft);
         SideLeft.setTextureOffset(0, 0).addBox(3.475F, -27.225F, 8.75F, 1.0F, 2.0F, 1.0F, 0.0F, false);
         SideLeft.setTextureOffset(4, 21).addBox(3.475F, -28.225F, 6.75F, 1.0F, 4.0F, 2.0F, 0.0F, false);
         SideLeft.setTextureOffset(0, 0).addBox(3.475F, -27.225F, 5.75F, 1.0F, 2.0F, 1.0F, 0.0F, false);
 
         SideRight = new ModelRenderer(this);
-        SideRight.setRotationPoint(-8.0F, 0.0F, 0.0F);
+        SideRight.setRotationPoint(-8.0F, 22.5F, -8.0F);
         Head.addChild(SideRight);
         SideRight.setTextureOffset(0, 0).addBox(3.475F, -27.225F, 8.75F, 1.0F, 2.0F, 1.0F, 0.0F, false);
         SideRight.setTextureOffset(4, 21).addBox(3.475F, -28.225F, 6.75F, 1.0F, 4.0F, 2.0F, 0.0F, false);
         SideRight.setTextureOffset(0, 0).addBox(3.475F, -27.225F, 5.75F, 1.0F, 2.0F, 1.0F, 0.0F, false);
 
         Clock = new ModelRenderer(this);
-        Clock.setRotationPoint(0.0F, -0.55F, -1.95F);
+        Clock.setRotationPoint(0.0F, 21.95F, -9.95F);
         Head.addChild(Clock);
         Clock.setTextureOffset(0, 16).addBox(-2.0F, -28.8F, 5.3F, 4.0F, 4.0F, 1.0F, 0.0F, false);
 
@@ -119,7 +118,7 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Supports.setTextureOffset(0, 0).addBox(-1.0F, -13.75F, 7.25F, 2.0F, 1.0F, 1.0F, 0.0F, false);
 
         Feathers = new ModelRenderer(this);
-        Feathers.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Feathers.setRotationPoint(0.0F, 22.5F, -8.0F);
         Head.addChild(Feathers);
 
 
@@ -196,7 +195,7 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Feather10.setTextureOffset(49, 0).addBox(3.6798F, -3.5726F, 8.1979F, 1.0F, 6.0F, 0.0F, 0.0F, true);
 
         Vines = new ModelRenderer(this);
-        Vines.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Vines.setRotationPoint(0.0F, 22.5F, -8.0F);
         Head.addChild(Vines);
 
 
@@ -288,13 +287,13 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         RightHand.setRotationPoint(-28.2817F, 10.9497F, -12.2411F);
         Hands.addChild(RightHand);
         setRotationAngle(RightHand, -1.309F, -0.1745F, -0.0873F);
-        RightHand.setTextureOffset(48, 88).addBox(21.7504F, -20.9482F, -21.0679F, 4.0F, 7.5F, 4.0F, 0.0F, false);
+        RightHand.setTextureOffset(48, 88).addBox(21.7504F, -20.9482F, -21.0679F, 4.0F, 7.0F, 4.0F, 0.0F, false);
 
         LeftHand = new ModelRenderer(this);
         LeftHand.setRotationPoint(11.0078F, 0.095F, -13.793F);
         Hands.addChild(LeftHand);
         setRotationAngle(LeftHand, -1.309F, 0.1745F, -0.0873F);
-        LeftHand.setTextureOffset(47, 87).addBox(-6.5165F, -23.4665F, -12.2338F, 4.0F, 7.5F, 4.0F, 0.0F, true);
+        LeftHand.setTextureOffset(47, 87).addBox(-6.5165F, -23.4665F, -12.2338F, 4.0F, 7.0F, 4.0F, 0.0F, true);
 
         HorseStrap = new ModelRenderer(this);
         HorseStrap.setRotationPoint(8.5F, -2.5F, -6.75F);
@@ -370,7 +369,7 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Pipe5.setRotationPoint(-5.9479F, -9.7153F, 6.0794F);
         PipeRight.addChild(Pipe5);
         setRotationAngle(Pipe5, -0.6981F, -2.1817F, 1.4835F);
-        Pipe5.setTextureOffset(54, 0).addBox(7.3283F, -0.2193F, -2.3252F, 1.0F, 3.5F, 1.0F, 0.0F, false);
+        Pipe5.setTextureOffset(54, 0).addBox(7.3283F, -0.2193F, -2.3252F, 1.0F, 3.0F, 1.0F, 0.0F, false);
 
         PipeLeft = new ModelRenderer(this);
         PipeLeft.setRotationPoint(1.0F, 0.0F, 0.0F);
@@ -405,7 +404,7 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Pipe10.setRotationPoint(5.9479F, -9.7153F, 6.0794F);
         PipeLeft.addChild(Pipe10);
         setRotationAngle(Pipe10, -0.6981F, 2.1817F, -1.4835F);
-        Pipe10.setTextureOffset(54, 0).addBox(-8.3283F, -0.2193F, -2.3252F, 1.0F, 3.5F, 1.0F, 0.0F, true);
+        Pipe10.setTextureOffset(54, 0).addBox(-8.3283F, -0.2193F, -2.3252F, 1.0F, 3.0F, 1.0F, 0.0F, true);
 
         Chest = new ModelRenderer(this);
         Chest.setRotationPoint(-0.25F, -11.75F, -0.925F);
@@ -537,11 +536,6 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Supports6 = new ModelRenderer(this);
         Supports6.setRotationPoint(-11.3484F, -23.1054F, -12.8842F);
         Clock5.addChild(Supports6);
-
-    }
-
-    @Override
-    public void setRotationAngles(MadeInHeavenEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @Override
@@ -551,9 +545,8 @@ public class MadeInHeavenModel extends EntityModel<MadeInHeavenEntity> {
         Horse.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    public ModelRenderer getHead() {
+        return Head;
     }
 }

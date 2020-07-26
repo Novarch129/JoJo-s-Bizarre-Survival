@@ -8,9 +8,9 @@ import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -27,7 +27,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
 
     @Override
     public void handle(CToggleAbilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
-        if (ctx.get().getDirection().getReceptionSide().isServer()) {
+        if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayerEntity sender = ctx.get().getSender();
                 if (sender == null) return;
@@ -35,7 +35,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                     int standID = props.getStandID();
                     int act = props.getAct();
 
-                    if (props.getAbility()) {
+                    if (!props.getAbility()) {
                         switch (standID) {
                             case Util.StandID.THE_HAND:
                             case Util.StandID.MAGICIANS_RED:
@@ -57,6 +57,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                                     props.setAbility(!props.getAbility());
                                     sender.sendMessage(new StringTextComponent("Ability: ON"));
                                 }
+                                break;
                             }
                         }
                     } else {
@@ -78,10 +79,11 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                                     sender.sendMessage(new StringTextComponent("Ability: OFF"));
                                 }
                                 if (props.getStandID() == Util.StandID.THE_WORLD && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
-                                    sender.world.playSound(null, new BlockPos(sender.getPosX(), sender.getPosY(), sender.getPosZ()), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                                    sender.world.playSound(null, sender.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
 
                                 if (props.getStandID() == Util.StandID.STAR_PLATINUM && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
-                                    sender.world.playSound(null, new BlockPos(sender.getPosX(), sender.getPosY(), sender.getPosZ()), SoundInit.TIME_RESUME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5.0f, 1.0f);
+                                    sender.world.playSound(null, sender.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
+                                break;
                             }
                         }
                     }

@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -38,32 +37,29 @@ public class WhitesnakeEntity extends AbstractStandEntity {
     @Override
     public void tick() {
         super.tick();
-
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> ability = props.getAbility());
-
-            player.setNoGravity(false);
+            Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
+            master.setNoGravity(false);
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        WhitesnakePunchEntity whitesnake1 = new WhitesnakePunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        WhitesnakePunchEntity whitesnake1 = new WhitesnakePunchEntity(world, this, master);
                         whitesnake1.setRandomPositions();
-                        whitesnake1.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25f);
+                        whitesnake1.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(whitesnake1);
-                        WhitesnakePunchEntity whitesnake2 = new WhitesnakePunchEntity(world, this, player);
+                        WhitesnakePunchEntity whitesnake2 = new WhitesnakePunchEntity(world, this, master);
                         whitesnake2.setRandomPositions();
-                        whitesnake2.shoot(player, player.rotationPitch, player.rotationYaw, 1.0f, 0.25f);
+                        whitesnake2.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(whitesnake2);
                     }
                 if (attackTicker >= 80) {

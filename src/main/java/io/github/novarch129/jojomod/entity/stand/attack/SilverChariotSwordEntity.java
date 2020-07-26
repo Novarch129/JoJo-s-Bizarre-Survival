@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.SilverChariotEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -37,5 +38,10 @@ public class SilverChariotSwordEntity extends AbstractStandAttackEntity {
             if (world.rand.nextBoolean())
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
         }
+    }
+
+    @Override
+    protected int getRange() {
+        return ((SilverChariotEntity) shootingStand).hasArmor() ? 2 : 1;
     }
 }

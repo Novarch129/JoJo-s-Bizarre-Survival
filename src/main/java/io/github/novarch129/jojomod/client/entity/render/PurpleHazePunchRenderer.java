@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class PurpleHazePunchRenderer extends StandPunchRenderer<PurpleHazePunchEntity> {
+public class PurpleHazePunchRenderer extends AbstractStandPunchRenderer<PurpleHazePunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze_punch.png");
 
     public PurpleHazePunchRenderer(EntityRendererManager renderManagerIn) {

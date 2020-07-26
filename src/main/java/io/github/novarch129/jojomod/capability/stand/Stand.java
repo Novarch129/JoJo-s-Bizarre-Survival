@@ -42,7 +42,8 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private double timeLeft = 1000;
     private String diavolo = "";
     private boolean ability = true;
-    private int transformed = 0;
+    private boolean abilityActive;
+    private int transformed;
     private boolean noClip;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
@@ -74,6 +75,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putString("Diavolo", instance.getDiavolo());
                 props.putBoolean("NoClip", instance.getNoClip());
                 props.putInt("StandEntityID", instance.getPlayerStand());
+                props.putBoolean("AbilityActive", instance.getAbilityActive());
                 return props;
             }
 
@@ -90,18 +92,19 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 instance.putDiavolo(compoundNBT.getString("Diavolo"));
                 instance.putNoClip(compoundNBT.getBoolean("NoClip"));
                 instance.putPlayerStand(compoundNBT.getInt("StandEntityID"));
+                instance.putAbilityActive(compoundNBT.getBoolean("AbilityActive"));
             }
         }, () -> new Stand(Null()));
     }
 
     @Override
     public PlayerEntity getPlayer() {
-        return this.player;
+        return player;
     }
 
     @Override
     public int getStandID() {
-        return this.standID;
+        return standID;
     }
 
     @Override
@@ -128,12 +131,12 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public int getAct() {
-        return this.standAct;
+        return standAct;
     }
 
     @Override
-    public void setAct(int value) {
-        this.standAct = value;
+    public void setAct(int standAct) {
+        this.standAct = standAct;
         onDataUpdated();
     }
 
@@ -193,12 +196,12 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public double getTimeLeft() {
-        return this.timeLeft;
+        return timeLeft;
     }
 
     @Override
-    public void setTimeLeft(double timeleft) {
-        this.timeLeft = timeleft;
+    public void setTimeLeft(double timeLeft) {
+        this.timeLeft = timeLeft;
         onDataUpdated();
     }
 
@@ -216,7 +219,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public String getDiavolo() {
-        return this.diavolo;
+        return diavolo;
     }
 
     @Override
@@ -227,18 +230,18 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public boolean getAbility() {
-        return this.ability;
+        return ability;
     }
 
     @Override
-    public void setAbility(boolean value) {
-        this.ability = value;
+    public void setAbility(boolean ability) {
+        this.ability = ability;
         onDataUpdated();
     }
 
     @Override
     public int getTransformed() {
-        return this.transformed;
+        return transformed;
     }
 
     @Override
@@ -309,29 +312,49 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         this.noClip = noClip;
     }
 
+    @Override
+    public boolean getAbilityActive() {
+        return abilityActive;
+    }
+
+    @Override
+    public void setAbilityActive(boolean abilityActive) {
+        this.abilityActive = abilityActive;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putAbilityActive(boolean abilityActive) {
+        this.abilityActive = abilityActive;
+    }
+
     public void clone(IStand props) {
-        setStandID(props.getStandID());
-        setAct(props.getAct());
-        setStandOn(false);
-        setCooldown(props.getCooldown());
-        setTimeLeft(props.getTimeLeft());
-        setTransformed(props.getTransformed());
-        setDiavolo(props.getDiavolo());
-        setAbility(props.getAbility());
+        putStandID(props.getStandID());
+        putAct(props.getAct());
+        putStandOn(props.getStandOn());
+        putCooldown(props.getCooldown());
+        putTimeLeft(props.getTimeLeft());
+        putTransformed(props.getTransformed());
+        putDiavolo(props.getDiavolo());
+        putAbility(props.getAbility());
+        putPlayerStand(props.getPlayerStand());
+        putAbilityActive(props.getAbilityActive());
+        onDataUpdated();
     }
 
     @Override
     public void removeStand() {
-        setStandOn(false);
-        setAct(0);
-        setStandID(0);
-        setCooldown(0);
-        setTimeLeft(1000);
-        setTransformed(0);
-        setDiavolo("");
-        setAbility(true);
-        setNoClip(false);
-        setPlayerStand(0);
+        putStandOn(false);
+        putAct(0);
+        putStandID(0);
+        putCooldown(0);
+        putTimeLeft(1000);
+        putTransformed(0);
+        putDiavolo("");
+        putAbility(true);
+        putNoClip(false);
+        putPlayerStand(0);
+        putAbilityActive(false);
         onDataUpdated();
     }
 

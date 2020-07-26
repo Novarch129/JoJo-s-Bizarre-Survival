@@ -3,17 +3,13 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.CMoonEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class CMoonModel extends EntityModel<CMoonEntity> {
+public class CMoonModel extends AbstractStandModel<CMoonEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Eyes;
     private final ModelRenderer Helmet;
-    private final ModelRenderer Mask1;
-    private final ModelRenderer Mask2;
-    private final ModelRenderer Neck;
     private final ModelRenderer BodyBase;
     private final ModelRenderer Torso;
     private final ModelRenderer ShoulderPads;
@@ -57,11 +53,11 @@ public class CMoonModel extends EntityModel<CMoonEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.65F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -8.65F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.1F, 0.0F);
+        Head.setRotationPoint(0.0F, 4.1F, 0.0F);
         HeadBase.addChild(Head);
         Head.setTextureOffset(0, 0).addBox(-4.0F, -11.675F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
 
@@ -92,23 +88,6 @@ public class CMoonModel extends EntityModel<CMoonEntity> {
         Helmet.setTextureOffset(62, 88).addBox(-4.6977F, -1.3F, -4.2932F, 1.0F, 1.0F, 8.0F, 0.0F, true);
         Helmet.setTextureOffset(59, 0).addBox(2.8023F, -1.3F, -4.3182F, 1.0F, 1.0F, 8.0F, 0.0F, false);
         Helmet.setTextureOffset(85, 87).addBox(-4.1977F, -1.3F, -4.3182F, 1.0F, 1.0F, 8.0F, 0.0F, true);
-
-        Mask1 = new ModelRenderer(this);
-        Mask1.setRotationPoint(0.5773F, 1.2F, -0.3182F);
-        Helmet.addChild(Mask1);
-        setRotationAngle(Mask1, 0.0F, 0.0F, 0.9119F);
-
-
-        Mask2 = new ModelRenderer(this);
-        Mask2.setRotationPoint(-0.9727F, 1.2F, -0.3182F);
-        Helmet.addChild(Mask2);
-        setRotationAngle(Mask2, 0.0F, 0.0F, -0.9119F);
-
-
-        Neck = new ModelRenderer(this);
-        Neck.setRotationPoint(0.0F, 0.0F, 0.0F);
-        Head.addChild(Neck);
-        Neck.setTextureOffset(0, 0).addBox(-1.75F, -4.45F, -1.25F, 3.0F, 2.0F, 3.0F, 0.0F, false);
 
         BodyBase = new ModelRenderer(this);
         BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
@@ -337,18 +316,12 @@ public class CMoonModel extends EntityModel<CMoonEntity> {
     }
 
     @Override
-    public void setRotationAngles(CMoonEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    public ModelRenderer getHead() {
+        return HeadBase;
     }
 }

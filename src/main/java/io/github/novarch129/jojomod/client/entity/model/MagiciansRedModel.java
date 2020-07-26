@@ -3,10 +3,9 @@ package io.github.novarch129.jojomod.client.entity.model;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.MagiciansRedEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class MagiciansRedModel extends EntityModel<MagiciansRedEntity> {
+public class MagiciansRedModel extends AbstractStandModel<MagiciansRedEntity> {
     private final ModelRenderer HeadBase;
     private final ModelRenderer Head;
     private final ModelRenderer Head2;
@@ -41,12 +40,12 @@ public class MagiciansRedModel extends EntityModel<MagiciansRedEntity> {
         textureHeight = 128;
 
         HeadBase = new ModelRenderer(this);
-        HeadBase.setRotationPoint(0.0F, -4.0F, 0.0F);
-        setRotationAngle(HeadBase, 0.0F, -0.0873F, 0.0F);
+        HeadBase.setRotationPoint(0.0F, -7.5F, 0.0F);
+        setRotationAngle(HeadBase, -0.0873F, 0.0F, 0.0F);
 
 
         Head = new ModelRenderer(this);
-        Head.setRotationPoint(0.0F, 0.0F, 0.0F);
+        Head.setRotationPoint(0.0F, 3.5F, 0.0F);
         HeadBase.addChild(Head);
         setRotationAngle(Head, 0.0F, 0.7854F, 0.0F);
 
@@ -206,18 +205,13 @@ public class MagiciansRedModel extends EntityModel<MagiciansRedEntity> {
     }
 
     @Override
-    public void setRotationAngles(MagiciansRedEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         HeadBase.render(matrixStack, buffer, packedLight, packedOverlay);
         BodyBase.render(matrixStack, buffer, packedLight, packedOverlay);
     }
 
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    @Override
+    public ModelRenderer getHead() {
+        return HeadBase;
     }
 }

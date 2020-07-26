@@ -45,9 +45,8 @@ public class CrazyDiamondPunchEntity extends AbstractStandAttackEntity {
             if (shootingStand.ability) {
                 if (state.getMaterial() != Material.AIR && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA)
                     ((CrazyDiamondEntity) shootingStand).putRepairBlock(pos, state);
-            } else
-                if (world.rand.nextBoolean())
-                    state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            } else if (world.rand.nextBoolean())
+                state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
             world.removeBlock(pos, false);
 
         }

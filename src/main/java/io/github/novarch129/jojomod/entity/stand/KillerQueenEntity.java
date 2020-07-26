@@ -13,7 +13,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -41,39 +40,39 @@ public class KillerQueenEntity extends AbstractStandEntity {
     }
 
     public void detonate() {
-        if (getMaster() != null)
-            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if (props.getCooldown() <= 0) {
-                    if (bombEntity != null) {
-                        if (bombEntity.isAlive()) {
-                            props.setCooldown(140);
-                            if (bombEntity instanceof MobEntity) {
-                                Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-                                ((MobEntity) bombEntity).spawnExplosionParticle();
-                                explosion.doExplosionB(true);
-                                world.playSound(null, new BlockPos(getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                                bombEntity.remove();
-                            } else if (bombEntity instanceof PlayerEntity) {
-                                Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
-                                    if (bombProps.getStandID() != Util.StandID.GER) {
-                                        Explosion explosion = new Explosion(bombEntity.world, getMaster(), bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-                                        ((PlayerEntity) bombEntity).spawnSweepParticles();
-                                        explosion.doExplosionB(true);
-                                        bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
-                                    } else {
-                                        Explosion explosion = new Explosion(getMaster().world, getMaster(), getMaster().getPosX(), getMaster().getPosY(), getMaster().getPosZ(), 4.0f, true, Explosion.Mode.NONE);
-                                        getMaster().spawnSweepParticles();
-                                        explosion.doExplosionB(true);
-                                        getMaster().setHealth(0);
-                                    }
-                                });
-                            }
-                            if (!getMaster().isCreative() && !getMaster().isSpectator())
-                                getMaster().getFoodStats().addStats(-2, 0);
+        if (getMaster() == null) return;
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() <= 0) {
+                if (bombEntity != null) {
+                    if (bombEntity.isAlive()) {
+                        props.setCooldown(140);
+                        if (bombEntity instanceof MobEntity) {
+                            Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                            ((MobEntity) bombEntity).spawnExplosionParticle();
+                            explosion.doExplosionB(true);
+                            world.playSound(null, master.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                            bombEntity.remove();
+                        } else if (bombEntity instanceof PlayerEntity) {
+                            Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
+                                if (bombProps.getStandID() != Util.StandID.GER) {
+                                    Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                    ((PlayerEntity) bombEntity).spawnSweepParticles();
+                                    explosion.doExplosionB(true);
+                                    bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
+                                } else {
+                                    Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                    master.spawnSweepParticles();
+                                    explosion.doExplosionB(true);
+                                    master.setHealth(0);
+                                }
+                            });
                         }
+                        if (!master.isCreative() && !master.isSpectator())
+                            master.getFoodStats().addStats(-2, 0);
                     }
                 }
-            });
+            }
+        });
     }
 
     public void toggleSheerHeartAttack() {
@@ -103,7 +102,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                KillerQueenPunchEntity killerQueenPunchEntity = new KillerQueenPunchEntity(world, this, getMaster());
+                KillerQueenPunchEntity killerQueenPunchEntity = new KillerQueenPunchEntity(world, this, master);
                 killerQueenPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2, 0.3f);
                 world.addEntity(killerQueenPunchEntity);
             }
@@ -113,28 +112,27 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> props.setAbility(false));
+            Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, master);
                         killerQueen1.setRandomPositions();
-                        killerQueen1.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.4f);
+                        killerQueen1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.4f);
                         world.addEntity(killerQueen1);
-                        KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, player);
+                        KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, master);
                         killerQueen2.setRandomPositions();
-                        killerQueen2.shoot(player, player.rotationPitch, player.rotationYaw, 2, 0.4f);
+                        killerQueen2.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.4f);
                         world.addEntity(killerQueen2);
                     }
                 if (attackTicker >= 80) {

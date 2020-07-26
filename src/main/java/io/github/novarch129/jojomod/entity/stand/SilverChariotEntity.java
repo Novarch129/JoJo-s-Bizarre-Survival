@@ -5,9 +5,7 @@ import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.SilverChariotSwordEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -17,8 +15,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
-
-import javax.annotation.ParametersAreNonnullByDefault;
 
 @SuppressWarnings({"ConstantConditions", "unused"})
 public class SilverChariotEntity extends AbstractStandEntity {
@@ -75,8 +71,8 @@ public class SilverChariotEntity extends AbstractStandEntity {
         super.onRemovedFromWorld();
         if (ability)
             if (getMaster() != null)
-                if (getMaster().isPotionActive(Effects.SPEED))
-                    getMaster().removePotionEffect(Effects.SPEED);
+                if (master.isPotionActive(Effects.SPEED))
+                    master.removePotionEffect(Effects.SPEED);
     }
 
     @Override
@@ -89,7 +85,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
                 attackRush = true;
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                SilverChariotSwordEntity silverChariotSwordEntity = new SilverChariotSwordEntity(world, this, getMaster());
+                SilverChariotSwordEntity silverChariotSwordEntity = new SilverChariotSwordEntity(world, this, master);
                 silverChariotSwordEntity.shoot(getMaster(), rotationPitch, rotationYaw, hasArmor() ? 4 : 10, hasArmor() ? 0.001f : Float.MIN_VALUE);
                 world.addEntity(silverChariotSwordEntity);
             }
@@ -99,23 +95,23 @@ public class SilverChariotEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-            Stand.getLazyOptional(player).ifPresent(props -> {
+            Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getTimeLeft() > 800 && props.getCooldown() <= 0) {
                     if (ability == hasArmor()) {
                         setHasArmor(!ability);
+                        props.setAbilityActive(!hasArmor);
 
                         if (!hasArmor()) {
-                            if (props.getTimeLeft() % 20 == 0 && !player.isCreative())
-                                player.getFoodStats().addStats(-1, 0);
+                            if (props.getTimeLeft() % 20 == 0 && !master.isCreative())
+                                master.getFoodStats().addStats(-1, 0);
                             world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundEvents.ENTITY_GENERIC_EXPLODE, getSoundCategory(), 2.0f, 1.0f);
                             for (int i = 0; i < 5; i++)
                                 spawnExplosionParticle();
-                            player.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 4));
+                            master.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 4));
                         } else {
-                            if (player.isPotionActive(Effects.SPEED))
-                                player.removePotionEffect(Effects.SPEED);
+                            if (master.isPotionActive(Effects.SPEED))
+                                master.removePotionEffect(Effects.SPEED);
                         }
                     }
                 }
@@ -128,31 +124,29 @@ public class SilverChariotEntity extends AbstractStandEntity {
                     setHasArmor(true);
                     props.setCooldown(200);
                 }
-                if (props.getCooldown() > 0 && ability)
-                    props.subtractCooldown(1);
                 if (props.getCooldown() == 1)
                     props.setTimeLeft(1000);
             });
 
             followMaster();
-            setRotationYawHead(player.rotationYaw);
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        SilverChariotSwordEntity silverChariot1 = new SilverChariotSwordEntity(world, this, player);
+                        master.setSprinting(false);
+                        SilverChariotSwordEntity silverChariot1 = new SilverChariotSwordEntity(world, this, master);
                         silverChariot1.setRandomPositions();
-                        silverChariot1.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
+                        silverChariot1.shoot(master, master.rotationPitch, master.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
                         world.addEntity(silverChariot1);
-                        SilverChariotSwordEntity silverChariot2 = new SilverChariotSwordEntity(world, this, player);
+                        SilverChariotSwordEntity silverChariot2 = new SilverChariotSwordEntity(world, this, master);
                         silverChariot2.setRandomPositions();
-                        silverChariot2.shoot(player, player.rotationPitch, player.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
+                        silverChariot2.shoot(master, master.rotationPitch, master.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
                         world.addEntity(silverChariot2);
                     }
                 if (attackTicker >= 80) {

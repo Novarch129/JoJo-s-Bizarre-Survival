@@ -77,27 +77,25 @@ public class TheHandEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            PlayerEntity player = getMaster();
-
             followMaster();
-            setRotationYawHead(player.getRotationYawHead());
-            setRotation(player.rotationYaw, player.rotationPitch);
+            setRotationYawHead(master.rotationYawHead);
+            setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (player.swingProgressInt == 0 && !attackRush)
+            if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
-                player.setSprinting(false);
+                master.setSprinting(false);
                 attackTicker++;
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
-                        player.setSprinting(false);
-                        TheHandPunchEntity theHand1 = new TheHandPunchEntity(world, this, player);
+                        master.setSprinting(false);
+                        TheHandPunchEntity theHand1 = new TheHandPunchEntity(world, this, master);
                         theHand1.setRandomPositions();
-                        theHand1.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
+                        theHand1.shoot(master, master.rotationPitch, master.rotationYaw, 0.8f, 0.5f);
                         world.addEntity(theHand1);
-                        TheHandPunchEntity theHand2 = new TheHandPunchEntity(world, this, player);
+                        TheHandPunchEntity theHand2 = new TheHandPunchEntity(world, this, master);
                         theHand2.setRandomPositions();
-                        theHand2.shoot(player, player.rotationPitch, player.rotationYaw, 0.8f, 0.5f);
+                        theHand2.shoot(master, master.rotationPitch, master.rotationYaw, 0.8f, 0.5f);
                         world.addEntity(theHand2);
                     }
                 if (attackTicker >= 80) {

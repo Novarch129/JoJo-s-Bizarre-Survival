@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class KingCrimsonPunchRenderer extends StandPunchRenderer<KingCrimsonPunchEntity> {
+public class KingCrimsonPunchRenderer extends AbstractStandPunchRenderer<KingCrimsonPunchEntity> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson_punch.png");
 
     public KingCrimsonPunchRenderer(EntityRendererManager renderManagerIn) {
