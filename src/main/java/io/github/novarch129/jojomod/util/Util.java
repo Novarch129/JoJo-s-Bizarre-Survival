@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
@@ -19,6 +20,7 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.util.EntityPredicates;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -168,6 +170,8 @@ public class Util {
                 return new TheHandEntity(EntityInit.THE_HAND.get(), world);
             case StandID.HIEROPHANT_GREEN:
                 return new HierophantGreenEntity(EntityInit.HIEROPHANT_GREEN.get(), world);
+            case StandID.GREEN_DAY:
+                return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
         }
     }
 
@@ -237,6 +241,8 @@ public class Util {
 
         public static final int HIEROPHANT_GREEN = 19;
 
+        public static final int GREEN_DAY = 20;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -256,7 +262,8 @@ public class Util {
                 SILVER_CHARIOT,
                 MAGICIANS_RED,
                 THE_HAND,
-                HIEROPHANT_GREEN
+                HIEROPHANT_GREEN,
+                GREEN_DAY
         };
     }
 
@@ -265,5 +272,26 @@ public class Util {
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+    }
+
+    public static class ResourceLocations {
+        public static final ResourceLocation KING_CRIMSON_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/king_crimson_punch.png");
+        public static final ResourceLocation D4C_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/d4c_punch.png");
+        public static final ResourceLocation GOLD_EXPERIENCE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/gold_experience_punch.png");
+        public static final ResourceLocation MADE_IN_HEAVEN_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/made_in_heaven_punch.png");
+        public static final ResourceLocation GER_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/ger_punch.png");
+        public static final ResourceLocation AEROSMITH_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/aerosmith_bullet.png");
+        public static final ResourceLocation WEATHER_REPORT_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report_punch.png");
+        public static final ResourceLocation KILLER_QUEEN_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
+        public static final ResourceLocation CRAZY_DIAMOND_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
+        public static final ResourceLocation PURPLE_HAZE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze_punch.png");
+        public static final ResourceLocation WHITESNAKE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
+        public static final ResourceLocation CMOON_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon_punch.png");
+        public static final ResourceLocation THE_WORLD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_world_punch.png");
+        public static final ResourceLocation STAR_PLATINUM_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/star_platinum_punch.png");
+        public static final ResourceLocation SILVER_CHARIOT_SWORD = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/silver_chariot_sword.png");
+        public static final ResourceLocation MAGICIANS_RED_FLAME = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/magicians_red_flames.png");
+        public static final ResourceLocation THE_HAND_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_hand_punch.png");
+        public static final ResourceLocation HIEROPHANT_GREEN_TAIL = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/hierophant_green_tail.png");
     }
 }

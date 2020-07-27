@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.init.EntityInit;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -28,23 +27,23 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings("ALL")
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class EmperorBulletEntity extends Entity implements IProjectile {
-    private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EmperorBulletEntity.class, DataSerializers.BYTE);
     protected static final DataParameter<Optional<UUID>> field_212362_a = EntityDataManager.createKey(EmperorBulletEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID); //Obfuscated
+    private static final DataParameter<Byte> CRITICAL = EntityDataManager.createKey(EmperorBulletEntity.class, DataSerializers.BYTE);
     private static final DataParameter<Byte> PIERCE_LEVEL = EntityDataManager.createKey(EmperorBulletEntity.class, DataSerializers.BYTE);
-    @Nullable
-    private BlockState inBlockState;
-    protected boolean inGround;
-    protected int timeInGround;
     public EmperorBulletEntity.PickupStatus pickupStatus = EmperorBulletEntity.PickupStatus.DISALLOWED;
     public int arrowShake;
     public UUID shootingEntity;
+    protected boolean inGround;
+    protected int timeInGround;
+    @Nullable
+    private BlockState inBlockState;
     private int ticksInGround;
     private int ticksInAir;
     private double damage = 5.0;
@@ -475,17 +474,17 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
         setShotFromCrossbow(compound.getBoolean("ShotFromCrossbow"));
     }
 
+    @Nullable
+    public Entity getShooter() {
+        return shootingEntity != null && world instanceof ServerWorld ? ((ServerWorld) world).getEntityByUuid(shootingEntity) : null;
+    }
+
     public void setShooter(@Nullable Entity entityIn) {
         shootingEntity = entityIn == null ? null : entityIn.getUniqueID();
         if (entityIn instanceof PlayerEntity) {
             pickupStatus = ((PlayerEntity) entityIn).abilities.isCreativeMode ? EmperorBulletEntity.PickupStatus.CREATIVE_ONLY : EmperorBulletEntity.PickupStatus.ALLOWED;
         }
 
-    }
-
-    @Nullable
-    public Entity getShooter() {
-        return shootingEntity != null && world instanceof ServerWorld ? ((ServerWorld) world).getEntityByUuid(shootingEntity) : null;
     }
 
     /**
@@ -518,17 +517,6 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
         return 0.0f;
     }
 
-    /**
-     * Whether the arrow has a stream of critical hit particles flying behind it.
-     */
-    public void setIsCritical(boolean critical) {
-        setArrowFlag(1, critical);
-    }
-
-    public void setPierceLevel(byte level) {
-        dataManager.set(PIERCE_LEVEL, level);
-    }
-
     private void setArrowFlag(int p_203049_1_, boolean p_203049_2_) {
         byte b0 = dataManager.get(CRITICAL);
         if (p_203049_2_) {
@@ -548,6 +536,13 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
     }
 
     /**
+     * Whether the arrow has a stream of critical hit particles flying behind it.
+     */
+    public void setIsCritical(boolean critical) {
+        setArrowFlag(1, critical);
+    }
+
+    /**
      * Whether the arrow was shot from a crossbow.
      */
     public boolean getShotFromCrossbow() {
@@ -555,8 +550,19 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
         return (b0 & 4) != 0;
     }
 
+    /**
+     * Sets data about if this arrow entity was shot from a crossbow
+     */
+    public void setShotFromCrossbow(boolean fromCrossbow) {
+        setArrowFlag(4, fromCrossbow);
+    }
+
     public byte getPierceLevel() {
         return dataManager.get(PIERCE_LEVEL);
+    }
+
+    public void setPierceLevel(byte level) {
+        dataManager.set(PIERCE_LEVEL, level);
     }
 
     protected float getWaterDrag() {
@@ -572,13 +578,6 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
         } else {
             return (dataManager.get(CRITICAL) & 2) != 0;
         }
-    }
-
-    /**
-     * Sets data about if this arrow entity was shot from a crossbow
-     */
-    public void setShotFromCrossbow(boolean fromCrossbow) {
-        setArrowFlag(4, fromCrossbow);
     }
 
     public IPacket<?> createSpawnPacket() {

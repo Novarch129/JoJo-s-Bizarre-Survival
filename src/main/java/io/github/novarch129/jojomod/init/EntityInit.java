@@ -245,4 +245,10 @@ public class EntityInit {
                     () -> EntityType.Builder.<HierophantGreenTailEntity>create(HierophantGreenTailEntity::new, EntityClassification.CREATURE)
                             .size(0.4f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "hierophant_green_tail").toString()));
+
+    public static final RegistryObject<EntityType<GreenDayEntity>> GREEN_DAY = ENTITY_TYPES
+            .register("green_day",
+                    () -> EntityType.Builder.create(GreenDayEntity::new, EntityClassification.CREATURE)
+                            .size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "green_day").toString()));
 }

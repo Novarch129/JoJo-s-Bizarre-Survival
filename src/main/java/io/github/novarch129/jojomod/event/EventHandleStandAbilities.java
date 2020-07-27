@@ -102,6 +102,7 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void tooltipEvent(ItemTooltipEvent event) {
+        if (!(event.getItemStack().getItem() instanceof StandDiscItem)) return;
         String standName = "";
         if (event.getItemStack().getTag() != null)
             switch (event.getItemStack().getTag().getInt("StandID")) {
@@ -181,10 +182,13 @@ public class EventHandleStandAbilities {
                     standName = "Hierophant Green";
                     break;
                 }
+                case Util.StandID.GREEN_DAY: {
+                    standName = "Green Day";
+                    break;
+                }
             }
-        if (event.getItemStack().getItem() instanceof StandDiscItem)
-            if (!standName.equals(""))
-                event.getToolTip().add(new StringTextComponent(standName));
+        if (!standName.equals(""))
+            event.getToolTip().add(new StringTextComponent(standName));
     }
 
     @SubscribeEvent

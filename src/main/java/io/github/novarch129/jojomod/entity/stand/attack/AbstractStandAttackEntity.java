@@ -5,6 +5,7 @@ import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,6 +16,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
 import net.minecraft.world.World;
@@ -62,6 +64,10 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     protected abstract void onEntityHit(EntityRayTraceResult result);
 
     protected abstract void onBlockHit(BlockRayTraceResult result);
+
+    public abstract ResourceLocation getEntityTexture();
+
+    public abstract <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel();
 
     /**
      * Defines the range of a Stand attack, {@link Override} to change, default is 2.
