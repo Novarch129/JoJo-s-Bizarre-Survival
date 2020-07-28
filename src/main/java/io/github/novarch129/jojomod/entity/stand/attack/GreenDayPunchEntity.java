@@ -45,7 +45,7 @@ public class GreenDayPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public ResourceLocation getEntityTexture() {
-        return Util.ResourceLocations.CMOON_PUNCH;
+        return Util.ResourceLocations.GREEN_DAY_PUNCH;
     }
 
     @Override

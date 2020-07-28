@@ -43,7 +43,6 @@ public class GreenDayEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
-            master.setNoGravity(false);
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);
@@ -51,10 +50,11 @@ public class GreenDayEntity extends AbstractStandEntity {
 
             if (!world.isRemote)
                 getServer().getWorld(dimension).getEntities()
+                        .filter(entity -> entity.getEntityId() != master.getEntityId() && entity.getEntityId() != getEntityId())
                         .filter(entity -> entity instanceof LivingEntity)
                         .filter(entity -> entity.getDistance(this) < master.getHealth())
                         .filter(entity -> !entity.areEyesInFluid(FluidTags.WATER))
-                        .filter(entity -> entity.getMotion().getY() < 0)
+                        .filter(entity -> entity.getMotion().getY() < -0.0784000015258789) //-0.0784000015258789 is the actual default Y value, very realistic.
                         .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.WITHER, 40, 2, false, false)));
             if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
