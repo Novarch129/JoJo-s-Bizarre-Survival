@@ -251,4 +251,10 @@ public class EntityInit {
                     () -> EntityType.Builder.create(GreenDayEntity::new, EntityClassification.CREATURE)
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "green_day").toString()));
+
+    public static final RegistryObject<EntityType<GreenDayPunchEntity>> GREEN_DAY_PUNCH = ENTITY_TYPES
+            .register("green_day_punch",
+                    () -> EntityType.Builder.<GreenDayPunchEntity>create(GreenDayPunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "green_day_punch").toString()));
 }

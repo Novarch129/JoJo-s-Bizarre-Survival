@@ -78,5 +78,8 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN.get(), HierophantGreenRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMERALD_SPLASH.get(), manager -> new SpriteRenderer<>(manager, event.getMinecraftSupplier().get().getItemRenderer())); //This renders as an emerald.
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.HIEROPHANT_GREEN_TAIL.get(), StandAttackRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.GREEN_DAY.get(), GreenDayRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.GREEN_DAY_PUNCH.get(), StandAttackRenderer::new);
     }
 }

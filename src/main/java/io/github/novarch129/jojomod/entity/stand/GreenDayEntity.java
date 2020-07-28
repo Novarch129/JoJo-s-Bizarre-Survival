@@ -1,9 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.GreenDayPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -28,7 +32,7 @@ public class GreenDayEntity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                WhitesnakePunchEntity greenDayPunchEntity = new WhitesnakePunchEntity(world, this, getMaster());
+                GreenDayPunchEntity greenDayPunchEntity = new GreenDayPunchEntity(world, this, getMaster());
                 greenDayPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1.5f, 0.2f);
                 world.addEntity(greenDayPunchEntity);
             }
@@ -45,6 +49,13 @@ public class GreenDayEntity extends AbstractStandEntity {
             setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
+            if (!world.isRemote)
+                getServer().getWorld(dimension).getEntities()
+                        .filter(entity -> entity instanceof LivingEntity)
+                        .filter(entity -> entity.getDistance(this) < master.getHealth())
+                        .filter(entity -> !entity.areEyesInFluid(FluidTags.WATER))
+                        .filter(entity -> entity.getMotion().getY() < 0)
+                        .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.WITHER, 40, 2, false, false)));
             if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
             if (attackRush) {
@@ -53,11 +64,11 @@ public class GreenDayEntity extends AbstractStandEntity {
                 if (attackTicker >= 10)
                     if (!world.isRemote) {
                         master.setSprinting(false);
-                        WhitesnakePunchEntity greenDay1 = new WhitesnakePunchEntity(world, this, master);
+                        GreenDayPunchEntity greenDay1 = new GreenDayPunchEntity(world, this, master);
                         greenDay1.setRandomPositions();
                         greenDay1.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(greenDay1);
-                        WhitesnakePunchEntity greenDay2 = new WhitesnakePunchEntity(world, this, master);
+                        GreenDayPunchEntity greenDay2 = new GreenDayPunchEntity(world, this, master);
                         greenDay2.setRandomPositions();
                         greenDay2.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(greenDay2);
