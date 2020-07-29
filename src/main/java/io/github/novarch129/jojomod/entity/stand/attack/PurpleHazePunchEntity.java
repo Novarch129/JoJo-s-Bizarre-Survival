@@ -66,6 +66,6 @@ public class PurpleHazePunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new PurpleHazePunchModel();
+        return Util.cast(new PurpleHazePunchModel());
     }
 }

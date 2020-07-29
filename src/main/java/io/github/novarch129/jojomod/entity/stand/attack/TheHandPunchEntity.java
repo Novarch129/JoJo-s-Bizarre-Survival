@@ -46,6 +46,6 @@ public class TheHandPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new TheHandPunchModel();
+        return Util.cast(new TheHandPunchModel());
     }
 }

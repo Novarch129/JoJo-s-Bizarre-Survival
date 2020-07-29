@@ -241,6 +241,6 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new GoldExperienceRequiemPunchModel();
+        return Util.cast(new GoldExperienceRequiemPunchModel());
     }
 }

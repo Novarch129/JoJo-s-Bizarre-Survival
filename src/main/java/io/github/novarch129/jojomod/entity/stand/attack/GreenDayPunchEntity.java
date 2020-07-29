@@ -28,7 +28,7 @@ public class GreenDayPunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3.0f);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 0.5f);
         entity.hurtResistantTime = 0;
     }
 
@@ -41,6 +41,11 @@ public class GreenDayPunchEntity extends AbstractStandAttackEntity {
             if (world.rand.nextBoolean())
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
         }
+    }
+
+    @Override
+    protected int getRange() {
+        return 3;
     }
 
     @Override

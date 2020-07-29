@@ -34,7 +34,6 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                 Stand.getLazyOptional(sender).ifPresent(props -> {
                     int standID = props.getStandID();
                     int act = props.getAct();
-
                     if (!props.getAbility()) {
                         switch (standID) {
                             case Util.StandID.THE_HAND:

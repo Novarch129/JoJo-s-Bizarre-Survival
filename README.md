@@ -30,5 +30,3 @@
 - [x] Hierophant Green
 - [x] Silver Chariot
 - [x] The Emperor
-
-Mod is almost ready for release, expect first release next month!

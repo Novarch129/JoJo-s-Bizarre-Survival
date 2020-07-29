@@ -391,11 +391,11 @@ public class TheWorldEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         TheWorldPunchEntity theWorld1 = new TheWorldPunchEntity(world, this, master);
-                        theWorld1.setRandomPositions();
+                        theWorld1.randomizePositions();
                         theWorld1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld1);
                         TheWorldPunchEntity theWorld2 = new TheWorldPunchEntity(world, this, master);
-                        theWorld2.setRandomPositions();
+                        theWorld2.randomizePositions();
                         theWorld2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.15f);
                         world.addEntity(theWorld2);
                     }

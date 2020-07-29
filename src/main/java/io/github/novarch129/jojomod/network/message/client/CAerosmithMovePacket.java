@@ -49,14 +49,14 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
     public void handle(CAerosmithMovePacket msg, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
-                PlayerEntity player = ctx.get().getSender();
-                assert player != null;
-                World world = player.world;
+                PlayerEntity sender = ctx.get().getSender();
+                assert sender != null;
+                World world = sender.world;
                 if (world != null)
                     if (!world.isRemote) {
-                        world.getServer().getWorld(player.dimension).getEntities()
+                        world.getServer().getWorld(sender.dimension).getEntities()
                                 .filter(entity -> entity instanceof AerosmithEntity)
-                                .filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(sender))
                                 .forEach(entity -> {
                                     Vec3d motion = Util.getEntityForwardsMotion(entity);
                                     switch (msg.direction) {

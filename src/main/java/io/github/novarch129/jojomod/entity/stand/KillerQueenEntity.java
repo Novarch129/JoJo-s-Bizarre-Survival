@@ -127,11 +127,11 @@ public class KillerQueenEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         KillerQueenPunchEntity killerQueen1 = new KillerQueenPunchEntity(world, this, master);
-                        killerQueen1.setRandomPositions();
+                        killerQueen1.randomizePositions();
                         killerQueen1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.4f);
                         world.addEntity(killerQueen1);
                         KillerQueenPunchEntity killerQueen2 = new KillerQueenPunchEntity(world, this, master);
-                        killerQueen2.setRandomPositions();
+                        killerQueen2.randomizePositions();
                         killerQueen2.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.4f);
                         world.addEntity(killerQueen2);
                     }

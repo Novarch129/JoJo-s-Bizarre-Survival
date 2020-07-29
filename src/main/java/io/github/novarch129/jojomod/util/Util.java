@@ -31,8 +31,16 @@ import javax.annotation.Nonnull;
 import java.util.Random;
 import java.util.function.Predicate;
 
+/**
+ * Used for various utilities and constants.
+ */
 @SuppressWarnings("unused")
 public class Util {
+    /**
+     * The true default Y motion for entities.
+     */
+    public static final double ENTITY_DEFAULT_Y_MOTION = -0.0784000015258789;
+
     public static int getHighestBlockInXZ(World world, BlockPos pos) {
         for (int height = world.getActualHeight(); height > 0; height--)
             if (world.getBlockState(new BlockPos(pos.getX(), height, pos.getZ())).getMaterial() != Material.AIR)
@@ -53,6 +61,14 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0);
+    }
+
+    /**
+     * Suppresses warning for unchecked casts.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object o) {
+        return (T) o;
     }
 
     /**

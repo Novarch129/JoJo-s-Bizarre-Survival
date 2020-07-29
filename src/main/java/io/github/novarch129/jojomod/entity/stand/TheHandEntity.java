@@ -90,11 +90,11 @@ public class TheHandEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         TheHandPunchEntity theHand1 = new TheHandPunchEntity(world, this, master);
-                        theHand1.setRandomPositions();
+                        theHand1.randomizePositions();
                         theHand1.shoot(master, master.rotationPitch, master.rotationYaw, 0.8f, 0.5f);
                         world.addEntity(theHand1);
                         TheHandPunchEntity theHand2 = new TheHandPunchEntity(world, this, master);
-                        theHand2.setRandomPositions();
+                        theHand2.randomizePositions();
                         theHand2.shoot(master, master.rotationPitch, master.rotationYaw, 0.8f, 0.5f);
                         world.addEntity(theHand2);
                     }

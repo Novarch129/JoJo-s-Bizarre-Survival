@@ -57,6 +57,6 @@ public class StarPlatinumPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new StarPlatinumPunchModel();
+        return Util.cast(new StarPlatinumPunchModel());
     }
 }

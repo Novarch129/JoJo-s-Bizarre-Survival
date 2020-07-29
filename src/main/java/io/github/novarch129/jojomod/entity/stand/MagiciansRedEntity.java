@@ -90,11 +90,11 @@ public class MagiciansRedEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         MagiciansRedFlameEntity magiciansRed1 = new MagiciansRedFlameEntity(world, this, master);
-                        magiciansRed1.setRandomPositions();
+                        magiciansRed1.randomizePositions();
                         magiciansRed1.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.6f);
                         world.addEntity(magiciansRed1);
                         MagiciansRedFlameEntity magiciansRed2 = new MagiciansRedFlameEntity(world, this, master);
-                        magiciansRed2.setRandomPositions();
+                        magiciansRed2.randomizePositions();
                         magiciansRed2.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.6f);
                         world.addEntity(magiciansRed2);
                     }

@@ -71,11 +71,11 @@ public class PurpleHazeEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         PurpleHazePunchEntity purpleHaze1 = new PurpleHazePunchEntity(world, this, master);
-                        purpleHaze1.setRandomPositions();
+                        purpleHaze1.randomizePositions();
                         purpleHaze1.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.4f);
                         world.addEntity(purpleHaze1);
                         PurpleHazePunchEntity purpleHaze2 = new PurpleHazePunchEntity(world, this, master);
-                        purpleHaze2.setRandomPositions();
+                        purpleHaze2.randomizePositions();
                         purpleHaze2.shoot(master, master.rotationPitch, master.rotationYaw, 2.2f, 0.4f);
                         world.addEntity(purpleHaze2);
                     }

@@ -10,6 +10,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -48,10 +49,10 @@ public class CMoonEntity extends AbstractStandEntity {
                     master.setNoGravity(false);
                     remove();
                     WhitesnakeEntity whitesnake = new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
-                    whitesnake.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
-                    whitesnake.setMaster(getMaster());
+                    Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
+                    whitesnake.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
+                    whitesnake.setMaster(master);
                     world.addEntity(whitesnake);
-                    whitesnake.playSpawnSound();
                 }
             });
 
@@ -78,11 +79,11 @@ public class CMoonEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         CMoonPunchEntity cMoon1 = new CMoonPunchEntity(world, this, master);
-                        cMoon1.setRandomPositions();
+                        cMoon1.randomizePositions();
                         cMoon1.shoot(master, master.rotationPitch, master.rotationYaw, 2.15f, 0.2F);
                         world.addEntity(cMoon1);
                         CMoonPunchEntity cMoon2 = new CMoonPunchEntity(world, this, master);
-                        cMoon2.setRandomPositions();
+                        cMoon2.randomizePositions();
                         cMoon2.shoot(master, master.rotationPitch, master.rotationYaw, 2.15f, 0.2F);
                         world.addEntity(cMoon2);
                     }

@@ -138,11 +138,11 @@ public class D4CEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         D4CPunchEntity dirtyDeedsDoneDirtCheap1 = new D4CPunchEntity(world, this, master);
-                        dirtyDeedsDoneDirtCheap1.setRandomPositions();
+                        dirtyDeedsDoneDirtCheap1.randomizePositions();
                         dirtyDeedsDoneDirtCheap1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.35f);
                         world.addEntity(dirtyDeedsDoneDirtCheap1);
                         D4CPunchEntity dirtyDeedsDoneDirtCheap2 = new D4CPunchEntity(world, this, master);
-                        dirtyDeedsDoneDirtCheap2.setRandomPositions();
+                        dirtyDeedsDoneDirtCheap2.randomizePositions();
                         dirtyDeedsDoneDirtCheap2.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.35f);
                         world.addEntity(dirtyDeedsDoneDirtCheap2);
                     }

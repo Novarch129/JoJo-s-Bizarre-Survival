@@ -51,7 +51,7 @@ public class SilverChariotSwordEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new SilverChariotSwordModel();
+        return Util.cast(new SilverChariotSwordModel());
     }
 
     @Override

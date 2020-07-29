@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.DefaultStandAttackModel;
+import io.github.novarch129.jojomod.client.entity.model.MagiciansRedFlameModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -63,7 +63,7 @@ public class MagiciansRedFlameEntity extends AbstractStandAttackEntity {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
         if (explosive)
-            world.createExplosion(this, DamageSource.IN_FIRE, pos.getX(), pos.getY(), pos.getZ(), 3.0f, true, Explosion.Mode.DESTROY);
+            world.createExplosion(this, DamageSource.IN_FIRE, pos.getX(), pos.getY(), pos.getZ(), 3, true, Explosion.Mode.DESTROY);
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 3)
             world.setBlockState(pos, Blocks.FIRE.getDefaultState());
     }
@@ -75,6 +75,6 @@ public class MagiciansRedFlameEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return new DefaultStandAttackModel<>();
+        return Util.cast(new MagiciansRedFlameModel());
     }
 }

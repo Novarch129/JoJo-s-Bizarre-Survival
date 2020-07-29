@@ -61,7 +61,7 @@ public class HierophantGreenTailEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new HierophantGreenTailModel();
+        return Util.cast(new HierophantGreenTailModel());
     }
 
     @Override

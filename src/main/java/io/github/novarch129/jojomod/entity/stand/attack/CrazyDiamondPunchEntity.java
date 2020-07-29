@@ -63,6 +63,6 @@ public class CrazyDiamondPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return (EntityModel<T>) new CrazyDiamondPunchModel(); //This will always be an unchecked cast.
+        return Util.cast(new CrazyDiamondPunchModel()); //This will always be an unchecked cast.
     }
 }

@@ -54,11 +54,11 @@ public class WhitesnakeEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         WhitesnakePunchEntity whitesnake1 = new WhitesnakePunchEntity(world, this, master);
-                        whitesnake1.setRandomPositions();
+                        whitesnake1.randomizePositions();
                         whitesnake1.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(whitesnake1);
                         WhitesnakePunchEntity whitesnake2 = new WhitesnakePunchEntity(world, this, master);
-                        whitesnake2.setRandomPositions();
+                        whitesnake2.randomizePositions();
                         whitesnake2.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
                         world.addEntity(whitesnake2);
                     }

@@ -108,11 +108,11 @@ public class WeatherReportEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         WeatherReportPunchEntity weatherReportPunch1 = new WeatherReportPunchEntity(world, this, master);
-                        weatherReportPunch1.setRandomPositions();
+                        weatherReportPunch1.randomizePositions();
                         weatherReportPunch1.shoot(master, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch1);
                         WeatherReportPunchEntity weatherReportPunch2 = new WeatherReportPunchEntity(world, this, master);
-                        weatherReportPunch2.setRandomPositions();
+                        weatherReportPunch2.randomizePositions();
                         weatherReportPunch2.shoot(master, rotationPitch, rotationYaw, 1.8f, 0.2f);
                         world.addEntity(weatherReportPunch2);
                     }

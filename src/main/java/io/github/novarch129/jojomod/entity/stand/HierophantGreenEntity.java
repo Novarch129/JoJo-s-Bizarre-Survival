@@ -72,11 +72,11 @@ public class HierophantGreenEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         EmeraldSplashEntity emeraldSplashEntity = new EmeraldSplashEntity(world, this, master);
-                        emeraldSplashEntity.setRandomPositions();
+                        emeraldSplashEntity.randomizePositions();
                         emeraldSplashEntity.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.25f);
                         world.addEntity(emeraldSplashEntity);
                         EmeraldSplashEntity emeraldSplashEntity1 = new EmeraldSplashEntity(world, this, master);
-                        emeraldSplashEntity1.setRandomPositions();
+                        emeraldSplashEntity1.randomizePositions();
                         emeraldSplashEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 2, 0.25f);
                         world.addEntity(emeraldSplashEntity1);
                     }

@@ -138,11 +138,11 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                         if (!world.isRemote) {
                             master.setSprinting(false);
                             KingCrimsonPunchEntity kingCrimson1 = new KingCrimsonPunchEntity(world, this, master);
-                            kingCrimson1.setRandomPositions();
+                            kingCrimson1.randomizePositions();
                             kingCrimson1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                             world.addEntity(kingCrimson1);
                             KingCrimsonPunchEntity kingCrimson2 = new KingCrimsonPunchEntity(world, this, master);
-                            kingCrimson2.setRandomPositions();
+                            kingCrimson2.randomizePositions();
                             kingCrimson2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                             world.addEntity(kingCrimson2);
                         }

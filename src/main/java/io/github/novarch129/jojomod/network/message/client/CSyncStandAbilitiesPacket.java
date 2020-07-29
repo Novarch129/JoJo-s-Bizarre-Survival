@@ -48,17 +48,17 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
     public void handle(CSyncStandAbilitiesPacket msg, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
-                PlayerEntity player = ctx.get().getSender();
-                if (player == null) return;
-                World world = player.world;
+                PlayerEntity sender = ctx.get().getSender();
+                if (sender == null) return;
+                World world = sender.world;
                 if (world != null) {
                     if (!world.isRemote) {
-                        Stand.getLazyOptional(player).ifPresent(props -> {
+                        Stand.getLazyOptional(sender).ifPresent(props -> {
                             switch (props.getStandID()) {
                                 case KILLER_QUEEN: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KillerQueenEntity)
-                                            .filter(entity -> ((KillerQueenEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((KillerQueenEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
                                                 if (msg.action == 1)
                                                     ((KillerQueenEntity) entity).detonate();
@@ -68,9 +68,9 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     break;
                                 }
                                 case GER: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof GoldExperienceRequiemEntity)
-                                            .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
                                                 if (msg.action == 1)
                                                     ((GoldExperienceRequiemEntity) entity).toggleTruth();
@@ -80,36 +80,36 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     break;
                                 }
                                 case AEROSMITH: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof AerosmithEntity)
-                                            .filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> ((AerosmithEntity) entity).shootBomb());
                                     break;
                                 }
                                 case CRAZY_DIAMOND: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof CrazyDiamondEntity)
-                                            .filter(entity -> ((CrazyDiamondEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((CrazyDiamondEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> ((CrazyDiamondEntity) entity).repair());
                                     break;
                                 }
                                 case WEATHER_REPORT: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof WeatherReportEntity)
-                                            .filter(entity -> ((WeatherReportEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((WeatherReportEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> ((WeatherReportEntity) entity).changeWeather());
                                     break;
                                 }
                                 case MAGICIANS_RED: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof MagiciansRedEntity)
-                                            .filter(entity -> ((MagiciansRedEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((MagiciansRedEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> ((MagiciansRedEntity) entity).crossfireHurricane());
                                 }
                                 case THE_HAND: {
-                                    world.getServer().getWorld(player.dimension).getEntities()
+                                    world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof TheHandEntity)
-                                            .filter(entity -> ((TheHandEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                                            .filter(entity -> ((TheHandEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
                                                 if (msg.action == 1) {
                                                     Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
