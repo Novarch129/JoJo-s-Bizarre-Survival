@@ -1,10 +1,10 @@
 package io.github.novarch129.jojomod.init;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.world.dimension.d4c.end.D4CDimensionTypeEnd;
-import io.github.novarch129.jojomod.world.dimension.d4c.nether.D4CDimensionTypeNether;
-import io.github.novarch129.jojomod.world.dimension.d4c.overworld.D4CDimensionType;
-import io.github.novarch129.jojomod.world.dimension.madeInHeaven.MadeInHeavenDimensionType;
+import io.github.novarch129.jojomod.world.dimension.D4CDimensionTypeEnd;
+import io.github.novarch129.jojomod.world.dimension.D4CDimensionTypeNether;
+import io.github.novarch129.jojomod.world.dimension.D4CDimensionType;
+import io.github.novarch129.jojomod.world.dimension.MadeInHeavenDimensionType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ModDimension;
 import net.minecraftforge.fml.RegistryObject;

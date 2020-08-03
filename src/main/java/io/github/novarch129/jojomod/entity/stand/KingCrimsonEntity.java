@@ -86,7 +86,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                         if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld
                             getServer().getWorld(dimension).getEntities()
                                     .filter(entity -> entity instanceof LivingEntity)
-                                    .filter(entity -> !(entity instanceof GoldExperienceEntity))
+                                    .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                     .filter(entity -> entity != this)
                                     .filter(Entity::isAlive)
                                     .forEach(entity -> {

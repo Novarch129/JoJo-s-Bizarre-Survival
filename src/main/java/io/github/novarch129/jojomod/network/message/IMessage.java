@@ -8,10 +8,10 @@ import java.util.function.Supplier;
 /**
  * Mostly just used so I don't screw up a method in my packets, also vital to {@link PacketHandler#registerPacket(Class, IMessage)}.
  */
-public interface IMessage<P> {
-    void encode(P msg, PacketBuffer buffer);
+public interface IMessage<MSG> {
+    void encode(MSG msg, PacketBuffer buffer);
 
-    P decode(PacketBuffer buffer);
+    MSG decode(PacketBuffer buffer);
 
-    void handle(P msg, Supplier<NetworkEvent.Context> ctx);
+    void handle(MSG msg, Supplier<NetworkEvent.Context> ctx);
 }

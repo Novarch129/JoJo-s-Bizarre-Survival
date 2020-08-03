@@ -21,7 +21,7 @@ public class GreenDayEntity extends AbstractStandEntity {
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_HIEROPHANT_GREEN.get();
+        return SoundInit.SPAWN_GREEN_DAY.get();
     }
 
     @Override
@@ -49,9 +49,9 @@ public class GreenDayEntity extends AbstractStandEntity {
             setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (!world.isRemote)
+            if (ability && !world.isRemote)
                 getServer().getWorld(dimension).getEntities()
-                        .filter(entity -> entity.getEntityId() != master.getEntityId() && entity.getEntityId() != getEntityId())
+                        .filter(entity -> !entity.equals(master) && !entity.equals(this))
                         .filter(entity -> entity instanceof LivingEntity)
                         .filter(entity -> entity.getDistance(this) < master.getHealth()) //I think a variable range seems really cool, maybe bows are effective?
                         .filter(entity -> !entity.areEyesInFluid(FluidTags.WATER)) //If you're in lava, you're even more fucked.

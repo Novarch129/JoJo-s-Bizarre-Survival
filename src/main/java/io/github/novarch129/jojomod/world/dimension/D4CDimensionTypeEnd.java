@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.world.dimension.d4c.end;
+package io.github.novarch129.jojomod.world.dimension;
 
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;

@@ -340,5 +340,14 @@
         "stream": false
       }
     ]
+  },
+  "spawn_green_day": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_green_day",
+        "steam": false
+      }
+    ]
   }
 }

@@ -17,7 +17,7 @@
 - [x] Aerosmith
 - [ ] Sticky Fingers
 - [x] Purple Haze
-- [ ] Green Day
+- [x] Green Day
 - [ ] The Grateful Dead
 - [ ] Beach Boy
 - [x] Crazy Diamond

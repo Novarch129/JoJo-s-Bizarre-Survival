@@ -1,21 +1,19 @@
-package io.github.novarch129.jojomod.world.dimension.madeInHeaven;
+package io.github.novarch129.jojomod.world.dimension;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.OverworldDimension;
 
-@MethodsReturnNonnullByDefault
-public class MadeInHeavenDimension extends OverworldDimension {
-    public MadeInHeavenDimension(World worldIn, DimensionType type) {
+public class D4CDimension extends OverworldDimension {
+    public D4CDimension(World worldIn, DimensionType type) {
         super(worldIn, type);
     }
 
     @Override
-    public int getActualHeight() {
-        return 512;
+    public boolean canRespawnHere() {
+        return false;
     }
 
     @Override

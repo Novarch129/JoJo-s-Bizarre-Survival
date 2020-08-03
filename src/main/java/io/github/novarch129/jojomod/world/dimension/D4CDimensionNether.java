@@ -1,6 +1,5 @@
-package io.github.novarch129.jojomod.world.dimension.d4c.nether;
+package io.github.novarch129.jojomod.world.dimension;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -8,7 +7,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.NetherDimension;
 
-@MethodsReturnNonnullByDefault
 public class D4CDimensionNether extends NetherDimension {
     public D4CDimensionNether(World worldIn, DimensionType type) {
         super(worldIn, type);

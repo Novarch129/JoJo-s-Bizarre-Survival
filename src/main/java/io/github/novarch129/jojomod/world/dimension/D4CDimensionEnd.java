@@ -1,13 +1,11 @@
-package io.github.novarch129.jojomod.world.dimension.d4c.end;
+package io.github.novarch129.jojomod.world.dimension;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.EndDimension;
 
-@MethodsReturnNonnullByDefault
 public class D4CDimensionEnd extends EndDimension {
     public D4CDimensionEnd(World worldIn, DimensionType typeIn) {
         super(worldIn, typeIn);

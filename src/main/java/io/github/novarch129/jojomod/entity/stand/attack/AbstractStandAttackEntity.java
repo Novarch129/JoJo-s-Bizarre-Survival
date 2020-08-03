@@ -29,11 +29,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 
 /**
- * This class is a mess, I can barely read it.
+ * This class is a mess, I can barely read it, especially the {@link #tick()} method..
  */
 @SuppressWarnings("ALL")
 public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
-    public int xTile, yTile, zTile, arrowShake, ticksInAir;
+    public double xTile, yTile, zTile, arrowShake, ticksInAir;
     public Entity shootingEntity;
     public AbstractStandEntity shootingStand;
     public PlayerEntity standMaster;
@@ -75,6 +75,10 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         return 2;
     }
 
+    private BlockPos getBlockPosFromNBT() {
+        return new BlockPos(xTile, yTile, zTile);
+    }
+
     public void shoot(Entity shooter, float pitch, float yaw, float velocity, float inaccuracy) {
         float x = -MathHelper.sin(yaw * ((float) Math.PI / 180)) * MathHelper.cos(pitch * ((float) Math.PI / 180));
         float y = -MathHelper.sin(pitch * ((float) Math.PI / 180));
@@ -112,8 +116,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     public void setVelocity(double x, double y, double z) {
         setMotion(x, y, z);
         if (prevRotationPitch == 0 && prevRotationYaw == 0) {
-            float f = MathHelper.sqrt(x * x + z * z);
-            rotationPitch = (float) (MathHelper.atan2(y, (double) f) * (double) (180 / (float) Math.PI));
+            rotationPitch = (float) (MathHelper.atan2(y, (double) MathHelper.sqrt(x * x + z * z)) * (double) (180 / (float) Math.PI));
             rotationYaw = (float) (MathHelper.atan2(x, z) * (double) (180 / (float) Math.PI));
             prevRotationPitch = rotationPitch;
             prevRotationYaw = rotationYaw;
@@ -320,10 +323,16 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     @Override
     protected void readAdditional(CompoundNBT compound) {
+        xTile = compound.getDouble("xTile");
+        yTile = compound.getDouble("yTile");
+        zTile = compound.getDouble("zTile");
     }
 
     @Override
     protected void writeAdditional(CompoundNBT compound) {
+        compound.putDouble("xTile", xTile);
+        compound.putDouble("yTile", yTile);
+        compound.putDouble("zTile", zTile);
     }
 
     @Override
