@@ -81,5 +81,7 @@ public class ClientEventBusSubscriber {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.GREEN_DAY.get(), GreenDayRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.GREEN_DAY_PUNCH.get(), StandAttackRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TWENTIETH_CENTURY_BOY.get(), TwentiethCenturyBoyRenderer::new);
     }
 }

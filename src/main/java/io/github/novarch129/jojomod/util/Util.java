@@ -188,6 +188,8 @@ public class Util {
                 return new HierophantGreenEntity(EntityInit.HIEROPHANT_GREEN.get(), world);
             case StandID.GREEN_DAY:
                 return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
+            case StandID.TWENTIETH_CENTURY_BOY:
+                return new TwentiethCenturyBoyEntity(EntityInit.TWENTIETH_CENTURY_BOY.get(), world);
         }
     }
 
@@ -259,6 +261,8 @@ public class Util {
 
         public static final int GREEN_DAY = 20;
 
+        public static final int TWENTIETH_CENTURY_BOY = 21;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -279,7 +283,8 @@ public class Util {
                 MAGICIANS_RED,
                 THE_HAND,
                 HIEROPHANT_GREEN,
-                GREEN_DAY
+                GREEN_DAY,
+                TWENTIETH_CENTURY_BOY,
         };
     }
 
@@ -329,5 +334,7 @@ public class Util {
         public static final ResourceLocation HIEROPHANT_GREEN_TAIL = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/hierophant_green_tail.png");
         public static final ResourceLocation GREEN_DAY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day.png");
         public static final ResourceLocation GREEN_DAY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day_punch.png");
+        public static final ResourceLocation TWENTIETH_CENTURY_BOY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy.png");
+        public static final ResourceLocation TWENTIETH_CENTURY_BOY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy_punch.png");
     }
 }

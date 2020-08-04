@@ -4,6 +4,7 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.stand.Stand;
 import io.github.novarch129.jojomod.capability.timestop.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
+import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
@@ -15,6 +16,7 @@ import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,6 +27,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -186,6 +189,10 @@ public class EventHandleStandAbilities {
                     standName = "Green Day";
                     break;
                 }
+                case Util.StandID.TWENTIETH_CENTURY_BOY: {
+                    standName = "20th Century Boy";
+                    break;
+                }
             }
         if (!standName.equals(""))
             event.getToolTip().add(new StringTextComponent(standName));
@@ -277,5 +284,23 @@ public class EventHandleStandAbilities {
     public static void standPunchBlockEvent(StandAttackEvent.BlockHit event) {
         if (!JojoBizarreSurvivalConfig.COMMON.standPunchBlockBreaking.get())
             event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void twentiethCenturyBoy(LivingDamageEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof PlayerEntity)
+            Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
+                if (props.getStandID() == Util.StandID.TWENTIETH_CENTURY_BOY && props.getAbilityActive())
+                    if (!entity.world.isRemote)
+                        entity.getServer().getWorld(entity.dimension).getEntities()
+                                .filter(entity1 -> entity1.getDistance(entity) <= 3)
+                                .filter(entity1 ->  !entity1.equals(entity))
+                                .forEach(entity1 -> {
+                                    if (entity1 instanceof AbstractStandEntity && !((AbstractStandEntity) entity1).getMaster().equals(entity))
+                                        return;
+                                    entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
+                                });
+            });
     }
 }

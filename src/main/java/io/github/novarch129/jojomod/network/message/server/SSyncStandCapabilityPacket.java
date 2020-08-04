@@ -28,6 +28,11 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
     }
 
     @Override
+    public void encode(SSyncStandCapabilityPacket msg, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) msg.data);
+    }
+
+    @Override
     public SSyncStandCapabilityPacket decode(PacketBuffer buffer) {
         return new SSyncStandCapabilityPacket(buffer.readCompoundTag());
     }
@@ -42,10 +47,5 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
             });
         }
         ctx.get().setPacketHandled(true);
-    }
-
-    @Override
-    public void encode(SSyncStandCapabilityPacket msg, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) msg.data);
     }
 }
