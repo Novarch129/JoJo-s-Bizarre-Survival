@@ -18,6 +18,8 @@
   "item.jojomod.summon_magicians_red": "Magician's Red",
   "item.jojomod.summon_the_hand": "The Hand",
   "item.jojomod.summon_hierophant_green": "Hierophant Green",
+  "item.jojomod.summon_green_day": "Green Day",
+  "item.jojomod.summon_20th_century_boy": "20th Century Boy",
 
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
@@ -27,8 +29,8 @@
   "effect.jojomod.crimson_effect_user": "The Results",
   "effect.jojomod.crimson_effect": "Crimson",
   "effect.jojomod.oxygen_poisoning": "Oxygen Poisoning",
-
   "effect.jojomod.haze": "Purple Haze",
+
   "entity.jojomod.king_crimson": "King Crimson",
   "entity.jojomod.king_crimson_punch": "King Crimson's punch",
   "entity.jojomod.d4c": "Dirty Deeds Done Dirt Cheap",
@@ -69,6 +71,8 @@
   "entity.jojomod.hierophant_green": "Hierophant Green",
   "entity.jojomod.emerald_splash": "Emerald Splash",
   "entity.jojomod.hierophant_green_tail": "Hierophant Green's tail",
+  "entity.jojomod.green_day": "Green Day",
+  "entity.jojomod.green_day_punch": "Green Day's punch",
 
   "key.categories.jojomod": "JoJo's Bizarre Survival",
 
@@ -76,5 +80,6 @@
   "key.ability.desc": "Ability Toggle",
   "key.ability2.desc": "Stand Ability",
   "key.ability3.desc": "Stand Ability 2",
+
   "itemGroup.jojomod": "JoJo's Bizarre Survival"
 }

@@ -2,7 +2,10 @@ package io.github.novarch129.jojomod.network.message;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.network.message.client.*;
-import io.github.novarch129.jojomod.network.message.server.*;
+import io.github.novarch129.jojomod.network.message.server.SSyncSilverChariotArmorPacket;
+import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
+import io.github.novarch129.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
 import net.minecraftforge.fml.network.NetworkDirection;
 
 import java.util.Optional;
@@ -23,11 +26,11 @@ public class PacketHandler {
         registerPacket(CHierophantGreenPossessionPacket.class, new CHierophantGreenPossessionPacket(), NetworkDirection.PLAY_TO_SERVER);
     }
 
-    public static <P> void registerPacket(Class<P> clazz, IMessage<P> message) {
+    public static <MSG> void registerPacket(Class<MSG> clazz, IMessage<MSG> message) {
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++, clazz, message::encode, message::decode, message::handle);
     }
 
-    public static <P> void registerPacket(Class<P> clazz, IMessage<P> message, NetworkDirection direction) {
+    public static <MSG> void registerPacket(Class<MSG> clazz, IMessage<MSG> message, NetworkDirection direction) { //Includes a NetworkDirection parameter.
         JojoBizarreSurvival.INSTANCE.registerMessage(networkId++, clazz, message::encode, message::decode, message::handle, Optional.of(direction));
     }
 }

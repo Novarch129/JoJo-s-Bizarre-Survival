@@ -1,10 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
+import io.github.novarch129.jojomod.client.entity.model.CrazyDiamondPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.CrazyDiamondEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
@@ -50,5 +54,15 @@ public class CrazyDiamondPunchEntity extends AbstractStandAttackEntity {
             world.removeBlock(pos, false);
 
         }
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture() {
+        return Util.ResourceLocations.CRAZY_DIAMOND_PUNCH;
+    }
+
+    @Override
+    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
+        return Util.cast(new CrazyDiamondPunchModel()); //This will always be an unchecked cast.
     }
 }

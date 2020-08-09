@@ -85,11 +85,11 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, master);
-                        crazyDiamond1.setRandomPositions();
+                        crazyDiamond1.randomizePositions();
                         crazyDiamond1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                         world.addEntity(crazyDiamond1);
                         CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, master);
-                        crazyDiamond2.setRandomPositions();
+                        crazyDiamond2.randomizePositions();
                         crazyDiamond2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
                         world.addEntity(crazyDiamond2);
                     }

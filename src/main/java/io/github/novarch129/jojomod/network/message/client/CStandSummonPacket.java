@@ -12,7 +12,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -52,20 +52,20 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                 AbstractStandEntity stand = Util.getStandByID(props.getStandID(), sender.world);
                                 if (Collections.frequency(Objects.requireNonNull(world.getServer()).getWorld(sender.dimension).getEntities().collect(Collectors.toList()), stand) > 0)
                                     return;
-                                stand.setLocationAndAngles(sender.getPosX() + 0.1, sender.getPosY(), sender.getPosZ(), sender.rotationYaw, sender.rotationPitch);
+                                Vec3d position = sender.getLookVec().mul(0.5, 1, 0.5).add(sender.getPositionVec()).add(0, 0.5, 0);
+                                stand.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
                                 stand.setMaster(sender);
                                 stand.setMasterUUID(sender.getUniqueID());
                                 if (!sender.world.isRemote)
                                     JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
                                 sender.world.addEntity(stand);
-                                stand.playSpawnSound();
                             } else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
                                 ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
                                 if (!sender.inventory.hasItemStack(itemStack)) {
                                     if (sender.inventory.getStackInSlot(sender.inventory.getBestHotbarSlot()).isEmpty()) {
                                         sender.inventory.currentItem = sender.inventory.getBestHotbarSlot();
                                         sender.inventory.add(sender.inventory.getBestHotbarSlot(), itemStack);
-                                        sender.world.playSound(null, new BlockPos(sender.getPosX(), sender.getPosY(), sender.getPosZ()), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                                        sender.world.playSound(null, sender.getPosition(), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1, 1);
                                         props.setStandOn(true);
                                     } else
                                         sender.sendMessage(new StringTextComponent("Your hotbar is full!"));

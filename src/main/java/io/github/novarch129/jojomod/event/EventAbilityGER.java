@@ -63,7 +63,7 @@ public class EventAbilityGER {
                 PlayerEntity player = (PlayerEntity) event.getEntityLiving();
                 if (props.getNoClip()) {
                     player.noClip = true;
-//                    if (props.getStandID() == Util.StandID.GER) { todo, deffer to packets
+//                    if (props.getStandID() == Util.StandID.GER) { fixme, deffer to packets
 //                        player.setVelocity(player.getMotion().getX(), 0, player.getMotion().getZ());
 //                        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
 //                            player.setPosition(player.getPosX(), player.getPosY() + 1, player.getPosZ());

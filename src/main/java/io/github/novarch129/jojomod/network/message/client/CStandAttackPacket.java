@@ -33,7 +33,7 @@ public class CStandAttackPacket implements IMessage<CStandAttackPacket> {
                     if (props.getStandOn() && !world.isRemote && sender.isSwingInProgress) //Don't want this firing continuously, punches come out way too fast.
                         Objects.requireNonNull(world.getServer()).getWorld(sender.dimension).getEntities()
                                 .filter(entity -> entity instanceof AbstractStandEntity)
-                                .filter(entity -> ((AbstractStandEntity) entity).getMaster().getEntityId() == sender.getEntityId())
+                                .filter(entity -> ((AbstractStandEntity) entity).getMaster().equals(sender))
                                 .forEach(entity -> ((AbstractStandEntity) entity).attack(sender.isSprinting()));
                 });
             });

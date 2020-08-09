@@ -84,11 +84,11 @@ public class AerosmithEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         AerosmithBulletEntity aerosmithBullet1 = new AerosmithBulletEntity(world, this, master);
-                        aerosmithBullet1.setRandomPositions();
+                        aerosmithBullet1.randomizePositions();
                         aerosmithBullet1.shoot(master, rotationPitch, rotationYaw, 4, 0.3f);
                         world.addEntity(aerosmithBullet1);
                         AerosmithBulletEntity aerosmithBullet2 = new AerosmithBulletEntity(world, this, master);
-                        aerosmithBullet2.setRandomPositions();
+                        aerosmithBullet2.randomizePositions();
                         aerosmithBullet2.shoot(master, rotationPitch, rotationYaw, 4, 0.3f);
                         world.addEntity(aerosmithBullet2);
                     }

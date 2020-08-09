@@ -100,7 +100,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
                 if (props.getTimeLeft() > 800 && props.getCooldown() <= 0) {
                     if (ability == hasArmor()) {
                         setHasArmor(!ability);
-                        props.setAbilityActive(!hasArmor);
+                        props.setAbilityActive(!hasArmor && props.getTimeLeft() > 800 & props.getCooldown() <= 0);
 
                         if (!hasArmor()) {
                             if (props.getTimeLeft() % 20 == 0 && !master.isCreative())
@@ -141,11 +141,11 @@ public class SilverChariotEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         SilverChariotSwordEntity silverChariot1 = new SilverChariotSwordEntity(world, this, master);
-                        silverChariot1.setRandomPositions();
+                        silverChariot1.randomizePositions();
                         silverChariot1.shoot(master, master.rotationPitch, master.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
                         world.addEntity(silverChariot1);
                         SilverChariotSwordEntity silverChariot2 = new SilverChariotSwordEntity(world, this, master);
-                        silverChariot2.setRandomPositions();
+                        silverChariot2.randomizePositions();
                         silverChariot2.shoot(master, master.rotationPitch, master.rotationYaw, hasArmor() ? 3 : 6, hasArmor() ? 0.05f : 0.0001f);
                         world.addEntity(silverChariot2);
                     }

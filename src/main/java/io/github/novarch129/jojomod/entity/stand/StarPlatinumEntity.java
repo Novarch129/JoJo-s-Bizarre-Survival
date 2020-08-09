@@ -385,11 +385,11 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         StarPlatinumPunchEntity starPlatinum1 = new StarPlatinumPunchEntity(world, this, master);
-                        starPlatinum1.setRandomPositions();
+                        starPlatinum1.randomizePositions();
                         starPlatinum1.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum1);
                         StarPlatinumPunchEntity starPlatinum2 = new StarPlatinumPunchEntity(world, this, master);
-                        starPlatinum2.setRandomPositions();
+                        starPlatinum2.randomizePositions();
                         starPlatinum2.shoot(master, master.rotationPitch, master.rotationYaw, 2.4f, 0.17f);
                         world.addEntity(starPlatinum2);
                     }

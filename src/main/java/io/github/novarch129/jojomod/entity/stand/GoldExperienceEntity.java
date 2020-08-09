@@ -86,11 +86,11 @@ public class GoldExperienceEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         GoldExperiencePunchEntity goldExperience1 = new GoldExperiencePunchEntity(world, this, master);
-                        goldExperience1.setRandomPositions();
+                        goldExperience1.randomizePositions();
                         goldExperience1.shoot(master, master.rotationPitch, master.rotationYaw, 2.0F, 0.2F);
                         world.addEntity(goldExperience1);
                         GoldExperiencePunchEntity goldExperience2 = new GoldExperiencePunchEntity(world, this, master);
-                        goldExperience2.setRandomPositions();
+                        goldExperience2.randomizePositions();
                         goldExperience2.shoot(master, master.rotationPitch, master.rotationYaw, 2.0F, 0.2F);
                         world.addEntity(goldExperience2);
                     }

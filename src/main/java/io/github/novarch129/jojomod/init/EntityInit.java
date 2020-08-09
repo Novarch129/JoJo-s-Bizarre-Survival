@@ -245,4 +245,28 @@ public class EntityInit {
                     () -> EntityType.Builder.<HierophantGreenTailEntity>create(HierophantGreenTailEntity::new, EntityClassification.CREATURE)
                             .size(0.4f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "hierophant_green_tail").toString()));
+
+    public static final RegistryObject<EntityType<GreenDayEntity>> GREEN_DAY = ENTITY_TYPES
+            .register("green_day",
+                    () -> EntityType.Builder.create(GreenDayEntity::new, EntityClassification.CREATURE)
+                            .size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "green_day").toString()));
+
+    public static final RegistryObject<EntityType<GreenDayPunchEntity>> GREEN_DAY_PUNCH = ENTITY_TYPES
+            .register("green_day_punch",
+                    () -> EntityType.Builder.<GreenDayPunchEntity>create(GreenDayPunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "green_day_punch").toString()));
+
+    public static final RegistryObject<EntityType<TwentiethCenturyBoyEntity>> TWENTIETH_CENTURY_BOY = ENTITY_TYPES
+            .register("twentieth_century_boy",
+                    () -> EntityType.Builder.create(TwentiethCenturyBoyEntity::new, EntityClassification.CREATURE)
+                            .size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy").toString()));
+
+    public static final RegistryObject<EntityType<TwentiethCenturyBoyPunchEntity>> TWENTIETH_CENTURY_BOY_PUNCH = ENTITY_TYPES
+            .register("twentieth_century_boy_punch",
+                    () -> EntityType.Builder.<TwentiethCenturyBoyPunchEntity>create(TwentiethCenturyBoyPunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy_punch").toString()));
 }

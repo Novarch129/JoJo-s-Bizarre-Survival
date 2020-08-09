@@ -14,6 +14,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
@@ -58,10 +59,10 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                 if (props.getAct() == 1) {
                     remove();
                     CMoonEntity cMoon = new CMoonEntity(EntityInit.CMOON.get(), world);
-                    cMoon.setLocationAndAngles(getMaster().getPosX() + 0.1, getMaster().getPosY(), getMaster().getPosZ(), getMaster().rotationYaw, getMaster().rotationPitch);
-                    cMoon.setMaster(getMaster());
+                    Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
+                    cMoon.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
+                    cMoon.setMaster(master);
                     world.addEntity(cMoon);
-                    cMoon.playSpawnSound();
                 }
             });
             master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
@@ -130,11 +131,11 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, master);
-                        madeInHeaven1.setRandomPositions();
+                        madeInHeaven1.randomizePositions();
                         madeInHeaven1.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
                         world.addEntity(madeInHeaven1);
                         MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, master);
-                        madeInHeaven2.setRandomPositions();
+                        madeInHeaven2.randomizePositions();
                         madeInHeaven2.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
                         world.addEntity(madeInHeaven2);
                     }

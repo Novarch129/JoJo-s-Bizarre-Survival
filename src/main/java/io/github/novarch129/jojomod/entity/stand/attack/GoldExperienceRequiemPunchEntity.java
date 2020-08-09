@@ -1,12 +1,15 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.client.entity.model.GoldExperienceRequiemPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
+import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
@@ -19,6 +22,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -228,5 +232,15 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
         }
         world.removeBlock(pos, false);
         block.harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture() {
+        return Util.ResourceLocations.GER_PUNCH;
+    }
+
+    @Override
+    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
+        return Util.cast(new GoldExperienceRequiemPunchModel());
     }
 }

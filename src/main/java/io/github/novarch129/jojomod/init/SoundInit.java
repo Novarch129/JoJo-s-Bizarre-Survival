@@ -48,4 +48,5 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> THE_HAND_PULL = SOUNDS.register("the_hand_pull", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_hand_pull")));
     public static final RegistryObject<SoundEvent> SPAWN_HIEROPHANT_GREEN = SOUNDS.register("spawn_hierophant_green", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_hierophant_green")));
     public static final RegistryObject<SoundEvent> EMERALD_SPLASH = SOUNDS.register("emerald_splash", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emerald_splash")));
+    public static final RegistryObject<SoundEvent> SPAWN_GREEN_DAY = SOUNDS.register("spawn_green_day", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_green_day")));
 }

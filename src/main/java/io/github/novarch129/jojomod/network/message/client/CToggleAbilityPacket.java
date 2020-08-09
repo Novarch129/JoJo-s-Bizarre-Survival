@@ -8,6 +8,7 @@ import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -35,7 +36,9 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                     int standID = props.getStandID();
                     int act = props.getAct();
 
-                    if (!props.getAbility()) {
+                    props.setAbility(!props.getAbility());
+
+                    if (props.getAbility()) {
                         switch (standID) {
                             case Util.StandID.THE_HAND:
                             case Util.StandID.MAGICIANS_RED:
@@ -43,20 +46,16 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                             case Util.StandID.THE_EMPEROR:
                                 break;
                             case Util.StandID.GOLD_EXPERIENCE: {
-                                props.setAbility(!props.getAbility());
-                                sender.sendMessage(new StringTextComponent("Mode: Lifegiver"));
+                                sender.sendMessage(new StringTextComponent("Mode: Lifegiver"), ChatType.GAME_INFO);
                                 break;
                             }
                             case Util.StandID.GER: {
-                                props.setAbility(!props.getAbility());
-                                sender.sendMessage(new StringTextComponent("Mode: Gold Experience Requiem"));
+                                sender.sendMessage(new StringTextComponent("Mode: Truth"), ChatType.GAME_INFO);
                                 break;
                             }
                             default: {
-                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0) {
-                                    props.setAbility(!props.getAbility());
-                                    sender.sendMessage(new StringTextComponent("Ability: ON"));
-                                }
+                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
+                                    sender.sendMessage(new StringTextComponent("Ability: ON"), ChatType.GAME_INFO);
                                 break;
                             }
                         }
@@ -69,19 +68,16 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                                 break;
                             case Util.StandID.GOLD_EXPERIENCE:
                             case Util.StandID.GER: {
-                                props.setAbility(!props.getAbility());
-                                sender.sendMessage(new StringTextComponent("Mode: Normal"));
+                                sender.sendMessage(new StringTextComponent("Mode: Normal"), ChatType.GAME_INFO);
                                 break;
                             }
                             default: {
-                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0) {
-                                    props.setAbility(!props.getAbility());
-                                    sender.sendMessage(new StringTextComponent("Ability: OFF"));
-                                }
+                                if (standID != Util.StandID.MADE_IN_HEAVEN || act != 0)
+                                    sender.sendMessage(new StringTextComponent("Ability: OFF"), ChatType.GAME_INFO);
                                 if (props.getStandID() == Util.StandID.THE_WORLD && props.getStandOn() && props.getTimeLeft() > 780 && props.getCooldown() <= 0)
                                     sender.world.playSound(null, sender.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
 
-                                if (props.getStandID() == Util.StandID.STAR_PLATINUM && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
+                                else if (props.getStandID() == Util.StandID.STAR_PLATINUM && props.getStandOn() && props.getTimeLeft() > 900 && props.getCooldown() <= 0)
                                     sender.world.playSound(null, sender.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
                                 break;
                             }

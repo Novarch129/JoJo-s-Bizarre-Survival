@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.Cancelable;
 import javax.annotation.Nullable;
 
 /**
- * StandEvent is fired when an event involving {@link AbstractStandEntity} occurs.
+ * StandEvent is fired when an event involving an {@link AbstractStandEntity} occurs.
  */
 public class StandEvent extends PlayerEvent {
     private final AbstractStandEntity stand;

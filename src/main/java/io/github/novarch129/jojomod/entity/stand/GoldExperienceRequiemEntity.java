@@ -130,11 +130,11 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
                     if (!world.isRemote) {
                         master.setSprinting(false);
                         GoldExperienceRequiemPunchEntity goldExperienceRequiem1 = new GoldExperienceRequiemPunchEntity(world, this, master);
-                        goldExperienceRequiem1.setRandomPositions();
+                        goldExperienceRequiem1.randomizePositions();
                         goldExperienceRequiem1.shoot(master, master.rotationPitch, master.rotationYaw, 4, Float.MIN_VALUE);
                         world.addEntity(goldExperienceRequiem1);
                         GoldExperienceRequiemPunchEntity goldExperienceRequiem2 = new GoldExperienceRequiemPunchEntity(world, this, master);
-                        goldExperienceRequiem2.setRandomPositions();
+                        goldExperienceRequiem2.randomizePositions();
                         goldExperienceRequiem2.shoot(master, master.rotationPitch, master.rotationYaw, 4, Float.MIN_VALUE);
                         world.addEntity(goldExperienceRequiem2);
                     }

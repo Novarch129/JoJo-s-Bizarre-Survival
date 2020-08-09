@@ -82,7 +82,7 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                 if (!sender.world.isRemote)
                     sender.getServerWorld().getEntities()
                             .filter(entity -> entity instanceof HierophantGreenEntity)
-                            .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == sender.getEntityId())
+                            .filter(entity -> ((HierophantGreenEntity) entity).getMaster().equals(sender))
                             .forEach(entity -> {
                                 if (((HierophantGreenEntity) entity).possessedEntity != null) {
                                     LivingEntity possessedEntity = ((HierophantGreenEntity) entity).possessedEntity;

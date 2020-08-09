@@ -145,7 +145,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         standAct++;
         if (standAct == getMaxAct()) {
             standAct = 0;
-            setStandOn(false);
+            standOn = false;
         }
         onDataUpdated();
     }

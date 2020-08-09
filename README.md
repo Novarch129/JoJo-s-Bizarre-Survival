@@ -1,12 +1,15 @@
--------------------------------------------
-![Logo](https://github.com/Novarch129/JoJo-s-Blocky-Adventure/blob/master/src/main/resources/logo.png)
+![GitHub](https://img.shields.io/github/license/Novarch129/JoJo-s-Bizarre-Survival)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Novarch129/JoJo-s-Bizarre-Survival?label=version)
+![GitHub All Releases](https://img.shields.io/github/downloads/Novarch129/JoJo-s-Bizarre-Survival/total)
+
+![Logo](https://raw.githubusercontent.com/Novarch129/JoJo-s-Bizarre-Survival/1.15.x/src/main/resources/logo.png)
 -------------------------------------------
 ## A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft.
 
 ### List of planned Stands:
 - [ ] Tusk
 - [x] Dirty Deeds Done Dirt Cheap
-- [ ] 20th Century Boy
+- [x] 20th Century Boy
 - [x] Whitesnake
 - [x] C-Moon
 - [x] Made in Heaven
@@ -17,7 +20,7 @@
 - [x] Aerosmith
 - [ ] Sticky Fingers
 - [x] Purple Haze
-- [ ] Green Day
+- [x] Green Day
 - [ ] The Grateful Dead
 - [ ] Beach Boy
 - [x] Crazy Diamond
@@ -30,5 +33,3 @@
 - [x] Hierophant Green
 - [x] Silver Chariot
 - [x] The Emperor
-
-Mod is almost ready for release, expect first release next month!

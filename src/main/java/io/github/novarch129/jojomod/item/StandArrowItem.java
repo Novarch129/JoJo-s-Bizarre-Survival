@@ -60,7 +60,6 @@ public class StandArrowItem extends ArrowItem {
                     stand.setMasterUUID(player.getUniqueID());
                     stand.setMaster(player);
                     world.addEntity(stand);
-                    stand.playSpawnSound();
                 }
             } else if (props.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
                 props.removeStand();
@@ -77,7 +76,6 @@ public class StandArrowItem extends ArrowItem {
                 goldExperienceRequiem.setMasterUUID(player.getUniqueID());
                 goldExperienceRequiem.setMaster(player);
                 world.addEntity(goldExperienceRequiem);
-                goldExperienceRequiem.playSpawnSound();
             }
         });
     }

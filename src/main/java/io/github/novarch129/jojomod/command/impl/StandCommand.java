@@ -12,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.StringTextComponent;
 
 /**
- * Loving the Brigadier command syntax, really simple and fun.
+ * Loving the Brigadier command syntax, real simple.
  */
 @SuppressWarnings("unused")
 public class StandCommand {
@@ -61,6 +61,10 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.THE_HAND)))
                                 .then(Commands.literal("hierophant_green")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.HIEROPHANT_GREEN)))
+                                .then(Commands.literal("green_day")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.GREEN_DAY)))
+                        .then(Commands.literal("20th_century_boy")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.TWENTIETH_CENTURY_BOY)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())
