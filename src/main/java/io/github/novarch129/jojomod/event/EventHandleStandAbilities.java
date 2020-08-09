@@ -291,16 +291,18 @@ public class EventHandleStandAbilities {
         LivingEntity entity = event.getEntityLiving();
         if (entity instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
-                if (props.getStandID() == Util.StandID.TWENTIETH_CENTURY_BOY && props.getAbilityActive())
+                if (props.getStandID() == Util.StandID.TWENTIETH_CENTURY_BOY && props.getAbilityActive()) {
                     if (!entity.world.isRemote)
                         entity.getServer().getWorld(entity.dimension).getEntities()
                                 .filter(entity1 -> entity1.getDistance(entity) <= 3)
-                                .filter(entity1 ->  !entity1.equals(entity))
+                                .filter(entity1 -> !entity1.equals(entity))
                                 .forEach(entity1 -> {
                                     if (entity1 instanceof AbstractStandEntity && !((AbstractStandEntity) entity1).getMaster().equals(entity))
                                         return;
                                     entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
                                 });
+                    event.setCanceled(true);
+                }
             });
     }
 }

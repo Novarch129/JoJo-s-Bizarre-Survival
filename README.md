@@ -9,7 +9,7 @@
 ### List of planned Stands:
 - [ ] Tusk
 - [x] Dirty Deeds Done Dirt Cheap
-- [ ] 20th Century Boy
+- [x] 20th Century Boy
 - [x] Whitesnake
 - [x] C-Moon
 - [x] Made in Heaven

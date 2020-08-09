@@ -47,20 +47,20 @@ public class KillerQueenEntity extends AbstractStandEntity {
                     if (bombEntity.isAlive()) {
                         props.setCooldown(140);
                         if (bombEntity instanceof MobEntity) {
-                            Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                            Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4, true, Explosion.Mode.NONE);
                             ((MobEntity) bombEntity).spawnExplosionParticle();
                             explosion.doExplosionB(true);
-                            world.playSound(null, master.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                            world.playSound(null, master.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
                             bombEntity.remove();
                         } else if (bombEntity instanceof PlayerEntity) {
                             Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
                                 if (bombProps.getStandID() != Util.StandID.GER) {
-                                    Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                    Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4, true, Explosion.Mode.NONE);
                                     ((PlayerEntity) bombEntity).spawnSweepParticles();
                                     explosion.doExplosionB(true);
                                     bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
                                 } else {
-                                    Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4.0f, true, Explosion.Mode.NONE);
+                                    Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4, true, Explosion.Mode.NONE);
                                     master.spawnSweepParticles();
                                     explosion.doExplosionB(true);
                                     master.setHealth(0);

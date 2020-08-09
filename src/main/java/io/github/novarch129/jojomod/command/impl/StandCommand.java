@@ -63,6 +63,8 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.HIEROPHANT_GREEN)))
                                 .then(Commands.literal("green_day")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.GREEN_DAY)))
+                        .then(Commands.literal("20th_century_boy")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.TWENTIETH_CENTURY_BOY)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())

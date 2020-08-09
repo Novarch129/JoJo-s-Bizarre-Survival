@@ -61,9 +61,10 @@ public class StandGUI extends AbstractGui {
                         }
                         break;
                     }
-                    case (Util.StandID.KING_CRIMSON):
-                    case (Util.StandID.SILVER_CHARIOT): {
-                        if (timeLeft > 800 && cooldown == 0)
+                    case (Util.StandID.TWENTIETH_CENTURY_BOY):
+                    case (Util.StandID.SILVER_CHARIOT):
+                    case (Util.StandID.KING_CRIMSON): {
+                        if (timeLeft > 801 && cooldown == 0)
                             renderTimeLeft(timeLeft - 800);
                         break;
                     }
