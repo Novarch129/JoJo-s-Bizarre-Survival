@@ -60,7 +60,7 @@ public class Util {
                         return new BlockPos(x, height, pos.getZ());
             }
         }
-        return new BlockPos(0, 65, 0);
+        return new BlockPos(0, 65, 0); //The location of the End exit portal.
     }
 
     /**
@@ -72,7 +72,7 @@ public class Util {
     }
 
     /**
-     * Got these values from <a href ="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/1435515-how-i-can-do-to-move-to-where-i-look#c5">this</a> thread.
+     * Got these values from <a href ="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/1435515-how-i-can-do-to-move-to-where-i-look#c5">this</a> thread, shortened it a little bit.
      */
     public static Vec3d getEntityForwardsMotion(Entity entity) {
         return new Vec3d(
@@ -202,7 +202,7 @@ public class Util {
                         .and(EntityPredicates.IS_ALIVE)
                         .and(Entity::canBeCollidedWith);
 
-        public static final Predicate<Entity> BREATHS =
+        public static final Predicate<Entity> BREATHS = //Pretty much a list of every entity that doesn't breath.
                 ((Predicate<Entity>) entity -> !(entity instanceof ZombieEntity))
                         .and(((Predicate<Entity>) entity -> !(entity instanceof HuskEntity))
                                 .and(((Predicate<Entity>) entity -> !(entity instanceof DrownedEntity))
@@ -263,6 +263,8 @@ public class Util {
 
         public static final int TWENTIETH_CENTURY_BOY = 21;
 
+        public static final int THE_GRATEFUL_DEAD = 22;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -285,6 +287,7 @@ public class Util {
                 HIEROPHANT_GREEN,
                 GREEN_DAY,
                 TWENTIETH_CENTURY_BOY,
+                THE_GRATEFUL_DEAD
         };
     }
 
@@ -336,5 +339,7 @@ public class Util {
         public static final ResourceLocation GREEN_DAY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day_punch.png");
         public static final ResourceLocation TWENTIETH_CENTURY_BOY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy.png");
         public static final ResourceLocation TWENTIETH_CENTURY_BOY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy_punch.png");
+        public static final ResourceLocation THE_GRATEFUL_DEAD = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead.png");
+        public static final ResourceLocation THE_GRATEFUL_DEAD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead_punch.png");
     }
 }
