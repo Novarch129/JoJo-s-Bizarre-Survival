@@ -190,6 +190,8 @@ public class Util {
                 return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
             case StandID.TWENTIETH_CENTURY_BOY:
                 return new TwentiethCenturyBoyEntity(EntityInit.TWENTIETH_CENTURY_BOY.get(), world);
+            case StandID.THE_GRATEFUL_DEAD:
+                return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
         }
     }
 

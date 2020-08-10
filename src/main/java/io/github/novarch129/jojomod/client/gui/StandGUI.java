@@ -44,8 +44,8 @@ public class StandGUI extends AbstractGui {
     }
 
     public void render() {
-        assert Minecraft.getInstance().player != null;
-        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+        assert mc.player != null;
+        Stand.getLazyOptional(mc.player).ifPresent(props -> {
             int standID = props.getStandID();
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
@@ -61,6 +61,7 @@ public class StandGUI extends AbstractGui {
                         }
                         break;
                     }
+                    case (Util.StandID.THE_GRATEFUL_DEAD):
                     case (Util.StandID.TWENTIETH_CENTURY_BOY):
                     case (Util.StandID.SILVER_CHARIOT):
                     case (Util.StandID.KING_CRIMSON): {

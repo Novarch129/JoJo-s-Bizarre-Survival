@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
+@Deprecated //Bad code, fixme.
 public class CrimsonEffect extends Effect {
     public CrimsonEffect(EffectType typeIn, int potionColorIn) {
         super(typeIn, potionColorIn);
