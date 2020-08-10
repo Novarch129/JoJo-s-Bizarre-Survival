@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 @SuppressWarnings("ConstantConditions")
 public class KillerQueenEntity extends AbstractStandEntity {
     protected int shaCount;
-    private SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
+    private SheerHeartAttackEntity sheerHeartAttack;
     private LivingEntity bombEntity;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
@@ -77,6 +77,8 @@ public class KillerQueenEntity extends AbstractStandEntity {
 
     public void toggleSheerHeartAttack() {
         if (getMaster() == null || world.isRemote) return;
+        if (sheerHeartAttack == null)
+            sheerHeartAttack = new SheerHeartAttackEntity(world, this);
         Stand.getLazyOptional(getMaster()).ifPresent(props -> {
             if (shaCount <= 0) {
                 sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
