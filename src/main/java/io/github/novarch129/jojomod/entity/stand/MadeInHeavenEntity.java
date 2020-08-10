@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.MadeInHeavenPunchEntity;
 import io.github.novarch129.jojomod.event.EventD4CTeleportProcessor;

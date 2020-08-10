@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;

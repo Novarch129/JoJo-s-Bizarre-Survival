@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.util.Util;

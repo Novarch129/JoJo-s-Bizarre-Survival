@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.entity.model.GoldExperienceRequiemPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;

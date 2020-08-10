@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;

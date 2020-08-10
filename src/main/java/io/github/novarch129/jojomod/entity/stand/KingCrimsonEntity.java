@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.effect.CrimsonEffect;
 import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
 import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
@@ -66,7 +67,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
             master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
-                props.setAbilityActive(!(props.getCooldown() > 0));
+                props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
 
                 if (!props.getAbility()) {
                     if (!master.isCreative() && !master.isSpectator())
@@ -74,7 +75,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                     master.setInvulnerable(false);
                 }
 
-                if (props.getAbilityActive() && props.getAbility() && props.getStandOn()) {
+                if (props.getAbilityActive() && props.getAbility()) {
                     if (props.getTimeLeft() > 800) {
                         attackRush = false;
                         getMaster().setInvulnerable(true);
@@ -96,6 +97,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                                                 ((MobEntity) entity).setRevengeTarget(null);
                                             }
                                             ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+                                            StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
                                         }
 
                                         if (entity instanceof PlayerEntity)
@@ -104,6 +106,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                                                     if (prs.getStandID() == Util.StandID.KING_CRIMSON && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
                                                         return;
                                                     ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+                                                    StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
                                                 }
                                             });
                                     });
@@ -122,6 +125,10 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                         props.setTimeLeft(1000);
                         props.setAbilityActive(true);
                     }
+                    if (!world.isRemote)
+                        getServer().getWorld(dimension).getEntities()
+                                .filter(entity -> entity instanceof LivingEntity)
+                                .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
                 }
 
                 if (!props.getAbility()) {
@@ -153,5 +160,14 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        if (!world.isRemote)
+            getServer().getWorld(dimension).getEntities()
+                    .filter(entity -> entity instanceof LivingEntity)
+                    .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
     }
 }

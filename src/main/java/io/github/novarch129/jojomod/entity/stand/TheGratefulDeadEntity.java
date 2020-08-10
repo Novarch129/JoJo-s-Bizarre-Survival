@@ -1,10 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.TheGratefulDeadPunchEntity;
+import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
@@ -44,6 +47,12 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
                 ability = props.getTimeLeft() > 800 && props.getCooldown() <= 0 && props.getAbility();
                 if (ability)
                     props.subtractTimeLeft(1);
+
+                if (!props.getAbilityActive() && !world.isRemote)
+                    getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> !entity.equals(this) && !entity.equals(master))
+                            .filter(entity -> entity instanceof LivingEntity)
+                            .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setAging(false)));
             });
 
             if (ability && !world.isRemote)
@@ -52,7 +61,8 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
                         .filter(entity -> entity instanceof LivingEntity)
                         .filter(entity -> entity.getDistance(this) < 20)
                         .forEach(entity -> {
-
+                            StandEffects.getLazyOptional(entity).ifPresent(props -> props.setAging(true));
+                            ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.AGING.get(), 5, 0));
                         });
 
             followMaster();
@@ -82,5 +92,15 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        if (!world.isRemote)
+            getServer().getWorld(dimension).getEntities()
+                    .filter(entity -> !entity.equals(this) && !entity.equals(master))
+                    .filter(entity -> entity instanceof LivingEntity)
+                    .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props -> props.setAging(false)));
     }
 }

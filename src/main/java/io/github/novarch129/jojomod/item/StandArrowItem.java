@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.stand.IStand;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.IStand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;

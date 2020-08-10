@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.capability.stand;
+package io.github.novarch129.jojomod.capability;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
@@ -17,7 +17,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
 import static io.github.novarch129.jojomod.util.Util.StandID.CMOON;
@@ -26,7 +25,6 @@ import static io.github.novarch129.jojomod.util.Util.StandID.MADE_IN_HEAVEN;
 /**
  * The {@link Capability} used for storing the player's Stand ability.
  */
-@ParametersAreNonnullByDefault
 public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @CapabilityInject(IStand.class)
     public static final Capability<IStand> STAND = Null(); //Null method suppresses warnings
@@ -52,11 +50,11 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     }
 
     public static IStand getCapabilityFromPlayer(PlayerEntity player) {
-        return player.getCapability(STAND, null).orElse(new Stand(player));
+        return player.getCapability(STAND).orElse(new Stand(player));
     }
 
     public static LazyOptional<IStand> getLazyOptional(PlayerEntity player) {
-        return player.getCapability(STAND, null);
+        return player.getCapability(STAND);
     }
 
     public static void register() {

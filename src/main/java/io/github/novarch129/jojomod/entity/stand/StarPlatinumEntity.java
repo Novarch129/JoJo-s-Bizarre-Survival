@@ -2,10 +2,10 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.IStand;
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.capability.timestop.ITimestop;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.IStand;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.ITimestop;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.StarPlatinumPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;

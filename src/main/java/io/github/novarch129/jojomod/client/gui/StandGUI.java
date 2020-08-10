@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.client.gui;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Minecraft;

@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.network.message.server;
 
-import io.github.novarch129.jojomod.capability.timestop.ITimestop;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.ITimestop;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;

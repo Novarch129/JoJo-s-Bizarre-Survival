@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;

@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;

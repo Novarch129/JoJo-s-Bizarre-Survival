@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.capability.stand;
+package io.github.novarch129.jojomod.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
 

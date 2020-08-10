@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
@@ -84,26 +84,21 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void effectRemovedEvent(PotionEvent.PotionRemoveEvent event) {
-        if (event.getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotion() == Effects.GLOWING)
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotion() == EffectInit.OXYGEN_POISONING.get())
-            event.setCanceled(true);
-        if (event.getPotion() == EffectInit.HAZE.get())
-            event.setCanceled(true);
+        if (event.getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
+        if (event.getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
+        if (event.getPotion() == EffectInit.OXYGEN_POISONING.get()) event.setCanceled(true);
+        if (event.getPotion() == EffectInit.HAZE.get()) event.setCanceled(true);
+        if (event.getPotion() == EffectInit.AGING.get()) event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event) {
         if (event.getPotionEffect().getPotion() == null) return;
-        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotionEffect().getPotion() == Effects.GLOWING)
-            event.getEntityLiving().setGlowing(false);
+        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
+        if (event.getPotionEffect().getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent //This one still bugs me to this day, can't think of a way to automate it.
     public static void tooltipEvent(ItemTooltipEvent event) {
         if (!(event.getItemStack().getItem() instanceof StandDiscItem)) return;
         String standName = "";
@@ -191,6 +186,10 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.TWENTIETH_CENTURY_BOY: {
                     standName = "20th Century Boy";
+                    break;
+                }
+                case Util.StandID.THE_GRATEFUL_DEAD: {
+                    standName = "The Grateful Dead";
                     break;
                 }
             }

@@ -2,7 +2,7 @@ package io.github.novarch129.jojomod.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;

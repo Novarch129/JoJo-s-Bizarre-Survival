@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.CMoonPunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;

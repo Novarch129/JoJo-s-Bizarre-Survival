@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.capability.timestop;
+package io.github.novarch129.jojomod.capability;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.network.message.server.SSyncTimestopCapabilityPacket;
@@ -15,12 +15,10 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
 
 @SuppressWarnings("unused")
-@ParametersAreNonnullByDefault
 public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @CapabilityInject(ITimestop.class)
     public static final Capability<ITimestop> TIMESTOP = Null();
@@ -45,11 +43,11 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     public static ITimestop getCapabilityFromEntity(Entity entity) {
-        return entity.getCapability(TIMESTOP, null).orElse(new Timestop(entity));
+        return entity.getCapability(TIMESTOP).orElse(new Timestop(entity));
     }
 
     public static LazyOptional<ITimestop> getLazyOptional(Entity entity) {
-        return entity.getCapability(TIMESTOP, null);
+        return entity.getCapability(TIMESTOP);
     }
 
     public static void register() {
