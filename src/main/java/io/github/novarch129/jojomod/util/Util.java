@@ -317,10 +317,12 @@ public class Util {
         public static final ResourceLocation WEATHER_REPORT_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report_punch.png");
         public static final ResourceLocation KILLER_QUEEN = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
         public static final ResourceLocation KILLER_QUEEN_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
+        public static final ResourceLocation SHEER_HEART_ATTACK = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sheer_heart_attack.png");
         public static final ResourceLocation CRAZY_DIAMOND = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond.png");
         public static final ResourceLocation CRAZY_DIAMOND_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
         public static final ResourceLocation PURPLE_HAZE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze.png");
         public static final ResourceLocation PURPLE_HAZE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze_punch.png");
+        public static final ResourceLocation EMPEROR_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/emperor_bullet.png");
         public static final ResourceLocation WHITESNAKE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
         public static final ResourceLocation WHITESNAKE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
         public static final ResourceLocation CMOON = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon.png");
