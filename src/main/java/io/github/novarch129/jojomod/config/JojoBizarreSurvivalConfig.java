@@ -67,6 +67,7 @@ public class JojoBizarreSurvivalConfig {
 
     public static class Client {
         public final ForgeConfigSpec.BooleanValue renderMagiciansRedFire;
+        public final ForgeConfigSpec.BooleanValue kingCrimsonOreRendering;
 
         Client(ForgeConfigSpec.Builder builder) {
             builder.push("client");
@@ -74,6 +75,10 @@ public class JojoBizarreSurvivalConfig {
             renderMagiciansRedFire = builder
                     .comment("Toggle Magician's red always rendering as on fire.")
                     .define("renderMagiciansRedFire", true);
+
+            kingCrimsonOreRendering = builder
+                    .comment("Toggle King Crimson's experimental ore rendering.")
+                    .define("kingCrimsonOreRendering", false);
 
             builder.pop();
         }

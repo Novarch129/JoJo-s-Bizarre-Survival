@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -22,8 +23,9 @@ public class StandEffects implements IStandEffects, ICapabilitySerializable<INBT
     @CapabilityInject(StandEffects.class)
     public static final Capability<StandEffects> STAND_EFFECTS = Null();
     private final Entity entity;
-    private boolean aging;
     private boolean crimson;
+    private boolean aging;
+    private Vec3d motion = Vec3d.ZERO;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -39,16 +41,21 @@ public class StandEffects implements IStandEffects, ICapabilitySerializable<INBT
             @Override
             public INBT writeNBT(Capability<StandEffects> capability, StandEffects instance, Direction side) {
                 CompoundNBT nbt = new CompoundNBT();
-                nbt.putBoolean("aging", instance.aging);
                 nbt.putBoolean("crimson", instance.crimson);
+                nbt.putBoolean("aging", instance.aging);
+                nbt.putDouble("motionX", instance.motion.getX());
+                nbt.putDouble("motionY", instance.motion.getY());
+                nbt.putDouble("motionZ", instance.motion.getZ());
+
                 return nbt;
             }
 
             @Override
             public void readNBT(Capability<StandEffects> capability, StandEffects instance, Direction side, INBT nbt) {
                 CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                instance.aging = compoundNBT.getBoolean("aging");
                 instance.crimson = compoundNBT.getBoolean("crimson");
+                instance.aging = compoundNBT.getBoolean("aging");
+                instance.motion = new Vec3d(compoundNBT.getDouble("motionX"), compoundNBT.getDouble("motionY"), compoundNBT.getDouble("motionZ"));
             }
         }, () -> new StandEffects(Null()));
     }
@@ -82,6 +89,17 @@ public class StandEffects implements IStandEffects, ICapabilitySerializable<INBT
     @Override
     public void setAging(boolean aging) {
         this.aging = aging;
+        onDataUpdated();
+    }
+
+    @Override
+    public Vec3d getMotion() {
+        return motion;
+    }
+
+    @Override
+    public void setMotion(Vec3d motion) {
+        this.motion = motion;
         onDataUpdated();
     }
 

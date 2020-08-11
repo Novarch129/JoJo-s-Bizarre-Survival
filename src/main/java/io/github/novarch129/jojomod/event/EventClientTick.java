@@ -5,6 +5,7 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
+import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.entity.stand.KingCrimsonEntity;
@@ -140,7 +141,7 @@ public class EventClientTick {
                 );
                 matrixStack.pop();
             }
-            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
+            if (JojoBizarreSurvivalConfig.CLIENT.kingCrimsonOreRendering.get() && props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
                 StreamSupport.stream(world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity != player)
                         .filter(entity -> !(entity instanceof KingCrimsonEntity))

@@ -56,7 +56,12 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 
     public void epitaph() {
         if (getMaster() == null) return;
-        Stand.getLazyOptional(master).ifPresent(props -> props.setInvulnerableTicks(100));
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() == 0) {
+                props.setInvulnerableTicks(100);
+                props.setCooldown(140);
+            }
+        });
     }
 
     /**
@@ -87,7 +92,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                                 .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
                 }
 
-                if (ability && props.getAbility()) {
+                if (props.getCooldown() == 0 && props.getAbility()) {
                     if (props.getTimeLeft() > 800) {
                         attackRush = false;
                         getMaster().setInvulnerable(true);
