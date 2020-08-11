@@ -1,12 +1,9 @@
 package io.github.novarch129.jojomod.client.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class HierophantGreenTailModel extends EntityModel<HierophantGreenTailEntity> {
+public class HierophantGreenTailModel extends AbstractStandAttackModel<HierophantGreenTailEntity> {
     private final ModelRenderer Tail;
 
     public HierophantGreenTailModel() {
@@ -19,11 +16,7 @@ public class HierophantGreenTailModel extends EntityModel<HierophantGreenTailEnt
     }
 
     @Override
-    public void setRotationAngles(HierophantGreenTailEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Tail.render(matrixStack, buffer, packedLight, packedOverlay);
+    protected ModelRenderer getAttackModel() {
+        return Tail;
     }
 }

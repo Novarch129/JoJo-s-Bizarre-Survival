@@ -128,10 +128,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Override
     public void tick() {
         super.tick();
-        if (standMaster != null) {
-            rotateTowards(standMaster.rotationYaw, standMaster.rotationPitch);
+        if (standMaster != null)
             setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
-        }
         if (shootingEntity == null && !world.isRemote)
             remove();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
