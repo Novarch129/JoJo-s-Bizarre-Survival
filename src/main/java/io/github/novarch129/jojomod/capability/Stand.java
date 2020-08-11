@@ -43,6 +43,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private boolean abilityActive;
     private int transformed;
     private boolean noClip;
+    private double invulnerableTicks;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -74,6 +75,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putBoolean("NoClip", instance.getNoClip());
                 props.putInt("StandEntityID", instance.getPlayerStand());
                 props.putBoolean("AbilityActive", instance.getAbilityActive());
+                props.putDouble("invulnerableTicks", instance.getInvulnerableTicks());
                 return props;
             }
 
@@ -91,6 +93,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 instance.putNoClip(compoundNBT.getBoolean("NoClip"));
                 instance.putPlayerStand(compoundNBT.getInt("StandEntityID"));
                 instance.putAbilityActive(compoundNBT.getBoolean("AbilityActive"));
+                instance.putInvulnerableTicks(compoundNBT.getDouble("invulnerableTicks"));
             }
         }, () -> new Stand(Null()));
     }
@@ -324,6 +327,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void putAbilityActive(boolean abilityActive) {
         this.abilityActive = abilityActive;
+    }
+
+    @Override
+    public double getInvulnerableTicks() {
+        return invulnerableTicks;
+    }
+
+    @Override
+    public void setInvulnerableTicks(double invulnerableTicks) {
+        this.invulnerableTicks = invulnerableTicks;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putInvulnerableTicks(double invulnerableTicks) {
+        this.invulnerableTicks = invulnerableTicks;
     }
 
     public void clone(IStand props) {

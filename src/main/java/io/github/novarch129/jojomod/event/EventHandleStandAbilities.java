@@ -21,8 +21,10 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
@@ -45,6 +47,18 @@ public class EventHandleStandAbilities {
             boolean ability = props.getAbility();
             double cooldown = props.getCooldown();
             double timeLeft = props.getTimeLeft();
+            double invulnerableTicks = props.getInvulnerableTicks();
+
+            if (invulnerableTicks > 0) {
+                props.setInvulnerableTicks(props.getInvulnerableTicks() - 0.5);
+                for (int i = 0; i < 8; i++)
+                    player.world.addOptionalParticle(
+                            ParticleTypes.DRAGON_BREATH,
+                            player.getPosX() + (player.world.rand.nextBoolean() ? player.world.rand.nextDouble() : -player.world.rand.nextDouble()),
+                            player.getPosY() + player.world.rand.nextDouble(),
+                            player.getPosZ() + (player.world.rand.nextBoolean() ? player.world.rand.nextDouble() : -player.world.rand.nextDouble()),
+                            0, 0.3, 0);
+            }
 
             if (cooldown == 0.5)
                 props.setTimeLeft(1000);
@@ -71,7 +85,7 @@ public class EventHandleStandAbilities {
                     props.addTimeLeft(0.5);
             }
 
-            if ((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !props.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
@@ -286,7 +300,7 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void twentiethCenturyBoy(LivingDamageEvent event) {
+    public static void cancelDamage(LivingDamageEvent event) {
         LivingEntity entity = event.getEntityLiving();
         if (entity instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
@@ -301,6 +315,18 @@ public class EventHandleStandAbilities {
                                     entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
                                 });
                     event.setCanceled(true);
+                } else if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getInvulnerableTicks() > 0) {
+                    event.setCanceled(true);
+                    Entity source = event.getSource().getTrueSource();
+                    if (source != null) {
+                        Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
+                        if (!entity.world.isRemote) {
+                            entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+                            entity.rotationYaw = source.rotationYaw;
+                            entity.rotationPitch = source.rotationPitch;
+                        }
+                        entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                    }
                 }
             });
     }

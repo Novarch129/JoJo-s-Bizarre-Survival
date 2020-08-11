@@ -37,18 +37,26 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     @Override
     public void attack(boolean special) {
         if (getMaster() == null) return;
-        if (!Stand.getCapabilityFromPlayer(master).getAbilityActive()) {
-            attackTick++;
-            if (attackTick == 1)
-                if (special)
-                    attackRush = true;
-                else {
-                    world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
-                    kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
-                    world.addEntity(kingCrimsonPunchEntity);
-                }
-        }
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
+                attackTick++;
+                if (attackTick == 1)
+                    if (special)
+                        attackRush = true;
+                    else {
+                        world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                        KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
+                        kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
+                        world.addEntity(kingCrimsonPunchEntity);
+                    }
+            }
+        });
+
+    }
+
+    public void epitaph() {
+        if (getMaster() == null) return;
+        Stand.getLazyOptional(master).ifPresent(props -> props.setInvulnerableTicks(100));
     }
 
     /**
@@ -66,16 +74,20 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 
             master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
             Stand.getLazyOptional(master).ifPresent(props -> {
-                ability = props.getAbility();
+                ability = !(props.getCooldown() > 0);
                 props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
 
                 if (!props.getAbility()) {
                     if (!master.isCreative() && !master.isSpectator())
                         master.setGameType(GameType.SURVIVAL);
                     master.setInvulnerable(false);
+                    if (!world.isRemote)
+                        getServer().getWorld(dimension).getEntities()
+                                .filter(entity -> entity instanceof LivingEntity)
+                                .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
                 }
 
-                if (props.getAbilityActive() && props.getAbility()) {
+                if (ability && props.getAbility()) {
                     if (props.getTimeLeft() > 800) {
                         attackRush = false;
                         getMaster().setInvulnerable(true);
@@ -84,7 +96,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                             master.setGameType(GameType.ADVENTURE);
                         props.subtractTimeLeft(1);
 
-                        if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld
+                        if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld.
                             getServer().getWorld(dimension).getEntities()
                                     .filter(entity -> entity instanceof LivingEntity)
                                     .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
@@ -122,7 +134,6 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 
                 if (!props.getAbilityActive()) {
                     if (props.getCooldown() <= 0) {
-                        props.setTimeLeft(1000);
                         props.setAbilityActive(true);
                     }
                     if (!world.isRemote)

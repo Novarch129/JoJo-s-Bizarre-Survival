@@ -55,6 +55,13 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                     if (!world.isRemote) {
                         Stand.getLazyOptional(sender).ifPresent(props -> {
                             switch (props.getStandID()) {
+                                case KING_CRIMSON: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof KingCrimsonEntity)
+                                            .filter(entity -> ((KingCrimsonEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> ((KingCrimsonEntity) entity).epitaph());
+                                    break;
+                                }
                                 case KILLER_QUEEN: {
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KillerQueenEntity)

@@ -85,6 +85,12 @@ public interface IStand {
 
     void putAbilityActive(boolean abilityActive);
 
+    double getInvulnerableTicks();
+
+    void setInvulnerableTicks(double invulnerableTicks);
+
+    void putInvulnerableTicks(double invulnerableTicks);
+
     void clone(IStand props);
 
     void removeStand();
