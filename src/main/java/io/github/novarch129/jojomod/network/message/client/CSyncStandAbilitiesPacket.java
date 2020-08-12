@@ -34,8 +34,8 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
     }
 
     @Override
-    public void encode(CSyncStandAbilitiesPacket msg, PacketBuffer buffer) {
-        buffer.writeByte(msg.action);
+    public void encode(CSyncStandAbilitiesPacket message, PacketBuffer buffer) {
+        buffer.writeByte(message.action);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public void handle(CSyncStandAbilitiesPacket msg, Supplier<Context> ctx) {
+    public void handle(CSyncStandAbilitiesPacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity sender = ctx.get().getSender();
@@ -67,7 +67,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (msg.action == 1)
+                                                if (message.action == 1)
                                                     ((KillerQueenEntity) entity).detonate();
                                                 else
                                                     ((KillerQueenEntity) entity).toggleSheerHeartAttack();
@@ -79,7 +79,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof GoldExperienceRequiemEntity)
                                             .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (msg.action == 1)
+                                                if (message.action == 1)
                                                     ((GoldExperienceRequiemEntity) entity).toggleTruth();
                                                 else
                                                     ((GoldExperienceRequiemEntity) entity).toggleFlight();
@@ -118,7 +118,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof TheHandEntity)
                                             .filter(entity -> ((TheHandEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (msg.action == 1) {
+                                                if (message.action == 1) {
                                                     Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
                                                     float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
                                                     if (entity1 != null) {

@@ -56,11 +56,11 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
     }
 
     @Override
-    public void encode(CHierophantGreenPossessionPacket msg, PacketBuffer buffer) {
-        buffer.writeEnumValue(msg.direction);
-        buffer.writeByte(msg.action);
-        buffer.writeFloat(msg.yaw);
-        buffer.writeFloat(msg.pitch);
+    public void encode(CHierophantGreenPossessionPacket message, PacketBuffer buffer) {
+        buffer.writeEnumValue(message.direction);
+        buffer.writeByte(message.action);
+        buffer.writeFloat(message.yaw);
+        buffer.writeFloat(message.pitch);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
     }
 
     @Override
-    public void handle(CHierophantGreenPossessionPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(CHierophantGreenPossessionPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayerEntity sender = ctx.get().getSender();
@@ -86,12 +86,12 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                             .forEach(entity -> {
                                 if (((HierophantGreenEntity) entity).possessedEntity != null) {
                                     LivingEntity possessedEntity = ((HierophantGreenEntity) entity).possessedEntity;
-                                    switch (msg.action) {
+                                    switch (message.action) {
                                         default:
                                             break;
                                         case 0: {
                                             Vec3d motion = Util.getEntityForwardsMotion(possessedEntity);
-                                            switch (msg.direction) {
+                                            switch (message.direction) {
                                                 default:
                                                     break;
                                                 case JUMP: {
@@ -145,8 +145,8 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                             break;
                                         }
                                         case 1: { //Mob will always fight back a bit when you're doing this.
-                                            ((HierophantGreenEntity) entity).yaw = msg.yaw;
-                                            ((HierophantGreenEntity) entity).pitch = msg.pitch;
+                                            ((HierophantGreenEntity) entity).yaw = message.yaw;
+                                            ((HierophantGreenEntity) entity).pitch = message.pitch;
                                             break;
                                         }
                                         case 2: { //Called here so I don't have to sync HierophantGreenEntity#possesedEntity to the Client.

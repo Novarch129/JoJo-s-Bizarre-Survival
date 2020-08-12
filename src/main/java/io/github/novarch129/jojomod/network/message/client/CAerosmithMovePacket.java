@@ -46,7 +46,7 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
     }
 
     @Override
-    public void handle(CAerosmithMovePacket msg, Supplier<Context> ctx) {
+    public void handle(CAerosmithMovePacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity sender = ctx.get().getSender();
@@ -59,9 +59,9 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
                                 .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(sender))
                                 .forEach(entity -> {
                                     Vec3d motion = Util.getEntityForwardsMotion(entity);
-                                    switch (msg.direction) {
+                                    switch (message.direction) {
                                         case FORWARDS: {
-                                            if (msg.sprint) {
+                                            if (message.sprint) {
                                                 entity.setVelocity(motion.getX(), motion.getY(), motion.getZ());
                                                 entity.setSprinting(true);
                                             } else
@@ -99,11 +99,11 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
     }
 
     @Override
-    public void encode(CAerosmithMovePacket msg, PacketBuffer buffer) {
-        buffer.writeEnumValue(msg.direction);
-        buffer.writeBoolean(msg.sprint);
-        buffer.writeFloat(msg.yaw);
-        buffer.writeFloat(msg.pitch);
+    public void encode(CAerosmithMovePacket message, PacketBuffer buffer) {
+        buffer.writeEnumValue(message.direction);
+        buffer.writeBoolean(message.sprint);
+        buffer.writeFloat(message.yaw);
+        buffer.writeFloat(message.pitch);
     }
 
     @Override

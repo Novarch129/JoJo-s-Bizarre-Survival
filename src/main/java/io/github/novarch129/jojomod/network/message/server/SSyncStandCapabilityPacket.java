@@ -28,8 +28,8 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
     }
 
     @Override
-    public void encode(SSyncStandCapabilityPacket msg, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) msg.data);
+    public void encode(SSyncStandCapabilityPacket message, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) message.data);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
     }
 
     @Override
-    public void handle(SSyncStandCapabilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncStandCapabilityPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 PlayerEntity player = JojoBizarreSurvival.PROXY.getPlayer();
                 if (player == null) return;
-                Stand.getLazyOptional(player).ifPresent(props -> Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, msg.data));
+                Stand.getLazyOptional(player).ifPresent(props -> Stand.STAND.getStorage().readNBT(Stand.STAND, props, null, message.data));
             });
         }
         ctx.get().setPacketHandled(true);

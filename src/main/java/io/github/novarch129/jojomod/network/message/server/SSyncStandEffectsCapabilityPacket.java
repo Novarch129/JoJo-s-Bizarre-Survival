@@ -31,12 +31,12 @@ public class SSyncStandEffectsCapabilityPacket implements IMessage<SSyncStandEff
     }
 
     @Override
-    public void handle(SSyncStandEffectsCapabilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncStandEffectsCapabilityPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 if (Minecraft.getInstance().world == null) return;
                 Minecraft.getInstance().world.getAllEntities().forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props ->
-                        StandEffects.STAND_EFFECTS.getStorage().readNBT(StandEffects.STAND_EFFECTS, props, null, msg.data)
+                        StandEffects.STAND_EFFECTS.getStorage().readNBT(StandEffects.STAND_EFFECTS, props, null, message.data)
                 ));
             });
         }
@@ -44,7 +44,7 @@ public class SSyncStandEffectsCapabilityPacket implements IMessage<SSyncStandEff
     }
 
     @Override
-    public void encode(SSyncStandEffectsCapabilityPacket msg, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) msg.data);
+    public void encode(SSyncStandEffectsCapabilityPacket message, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) message.data);
     }
 }

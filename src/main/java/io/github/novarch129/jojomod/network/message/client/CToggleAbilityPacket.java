@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 
 public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
     @Override
-    public void encode(CToggleAbilityPacket msg, PacketBuffer buffer) {
+    public void encode(CToggleAbilityPacket message, PacketBuffer buffer) {
     }
 
     @Override
@@ -27,7 +27,7 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
     }
 
     @Override
-    public void handle(CToggleAbilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(CToggleAbilityPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayerEntity sender = ctx.get().getSender();

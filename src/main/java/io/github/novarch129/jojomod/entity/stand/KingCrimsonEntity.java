@@ -57,10 +57,8 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public void epitaph() {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
-            if (props.getCooldown() == 0) {
+            if (props.getCooldown() == 0)
                 props.setInvulnerableTicks(100);
-                props.setCooldown(140);
-            }
         });
     }
 
@@ -137,10 +135,17 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                     }
                 }
 
+                if (props.getInvulnerableTicks() > 0) {
+                    if (!master.isCreative() && !master.isSpectator())
+                        master.setGameType(GameType.SURVIVAL);
+                    master.setInvulnerable(false);
+                    props.setAbilityActive(false);
+                    master.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                }
+
                 if (!props.getAbilityActive()) {
-                    if (props.getCooldown() <= 0) {
+                    if (props.getCooldown() <= 0)
                         props.setAbilityActive(true);
-                    }
                     if (!world.isRemote)
                         getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity instanceof LivingEntity)

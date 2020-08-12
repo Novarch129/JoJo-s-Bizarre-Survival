@@ -35,6 +35,8 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Random;
+
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventHandleStandAbilities {
@@ -42,6 +44,7 @@ public class EventHandleStandAbilities {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
         Stand.getLazyOptional(player).ifPresent(props -> {
+            Random rand = player.world.rand;
             int standID = props.getStandID();
             boolean standOn = props.getStandOn();
             boolean ability = props.getAbility();
@@ -51,13 +54,18 @@ public class EventHandleStandAbilities {
 
             if (invulnerableTicks > 0) {
                 props.setInvulnerableTicks(props.getInvulnerableTicks() - 0.5);
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 10; i++)
                     player.world.addOptionalParticle(
                             ParticleTypes.DRAGON_BREATH,
-                            player.getPosX() + (player.world.rand.nextBoolean() ? player.world.rand.nextDouble() : -player.world.rand.nextDouble()),
+                            player.getPosX() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             player.getPosY() + player.world.rand.nextDouble(),
-                            player.getPosZ() + (player.world.rand.nextBoolean() ? player.world.rand.nextDouble() : -player.world.rand.nextDouble()),
-                            0, 0.3, 0);
+                            player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
+                            0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
+                player.setGlowing(true);
+                if (invulnerableTicks == 0.5) {
+                    props.setCooldown(140);
+                    player.setGlowing(false);
+                }
             }
 
             if (cooldown == 0.5)
@@ -322,8 +330,7 @@ public class EventHandleStandAbilities {
                         Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
                         if (!entity.world.isRemote) {
                             entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-                            entity.rotationYaw = source.rotationYaw;
-                            entity.rotationPitch = source.rotationPitch;
+                            entity.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), entity.rotationYaw, entity.rotationPitch);
                         }
                         entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
                     }

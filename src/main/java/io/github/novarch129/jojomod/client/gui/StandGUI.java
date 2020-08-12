@@ -17,29 +17,22 @@ public class StandGUI extends AbstractGui {
             text += ":0" + seconds;
         else
             text += ":" + seconds;
-        renderText(text);
+        renderString(text);
     }
 
     public void renderTimeLeft(int ticks) {
-        int seconds = ticks / 20;
-        String text = String.valueOf(seconds);
-        text += " seconds left.";
-        renderText(text);
+        renderString(ticks / 20 + " seconds left.");
     }
 
     public void renderCooldown(int ticks) {
-        int seconds = ticks / 20;
-        String text = "Cooldown: ";
-        text += seconds;
-        renderText(text);
+        renderString("Cooldown: " + ticks / 20);
     }
 
-    protected void renderString(String text) {
-        drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
-    }
-
-    public void renderText(String text) {
-        drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
+    protected void renderString(String text, int... position) {
+        if (position.length < 2)
+            drawString(mc.fontRenderer, text, 4, 4, 0xFFFFFF);
+        else if (position.length == 2)
+            drawString(mc.fontRenderer, text, position[0], position[1], 0xFFFFFF);
     }
 
     public void render() {
@@ -57,15 +50,19 @@ public class StandGUI extends AbstractGui {
                             if (timeLeft > 0 && cooldown <= 0)
                                 renderTimeValue(timeLeft);
                             else
-                                renderText("\"Heaven\" has begun!");
+                                renderString("\"Heaven\" has begun!");
                         }
                         break;
                     }
                     case (Util.StandID.THE_GRATEFUL_DEAD):
                     case (Util.StandID.TWENTIETH_CENTURY_BOY):
-                    case (Util.StandID.SILVER_CHARIOT):
-                    case (Util.StandID.KING_CRIMSON): {
+                    case (Util.StandID.SILVER_CHARIOT): {
                         if (timeLeft > 801 && cooldown == 0)
+                            renderTimeLeft(timeLeft - 800);
+                        break;
+                    }
+                    case (Util.StandID.KING_CRIMSON): {
+                        if (timeLeft > 801 && cooldown == 0 && invulnerableTicks == 0)
                             renderTimeLeft(timeLeft - 800);
                         break;
                     }
@@ -100,9 +97,9 @@ public class StandGUI extends AbstractGui {
                 }
                 case (Util.StandID.KING_CRIMSON): {
                     if (cooldown > 0)
-                        renderCooldown(cooldown);
-                    if (invulnerableTicks > 0 && !props.getStandOn())
-                        renderText("Invulnerable ticks: " + invulnerableTicks);
+                        renderString("Cooldown: " + cooldown / 20, 4, (invulnerableTicks > 0 ? 16 : 4));
+                    if (invulnerableTicks > 0)
+                        renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20));
                     break;
                 }
             }

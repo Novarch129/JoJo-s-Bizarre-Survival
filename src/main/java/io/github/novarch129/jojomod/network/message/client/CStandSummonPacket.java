@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
     @Override
-    public void encode(CStandSummonPacket msg, PacketBuffer buffer) {
+    public void encode(CStandSummonPacket message, PacketBuffer buffer) {
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
     }
 
     @Override
-    public void handle(CStandSummonPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(CStandSummonPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayerEntity sender = ctx.get().getSender();
