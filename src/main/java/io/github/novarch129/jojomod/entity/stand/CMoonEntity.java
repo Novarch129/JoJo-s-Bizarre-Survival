@@ -94,4 +94,12 @@ public class CMoonEntity extends AbstractStandEntity {
             }
         }
     }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        if (getMaster() == null) return;
+        if (master.isPotionActive(Effects.LEVITATION))
+            master.removePotionEffect(Effects.LEVITATION);
+    }
 }

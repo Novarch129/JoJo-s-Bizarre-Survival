@@ -43,35 +43,36 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                 World world = sender.world;
                 if (!world.isRemote) {
                     Stand.getLazyOptional(sender).ifPresent(props -> {
-                        if (props.hasAct())
+                        if (props.hasAct() && props.getStandOn())
                             props.changeAct();
-                        else
+                        else {
                             props.setStandOn(!props.getStandOn());
-                        if (props.getStandOn()) {
-                            if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
-                                AbstractStandEntity stand = Util.getStandByID(props.getStandID(), sender.world);
-                                if (Collections.frequency(Objects.requireNonNull(world.getServer()).getWorld(sender.dimension).getEntities().collect(Collectors.toList()), stand) > 0)
-                                    return;
-                                Vec3d position = sender.getLookVec().mul(0.5, 1, 0.5).add(sender.getPositionVec()).add(0, 0.5, 0);
-                                stand.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
-                                stand.setMaster(sender);
-                                stand.setMasterUUID(sender.getUniqueID());
-                                if (!sender.world.isRemote)
-                                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
-                                sender.world.addEntity(stand);
-                            } else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
-                                ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
-                                if (!sender.inventory.hasItemStack(itemStack)) {
-                                    if (sender.inventory.getStackInSlot(sender.inventory.getBestHotbarSlot()).isEmpty()) {
-                                        sender.inventory.currentItem = sender.inventory.getBestHotbarSlot();
-                                        sender.inventory.add(sender.inventory.getBestHotbarSlot(), itemStack);
-                                        sender.world.playSound(null, sender.getPosition(), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1, 1);
-                                        props.setStandOn(true);
-                                    } else
-                                        sender.sendMessage(new StringTextComponent("Your hotbar is full!"));
-                                } else {
-                                    itemStack.shrink(1);
-                                    props.setStandOn(false);
+                            if (props.getStandOn()) {
+                                if (props.getStandID() != 0 && props.getStandID() != Util.StandID.THE_EMPEROR) {
+                                    AbstractStandEntity stand = Util.getStandByID(props.getStandID(), sender.world);
+                                    if (Collections.frequency(Objects.requireNonNull(world.getServer()).getWorld(sender.dimension).getEntities().collect(Collectors.toList()), stand) > 0)
+                                        return;
+                                    Vec3d position = sender.getLookVec().mul(0.5, 1, 0.5).add(sender.getPositionVec()).add(0, 0.5, 0);
+                                    stand.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
+                                    stand.setMaster(sender);
+                                    stand.setMasterUUID(sender.getUniqueID());
+                                    if (!sender.world.isRemote)
+                                        JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
+                                    sender.world.addEntity(stand);
+                                } else if (props.getStandID() == Util.StandID.THE_EMPEROR) {
+                                    ItemStack itemStack = new ItemStack(ItemInit.THE_EMPEROR.get());
+                                    if (!sender.inventory.hasItemStack(itemStack)) {
+                                        if (sender.inventory.getStackInSlot(sender.inventory.getBestHotbarSlot()).isEmpty()) {
+                                            sender.inventory.currentItem = sender.inventory.getBestHotbarSlot();
+                                            sender.inventory.add(sender.inventory.getBestHotbarSlot(), itemStack);
+                                            sender.world.playSound(null, sender.getPosition(), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1, 1);
+                                            props.setStandOn(true);
+                                        } else
+                                            sender.sendMessage(new StringTextComponent("Your hotbar is full!"));
+                                    } else {
+                                        itemStack.shrink(1);
+                                        props.setStandOn(false);
+                                    }
                                 }
                             }
                         }

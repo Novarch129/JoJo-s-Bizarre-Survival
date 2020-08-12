@@ -10,14 +10,8 @@ public class StandGUI extends AbstractGui {
     public static final Minecraft mc = Minecraft.getInstance();
 
     public void renderTimeValue(int ticks) {
-        int minutes = ticks / 1200;
-        int seconds = (ticks / 20) - (minutes * 60);
-        String text = String.valueOf(minutes);
-        if (seconds < 10)
-            text += ":0" + seconds;
-        else
-            text += ":" + seconds;
-        renderString(text);
+        int seconds = (ticks / 20) - (ticks / 1200 * 60);
+        renderString((ticks / 1200) + (seconds < 10 ? ":0" : ":") + seconds);
     }
 
     public void renderTimeLeft(int ticks) {

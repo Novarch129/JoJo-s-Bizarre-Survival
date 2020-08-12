@@ -106,13 +106,13 @@ public class TheWorldModel extends AbstractStandModel<TheWorldEntity> {
         Helmet.setTextureOffset(81, 117).addBox(3.675F, -11.375F, -5.25F, 1.0F, 1.0F, 10.0F, 0.0F, false);
         Helmet.setTextureOffset(96, 112).addBox(-4.675F, -6.275F, -5.25F, 1.0F, 1.0F, 6.0F, 0.0F, true);
         Helmet.setTextureOffset(96, 112).addBox(3.675F, -6.275F, -5.25F, 1.0F, 1.0F, 6.0F, 0.0F, false);
-        Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, -5.25F, 8.0F, 1.0F, 9.0F, 0.0F, false);
+        Helmet.setTextureOffset(42, 118).addBox(-4.0F, -11.375F, -5.25F, 8.0F, 1.0F, 9.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.125F, -5.25F, 8.0F, 4.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-1.0F, -8.025F, -5.25F, 2.0F, 2.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(3.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, false);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -7.275F, -5.25F, 1.0F, 1.0F, 1.0F, 0.0F, true);
         Helmet.setTextureOffset(110, 123).addBox(-4.0F, -6.275F, -5.25F, 8.0F, 1.0F, 1.0F, 0.0F, false);
-        Helmet.setTextureOffset(110, 123).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
+        Helmet.setTextureOffset(109, 104).addBox(-4.0F, -11.375F, 3.75F, 8.0F, 5.0F, 1.0F, 0.0F, false);
 
         Mask = new ModelRenderer(this);
         Mask.setRotationPoint(-3.5F, -2.25F, -0.3F);
@@ -553,7 +553,7 @@ public class TheWorldModel extends AbstractStandModel<TheWorldEntity> {
     }
 
     @Override
-    protected ModelRenderer getHead() {
+    public ModelRenderer getHead() {
         return HeadBase;
     }
 }
