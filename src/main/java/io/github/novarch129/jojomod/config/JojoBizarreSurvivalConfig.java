@@ -74,7 +74,7 @@ public class JojoBizarreSurvivalConfig {
 
             renderMagiciansRedFire = builder
                     .comment("Toggle Magician's red always rendering as on fire.")
-                    .define("renderMagiciansRedFire", true);
+                    .define("renderMagiciansRedFire", false);
 
             kingCrimsonOreRendering = builder
                     .comment("Toggle King Crimson's experimental ore rendering.")

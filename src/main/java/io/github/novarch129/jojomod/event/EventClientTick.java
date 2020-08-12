@@ -141,7 +141,7 @@ public class EventClientTick {
                 );
                 matrixStack.pop();
             }
-            if (JojoBizarreSurvivalConfig.CLIENT.kingCrimsonOreRendering.get() && props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
+            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
                 StreamSupport.stream(world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity != player)
                         .filter(entity -> !(entity instanceof KingCrimsonEntity))
@@ -169,7 +169,7 @@ public class EventClientTick {
             }
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
             //Code below is *very* experimental, not final in any way.
-            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
+            if (JojoBizarreSurvivalConfig.CLIENT.kingCrimsonOreRendering.get() && props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
                 BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(50, -100, 50))
                         .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
                         .forEach(blockPos ->

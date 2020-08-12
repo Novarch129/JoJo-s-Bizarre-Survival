@@ -3,13 +3,11 @@ package io.github.novarch129.jojomod.client.entity.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
-import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.entity.player.PlayerEntity;
 
 public abstract class AbstractStandRenderer<T extends AbstractStandEntity, M extends EntityModel<T>> extends MobRenderer<T, M> {
     public AbstractStandRenderer(EntityRendererManager manager, M model) {
@@ -18,11 +16,8 @@ public abstract class AbstractStandRenderer<T extends AbstractStandEntity, M ext
 
     @Override
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        if (!(Minecraft.getInstance().renderViewEntity instanceof PlayerEntity) && !(Minecraft.getInstance().renderViewEntity instanceof AerosmithEntity))
-            return;
-        if (Minecraft.getInstance().renderViewEntity instanceof AerosmithEntity)
-            super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        else Stand.getLazyOptional((PlayerEntity) Minecraft.getInstance().renderViewEntity).ifPresent(props -> {
+        if (Minecraft.getInstance().player == null) return;
+        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             if (props.getStandID() != 0)
                 super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         });

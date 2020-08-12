@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.client.entity.render;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.entity.model.EmperorBulletModel;
-import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
@@ -11,7 +10,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class EmperorBulletRenderer extends EntityRenderer<EmperorBulletEntity> {
@@ -24,11 +22,8 @@ public class EmperorBulletRenderer extends EntityRenderer<EmperorBulletEntity> {
 
     @Override
     public void render(EmperorBulletEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        if (!(Minecraft.getInstance().renderViewEntity instanceof PlayerEntity) && !(Minecraft.getInstance().renderViewEntity instanceof AerosmithEntity))
-            return;
-        if (Minecraft.getInstance().renderViewEntity instanceof AerosmithEntity)
-            render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        else Stand.getLazyOptional((PlayerEntity) Minecraft.getInstance().renderViewEntity).ifPresent(props -> {
+        if (Minecraft.getInstance().player == null) return;
+        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
             if (props.getStandID() != 0) {
                 renderManager.textureManager.bindTexture(getEntityTexture(entityIn));
                 matrixStackIn.push();
