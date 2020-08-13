@@ -44,6 +44,8 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private int transformed;
     private boolean noClip;
     private double invulnerableTicks;
+    private float standDamage;
+    private boolean charging;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -64,36 +66,40 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
             @Override
             public INBT writeNBT(Capability<IStand> capability, IStand instance, Direction side) {
                 CompoundNBT props = new CompoundNBT();
-                props.putInt("StandID", instance.getStandID());
-                props.putInt("StandAct", instance.getAct());
-                props.putBoolean("StandOn", instance.getStandOn());
-                props.putDouble("Cooldown", instance.getCooldown());
-                props.putDouble("TimeLeft", instance.getTimeLeft());
-                props.putBoolean("Ability", instance.getAbility());
-                props.putInt("Transformed", instance.getTransformed());
-                props.putString("Diavolo", instance.getDiavolo());
-                props.putBoolean("NoClip", instance.getNoClip());
-                props.putInt("StandEntityID", instance.getPlayerStand());
-                props.putBoolean("AbilityActive", instance.getAbilityActive());
+                props.putInt("standID", instance.getStandID());
+                props.putInt("standAct", instance.getAct());
+                props.putBoolean("standOn", instance.getStandOn());
+                props.putDouble("cooldown", instance.getCooldown());
+                props.putDouble("timeLeft", instance.getTimeLeft());
+                props.putBoolean("ability", instance.getAbility());
+                props.putInt("transformed", instance.getTransformed());
+                props.putString("diavolo", instance.getDiavolo());
+                props.putBoolean("noClip", instance.getNoClip());
+                props.putInt("standEntityID", instance.getPlayerStand());
+                props.putBoolean("abilityActive", instance.getAbilityActive());
                 props.putDouble("invulnerableTicks", instance.getInvulnerableTicks());
+                props.putFloat("standDamage", instance.getStandDamage());
+                props.putBoolean("charging", instance.isCharging());
                 return props;
             }
 
             @Override
             public void readNBT(Capability<IStand> capability, IStand instance, Direction side, INBT nbt) {
                 CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                instance.putStandID(compoundNBT.getInt("StandID"));
-                instance.putAct(compoundNBT.getInt("StandAct"));
-                instance.putStandOn(compoundNBT.getBoolean("StandOn"));
-                instance.putCooldown(compoundNBT.getDouble("Cooldown"));
-                instance.putTimeLeft(compoundNBT.getDouble("TimeLeft"));
-                instance.putAbility(compoundNBT.getBoolean("Ability"));
-                instance.putTransformed(compoundNBT.getInt("Transformed"));
-                instance.putDiavolo(compoundNBT.getString("Diavolo"));
-                instance.putNoClip(compoundNBT.getBoolean("NoClip"));
-                instance.putPlayerStand(compoundNBT.getInt("StandEntityID"));
-                instance.putAbilityActive(compoundNBT.getBoolean("AbilityActive"));
+                instance.putStandID(compoundNBT.getInt("standID"));
+                instance.putAct(compoundNBT.getInt("standAct"));
+                instance.putStandOn(compoundNBT.getBoolean("standOn"));
+                instance.putCooldown(compoundNBT.getDouble("cooldown"));
+                instance.putTimeLeft(compoundNBT.getDouble("timeLeft"));
+                instance.putAbility(compoundNBT.getBoolean("ability"));
+                instance.putTransformed(compoundNBT.getInt("transformed"));
+                instance.putDiavolo(compoundNBT.getString("diavolo"));
+                instance.putNoClip(compoundNBT.getBoolean("noClip"));
+                instance.putPlayerStand(compoundNBT.getInt("standEntityID"));
+                instance.putAbilityActive(compoundNBT.getBoolean("abilityActive"));
                 instance.putInvulnerableTicks(compoundNBT.getDouble("invulnerableTicks"));
+                instance.putStandDamage(compoundNBT.getFloat("standDamage"));
+                instance.putCharging(compoundNBT.getBoolean("charging"));
             }
         }, () -> new Stand(Null()));
     }
@@ -345,6 +351,38 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         this.invulnerableTicks = invulnerableTicks;
     }
 
+    @Override
+    public float getStandDamage() {
+        return standDamage;
+    }
+
+    @Override
+    public void setStandDamage(float standDamage) {
+        this.standDamage = standDamage;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putStandDamage(float standDamage) {
+        this.standDamage = standDamage;
+    }
+
+    @Override
+    public boolean isCharging() {
+        return charging;
+    }
+
+    @Override
+    public void setCharging(boolean charging) {
+        this.charging = charging;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putCharging(boolean charging) {
+        this.charging = charging;
+    }
+
     public void clone(IStand props) {
         putStandID(props.getStandID());
         putAct(props.getAct());
@@ -356,6 +394,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putAbility(props.getAbility());
         putPlayerStand(props.getPlayerStand());
         putAbilityActive(props.getAbilityActive());
+        putInvulnerableTicks(props.getInvulnerableTicks());
+        putStandDamage(props.getStandDamage());
+        putCharging(props.isCharging());
         onDataUpdated();
     }
 
@@ -372,6 +413,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putNoClip(false);
         putPlayerStand(0);
         putAbilityActive(false);
+        putInvulnerableTicks(0);
+        putStandDamage(0);
+        putCharging(false);
         onDataUpdated();
     }
 

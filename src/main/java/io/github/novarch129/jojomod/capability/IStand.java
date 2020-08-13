@@ -91,6 +91,18 @@ public interface IStand {
 
     void putInvulnerableTicks(double invulnerableTicks);
 
+    float getStandDamage();
+
+    void setStandDamage(float standDamage);
+
+    void putStandDamage(float standDamage);
+
+    boolean isCharging();
+
+    void setCharging(boolean charging);
+
+    void putCharging(boolean charging);
+
     void clone(IStand props);
 
     void removeStand();

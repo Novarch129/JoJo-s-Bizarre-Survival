@@ -8,6 +8,7 @@ import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
+import io.github.novarch129.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -25,6 +26,9 @@ import net.minecraft.world.World;
  */
 @SuppressWarnings("ConstantConditions")
 public class KingCrimsonEntity extends AbstractStandEntity {
+    private int punchChargeTicks;
+    private int prevPunchChargeTicks;
+
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
@@ -36,22 +40,23 @@ public class KingCrimsonEntity extends AbstractStandEntity {
 
     @Override
     public void attack(boolean special) {
+    }
+
+    public void setPunchChargeTicks(int punchChargeTicks) {
+        this.prevPunchChargeTicks = this.punchChargeTicks;
+        this.punchChargeTicks = punchChargeTicks;
+    }
+
+    public void chargePunch(boolean isCharging) {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
-            if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
-                attackTick++;
-                if (attackTick == 1)
-                    if (special)
-                        attackRush = true;
-                    else {
-                        world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                        KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
-                        kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
-                        world.addEntity(kingCrimsonPunchEntity);
-                    }
-            }
+            props.setCharging(isCharging);
+            if (isCharging && punchChargeTicks <= 200) {
+                setPunchChargeTicks(punchChargeTicks + 1);
+                props.setStandDamage(2.95f + punchChargeTicks / 20f);
+            } else if (!isCharging)
+                setPunchChargeTicks(0);
         });
-
     }
 
     public void epitaph() {
@@ -70,117 +75,108 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getMaster() != null) {
-            followMaster();
-            setRotationYawHead(master.rotationYawHead);
-            setRotation(master.rotationYaw, master.rotationPitch);
+        if (getMaster() == null) return;
+        followMaster();
+        setRotationYawHead(master.rotationYawHead);
+        setRotation(master.rotationYaw, master.rotationPitch);
 
-            master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-            Stand.getLazyOptional(master).ifPresent(props -> {
-                ability = !(props.getCooldown() > 0);
-                props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
+        master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            ability = !(props.getCooldown() > 0);
+            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
 
-                if (!props.getAbility()) {
+            if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
+                if (punchChargeTicks == 0 && punchChargeTicks != prevPunchChargeTicks) {
+                    world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                    KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
+                    kingCrimsonPunchEntity.damage = 2.95f + prevPunchChargeTicks / 20f;
+                    master.sendMessage(new ValueTextComponent(kingCrimsonPunchEntity.damage));
+                    kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
+                    world.addEntity(kingCrimsonPunchEntity);
+                }
+            }
+
+            if (!props.getAbility()) {
+                if (!master.isCreative() && !master.isSpectator())
+                    master.setGameType(GameType.SURVIVAL);
+                master.setInvulnerable(false);
+                if (!world.isRemote)
+                    getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> entity instanceof LivingEntity)
+                            .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
+            }
+
+            if (props.getCooldown() == 0 && props.getAbility()) {
+                if (props.getTimeLeft() > 800) {
+                    attackRush = false;
+                    getMaster().setInvulnerable(true);
+                    master.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
                     if (!master.isCreative() && !master.isSpectator())
-                        master.setGameType(GameType.SURVIVAL);
-                    master.setInvulnerable(false);
-                    if (!world.isRemote)
+                        master.setGameType(GameType.ADVENTURE);
+                    props.subtractTimeLeft(1);
+
+                    if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld.
                         getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity instanceof LivingEntity)
-                                .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
-                }
-
-                if (props.getCooldown() == 0 && props.getAbility()) {
-                    if (props.getTimeLeft() > 800) {
-                        attackRush = false;
-                        getMaster().setInvulnerable(true);
-                        master.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
-                        if (!master.isCreative() && !master.isSpectator())
-                            master.setGameType(GameType.ADVENTURE);
-                        props.subtractTimeLeft(1);
-
-                        if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld.
-                            getServer().getWorld(dimension).getEntities()
-                                    .filter(entity -> entity instanceof LivingEntity)
-                                    .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
-                                    .filter(entity -> entity != this)
-                                    .filter(Entity::isAlive)
-                                    .forEach(entity -> {
-                                        if (entity instanceof MobEntity) {
-                                            if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
-                                                ((MobEntity) entity).setAttackTarget(null);
-                                                ((MobEntity) entity).setRevengeTarget(null);
-                                            }
-                                            ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-                                            StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
+                                .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
+                                .filter(entity -> entity != this)
+                                .filter(Entity::isAlive)
+                                .forEach(entity -> {
+                                    if (entity instanceof MobEntity) {
+                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
+                                            ((MobEntity) entity).setAttackTarget(null);
+                                            ((MobEntity) entity).setRevengeTarget(null);
                                         }
+                                        ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+                                        StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
+                                    }
 
-                                        if (entity instanceof PlayerEntity)
-                                            Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
-                                                if (entity != master && prs.getStandID() != Util.StandID.GER) {
-                                                    if (prs.getStandID() == Util.StandID.KING_CRIMSON && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
-                                                        return;
-                                                    ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-                                                    StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
-                                                }
-                                            });
-                                    });
-                    } else {
-                        if (!master.isCreative() && !master.isSpectator())
-                            master.setGameType(GameType.SURVIVAL);
-                        master.setInvulnerable(false);
-                        props.setAbilityActive(false);
-                        master.removePotionEffect(EffectInit.CRIMSON_USER.get());
-                        props.setCooldown(200);
-                    }
-                }
-
-                if (props.getInvulnerableTicks() > 0) {
+                                    if (entity instanceof PlayerEntity)
+                                        Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
+                                            if (entity != master && prs.getStandID() != Util.StandID.GER) {
+                                                if (prs.getStandID() == Util.StandID.KING_CRIMSON && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
+                                                    return;
+                                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
+                                                StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
+                                            }
+                                        });
+                                });
+                } else {
                     if (!master.isCreative() && !master.isSpectator())
                         master.setGameType(GameType.SURVIVAL);
                     master.setInvulnerable(false);
                     props.setAbilityActive(false);
                     master.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                    props.setCooldown(200);
                 }
+            }
 
-                if (!props.getAbilityActive()) {
-                    if (props.getCooldown() <= 0)
-                        props.setAbilityActive(true);
-                    if (!world.isRemote)
-                        getServer().getWorld(dimension).getEntities()
-                                .filter(entity -> entity instanceof LivingEntity)
-                                .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
-                }
+            if (props.getInvulnerableTicks() > 0) {
+                if (!master.isCreative() && !master.isSpectator())
+                    master.setGameType(GameType.SURVIVAL);
+                master.setInvulnerable(false);
+                props.setAbilityActive(false);
+                master.removePotionEffect(EffectInit.CRIMSON_USER.get());
+            }
 
-                if (!props.getAbility()) {
-                    if (master.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                        master.removePotionEffect(EffectInit.CRIMSON_USER.get());
-                    if (props.getTimeLeft() < 1000)
-                        props.addTimeLeft(1);
-                }
-                if (master.swingProgressInt == 0 && !attackRush)
-                    attackTick = 0;
-                if (attackRush) {
-                    attackTicker++;
-                    if (attackTicker >= 10)
-                        if (!world.isRemote) {
-                            master.setSprinting(false);
-                            KingCrimsonPunchEntity kingCrimson1 = new KingCrimsonPunchEntity(world, this, master);
-                            kingCrimson1.randomizePositions();
-                            kingCrimson1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
-                            world.addEntity(kingCrimson1);
-                            KingCrimsonPunchEntity kingCrimson2 = new KingCrimsonPunchEntity(world, this, master);
-                            kingCrimson2.randomizePositions();
-                            kingCrimson2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
-                            world.addEntity(kingCrimson2);
-                        }
-                    if (attackTicker >= 80) {
-                        attackRush = false;
-                        attackTicker = 0;
-                    }
-                }
-            });
-        }
+            if (!props.getAbilityActive()) {
+                if (props.getCooldown() <= 0)
+                    props.setAbilityActive(true);
+                if (!world.isRemote)
+                    getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> entity instanceof LivingEntity)
+                            .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
+            }
+
+            if (!props.getAbility()) {
+                if (master.isPotionActive(EffectInit.CRIMSON_USER.get()))
+                    master.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                if (props.getTimeLeft() < 1000)
+                    props.addTimeLeft(1);
+            }
+            if (master.swingProgressInt == 0 && !attackRush)
+                attackTick = 0;
+        });
     }
 
     @Override

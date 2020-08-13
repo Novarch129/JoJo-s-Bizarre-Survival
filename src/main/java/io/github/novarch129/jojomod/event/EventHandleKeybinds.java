@@ -73,6 +73,11 @@ public class EventHandleKeybinds {
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.JUMP));
                             if (mc.gameSettings.keyBindSneak.isKeyDown())
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.CROUCH));
+                            break;
+                        }
+                        case Util.StandID.KING_CRIMSON: {
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CKingCrimsonChargePunchPacket(mc.gameSettings.keyBindAttack.isKeyDown()));
+                            break;
                         }
                     }
             });

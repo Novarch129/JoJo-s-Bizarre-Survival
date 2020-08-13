@@ -1,10 +1,9 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.IStand;
-import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.ITimestop;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
@@ -23,6 +22,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -32,7 +32,7 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -41,7 +41,7 @@ public class TheWorldEntity extends AbstractStandEntity {
     /**
      * A list of every {@link TheWorldEntity} in the {@link World}, used to cancel events and unfreeze entities on logout.
      */
-    private static List<TheWorldEntity> theWorldList = Lists.newArrayList();
+    private static ArrayBlockingQueue<TheWorldEntity> theWorldList = new ArrayBlockingQueue<>(1000000);
     public int timestopTick;
     public boolean cooldown;
 
@@ -49,7 +49,7 @@ public class TheWorldEntity extends AbstractStandEntity {
         super(type, world);
     }
 
-    public static List<TheWorldEntity> getTheWorldList() {
+    public static ArrayBlockingQueue<TheWorldEntity> getTheWorldList() {
         return theWorldList;
     }
 
@@ -230,6 +230,7 @@ public class TheWorldEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
+                props2.setAbilityActive(ability && props2.getTimeLeft() > 780);
 
                 if (ability && props2.getTimeLeft() > 780) {
                     props2.subtractTimeLeft(1);
@@ -332,10 +333,8 @@ public class TheWorldEntity extends AbstractStandEntity {
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                         entity.setNoGravity(false);
-                                    } else {
-                                        if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
-                                            entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
-                                    }
+                                    } else if (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)
+                                        entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                     if (entity instanceof PlayerEntity)
                                         ((PlayerEntity) entity).removePotionEffect(Effects.SLOWNESS);
                                     if (entity instanceof MobEntity)
@@ -359,18 +358,16 @@ public class TheWorldEntity extends AbstractStandEntity {
                 }
 
                 if (props2.getTimeLeft() == 831)
-                    world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.RESUME_TIME.get(), getSoundCategory(), 5.0f, 1.0f);
+                    world.playSound(null, getPosition(), SoundInit.RESUME_TIME.get(), getSoundCategory(), 5, 1);
 
                 if (props2.getCooldown() > 0)
                     props2.subtractCooldown(1);
 
                 if (props2.getCooldown() == 1) {
+                    master.sendMessage(new StringTextComponent("za warudo"));
                     props2.setTimeLeft(1000);
                     cooldown = false;
                 }
-
-                if (!ability && props2.getTimeLeft() < 1000)
-                    props2.addTimeLeft(1);
 
                 if (!ability) {
                     timestopTick = 0;

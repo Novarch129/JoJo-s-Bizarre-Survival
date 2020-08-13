@@ -252,10 +252,8 @@ public class EventHandleStandAbilities {
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
+                                } else if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
@@ -279,10 +277,8 @@ public class EventHandleStandAbilities {
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
+                                } else if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());

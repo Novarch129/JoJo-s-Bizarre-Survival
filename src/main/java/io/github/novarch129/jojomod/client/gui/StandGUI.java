@@ -37,6 +37,8 @@ public class StandGUI extends AbstractGui {
             int cooldown = (int) props.getCooldown();
             int transformed = props.getTransformed();
             double invulnerableTicks = props.getInvulnerableTicks();
+            boolean charging = props.isCharging();
+            float damage = props.getStandDamage();
             if (props.getStandOn()) {
                 switch (standID) {
                     case (Util.StandID.MADE_IN_HEAVEN): {
@@ -58,6 +60,8 @@ public class StandGUI extends AbstractGui {
                     case (Util.StandID.KING_CRIMSON): {
                         if (timeLeft > 801 && cooldown == 0 && invulnerableTicks == 0)
                             renderTimeLeft(timeLeft - 800);
+                        if (charging && damage > 3.5f)
+                            renderString("Damage: " + damage + (damage == 13 ? " MAX DAMAGE" : ""), 4, (cooldown > 0 || invulnerableTicks > 0 || timeLeft > 801 ? 16 : 4));
                         break;
                     }
                     case (Util.StandID.THE_WORLD): {
