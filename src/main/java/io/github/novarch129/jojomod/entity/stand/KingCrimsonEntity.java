@@ -8,16 +8,18 @@ import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
-import io.github.novarch129.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
@@ -62,8 +64,10 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public void epitaph() {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
-            if (props.getCooldown() == 0)
+            if (props.getCooldown() == 0) {
                 props.setInvulnerableTicks(100);
+                master.addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 0));
+            }
         });
     }
 
@@ -90,9 +94,29 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                     KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
                     kingCrimsonPunchEntity.damage = 2.95f + prevPunchChargeTicks / 20f;
-                    master.sendMessage(new ValueTextComponent(kingCrimsonPunchEntity.damage));
+                    if (kingCrimsonPunchEntity.damage >= 6) {
+                        for (int i = 0; i < kingCrimsonPunchEntity.damage / 6; i++) {
+                            world.playSound(null, getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (rand.nextFloat() - rand.nextFloat()) * 0.2f) * 0.7f);
+                            if (world.isRemote) {
+                                for (int k = 0; k < 20; ++k) {
+                                    double d0 = rand.nextGaussian() * 0.02;
+                                    double d1 = rand.nextGaussian() * 0.02;
+                                    double d2 = rand.nextGaussian() * 0.02;
+                                    Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
+                                    world.addParticle(ParticleTypes.POOF,
+                                            position.getX() + ((rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()) / 2),
+                                            position.getY() + ((rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()) / 2),
+                                            position.getZ() + ((rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()) / 2),
+                                            d0, d1, d2);
+                                }
+                            } else {
+                                this.world.setEntityState(this, (byte) 20);
+                            }
+                        }
+                    }
                     kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
-                    world.addEntity(kingCrimsonPunchEntity);
+                    if (!world.isRemote)
+                        world.addEntity(kingCrimsonPunchEntity);
                 }
             }
 

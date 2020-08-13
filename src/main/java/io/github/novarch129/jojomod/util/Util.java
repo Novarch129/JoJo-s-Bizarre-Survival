@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -61,6 +63,10 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0); //The location of the End exit portal.
+    }
+
+    public static boolean isClientHoldingShift() {
+        return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
 
     /**
@@ -298,6 +304,7 @@ public class Util {
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+        public static final String SWITCH_ACT = KeyInit.SWITCH_ACT.getLocalizedName().toUpperCase();
     }
 
     public static class ResourceLocations {

@@ -97,7 +97,12 @@ public class StandArrowItem extends ArrowItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (!this.tooltip.equals(""))
+        if (standID != 0) {
+            if (Util.isClientHoldingShift() && !this.tooltip.equals(""))
+                tooltip.add(new StringTextComponent(this.tooltip));
+            else if (!Util.isClientHoldingShift())
+                tooltip.add(new StringTextComponent("Hold \u00A7e Shift \u00A7f for more information!"));
+        } else
             tooltip.add(new StringTextComponent(this.tooltip));
     }
 

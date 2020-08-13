@@ -49,6 +49,11 @@ public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
     }
 
     @Override
+    protected int getRange() {
+        return (int) (2 + damage / 13);
+    }
+
+    @Override
     public ResourceLocation getEntityTexture() {
         return Util.ResourceLocations.KING_CRIMSON_PUNCH;
     }

@@ -65,11 +65,8 @@ public class EventHandleStandAbilities {
                             player.getPosY() + player.world.rand.nextDouble(),
                             player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
-                player.setGlowing(true);
-                if (invulnerableTicks == 0.5) {
+                if (invulnerableTicks == 0.5)
                     props.setCooldown(140);
-                    player.setGlowing(false);
-                }
             }
 
             if (cooldown == 0.5)
