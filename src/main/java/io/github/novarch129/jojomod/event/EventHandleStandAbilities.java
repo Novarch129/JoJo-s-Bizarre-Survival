@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
@@ -26,11 +27,14 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -225,6 +229,11 @@ public class EventHandleStandAbilities {
             event.setCanceled(true);
             Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }
+        if (event.getEntityItem().getItem().getOrCreateTag().getBoolean("bomb"))
+            StandEffects.getLazyOptional(event.getEntityItem()).ifPresent(props -> {
+                props.setBomb(true);
+                props.setStandUser(event.getPlayer().getUniqueID());
+            });
     }
 
     @SubscribeEvent
@@ -331,6 +340,34 @@ public class EventHandleStandAbilities {
                         entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
                     }
                 }
+            });
+    }
+
+    @SubscribeEvent
+    public static void itemPickup(EntityItemPickupEvent event) {
+        ItemEntity entity = event.getItem();
+        if (entity == null) return;
+        if (entity.world.isRemote) return;
+        StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            if (props.isBomb()) {
+                entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
+                PlayerEntity player = entity.world.getPlayerByUuid(props.getStandUser());
+                if (player != null)
+                    Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                entity.remove();
+                event.setCanceled(true);
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void itemExpire(ItemExpireEvent event) {
+        ItemEntity entity = event.getEntityItem();
+        if (entity == null) return;
+        if (entity.getItem().getOrCreateTag().getBoolean("bomb"))
+            StandEffects.getLazyOptional(entity).ifPresent(props -> {
+                PlayerEntity player = entity.world.getPlayerByUuid(props.getStandUser());
+                Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
             });
     }
 }

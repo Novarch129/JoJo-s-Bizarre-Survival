@@ -9,10 +9,13 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -61,7 +64,15 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                     bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
                                 } else {
                                     Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4, true, Explosion.Mode.NONE);
-                                    master.spawnSweepParticles();
+                                    if (master.world.isRemote) {
+                                        for (int i = 0; i < 20; ++i) {
+                                            double d0 = master.world.rand.nextGaussian() * 0.02;
+                                            double d1 = master.world.rand.nextGaussian() * 0.02;
+                                            double d2 = master.world.rand.nextGaussian() * 0.02;
+                                            master.world.addParticle(ParticleTypes.POOF, master.getPosXWidth(1) - d0 * 10, master.getPosYRandom() - d1 * 10, master.getPosZRandom(1) - d2 * 10, d0, d1, d2);
+                                        }
+                                    } else
+                                        master.world.setEntityState(master, (byte) 20);
                                     explosion.doExplosionB(true);
                                     master.setHealth(0);
                                 }
@@ -114,7 +125,25 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                props.setAbility(false);
+                if (!world.isRemote && master.isCrouching() && master.getHeldItemMainhand() != ItemStack.EMPTY && props.getAbilityUseCount() == 0) {
+                    if (master.getHeldItemMainhand().getCount() > 1) {
+                        if (master.inventory.getStackInSlot(master.inventory.getBestHotbarSlot()).isEmpty()) {
+                            ItemStack stack = master.getHeldItemMainhand().copy();
+                            stack.shrink(master.getHeldItemMainhand().getCount() - 1);
+                            stack.getOrCreateTag().putBoolean("bomb", true);
+                            master.getHeldItemMainhand().shrink(1);
+                            master.inventory.add(master.inventory.getBestHotbarSlot(), stack);
+                            props.setAbilityUseCount(1);
+                        } else
+                            master.sendStatusMessage(new StringTextComponent("Your hotbar is full!"), true);
+                    } else {
+                        master.getHeldItemMainhand().getOrCreateTag().putBoolean("bomb", true);
+                        props.setAbilityUseCount(1);
+                    }
+                }
+            });
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);

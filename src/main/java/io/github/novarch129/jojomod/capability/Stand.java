@@ -46,6 +46,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private double invulnerableTicks;
     private float standDamage;
     private boolean charging;
+    private int abilityUseCount;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -80,6 +81,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putDouble("invulnerableTicks", instance.getInvulnerableTicks());
                 props.putFloat("standDamage", instance.getStandDamage());
                 props.putBoolean("charging", instance.isCharging());
+                props.putInt("abilityUseCount", instance.getAbilityUseCount());
                 return props;
             }
 
@@ -100,6 +102,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 instance.putInvulnerableTicks(compoundNBT.getDouble("invulnerableTicks"));
                 instance.putStandDamage(compoundNBT.getFloat("standDamage"));
                 instance.putCharging(compoundNBT.getBoolean("charging"));
+                instance.putAbilityUseCount(compoundNBT.getInt("abilityUseCount"));
             }
         }, () -> new Stand(Null()));
     }
@@ -381,6 +384,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         this.charging = charging;
     }
 
+    @Override
+    public int getAbilityUseCount() {
+        return abilityUseCount;
+    }
+
+    @Override
+    public void setAbilityUseCount(int abilityUseCount) {
+        this.abilityUseCount = abilityUseCount;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putAbilityUseCount(int abilityUseCount) {
+        this.abilityUseCount = abilityUseCount;
+    }
+
     public void clone(IStand props) {
         putStandID(props.getStandID());
         putAct(props.getAct());
@@ -395,6 +414,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putInvulnerableTicks(props.getInvulnerableTicks());
         putStandDamage(props.getStandDamage());
         putCharging(props.isCharging());
+        putAbilityUseCount(props.getAbilityUseCount());
         onDataUpdated();
     }
 
@@ -414,6 +434,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putInvulnerableTicks(0);
         putStandDamage(0);
         putCharging(false);
+        putAbilityUseCount(0);
         onDataUpdated();
     }
 

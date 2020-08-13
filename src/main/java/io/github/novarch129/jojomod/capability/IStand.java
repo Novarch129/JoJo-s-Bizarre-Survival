@@ -103,6 +103,12 @@ public interface IStand {
 
     void putCharging(boolean charging);
 
+    int getAbilityUseCount();
+
+    void setAbilityUseCount(int abilityUseCount);
+
+    void putAbilityUseCount(int abilityUseCount);
+
     void clone(IStand props);
 
     void removeStand();
