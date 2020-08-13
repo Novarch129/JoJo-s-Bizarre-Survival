@@ -46,12 +46,12 @@ public class CMoonEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if ((props.getStandID() == Util.StandID.CMOON && props.getAct() == 1) || (props.getStandID() == Util.StandID.MADE_IN_HEAVEN && props.getAct() == 2)) {
-                    master.setNoGravity(false);
                     remove();
                     WhitesnakeEntity whitesnake = new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
                     Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
                     whitesnake.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
                     whitesnake.setMaster(master);
+                    whitesnake.setMasterUUID(master.getUniqueID());
                     world.addEntity(whitesnake);
                 }
             });
@@ -101,5 +101,6 @@ public class CMoonEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         if (master.isPotionActive(Effects.LEVITATION))
             master.removePotionEffect(Effects.LEVITATION);
+        master.setNoGravity(false);
     }
 }

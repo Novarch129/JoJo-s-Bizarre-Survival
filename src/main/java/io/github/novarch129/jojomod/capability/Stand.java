@@ -150,10 +150,8 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void changeAct() {
         standAct++;
-        if (standAct == getMaxAct()) {
+        if (standAct == getMaxAct())
             standAct = 0;
-            standOn = false;
-        }
         onDataUpdated();
     }
 

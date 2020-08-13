@@ -23,6 +23,7 @@ public class PacketHandler {
         registerPacket(CHierophantGreenPossessionPacket.class, new CHierophantGreenPossessionPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(SSyncStandEffectsCapabilityPacket.class, new SSyncStandEffectsCapabilityPacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(CKingCrimsonChargePunchPacket.class, new CKingCrimsonChargePunchPacket(), NetworkDirection.PLAY_TO_SERVER);
+        registerPacket(CSwitchStandActPacket.class, new CSwitchStandActPacket(), NetworkDirection.PLAY_TO_SERVER);
     }
 
     public static <MSG> void registerPacket(Class<MSG> clazz, IMessage<MSG> message) {

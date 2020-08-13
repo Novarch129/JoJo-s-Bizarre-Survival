@@ -11,11 +11,13 @@ public class KeyInit {
     public static final KeyBinding TOGGLE_ABILITY = new KeyBinding("key.ability.desc", GLFW.GLFW_KEY_Z, KEY_CATEGORY);
     public static final KeyBinding ABILITY1 = new KeyBinding("key.ability2.desc", GLFW.GLFW_KEY_X, KEY_CATEGORY);
     public static final KeyBinding ABILITY2 = new KeyBinding("key.ability3.desc", GLFW.GLFW_KEY_P, KEY_CATEGORY);
+    public static final KeyBinding SWITCH_ACT = new KeyBinding("key.switchact.desc", GLFW.GLFW_KEY_B, KEY_CATEGORY);
 
     public static void register() {
         ClientRegistry.registerKeyBinding(SPAWN_STAND);
         ClientRegistry.registerKeyBinding(TOGGLE_ABILITY);
         ClientRegistry.registerKeyBinding(ABILITY1);
         ClientRegistry.registerKeyBinding(ABILITY2);
+        ClientRegistry.registerKeyBinding(SWITCH_ACT);
     }
 }

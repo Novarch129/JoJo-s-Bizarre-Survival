@@ -32,14 +32,16 @@ public class EventHandleKeybinds {
                 JojoBizarreSurvival.INSTANCE.sendToServer(new CStandAttackPacket());
 
             Stand.getLazyOptional(mc.player).ifPresent(props -> {
+                if (props.hasAct())
+                    if (KeyInit.SWITCH_ACT.isPressed())
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSwitchStandActPacket());
+
                 if (props.getStandOn()) {
                     if (KeyInit.ABILITY1.isPressed())
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 1));
                     if (KeyInit.ABILITY2.isPressed())
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 2));
-                }
 
-                if (props.getStandOn())
                     switch (props.getStandID()) {
                         default:
                             break;
@@ -80,6 +82,7 @@ public class EventHandleKeybinds {
                             break;
                         }
                     }
+                }
             });
         }
     }
