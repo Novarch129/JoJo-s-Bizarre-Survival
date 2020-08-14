@@ -101,7 +101,7 @@ public class StandArrowItem extends ArrowItem {
             if (Util.isClientHoldingShift() && !this.tooltip.equals(""))
                 tooltip.add(new StringTextComponent(this.tooltip));
             else if (!Util.isClientHoldingShift())
-                tooltip.add(new StringTextComponent("Hold \u00A7e Shift \u00A7f for more information!"));
+                tooltip.add(new StringTextComponent("Hold\u00A7e Shift\u00A7f for more information!"));
         } else
             tooltip.add(new StringTextComponent(this.tooltip));
     }

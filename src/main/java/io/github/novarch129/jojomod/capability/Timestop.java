@@ -5,16 +5,20 @@ import io.github.novarch129.jojomod.network.message.server.SSyncTimestopCapabili
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
 
@@ -23,19 +27,20 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     @CapabilityInject(ITimestop.class)
     public static final Capability<ITimestop> TIMESTOP = Null();
     private Entity entity;
-    private double posX = 0;
-    private double posY = 0;
-    private double posZ = 0;
-    private double motionX = 0;
-    private double motionY = 0;
-    private double motionZ = 0;
-    private float rotationYaw = 0;
-    private float rotationPitch = 0;
-    private float rotationYawHead = 0;
-    private float fallDistance = 0;
-    private int fuse = 0;
-    private int fire = 0;
-    private int age = 0;
+    private double posX;
+    private double posY;
+    private double posZ;
+    private double motionX;
+    private double motionY;
+    private double motionZ;
+    private float rotationYaw;
+    private float rotationPitch;
+    private float rotationYawHead;
+    private float fallDistance;
+    private int fuse;
+    private int fire;
+    private int age;
+    private Map<String, Float> damage = new ConcurrentHashMap<>();
     private LazyOptional<ITimestop> holder = LazyOptional.of(() -> new Timestop(entity));
 
     public Timestop(@Nonnull Entity entity) {
@@ -68,6 +73,14 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 nbt.putInt("fuse", instance.getFuse());
                 nbt.putInt("fire", instance.getFire());
                 nbt.putInt("age", instance.getAge());
+                ListNBT listNBT = new ListNBT();
+                instance.getDamage().forEach((source, amount) -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putString("source", source);
+                    compoundNBT.putFloat("amount", amount);
+                    listNBT.add(compoundNBT);
+                });
+                nbt.put("damage", listNBT);
                 return nbt;
             }
 
@@ -87,6 +100,10 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
                 instance.putFuse(compoundNBT.getInt("fuse"));
                 instance.putFire(compoundNBT.getInt("fire"));
                 instance.putAge(compoundNBT.getInt("age"));
+                compoundNBT.getList("damage", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("source") && ((CompoundNBT) compound).contains("amount"))
+                        instance.getDamage().put(((CompoundNBT) compound).getString("source"), ((CompoundNBT) compound).getFloat("amount"));
+                });
             }
         }, () -> new Timestop(Null()));
     }
@@ -210,6 +227,17 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public Map<String, Float> getDamage() {
+        return damage;
+    }
+
+    @Override
+    public void setDamage(Map<String, Float> damage) {
+        this.damage = damage;
+        onDataUpdated();
+    }
+
+    @Override
     public void putPosX(double posX) {
         this.posX = posX;
     }
@@ -275,6 +303,11 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public void putDamage(Map<String, Float> damage) {
+        this.damage = damage;
+    }
+
+    @Override
     public void onDataUpdated() {
         if (entity != null)
             if (!entity.world.isRemote)
@@ -295,6 +328,7 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
         this.fallDistance = 0;
         this.fuse = 0;
         this.fire = 0;
+        this.damage = new ConcurrentHashMap<>();
         onDataUpdated();
     }
 

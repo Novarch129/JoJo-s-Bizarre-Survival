@@ -24,6 +24,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
@@ -32,7 +33,7 @@ import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -90,7 +91,7 @@ public class EventHandleStandAbilities {
                 if (cooldown == 0.5)
                     props.setTimeLeft(1000);
 
-                if (timeLeft < 1000)
+                if (timeLeft < 1000 && cooldown <= 0)
                     props.addTimeLeft(0.5);
             }
 
@@ -247,10 +248,18 @@ public class EventHandleStandAbilities {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
                 Entity theWorld = player.world.getEntityByID(props.getPlayerStand());
-                if (theWorld instanceof TheWorldEntity)
+                if (theWorld instanceof TheWorldEntity) {
+                    ((TheWorldEntity) theWorld).shouldDamageBeCancelled = false;
                     TheWorldEntity.getTheWorldList().remove(theWorld);
+                    ((TheWorldEntity) theWorld).getBrokenBlocks().forEach(pos -> {
+                        theWorld.world.getBlockState(pos).getBlock().harvestBlock(theWorld.world, player, pos, theWorld.world.getBlockState(pos), null, player.getActiveItemStack());
+                        theWorld.world.removeBlock(pos, false);
+                    });
+                    ((TheWorldEntity) theWorld).getBrokenBlocks().clear();
+                }
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
+
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)
@@ -266,6 +275,98 @@ public class EventHandleStandAbilities {
                                 entity.velocityChanged = true;
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
+                                props2.getDamage().forEach((source, amount) -> {
+                                    DamageSource damageSource = DamageSource.GENERIC;
+                                    String newSource = source.replaceAll("[0123456789]", "");
+                                    switch (newSource) {
+                                        case "inFire": {
+                                            damageSource = DamageSource.IN_FIRE;
+                                            break;
+                                        }
+                                        case "onFire": {
+                                            damageSource = DamageSource.ON_FIRE;
+                                            break;
+                                        }
+                                        case "lightningBolt": {
+                                            damageSource = DamageSource.LIGHTNING_BOLT;
+                                            break;
+                                        }
+                                        case "lava": {
+                                            damageSource = DamageSource.LAVA;
+                                            break;
+                                        }
+                                        case "hotFloor": {
+                                            damageSource = DamageSource.HOT_FLOOR;
+                                            break;
+                                        }
+                                        case "inWall": {
+                                            damageSource = DamageSource.IN_WALL;
+                                            break;
+                                        }
+                                        case "cramming": {
+                                            damageSource = DamageSource.CRAMMING;
+                                            break;
+                                        }
+                                        case "drown": {
+                                            damageSource = DamageSource.DROWN;
+                                            break;
+                                        }
+                                        case "starve": {
+                                            damageSource = DamageSource.STARVE;
+                                            break;
+                                        }
+                                        case "cactus": {
+                                            damageSource = DamageSource.CACTUS;
+                                            break;
+                                        }
+                                        case "fall": {
+                                            damageSource = DamageSource.FALL;
+                                            break;
+                                        }
+                                        case "flyIntoWall": {
+                                            damageSource = DamageSource.FLY_INTO_WALL;
+                                            break;
+                                        }
+                                        case "outOfWorld": {
+                                            damageSource = DamageSource.OUT_OF_WORLD;
+                                            break;
+                                        }
+                                        case "magic": {
+                                            damageSource = DamageSource.MAGIC;
+                                            break;
+                                        }
+                                        case "wither": {
+                                            damageSource = DamageSource.WITHER;
+                                            break;
+                                        }
+                                        case "anvil": {
+                                            damageSource = DamageSource.ANVIL;
+                                            break;
+                                        }
+                                        case "fallingBlock": {
+                                            damageSource = DamageSource.FALLING_BLOCK;
+                                            break;
+                                        }
+                                        case "dragonBreath": {
+                                            damageSource = DamageSource.DRAGON_BREATH;
+                                            break;
+                                        }
+                                        case "fireworks": {
+                                            damageSource = DamageSource.FIREWORKS;
+                                            break;
+                                        }
+                                        case "dryout": {
+                                            damageSource = DamageSource.DRYOUT;
+                                            break;
+                                        }
+                                        case "sweetBerryBush": {
+                                            damageSource = DamageSource.SWEET_BERRY_BUSH;
+                                            break;
+                                        }
+                                    }
+                                    entity.attackEntityFrom(damageSource, amount);
+                                    entity.hurtResistantTime = 0;
+                                });
                                 props2.clear();
                             }));
             } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
@@ -310,8 +411,25 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void cancelDamage(LivingDamageEvent event) {
+    public static void cancelDamage(LivingAttackEvent event) {
         LivingEntity entity = event.getEntityLiving();
+        if (TheWorldEntity.getTheWorldList().size() > 0)
+            TheWorldEntity.getTheWorldList().forEach(theWorldEntity -> {
+                if (theWorldEntity.shouldDamageBeCancelled) {
+                    Timestop.getLazyOptional(entity).ifPresent(props -> {
+                        if (!props.getDamage().containsKey(event.getSource().getDamageType()))
+                            props.getDamage().put(event.getSource().getDamageType(), event.getAmount());
+                        else
+                            for (int i = 0; i < 1000; i++) {
+                                if (!props.getDamage().containsKey(event.getSource().getDamageType() + i)) {
+                                    props.getDamage().put(event.getSource().getDamageType() + i, event.getAmount());
+                                    break;
+                                }
+                            }
+                    });
+                    event.setCanceled(true);
+                }
+            });
         if (entity instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
                 if (props.getStandID() == Util.StandID.TWENTIETH_CENTURY_BOY && props.getAbilityActive()) {

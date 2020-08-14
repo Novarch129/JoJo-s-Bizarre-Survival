@@ -15,7 +15,6 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.RayTraceContext.BlockMode;
@@ -209,32 +208,22 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
             if (entity != standMaster && entity != this) {
-                DamageSource damagesource;
-                if (shootingStand == null)
-                    damagesource = DamageSource.causeThrownDamage(this, this);
-                else if (standMaster == null)
-                    damagesource = DamageSource.causeThrownDamage(this, shootingStand);
-                else
-                    damagesource = DamageSource.causeThrownDamage(this, standMaster);
                 if (isBurning() && !(entity instanceof EndermanEntity))
                     entity.setFire(5);
-                if (entity.attackEntityFrom(damagesource, 0.1f)) {
-                    if (entity instanceof LivingEntity) {
-                        LivingEntity livingEntity = (LivingEntity) entity;
+                if (entity instanceof LivingEntity) {
+                    LivingEntity livingEntity = (LivingEntity) entity;
+                    if (!world.isRemote) {
+                        world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1, 0, 0);
                         if (!world.isRemote) {
-                            world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1, 0, 0);
-                            if (!world.isRemote) {
-                                if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.EntityHit(this, result, entity)))
-                                    return;
-                                onEntityHit((EntityRayTraceResult) result);
-                            }
+                            if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.EntityHit(this, result, entity)))
+                                return;
+                            onEntityHit((EntityRayTraceResult) result);
                         }
-                        if (standMaster != null && livingEntity != standMaster && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
-                            ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0));
                     }
-                    if (!(entity instanceof EndermanEntity))
-                        remove();
-                } else if (!world.isRemote && getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ() < 0.0010000000474974513)
+                    if (standMaster != null && livingEntity != standMaster && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
+                        ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0));
+                }
+                if (!(entity instanceof EndermanEntity))
                     remove();
             }
         } else if (result.getType() == RayTraceResult.Type.BLOCK) {

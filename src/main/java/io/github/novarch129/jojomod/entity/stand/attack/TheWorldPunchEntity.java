@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.client.entity.model.TheWorldPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
@@ -28,7 +29,7 @@ public class TheWorldPunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3.0f);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3);
         entity.hurtResistantTime = 0;
     }
 
@@ -37,8 +38,12 @@ public class TheWorldPunchEntity extends AbstractStandAttackEntity {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 4) {
-            world.removeBlock(pos, false);
-            state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            if (shootingStand.ability && !((TheWorldEntity) shootingStand).cooldown)
+                ((TheWorldEntity) shootingStand).addBrokenBlocks(pos);
+            else {
+                world.removeBlock(pos, false);
+                state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            }
         }
     }
 
