@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -8,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -46,6 +48,21 @@ public class KillerQueenEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() <= 0) {
+                if (!world.isRemote)
+                    getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> entity instanceof ItemEntity)
+                            .forEach(entity ->
+                                    StandEffects.getLazyOptional(entity).ifPresent(effects -> {
+                                        if (effects.isBomb()) {
+                                            PlayerEntity player = world.getPlayerByUuid(effects.getStandUser());
+                                            if (player != null && player.equals(master)) {
+                                                entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
+                                                Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                                                entity.remove();
+                                            }
+                                        }
+                                    })
+                            );
                 if (bombEntity != null) {
                     if (bombEntity.isAlive()) {
                         props.setCooldown(140);

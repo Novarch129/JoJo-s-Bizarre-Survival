@@ -23,7 +23,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -456,7 +455,6 @@ public class TheWorldEntity extends AbstractStandEntity {
                                         entity.fallDistance = props.getFallDistance();
                                     if (props.getDamage().size() > 0)
                                         props.getDamage().forEach((source, amount) -> {
-                                            master.sendMessage(new StringTextComponent("running forEach"));
                                             DamageSource damageSource = DamageSource.GENERIC;
                                             String newSource = source.replaceAll("[0123456789]", "");
                                             switch (newSource) {
