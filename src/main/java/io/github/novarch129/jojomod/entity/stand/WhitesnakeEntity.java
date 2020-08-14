@@ -1,11 +1,14 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.WhitesnakePunchEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
+import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -38,7 +41,18 @@ public class WhitesnakeEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                ability = props.getAbility();
+                if (props.getStandID() == Util.StandID.MADE_IN_HEAVEN && props.getAct() == 0 && props.getStandOn()) {
+                    remove();
+                    MadeInHeavenEntity madeInHeaven = new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), world);
+                    Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
+                    madeInHeaven.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
+                    madeInHeaven.setMaster(master);
+                    madeInHeaven.setMasterUUID(master.getUniqueID());
+                    world.addEntity(madeInHeaven);
+                }
+            });
             master.setNoGravity(false);
 
             followMaster();

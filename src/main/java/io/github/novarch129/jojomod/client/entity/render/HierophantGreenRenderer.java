@@ -4,12 +4,11 @@ import io.github.novarch129.jojomod.client.entity.model.HierophantGreenModel;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
-public class HierophantGreenRenderer extends MobRenderer<HierophantGreenEntity, HierophantGreenModel> {
+public class HierophantGreenRenderer extends AbstractStandRenderer<HierophantGreenEntity, HierophantGreenModel> {
     public HierophantGreenRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new HierophantGreenModel(), 0.5f);
+        super(renderManagerIn, new HierophantGreenModel());
     }
 
     @Override

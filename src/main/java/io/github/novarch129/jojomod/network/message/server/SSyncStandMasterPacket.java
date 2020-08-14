@@ -24,9 +24,9 @@ public class SSyncStandMasterPacket implements IMessage<SSyncStandMasterPacket> 
     }
 
     @Override
-    public void encode(SSyncStandMasterPacket msg, PacketBuffer buffer) {
-        buffer.writeInt(msg.standID);
-        buffer.writeInt(msg.masterID);
+    public void encode(SSyncStandMasterPacket message, PacketBuffer buffer) {
+        buffer.writeInt(message.standID);
+        buffer.writeInt(message.masterID);
     }
 
     @Override
@@ -35,12 +35,12 @@ public class SSyncStandMasterPacket implements IMessage<SSyncStandMasterPacket> 
     }
 
     @Override
-    public void handle(SSyncStandMasterPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncStandMasterPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 if (Minecraft.getInstance().world == null) return;
-                Entity stand = Minecraft.getInstance().world.getEntityByID(msg.standID);
-                Entity master = Minecraft.getInstance().world.getEntityByID(msg.masterID);
+                Entity stand = Minecraft.getInstance().world.getEntityByID(message.standID);
+                Entity master = Minecraft.getInstance().world.getEntityByID(message.masterID);
                 if (stand != null && master != null)
                     ((AbstractStandEntity) stand).setMaster((PlayerEntity) master);
             });

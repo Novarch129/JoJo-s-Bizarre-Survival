@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -8,18 +9,22 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class KillerQueenEntity extends AbstractStandEntity {
     protected int shaCount;
-    private SheerHeartAttackEntity sheerHeartAttack = new SheerHeartAttackEntity(world, this);
+    private SheerHeartAttackEntity sheerHeartAttack;
     private LivingEntity bombEntity;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
@@ -43,6 +48,21 @@ public class KillerQueenEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() <= 0) {
+                if (!world.isRemote)
+                    getServer().getWorld(dimension).getEntities()
+                            .filter(entity -> entity instanceof ItemEntity)
+                            .forEach(entity ->
+                                    StandEffects.getLazyOptional(entity).ifPresent(effects -> {
+                                        if (effects.isBomb()) {
+                                            PlayerEntity player = world.getPlayerByUuid(effects.getStandUser());
+                                            if (player != null && player.equals(master)) {
+                                                entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
+                                                Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                                                entity.remove();
+                                            }
+                                        }
+                                    })
+                            );
                 if (bombEntity != null) {
                     if (bombEntity.isAlive()) {
                         props.setCooldown(140);
@@ -61,7 +81,15 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                     bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
                                 } else {
                                     Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4, true, Explosion.Mode.NONE);
-                                    master.spawnSweepParticles();
+                                    if (master.world.isRemote) {
+                                        for (int i = 0; i < 20; ++i) {
+                                            double d0 = master.world.rand.nextGaussian() * 0.02;
+                                            double d1 = master.world.rand.nextGaussian() * 0.02;
+                                            double d2 = master.world.rand.nextGaussian() * 0.02;
+                                            master.world.addParticle(ParticleTypes.POOF, master.getPosXWidth(1) - d0 * 10, master.getPosYRandom() - d1 * 10, master.getPosZRandom(1) - d2 * 10, d0, d1, d2);
+                                        }
+                                    } else
+                                        master.world.setEntityState(master, (byte) 20);
                                     explosion.doExplosionB(true);
                                     master.setHealth(0);
                                 }
@@ -77,6 +105,8 @@ public class KillerQueenEntity extends AbstractStandEntity {
 
     public void toggleSheerHeartAttack() {
         if (getMaster() == null || world.isRemote) return;
+        if (sheerHeartAttack == null)
+            sheerHeartAttack = new SheerHeartAttackEntity(world, this);
         Stand.getLazyOptional(getMaster()).ifPresent(props -> {
             if (shaCount <= 0) {
                 sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
@@ -112,7 +142,25 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                props.setAbility(false);
+                if (!world.isRemote && master.isCrouching() && master.getHeldItemMainhand() != ItemStack.EMPTY && props.getAbilityUseCount() == 0) {
+                    if (master.getHeldItemMainhand().getCount() > 1) {
+                        if (master.inventory.getStackInSlot(master.inventory.getBestHotbarSlot()).isEmpty()) {
+                            ItemStack stack = master.getHeldItemMainhand().copy();
+                            stack.shrink(master.getHeldItemMainhand().getCount() - 1);
+                            stack.getOrCreateTag().putBoolean("bomb", true);
+                            master.getHeldItemMainhand().shrink(1);
+                            master.inventory.add(master.inventory.getBestHotbarSlot(), stack);
+                            props.setAbilityUseCount(1);
+                        } else
+                            master.sendStatusMessage(new StringTextComponent("Your hotbar is full!"), true);
+                    } else {
+                        master.getHeldItemMainhand().getOrCreateTag().putBoolean("bomb", true);
+                        props.setAbilityUseCount(1);
+                    }
+                }
+            });
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);

@@ -20,6 +20,7 @@
   "item.jojomod.summon_hierophant_green": "Hierophant Green",
   "item.jojomod.summon_green_day": "Green Day",
   "item.jojomod.summon_20th_century_boy": "20th Century Boy",
+  "item.jojomod.summon_the_grateful_dead": "The Grateful Dead",
 
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
@@ -30,6 +31,7 @@
   "effect.jojomod.crimson_effect": "Crimson",
   "effect.jojomod.oxygen_poisoning": "Oxygen Poisoning",
   "effect.jojomod.haze": "Purple Haze",
+  "effect.jojomod.aging": "Aging",
 
   "entity.jojomod.king_crimson": "King Crimson",
   "entity.jojomod.king_crimson_punch": "King Crimson's punch",
@@ -73,6 +75,10 @@
   "entity.jojomod.hierophant_green_tail": "Hierophant Green's tail",
   "entity.jojomod.green_day": "Green Day",
   "entity.jojomod.green_day_punch": "Green Day's punch",
+  "entity.jojomod.twentieth_century_boy": "20th Century Boy",
+  "entity.jojomod.twentieth_century_boy_punch": "20th Century Boy's punch",
+  "entity.jojomod.the_grateful_dead": "The Grateful Dead",
+  "entity.jojomod.the_grateful_dead_punch": "The Grateful Dead' punch",
 
   "key.categories.jojomod": "JoJo's Bizarre Survival",
 
@@ -80,6 +86,7 @@
   "key.ability.desc": "Ability Toggle",
   "key.ability2.desc": "Stand Ability",
   "key.ability3.desc": "Stand Ability 2",
+  "key.switchact.desc": "Switch Stand Act",
 
   "itemGroup.jojomod": "JoJo's Bizarre Survival"
 }

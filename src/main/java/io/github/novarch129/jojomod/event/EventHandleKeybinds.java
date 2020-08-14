@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.init.KeyInit;
 import io.github.novarch129.jojomod.network.message.client.*;
 import io.github.novarch129.jojomod.util.Util;
@@ -32,14 +32,16 @@ public class EventHandleKeybinds {
                 JojoBizarreSurvival.INSTANCE.sendToServer(new CStandAttackPacket());
 
             Stand.getLazyOptional(mc.player).ifPresent(props -> {
+                if (props.hasAct())
+                    if (KeyInit.SWITCH_ACT.isPressed())
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSwitchStandActPacket());
+
                 if (props.getStandOn()) {
                     if (KeyInit.ABILITY1.isPressed())
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 1));
                     if (KeyInit.ABILITY2.isPressed())
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 2));
-                }
 
-                if (props.getStandOn())
                     switch (props.getStandID()) {
                         default:
                             break;
@@ -73,8 +75,14 @@ public class EventHandleKeybinds {
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.JUMP));
                             if (mc.gameSettings.keyBindSneak.isKeyDown())
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.CROUCH));
+                            break;
+                        }
+                        case Util.StandID.KING_CRIMSON: {
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CKingCrimsonChargePunchPacket(mc.gameSettings.keyBindAttack.isKeyDown()));
+                            break;
                         }
                     }
+                }
             });
         }
     }

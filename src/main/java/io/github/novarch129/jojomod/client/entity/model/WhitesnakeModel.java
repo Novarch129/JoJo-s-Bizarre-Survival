@@ -38,11 +38,10 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
         HeadBase = new ModelRenderer(this);
         HeadBase.setRotationPoint(0.0F, -8.4F, 0.0F);
 
-
         Head = new ModelRenderer(this);
         Head.setRotationPoint(0.0F, 3.85F, 0.0F);
         HeadBase.addChild(Head);
-        Head.setTextureOffset(0, 0).addBox(-4.0F, -11.65F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, false);
+        Head.setTextureOffset(0, 1).addBox(-4.0F, -10.65F, -4.0F, 8.0F, 7.0F, 8.0F, 0.0F, false);
 
         Eyes = new ModelRenderer(this);
         Eyes.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -100,7 +99,6 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
         BodyBase = new ModelRenderer(this);
         BodyBase.setRotationPoint(0.0F, 24.0F, 0.0F);
 
-
         Torso = new ModelRenderer(this);
         Torso.setRotationPoint(0.0F, -25.5F, -1.0F);
         BodyBase.addChild(Torso);
@@ -124,7 +122,6 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
         Arms.setRotationPoint(0.0F, 0.0F, 0.0F);
         BodyBase.addChild(Arms);
 
-
         RightArm = new ModelRenderer(this);
         RightArm.setRotationPoint(-7.15F, -28.3015F, -1.3061F);
         Arms.addChild(RightArm);
@@ -141,11 +138,9 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
         Beetle1.setRotationPoint(0.0F, 0.0F, 0.0F);
         RightHand.addChild(Beetle1);
 
-
         Beetle5 = new ModelRenderer(this);
         Beetle5.setRotationPoint(0.0F, 0.0F, 0.0F);
         RightHand.addChild(Beetle5);
-
 
         RightArm2 = new ModelRenderer(this);
         RightArm2.setRotationPoint(8.3F, -26.9765F, -1.3061F);
@@ -171,7 +166,6 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
         Legs = new ModelRenderer(this);
         Legs.setRotationPoint(0.0F, 0.0F, 0.0F);
         BodyBase.addChild(Legs);
-
 
         RightLeg = new ModelRenderer(this);
         RightLeg.setRotationPoint(-2.3F, -15.425F, -2.2125F);
@@ -209,7 +203,7 @@ public class WhitesnakeModel extends AbstractStandModel<WhitesnakeEntity> {
     }
 
     @Override
-    protected ModelRenderer getHead() {
+    public ModelRenderer getHead() {
         return HeadBase;
     }
 }

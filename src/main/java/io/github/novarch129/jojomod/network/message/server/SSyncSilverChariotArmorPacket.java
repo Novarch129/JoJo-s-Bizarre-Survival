@@ -28,22 +28,22 @@ public class SSyncSilverChariotArmorPacket implements IMessage<SSyncSilverChario
     }
 
     @Override
-    public void handle(SSyncSilverChariotArmorPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncSilverChariotArmorPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 if (Minecraft.getInstance().world == null) return;
-                Entity entity = Minecraft.getInstance().world.getEntityByID(msg.standID);
+                Entity entity = Minecraft.getInstance().world.getEntityByID(message.standID);
                 if (entity != null)
                     if (entity instanceof SilverChariotEntity)
-                        ((SilverChariotEntity) entity).putHasArmor(msg.hasArmor);
+                        ((SilverChariotEntity) entity).putHasArmor(message.hasArmor);
             });
         }
         ctx.get().setPacketHandled(true);
     }
 
     @Override
-    public void encode(SSyncSilverChariotArmorPacket msg, PacketBuffer buffer) {
-        buffer.writeInt(msg.standID);
-        buffer.writeBoolean(msg.hasArmor);
+    public void encode(SSyncSilverChariotArmorPacket message, PacketBuffer buffer) {
+        buffer.writeInt(message.standID);
+        buffer.writeBoolean(message.hasArmor);
     }
 }

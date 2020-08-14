@@ -12,12 +12,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE)
 public class EventD4CTeleportProcessor {
     public static Map<PlayerEntity, DimensionType> d4cPassengers = Maps.newHashMap();
-    public static List<PlayerEntity> madeInHeaven = new ArrayList<>();
+    public static ArrayBlockingQueue<PlayerEntity> madeInHeaven = new ArrayBlockingQueue<>(100000);
 
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {

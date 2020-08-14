@@ -1,13 +1,14 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.item.FallingBlockEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,6 +24,7 @@ import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -273,6 +275,17 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     @Override
     public boolean canBeCollidedWith() {
         return false;
+    }
+
+    @Override
+    protected AxisAlignedBB getBoundingBox(Pose pose) {
+        return new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+    }
+
+    @Override
+    protected void collideWithEntity(Entity entity) {
+        if (entity instanceof AbstractStandEntity || entity instanceof AbstractStandAttackEntity)
+            applyEntityCollision(entity);
     }
 
     /**

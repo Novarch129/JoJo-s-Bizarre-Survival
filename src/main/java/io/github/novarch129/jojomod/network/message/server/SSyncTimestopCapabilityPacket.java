@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.network.message.server;
 
-import io.github.novarch129.jojomod.capability.timestop.ITimestop;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.ITimestop;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,12 +32,12 @@ public class SSyncTimestopCapabilityPacket implements IMessage<SSyncTimestopCapa
     }
 
     @Override
-    public void handle(SSyncTimestopCapabilityPacket msg, Supplier<NetworkEvent.Context> ctx) {
+    public void handle(SSyncTimestopCapabilityPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
                 if (Minecraft.getInstance().world == null) return;
                 Minecraft.getInstance().world.getAllEntities().forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props ->
-                        Timestop.TIMESTOP.getStorage().readNBT(Timestop.TIMESTOP, props, null, msg.data)
+                        Timestop.TIMESTOP.getStorage().readNBT(Timestop.TIMESTOP, props, null, message.data)
                 ));
             });
         }
@@ -45,7 +45,7 @@ public class SSyncTimestopCapabilityPacket implements IMessage<SSyncTimestopCapa
     }
 
     @Override
-    public void encode(SSyncTimestopCapabilityPacket msg, PacketBuffer buffer) {
-        buffer.writeCompoundTag((CompoundNBT) msg.data);
+    public void encode(SSyncTimestopCapabilityPacket message, PacketBuffer buffer) {
+        buffer.writeCompoundTag((CompoundNBT) message.data);
     }
 }

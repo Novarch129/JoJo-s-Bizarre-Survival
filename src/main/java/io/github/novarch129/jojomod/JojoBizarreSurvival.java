@@ -1,7 +1,8 @@
 package io.github.novarch129.jojomod;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.command.impl.StandCommand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.*;
@@ -61,6 +62,7 @@ public class JojoBizarreSurvival {
     private void setup(FMLCommonSetupEvent event) {
         Stand.register();
         Timestop.register();
+        StandEffects.register();
         PacketHandler.register();
     }
 

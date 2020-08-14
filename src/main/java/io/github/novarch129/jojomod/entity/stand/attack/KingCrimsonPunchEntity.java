@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -17,6 +18,8 @@ import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
 public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
+    public float damage = 3;
+
     public KingCrimsonPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
@@ -28,7 +31,9 @@ public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3.0f);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : damage);
+        if (damage > 3.5f && entity instanceof LivingEntity)
+            ((LivingEntity) entity).knockBack(this, damage / 5, getPosX() - entity.getPosX(), getPosZ() - entity.getPosZ());
         entity.hurtResistantTime = 0;
     }
 
@@ -41,6 +46,11 @@ public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
             if (world.rand.nextBoolean())
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
         }
+    }
+
+    @Override
+    protected int getRange() {
+        return (int) (2 + damage / 13);
     }
 
     @Override

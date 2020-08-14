@@ -1,8 +1,9 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
-import io.github.novarch129.jojomod.capability.timestop.Timestop;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
@@ -21,17 +22,25 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -40,11 +49,26 @@ public class EventHandleStandAbilities {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
         Stand.getLazyOptional(player).ifPresent(props -> {
+            Random rand = player.world.rand;
             int standID = props.getStandID();
             boolean standOn = props.getStandOn();
             boolean ability = props.getAbility();
             double cooldown = props.getCooldown();
             double timeLeft = props.getTimeLeft();
+            double invulnerableTicks = props.getInvulnerableTicks();
+
+            if (invulnerableTicks > 0) {
+                props.setInvulnerableTicks(props.getInvulnerableTicks() - 0.5);
+                for (int i = 0; i < 10; i++)
+                    player.world.addOptionalParticle(
+                            ParticleTypes.DRAGON_BREATH,
+                            player.getPosX() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
+                            player.getPosY() + player.world.rand.nextDouble(),
+                            player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
+                            0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
+                if (invulnerableTicks == 0.5)
+                    props.setCooldown(140);
+            }
 
             if (cooldown == 0.5)
                 props.setTimeLeft(1000);
@@ -67,11 +91,11 @@ public class EventHandleStandAbilities {
                 if (cooldown == 0.5)
                     props.setTimeLeft(1000);
 
-                if (timeLeft < 1000)
+                if (timeLeft < 1000 && cooldown <= 0)
                     props.addTimeLeft(0.5);
             }
 
-            if ((standID == Util.StandID.KING_CRIMSON) && (!standOn || !ability) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !props.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
@@ -84,26 +108,21 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void effectRemovedEvent(PotionEvent.PotionRemoveEvent event) {
-        if (event.getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotion() == Effects.GLOWING)
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotion() == EffectInit.OXYGEN_POISONING.get())
-            event.setCanceled(true);
-        if (event.getPotion() == EffectInit.HAZE.get())
-            event.setCanceled(true);
+        if (event.getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
+        if (event.getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
+        if (event.getPotion() == EffectInit.OXYGEN_POISONING.get()) event.setCanceled(true);
+        if (event.getPotion() == EffectInit.HAZE.get()) event.setCanceled(true);
+        if (event.getPotion() == EffectInit.AGING.get()) event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event) {
         if (event.getPotionEffect().getPotion() == null) return;
-        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(false);
-        if (event.getPotionEffect().getPotion() == Effects.GLOWING)
-            event.getEntityLiving().setGlowing(false);
+        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
+        if (event.getPotionEffect().getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent //This one still bugs me to this day, can't think of a way to automate it.
     public static void tooltipEvent(ItemTooltipEvent event) {
         if (!(event.getItemStack().getItem() instanceof StandDiscItem)) return;
         String standName = "";
@@ -193,6 +212,10 @@ public class EventHandleStandAbilities {
                     standName = "20th Century Boy";
                     break;
                 }
+                case Util.StandID.THE_GRATEFUL_DEAD: {
+                    standName = "The Grateful Dead";
+                    break;
+                }
             }
         if (!standName.equals(""))
             event.getToolTip().add(new StringTextComponent(standName));
@@ -204,6 +227,11 @@ public class EventHandleStandAbilities {
             event.setCanceled(true);
             Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }
+        if (event.getEntityItem().getItem().getOrCreateTag().getBoolean("bomb"))
+            StandEffects.getLazyOptional(event.getEntityItem()).ifPresent(props -> {
+                props.setBomb(true);
+                props.setStandUser(event.getPlayer().getUniqueID());
+            });
     }
 
     @SubscribeEvent
@@ -220,10 +248,18 @@ public class EventHandleStandAbilities {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
                 Entity theWorld = player.world.getEntityByID(props.getPlayerStand());
-                if (theWorld instanceof TheWorldEntity)
+                if (theWorld instanceof TheWorldEntity) {
+                    ((TheWorldEntity) theWorld).shouldDamageBeCancelled = false;
                     TheWorldEntity.getTheWorldList().remove(theWorld);
+                    ((TheWorldEntity) theWorld).getBrokenBlocks().forEach(pos -> {
+                        theWorld.world.getBlockState(pos).getBlock().harvestBlock(theWorld.world, player, pos, theWorld.world.getBlockState(pos), null, player.getActiveItemStack());
+                        theWorld.world.removeBlock(pos, false);
+                    });
+                    ((TheWorldEntity) theWorld).getBrokenBlocks().clear();
+                }
                 TheWorldEntity.dayTime = -1;
                 TheWorldEntity.gameTime = -1;
+
                 if (!player.world.isRemote)
                     player.world.getServer().getWorld(player.dimension).getEntities()
                             .filter(entity -> entity != player)
@@ -231,24 +267,121 @@ public class EventHandleStandAbilities {
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
+                                } else if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.velocityChanged = true;
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
+                                props2.getDamage().forEach((source, amount) -> {
+                                    DamageSource damageSource = DamageSource.GENERIC;
+                                    String newSource = source.replaceAll("[0123456789]", "");
+                                    switch (newSource) {
+                                        case "inFire": {
+                                            damageSource = DamageSource.IN_FIRE;
+                                            break;
+                                        }
+                                        case "onFire": {
+                                            damageSource = DamageSource.ON_FIRE;
+                                            break;
+                                        }
+                                        case "lightningBolt": {
+                                            damageSource = DamageSource.LIGHTNING_BOLT;
+                                            break;
+                                        }
+                                        case "lava": {
+                                            damageSource = DamageSource.LAVA;
+                                            break;
+                                        }
+                                        case "hotFloor": {
+                                            damageSource = DamageSource.HOT_FLOOR;
+                                            break;
+                                        }
+                                        case "inWall": {
+                                            damageSource = DamageSource.IN_WALL;
+                                            break;
+                                        }
+                                        case "cramming": {
+                                            damageSource = DamageSource.CRAMMING;
+                                            break;
+                                        }
+                                        case "drown": {
+                                            damageSource = DamageSource.DROWN;
+                                            break;
+                                        }
+                                        case "starve": {
+                                            damageSource = DamageSource.STARVE;
+                                            break;
+                                        }
+                                        case "cactus": {
+                                            damageSource = DamageSource.CACTUS;
+                                            break;
+                                        }
+                                        case "fall": {
+                                            damageSource = DamageSource.FALL;
+                                            break;
+                                        }
+                                        case "flyIntoWall": {
+                                            damageSource = DamageSource.FLY_INTO_WALL;
+                                            break;
+                                        }
+                                        case "outOfWorld": {
+                                            damageSource = DamageSource.OUT_OF_WORLD;
+                                            break;
+                                        }
+                                        case "magic": {
+                                            damageSource = DamageSource.MAGIC;
+                                            break;
+                                        }
+                                        case "wither": {
+                                            damageSource = DamageSource.WITHER;
+                                            break;
+                                        }
+                                        case "anvil": {
+                                            damageSource = DamageSource.ANVIL;
+                                            break;
+                                        }
+                                        case "fallingBlock": {
+                                            damageSource = DamageSource.FALLING_BLOCK;
+                                            break;
+                                        }
+                                        case "dragonBreath": {
+                                            damageSource = DamageSource.DRAGON_BREATH;
+                                            break;
+                                        }
+                                        case "fireworks": {
+                                            damageSource = DamageSource.FIREWORKS;
+                                            break;
+                                        }
+                                        case "dryout": {
+                                            damageSource = DamageSource.DRYOUT;
+                                            break;
+                                        }
+                                        case "sweetBerryBush": {
+                                            damageSource = DamageSource.SWEET_BERRY_BUSH;
+                                            break;
+                                        }
+                                    }
+                                    entity.attackEntityFrom(damageSource, amount);
+                                    entity.hurtResistantTime = 0;
+                                });
                                 props2.clear();
                             }));
             } else if (props.getStandID() == Util.StandID.STAR_PLATINUM) {
                 if (props.getAbility() && props.getTimeLeft() > 900)
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), SoundCategory.NEUTRAL, 5, 1);
                 Entity starPlatinum = player.world.getEntityByID(props.getPlayerStand());
-                if (starPlatinum instanceof StarPlatinumEntity)
+                if (starPlatinum instanceof StarPlatinumEntity) {
+                    ((StarPlatinumEntity) starPlatinum).shouldDamageBeCancelled = false;
                     StarPlatinumEntity.getStarPlatinumList().remove(starPlatinum);
+                    ((StarPlatinumEntity) starPlatinum).getBrokenBlocks().forEach(pos -> {
+                        starPlatinum.world.getBlockState(pos).getBlock().harvestBlock(starPlatinum.world, player, pos, starPlatinum.world.getBlockState(pos), null, player.getActiveItemStack());
+                        starPlatinum.world.removeBlock(pos, false);
+                    });
+                    ((StarPlatinumEntity) starPlatinum).getBrokenBlocks().clear();
+                }
                 StarPlatinumEntity.dayTime = -1;
                 StarPlatinumEntity.gameTime = -1;
                 if (!player.world.isRemote)
@@ -258,16 +391,107 @@ public class EventHandleStandAbilities {
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);
-                                } else {
-                                    if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
-                                        entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
-                                }
+                                } else if (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)
+                                    entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 if (entity instanceof MobEntity)
                                     ((MobEntity) entity).setNoAI(false);
                                 entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                 entity.velocityChanged = true;
                                 entity.fallDistance = props2.getFallDistance();
                                 entity.setInvulnerable(false);
+                                if (props2.getDamage().size() > 0)
+                                    props2.getDamage().forEach((source, amount) -> {
+                                        DamageSource damageSource = DamageSource.GENERIC;
+                                        String newSource = source.replaceAll("[0123456789]", "");
+                                        switch (newSource) {
+                                            case "inFire": {
+                                                damageSource = DamageSource.IN_FIRE;
+                                                break;
+                                            }
+                                            case "onFire": {
+                                                damageSource = DamageSource.ON_FIRE;
+                                                break;
+                                            }
+                                            case "lightningBolt": {
+                                                damageSource = DamageSource.LIGHTNING_BOLT;
+                                                break;
+                                            }
+                                            case "lava": {
+                                                damageSource = DamageSource.LAVA;
+                                                break;
+                                            }
+                                            case "hotFloor": {
+                                                damageSource = DamageSource.HOT_FLOOR;
+                                                break;
+                                            }
+                                            case "inWall": {
+                                                damageSource = DamageSource.IN_WALL;
+                                                break;
+                                            }
+                                            case "cramming": {
+                                                damageSource = DamageSource.CRAMMING;
+                                                break;
+                                            }
+                                            case "drown": {
+                                                damageSource = DamageSource.DROWN;
+                                                break;
+                                            }
+                                            case "starve": {
+                                                damageSource = DamageSource.STARVE;
+                                                break;
+                                            }
+                                            case "cactus": {
+                                                damageSource = DamageSource.CACTUS;
+                                                break;
+                                            }
+                                            case "fall": {
+                                                damageSource = DamageSource.FALL;
+                                                break;
+                                            }
+                                            case "flyIntoWall": {
+                                                damageSource = DamageSource.FLY_INTO_WALL;
+                                                break;
+                                            }
+                                            case "outOfWorld": {
+                                                damageSource = DamageSource.OUT_OF_WORLD;
+                                                break;
+                                            }
+                                            case "magic": {
+                                                damageSource = DamageSource.MAGIC;
+                                                break;
+                                            }
+                                            case "wither": {
+                                                damageSource = DamageSource.WITHER;
+                                                break;
+                                            }
+                                            case "anvil": {
+                                                damageSource = DamageSource.ANVIL;
+                                                break;
+                                            }
+                                            case "fallingBlock": {
+                                                damageSource = DamageSource.FALLING_BLOCK;
+                                                break;
+                                            }
+                                            case "dragonBreath": {
+                                                damageSource = DamageSource.DRAGON_BREATH;
+                                                break;
+                                            }
+                                            case "fireworks": {
+                                                damageSource = DamageSource.FIREWORKS;
+                                                break;
+                                            }
+                                            case "dryout": {
+                                                damageSource = DamageSource.DRYOUT;
+                                                break;
+                                            }
+                                            case "sweetBerryBush": {
+                                                damageSource = DamageSource.SWEET_BERRY_BUSH;
+                                                break;
+                                            }
+                                        }
+                                        entity.attackEntityFrom(damageSource, amount);
+                                        entity.hurtResistantTime = 0;
+                                    });
                                 props2.clear();
                             }));
             }
@@ -287,8 +511,42 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void twentiethCenturyBoy(LivingDamageEvent event) {
+    public static void cancelDamage(LivingAttackEvent event) {
         LivingEntity entity = event.getEntityLiving();
+        if (TheWorldEntity.getTheWorldList().size() > 0)
+            TheWorldEntity.getTheWorldList().forEach(theWorldEntity -> {
+                if (theWorldEntity.shouldDamageBeCancelled) {
+                    Timestop.getLazyOptional(entity).ifPresent(props -> {
+                        if (!props.getDamage().containsKey(event.getSource().getDamageType()))
+                            props.getDamage().put(event.getSource().getDamageType(), event.getAmount());
+                        else
+                            for (int i = 0; i < 1000; i++) {
+                                if (!props.getDamage().containsKey(event.getSource().getDamageType() + i)) {
+                                    props.getDamage().put(event.getSource().getDamageType() + i, event.getAmount());
+                                    break;
+                                }
+                            }
+                    });
+                    event.setCanceled(true);
+                }
+            });
+        if (StarPlatinumEntity.getStarPlatinumList().size() > 0)
+            StarPlatinumEntity.getStarPlatinumList().forEach(starPlatinumEntity -> {
+                if (starPlatinumEntity.shouldDamageBeCancelled) {
+                    Timestop.getLazyOptional(entity).ifPresent(props -> {
+                        if (!props.getDamage().containsKey(event.getSource().getDamageType()))
+                            props.getDamage().put(event.getSource().getDamageType(), event.getAmount());
+                        else
+                            for (int i = 0; i < 1000; i++) {
+                                if (!props.getDamage().containsKey(event.getSource().getDamageType() + i)) {
+                                    props.getDamage().put(event.getSource().getDamageType() + i, event.getAmount());
+                                    break;
+                                }
+                            }
+                    });
+                    event.setCanceled(true);
+                }
+            });
         if (entity instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entity).ifPresent(props -> {
                 if (props.getStandID() == Util.StandID.TWENTIETH_CENTURY_BOY && props.getAbilityActive()) {
@@ -302,7 +560,46 @@ public class EventHandleStandAbilities {
                                     entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
                                 });
                     event.setCanceled(true);
+                } else if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getInvulnerableTicks() > 0) {
+                    event.setCanceled(true);
+                    Entity source = event.getSource().getTrueSource();
+                    if (source != null) {
+                        Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
+                        if (!entity.world.isRemote) {
+                            entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
+                            entity.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), entity.rotationYaw, entity.rotationPitch);
+                        }
+                        entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                    }
                 }
+            });
+    }
+
+    @SubscribeEvent
+    public static void itemPickup(EntityItemPickupEvent event) {
+        ItemEntity entity = event.getItem();
+        if (entity == null) return;
+        if (entity.world.isRemote) return;
+        StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            if (props.isBomb()) {
+                entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
+                PlayerEntity player = entity.world.getPlayerByUuid(props.getStandUser());
+                if (player != null)
+                    Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                entity.remove();
+                event.setCanceled(true);
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void itemExpire(ItemExpireEvent event) {
+        ItemEntity entity = event.getEntityItem();
+        if (entity == null) return;
+        if (entity.getItem().getOrCreateTag().getBoolean("bomb"))
+            StandEffects.getLazyOptional(entity).ifPresent(props -> {
+                PlayerEntity player = entity.world.getPlayerByUuid(props.getStandUser());
+                Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
             });
     }
 }

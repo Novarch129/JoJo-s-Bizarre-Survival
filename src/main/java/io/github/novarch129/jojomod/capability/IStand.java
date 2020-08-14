@@ -1,4 +1,4 @@
-package io.github.novarch129.jojomod.capability.stand;
+package io.github.novarch129.jojomod.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -84,6 +84,30 @@ public interface IStand {
     void setAbilityActive(boolean abilityActive);
 
     void putAbilityActive(boolean abilityActive);
+
+    double getInvulnerableTicks();
+
+    void setInvulnerableTicks(double invulnerableTicks);
+
+    void putInvulnerableTicks(double invulnerableTicks);
+
+    float getStandDamage();
+
+    void setStandDamage(float standDamage);
+
+    void putStandDamage(float standDamage);
+
+    boolean isCharging();
+
+    void setCharging(boolean charging);
+
+    void putCharging(boolean charging);
+
+    int getAbilityUseCount();
+
+    void setAbilityUseCount(int abilityUseCount);
+
+    void putAbilityUseCount(int abilityUseCount);
 
     void clone(IStand props);
 

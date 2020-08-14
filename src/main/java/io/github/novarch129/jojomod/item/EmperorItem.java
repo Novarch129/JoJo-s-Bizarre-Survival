@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.stand.IStand;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.IStand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;

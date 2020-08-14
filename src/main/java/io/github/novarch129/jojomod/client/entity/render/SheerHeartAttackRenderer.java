@@ -1,25 +1,33 @@
 package io.github.novarch129.jojomod.client.entity.render;
 
-import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.entity.model.SheerHeartAttackModel;
 import io.github.novarch129.jojomod.entity.stand.SheerHeartAttackEntity;
+import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nonnull;
-
 public class SheerHeartAttackRenderer extends MobRenderer<SheerHeartAttackEntity, SheerHeartAttackModel> {
-    protected static final ResourceLocation TEXTURE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sheer_heart_attack.png");
-
     public SheerHeartAttackRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new SheerHeartAttackModel(), 0.5f);
+        super(renderManagerIn, new SheerHeartAttackModel(), 0);
     }
 
-    @Nonnull
+    @Override
+    public void render(SheerHeartAttackEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+        if (Minecraft.getInstance().player == null) return;
+        Stand.getLazyOptional(Minecraft.getInstance().player).ifPresent(props -> {
+            if (props.getStandID() != 0)
+                super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
+        });
+    }
+
     @Override
     public ResourceLocation getEntityTexture(SheerHeartAttackEntity entity) {
-        return TEXTURE;
+        return Util.ResourceLocations.SHEER_HEART_ATTACK;
     }
 }
 

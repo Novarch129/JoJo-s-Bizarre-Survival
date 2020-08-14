@@ -1,7 +1,7 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.stand.IStand;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.IStand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.GoldExperienceEntity;
@@ -97,7 +97,12 @@ public class StandArrowItem extends ArrowItem {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (!this.tooltip.equals(""))
+        if (standID != 0) {
+            if (Util.isClientHoldingShift() && !this.tooltip.equals(""))
+                tooltip.add(new StringTextComponent(this.tooltip));
+            else if (!Util.isClientHoldingShift())
+                tooltip.add(new StringTextComponent("Hold\u00A7e Shift\u00A7f for more information!"));
+        } else
             tooltip.add(new StringTextComponent(this.tooltip));
     }
 

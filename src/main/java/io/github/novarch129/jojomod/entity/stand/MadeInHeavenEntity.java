@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.MadeInHeavenPunchEntity;
 import io.github.novarch129.jojomod.event.EventD4CTeleportProcessor;
@@ -62,6 +62,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                     Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
                     cMoon.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
                     cMoon.setMaster(master);
+                    cMoon.setMasterUUID(master.getUniqueID());
                     world.addEntity(cMoon);
                 }
             });

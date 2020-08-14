@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class CStandAttackPacket implements IMessage<CStandAttackPacket> {
     @Override
-    public void encode(CStandAttackPacket msg, PacketBuffer buffer) {
+    public void encode(CStandAttackPacket message, PacketBuffer buffer) {
     }
 
     @Override
@@ -23,7 +23,7 @@ public class CStandAttackPacket implements IMessage<CStandAttackPacket> {
     }
 
     @Override
-    public void handle(CStandAttackPacket msg, Supplier<Context> ctx) {
+    public void handle(CStandAttackPacket message, Supplier<Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().enqueueWork(() -> {
                 ServerPlayerEntity sender = ctx.get().getSender();

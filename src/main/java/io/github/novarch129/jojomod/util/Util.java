@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
@@ -26,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import java.util.Random;
@@ -60,7 +62,11 @@ public class Util {
                         return new BlockPos(x, height, pos.getZ());
             }
         }
-        return new BlockPos(0, 65, 0);
+        return new BlockPos(0, 65, 0); //The location of the End exit portal.
+    }
+
+    public static boolean isClientHoldingShift() {
+        return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
 
     /**
@@ -72,7 +78,7 @@ public class Util {
     }
 
     /**
-     * Got these values from <a href ="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/1435515-how-i-can-do-to-move-to-where-i-look#c5">this</a> thread.
+     * Got these values from <a href ="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/1435515-how-i-can-do-to-move-to-where-i-look#c5">this</a> thread, shortened it a little bit.
      */
     public static Vec3d getEntityForwardsMotion(Entity entity) {
         return new Vec3d(
@@ -190,6 +196,8 @@ public class Util {
                 return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
             case StandID.TWENTIETH_CENTURY_BOY:
                 return new TwentiethCenturyBoyEntity(EntityInit.TWENTIETH_CENTURY_BOY.get(), world);
+            case StandID.THE_GRATEFUL_DEAD:
+                return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
         }
     }
 
@@ -202,7 +210,7 @@ public class Util {
                         .and(EntityPredicates.IS_ALIVE)
                         .and(Entity::canBeCollidedWith);
 
-        public static final Predicate<Entity> BREATHS =
+        public static final Predicate<Entity> BREATHS = //Pretty much a list of every entity that doesn't breath.
                 ((Predicate<Entity>) entity -> !(entity instanceof ZombieEntity))
                         .and(((Predicate<Entity>) entity -> !(entity instanceof HuskEntity))
                                 .and(((Predicate<Entity>) entity -> !(entity instanceof DrownedEntity))
@@ -263,6 +271,8 @@ public class Util {
 
         public static final int TWENTIETH_CENTURY_BOY = 21;
 
+        public static final int THE_GRATEFUL_DEAD = 22;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -285,6 +295,7 @@ public class Util {
                 HIEROPHANT_GREEN,
                 GREEN_DAY,
                 TWENTIETH_CENTURY_BOY,
+                THE_GRATEFUL_DEAD
         };
     }
 
@@ -293,6 +304,7 @@ public class Util {
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+        public static final String SWITCH_ACT = KeyInit.SWITCH_ACT.getLocalizedName().toUpperCase();
     }
 
     public static class ResourceLocations {
@@ -312,10 +324,12 @@ public class Util {
         public static final ResourceLocation WEATHER_REPORT_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/weather_report_punch.png");
         public static final ResourceLocation KILLER_QUEEN = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen.png");
         public static final ResourceLocation KILLER_QUEEN_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/killer_queen_punch.png");
+        public static final ResourceLocation SHEER_HEART_ATTACK = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sheer_heart_attack.png");
         public static final ResourceLocation CRAZY_DIAMOND = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond.png");
         public static final ResourceLocation CRAZY_DIAMOND_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/crazy_diamond_punch.png");
         public static final ResourceLocation PURPLE_HAZE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze.png");
         public static final ResourceLocation PURPLE_HAZE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/purple_haze_punch.png");
+        public static final ResourceLocation EMPEROR_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/emperor_bullet.png");
         public static final ResourceLocation WHITESNAKE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake.png");
         public static final ResourceLocation WHITESNAKE_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/whitesnake_punch.png");
         public static final ResourceLocation CMOON = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/cmoon.png");
@@ -336,5 +350,7 @@ public class Util {
         public static final ResourceLocation GREEN_DAY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day_punch.png");
         public static final ResourceLocation TWENTIETH_CENTURY_BOY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy.png");
         public static final ResourceLocation TWENTIETH_CENTURY_BOY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy_punch.png");
+        public static final ResourceLocation THE_GRATEFUL_DEAD = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead.png");
+        public static final ResourceLocation THE_GRATEFUL_DEAD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead_punch.png");
     }
 }

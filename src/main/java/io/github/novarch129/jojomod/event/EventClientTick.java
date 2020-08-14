@@ -2,9 +2,10 @@ package io.github.novarch129.jojomod.event;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.stand.Stand;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
+import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.entity.stand.KingCrimsonEntity;
@@ -168,7 +169,7 @@ public class EventClientTick {
             }
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
             //Code below is *very* experimental, not final in any way.
-            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
+            if (JojoBizarreSurvivalConfig.CLIENT.kingCrimsonOreRendering.get() && props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
                 BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(50, -100, 50))
                         .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
                         .forEach(blockPos ->

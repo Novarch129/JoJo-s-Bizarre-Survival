@@ -1,6 +1,8 @@
-package io.github.novarch129.jojomod.capability.timestop;
+package io.github.novarch129.jojomod.capability;
 
 import net.minecraft.entity.Entity;
+
+import java.util.Map;
 
 public interface ITimestop {
     Entity getEntity();
@@ -45,6 +47,10 @@ public interface ITimestop {
 
     void setAge(int age);
 
+    Map<String, Float> getDamage();
+
+    void setDamage(Map<String, Float> damage);
+
     void putPosX(double posX);
 
     void putPosY(double posY);
@@ -70,6 +76,8 @@ public interface ITimestop {
     void putFire(int fire);
 
     void putAge(int age);
+
+    void putDamage(Map<String, Float> damage);
 
     void onDataUpdated();
 

@@ -1,12 +1,9 @@
 package io.github.novarch129.jojomod.client.entity.model;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.attack.SilverChariotSwordEntity;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class SilverChariotSwordModel extends EntityModel<SilverChariotSwordEntity> {
+public class SilverChariotSwordModel extends AbstractStandAttackModel<SilverChariotSwordEntity> {
     private final ModelRenderer Sword;
 
     public SilverChariotSwordModel() {
@@ -21,17 +18,7 @@ public class SilverChariotSwordModel extends EntityModel<SilverChariotSwordEntit
     }
 
     @Override
-    public void setRotationAngles(SilverChariotSwordEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    }
-
-    @Override
-    public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        Sword.render(matrixStack, buffer, packedLight, packedOverlay);
-    }
-
-    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-        modelRenderer.rotateAngleX = x;
-        modelRenderer.rotateAngleY = y;
-        modelRenderer.rotateAngleZ = z;
+    protected ModelRenderer getAttackModel() {
+        return Sword;
     }
 }
