@@ -2,13 +2,16 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.client.entity.model.DefaultStandAttackModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -29,6 +32,8 @@ public class TheGratefulDeadPunchEntity extends AbstractStandAttackEntity {
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 0.5f : 1);
+        if (entity instanceof LivingEntity)
+            ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.AGING.get(), 100, 2));
         entity.hurtResistantTime = 0;
     }
 

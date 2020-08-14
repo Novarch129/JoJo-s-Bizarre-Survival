@@ -32,7 +32,7 @@ public class EffectInit {
 
     public static final RegistryObject<Effect> AGING = EFFECTS.register("aging",
             () -> new AgingEffect(EffectType.HARMFUL, 4606017)
-                    .addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "a660e8a9-dcec-48e6-abad-558df89b75fe", -0.2f, AttributeModifier.Operation.ADDITION)
+                    .addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "a660e8a9-dcec-48e6-abad-558df89b75fe", -0.1f, AttributeModifier.Operation.ADDITION)
                     .addAttributesModifier(SharedMonsterAttributes.FOLLOW_RANGE, "a660e8a9-dcec-48e6-abad-558df89b75fe", -0.2f, AttributeModifier.Operation.ADDITION)
                     .addAttributesModifier(SharedMonsterAttributes.KNOCKBACK_RESISTANCE, "a660e8a9-dcec-48e6-abad-558df89b75fe", -0.2f, AttributeModifier.Operation.ADDITION)
                     .addAttributesModifier(SharedMonsterAttributes.MAX_HEALTH, "a660e8a9-dcec-48e6-abad-558df89b75fe", -0.2f, AttributeModifier.Operation.ADDITION)

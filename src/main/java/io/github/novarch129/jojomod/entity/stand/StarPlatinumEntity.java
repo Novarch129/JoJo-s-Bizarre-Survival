@@ -1,10 +1,9 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import com.google.common.collect.Lists;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.IStand;
-import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.ITimestop;
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.StarPlatinumPunchEntity;
@@ -20,6 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -32,7 +32,7 @@ import net.minecraftforge.event.world.PistonEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -41,15 +41,17 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     /**
      * A list of every {@link StarPlatinumEntity} in the {@link World}, used to cancel events and unfreeze entities on logout.
      */
-    private static List<StarPlatinumEntity> starPlatinumList = Lists.newArrayList();
+    private static ArrayBlockingQueue<StarPlatinumEntity> starPlatinumList = new ArrayBlockingQueue<>(1000000);
     public int timestopTick;
+    public boolean shouldDamageBeCancelled;
     public boolean cooldown;
+    private ArrayBlockingQueue<BlockPos> brokenBlocks = new ArrayBlockingQueue<>(100000);
 
     public StarPlatinumEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
 
-    public static List<StarPlatinumEntity> getStarPlatinumList() {
+    public static ArrayBlockingQueue<StarPlatinumEntity> getStarPlatinumList() {
         return starPlatinumList;
     }
 
@@ -85,6 +87,99 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                             entity.velocityChanged = true;
                             if (props.getFallDistance() != 0)
                                 entity.fallDistance = props.getFallDistance();
+                            if (props.getDamage().size() > 0)
+                                props.getDamage().forEach((source, amount) -> {
+                                    DamageSource damageSource = DamageSource.GENERIC;
+                                    String newSource = source.replaceAll("[0123456789]", "");
+                                    switch (newSource) {
+                                        case "inFire": {
+                                            damageSource = DamageSource.IN_FIRE;
+                                            break;
+                                        }
+                                        case "onFire": {
+                                            damageSource = DamageSource.ON_FIRE;
+                                            break;
+                                        }
+                                        case "lightningBolt": {
+                                            damageSource = DamageSource.LIGHTNING_BOLT;
+                                            break;
+                                        }
+                                        case "lava": {
+                                            damageSource = DamageSource.LAVA;
+                                            break;
+                                        }
+                                        case "hotFloor": {
+                                            damageSource = DamageSource.HOT_FLOOR;
+                                            break;
+                                        }
+                                        case "inWall": {
+                                            damageSource = DamageSource.IN_WALL;
+                                            break;
+                                        }
+                                        case "cramming": {
+                                            damageSource = DamageSource.CRAMMING;
+                                            break;
+                                        }
+                                        case "drown": {
+                                            damageSource = DamageSource.DROWN;
+                                            break;
+                                        }
+                                        case "starve": {
+                                            damageSource = DamageSource.STARVE;
+                                            break;
+                                        }
+                                        case "cactus": {
+                                            damageSource = DamageSource.CACTUS;
+                                            break;
+                                        }
+                                        case "fall": {
+                                            damageSource = DamageSource.FALL;
+                                            break;
+                                        }
+                                        case "flyIntoWall": {
+                                            damageSource = DamageSource.FLY_INTO_WALL;
+                                            break;
+                                        }
+                                        case "outOfWorld": {
+                                            damageSource = DamageSource.OUT_OF_WORLD;
+                                            break;
+                                        }
+                                        case "magic": {
+                                            damageSource = DamageSource.MAGIC;
+                                            break;
+                                        }
+                                        case "wither": {
+                                            damageSource = DamageSource.WITHER;
+                                            break;
+                                        }
+                                        case "anvil": {
+                                            damageSource = DamageSource.ANVIL;
+                                            break;
+                                        }
+                                        case "fallingBlock": {
+                                            damageSource = DamageSource.FALLING_BLOCK;
+                                            break;
+                                        }
+                                        case "dragonBreath": {
+                                            damageSource = DamageSource.DRAGON_BREATH;
+                                            break;
+                                        }
+                                        case "fireworks": {
+                                            damageSource = DamageSource.FIREWORKS;
+                                            break;
+                                        }
+                                        case "dryout": {
+                                            damageSource = DamageSource.DRYOUT;
+                                            break;
+                                        }
+                                        case "sweetBerryBush": {
+                                            damageSource = DamageSource.SWEET_BERRY_BUSH;
+                                            break;
+                                        }
+                                    }
+                                    entity.attackEntityFrom(damageSource, amount);
+                                    entity.hurtResistantTime = 0;
+                                });
                             dayTime = -1;
                             gameTime = -1;
                             props.clear();
@@ -196,6 +291,14 @@ public class StarPlatinumEntity extends AbstractStandEntity {
             });
     }
 
+    public ArrayBlockingQueue<BlockPos> getBrokenBlocks() {
+        return brokenBlocks;
+    }
+
+    public void addBrokenBlocks(BlockPos pos) {
+        brokenBlocks.add(pos);
+    }
+
     @Override
     public SoundEvent getSpawnSound() {
         return SoundInit.SPAWN_STAR_PLATINUM.get();
@@ -236,10 +339,12 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                     props2.subtractTimeLeft(1);
                     Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
+                    shouldDamageBeCancelled = true;
                     master.setInvulnerable(true);
                     if (timestopTick == 1 && props2.getCooldown() <= 0)
-                        world.playSound(null, new BlockPos(this.getPosX(), this.getPosY(), this.getPosZ()), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 2.0f, 1.0f);
-                    starPlatinumList.add(this);
+                        world.playSound(null, getPosition(), SoundInit.STAR_PLATINUM_THE_WORLD.get(), getSoundCategory(), 2, 1);
+                    if (!starPlatinumList.contains(this))
+                        starPlatinumList.add(this);
 
                     if (!world.isRemote) {
                         if (timestopTick == 1 || dayTime == -1 || gameTime == -1) {
@@ -323,11 +428,17 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                 });
                     }
                 } else {
+                    shouldDamageBeCancelled = false;
                     timestopTick = 0;
                     master.setInvulnerable(false);
                     starPlatinumList.remove(this);
-                    if (!this.world.isRemote) {
-                        this.world.getServer().getWorld(this.dimension).getEntities()
+                    brokenBlocks.forEach(pos -> {
+                        world.getBlockState(pos).getBlock().harvestBlock(world, master, pos, world.getBlockState(pos), null, master.getActiveItemStack());
+                        world.removeBlock(pos, false);
+                    });
+                    brokenBlocks.clear();
+                    if (!world.isRemote) {
+                        world.getServer().getWorld(dimension).getEntities()
                                 .filter(entity -> entity != this)
                                 .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
@@ -343,6 +454,99 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                     entity.velocityChanged = true;
                                     if (props.getFallDistance() != 0)
                                         entity.fallDistance = props.getFallDistance();
+                                    if (props.getDamage().size() > 0)
+                                        props.getDamage().forEach((source, amount) -> {
+                                            DamageSource damageSource = DamageSource.GENERIC;
+                                            String newSource = source.replaceAll("[0123456789]", "");
+                                            switch (newSource) {
+                                                case "inFire": {
+                                                    damageSource = DamageSource.IN_FIRE;
+                                                    break;
+                                                }
+                                                case "onFire": {
+                                                    damageSource = DamageSource.ON_FIRE;
+                                                    break;
+                                                }
+                                                case "lightningBolt": {
+                                                    damageSource = DamageSource.LIGHTNING_BOLT;
+                                                    break;
+                                                }
+                                                case "lava": {
+                                                    damageSource = DamageSource.LAVA;
+                                                    break;
+                                                }
+                                                case "hotFloor": {
+                                                    damageSource = DamageSource.HOT_FLOOR;
+                                                    break;
+                                                }
+                                                case "inWall": {
+                                                    damageSource = DamageSource.IN_WALL;
+                                                    break;
+                                                }
+                                                case "cramming": {
+                                                    damageSource = DamageSource.CRAMMING;
+                                                    break;
+                                                }
+                                                case "drown": {
+                                                    damageSource = DamageSource.DROWN;
+                                                    break;
+                                                }
+                                                case "starve": {
+                                                    damageSource = DamageSource.STARVE;
+                                                    break;
+                                                }
+                                                case "cactus": {
+                                                    damageSource = DamageSource.CACTUS;
+                                                    break;
+                                                }
+                                                case "fall": {
+                                                    damageSource = DamageSource.FALL;
+                                                    break;
+                                                }
+                                                case "flyIntoWall": {
+                                                    damageSource = DamageSource.FLY_INTO_WALL;
+                                                    break;
+                                                }
+                                                case "outOfWorld": {
+                                                    damageSource = DamageSource.OUT_OF_WORLD;
+                                                    break;
+                                                }
+                                                case "magic": {
+                                                    damageSource = DamageSource.MAGIC;
+                                                    break;
+                                                }
+                                                case "wither": {
+                                                    damageSource = DamageSource.WITHER;
+                                                    break;
+                                                }
+                                                case "anvil": {
+                                                    damageSource = DamageSource.ANVIL;
+                                                    break;
+                                                }
+                                                case "fallingBlock": {
+                                                    damageSource = DamageSource.FALLING_BLOCK;
+                                                    break;
+                                                }
+                                                case "dragonBreath": {
+                                                    damageSource = DamageSource.DRAGON_BREATH;
+                                                    break;
+                                                }
+                                                case "fireworks": {
+                                                    damageSource = DamageSource.FIREWORKS;
+                                                    break;
+                                                }
+                                                case "dryout": {
+                                                    damageSource = DamageSource.DRYOUT;
+                                                    break;
+                                                }
+                                                case "sweetBerryBush": {
+                                                    damageSource = DamageSource.SWEET_BERRY_BUSH;
+                                                    break;
+                                                }
+                                            }
+                                            entity.attackEntityFrom(damageSource, amount);
+                                            entity.hurtResistantTime = 0;
+                                        });
                                     dayTime = -1;
                                     gameTime = -1;
                                     props.clear();
@@ -360,11 +564,6 @@ public class StarPlatinumEntity extends AbstractStandEntity {
 
                 if (props2.getTimeLeft() == 960)
                     world.playSound(null, getPosition(), SoundInit.RESUME_TIME_STAR_PLATINUM.get(), getSoundCategory(), 5, 1);
-
-                if (props2.getCooldown() == 1) {
-                    props2.setTimeLeft(1000);
-                    cooldown = false;
-                }
 
                 if (!ability) {
                     timestopTick = 0;
@@ -405,11 +604,18 @@ public class StarPlatinumEntity extends AbstractStandEntity {
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         ability = false;
+        master.setInvulnerable(false);
+        shouldDamageBeCancelled = false;
+        brokenBlocks.forEach(pos -> {
+            world.getBlockState(pos).getBlock().harvestBlock(world, master, pos, world.getBlockState(pos), null, master.getActiveItemStack());
+            world.removeBlock(pos, false);
+        });
+        brokenBlocks.clear();
         starPlatinumList.remove(this);
         dayTime = -1;
         gameTime = -1;
         if (world.isRemote) return;
-        getServer().getWorld(this.dimension).getEntities()
+        getServer().getWorld(dimension).getEntities()
                 .filter(entity -> entity != this)
                 .forEach(entity ->
                         Timestop.getLazyOptional(entity).ifPresent(props2 -> {

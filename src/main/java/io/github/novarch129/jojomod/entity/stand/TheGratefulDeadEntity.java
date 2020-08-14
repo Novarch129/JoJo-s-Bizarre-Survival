@@ -62,7 +62,7 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
                         .filter(entity -> entity.getDistance(this) < 20)
                         .forEach(entity -> {
                             StandEffects.getLazyOptional(entity).ifPresent(props -> props.setAging(true));
-                            ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.AGING.get(), 5, 0));
+                            ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.AGING.get(), 100, 0));
                         });
 
             followMaster();

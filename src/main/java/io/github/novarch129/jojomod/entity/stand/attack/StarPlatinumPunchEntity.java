@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.client.entity.model.StarPlatinumPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
@@ -45,8 +46,12 @@ public class StarPlatinumPunchEntity extends AbstractStandAttackEntity {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 4) {
-            world.removeBlock(pos, false);
-            state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            if (shootingStand.ability && !((StarPlatinumEntity) shootingStand).cooldown)
+                ((StarPlatinumEntity) shootingStand).addBrokenBlocks(pos);
+            else {
+                world.removeBlock(pos, false);
+                state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            }
         }
     }
 
