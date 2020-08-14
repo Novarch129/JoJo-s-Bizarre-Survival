@@ -349,5 +349,14 @@
         "steam": false
       }
     ]
+  },
+  "spawn_the_grateful_dead": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_the_grateful_dead",
+        "steam": false
+      }
+    ]
   }
 }

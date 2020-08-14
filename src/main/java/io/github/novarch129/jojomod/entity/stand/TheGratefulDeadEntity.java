@@ -27,7 +27,7 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_GREEN_DAY.get();
+        return SoundInit.SPAWN_THE_GRATEFUL_DEAD.get();
     }
 
     @Override
