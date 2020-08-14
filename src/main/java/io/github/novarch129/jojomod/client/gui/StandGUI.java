@@ -41,7 +41,7 @@ public class StandGUI extends AbstractGui {
             float damage = props.getStandDamage();
             if (props.getStandOn()) {
                 switch (standID) {
-                    case (Util.StandID.MADE_IN_HEAVEN): {
+                    case Util.StandID.MADE_IN_HEAVEN: {
                         if (props.getAct() == 0) {
                             if (timeLeft > 0 && cooldown <= 0)
                                 renderTimeValue(timeLeft);
@@ -50,28 +50,32 @@ public class StandGUI extends AbstractGui {
                         }
                         break;
                     }
-                    case (Util.StandID.THE_GRATEFUL_DEAD):
-                    case (Util.StandID.TWENTIETH_CENTURY_BOY):
-                    case (Util.StandID.SILVER_CHARIOT): {
+                    case Util.StandID.TWENTIETH_CENTURY_BOY:
+                    case Util.StandID.SILVER_CHARIOT: {
                         if (timeLeft > 801 && cooldown == 0)
                             renderTimeLeft(timeLeft - 800);
                         break;
                     }
-                    case (Util.StandID.KING_CRIMSON): {
+                    case Util.StandID.KING_CRIMSON: {
                         if (timeLeft > 801 && cooldown == 0 && invulnerableTicks == 0)
                             renderTimeLeft(timeLeft - 800);
                         if (charging && damage > 3.5f)
                             renderString("Damage: " + damage + (damage == 13 ? " MAX DAMAGE" : ""), 4, (cooldown > 0 || invulnerableTicks > 0 || timeLeft > 801 ? 16 : 4));
                         break;
                     }
-                    case (Util.StandID.THE_WORLD): {
+                    case Util.StandID.THE_WORLD: {
                         if (timeLeft > 780 && cooldown == 0)
                             renderTimeLeft(timeLeft - 780);
                         break;
                     }
-                    case (Util.StandID.STAR_PLATINUM): {
+                    case Util.StandID.STAR_PLATINUM: {
                         if (timeLeft > 900 && cooldown == 0)
                             renderTimeLeft(timeLeft - 900);
+                        break;
+                    }
+                    case Util.StandID.THE_GRATEFUL_DEAD: {
+                        if (timeLeft > 601 && cooldown == 0)
+                            renderTimeLeft(timeLeft - 600);
                         break;
                     }
                 }
@@ -83,17 +87,17 @@ public class StandGUI extends AbstractGui {
                             renderCooldown(cooldown);
                     break;
                 }
-                case (Util.StandID.GOLD_EXPERIENCE): {
+                case Util.StandID.GOLD_EXPERIENCE: {
                     if (cooldown > 0 && transformed > 0)
                         renderCooldown(cooldown);
                     break;
                 }
-                case (Util.StandID.GER): {
+                case Util.StandID.GER: {
                     if (cooldown > 0 && transformed > 1)
                         renderCooldown(cooldown);
                     break;
                 }
-                case (Util.StandID.KING_CRIMSON): {
+                case Util.StandID.KING_CRIMSON: {
                     if (cooldown > 0)
                         renderString("Cooldown: " + cooldown / 20, 4, (invulnerableTicks > 0 ? 16 : 4));
                     if (invulnerableTicks > 0)

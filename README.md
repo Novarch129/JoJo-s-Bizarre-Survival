@@ -24,7 +24,7 @@
 - [ ] Sticky Fingers
 - [x] Purple Haze
 - [x] Green Day
-- [ ] The Grateful Dead
+- [x] The Grateful Dead
 - [ ] Beach Boy
 - [x] Crazy Diamond
 - [x] Killer Queen

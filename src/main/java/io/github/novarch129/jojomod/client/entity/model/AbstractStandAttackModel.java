@@ -15,7 +15,7 @@ public abstract class AbstractStandAttackModel<T extends AbstractStandAttackEnti
 
     @Override
     public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        setRotationAngle(getAttackModel(), headPitch / 90, netHeadYaw / 90, headPitch / 90);
+        getAttackModel().rotateAngleY = netHeadYaw / 90;
     }
 
     @Override

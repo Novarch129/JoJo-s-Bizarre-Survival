@@ -107,7 +107,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     public void movePunchInFrontOfStand(AbstractStandEntity stand) {
         if (stand.getMaster() == null) return;
-        Vec3d position = getPositionVec().add(stand.getMaster().getLookVec().mul(0.5, 0.2, 0.5));
+        Vec3d position = getPositionVec().add(stand.getMaster().getLookVec().mul(0.5, 0.1, 0.5));
         setPosition(position.getX(), position.getY(), position.getZ());
     }
 

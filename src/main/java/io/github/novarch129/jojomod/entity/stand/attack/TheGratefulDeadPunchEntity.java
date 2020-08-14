@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.DefaultStandAttackModel;
+import io.github.novarch129.jojomod.client.entity.model.TheGratefulDeadPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.EntityInit;
@@ -32,7 +32,7 @@ public class TheGratefulDeadPunchEntity extends AbstractStandAttackEntity {
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 0.5f : 1);
-        if (entity instanceof LivingEntity)
+        if (entity instanceof LivingEntity && shootingStand.ability)
             ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.AGING.get(), 100, 2));
         entity.hurtResistantTime = 0;
     }
@@ -55,6 +55,6 @@ public class TheGratefulDeadPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return new DefaultStandAttackModel<>();
+        return Util.cast(new TheGratefulDeadPunchModel());
     }
 }
