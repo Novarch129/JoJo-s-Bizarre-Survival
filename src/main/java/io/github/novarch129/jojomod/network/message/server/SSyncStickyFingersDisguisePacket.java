@@ -42,7 +42,7 @@ public class SSyncStickyFingersDisguisePacket implements IMessage<SSyncStickyFin
                 ClientWorld world = Minecraft.getInstance().world;
                 if (world == null) return;
                 Entity stand = world.getEntityByID(message.standID);
-                if (message.entityID != 100) {
+                if (message.entityID != -100) {
                     Entity entity = world.getEntityByID(message.entityID);
                     if (stand instanceof StickyFingersEntity && entity instanceof LivingEntity)
                         ((StickyFingersEntity) stand).disguiseEntity = (LivingEntity) entity;

@@ -54,14 +54,11 @@ public class StickyFingersEntity extends AbstractStandEntity {
         Entity entity = world.getEntityByID(entityID);
         if (entity instanceof LivingEntity) {
             disguiseEntity = (LivingEntity) entity;
-            if (!world.isRemote)
-                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) master), new SSyncStickyFingersDisguisePacket(getEntityId(), entityID));
             master.setInvulnerable(true);
-        } else if (entity == null) {
+        } else if (entity == null)
             disguiseEntity = null;
-            if (!world.isRemote)
-                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) master), new SSyncStickyFingersDisguisePacket(getEntityId(), -100));
-        }
+        if (!world.isRemote)
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) master), new SSyncStickyFingersDisguisePacket(getEntityId(), entityID));
     }
 
     public void zipThroughWall() {
@@ -87,7 +84,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                props.setAbilityActive(props.getTimeLeft() > 601 && props.getCooldown() == 0 && props.getAbility());
+                props.setAbilityActive(props.getTimeLeft() > 601 && props.getCooldown() == 0 && props.getAbility() && disguiseEntity == null);
                 ability = props.getAbility() && props.getTimeLeft() > 600;
                 if (ability)
                     props.setTimeLeft(props.getTimeLeft() - 1);
