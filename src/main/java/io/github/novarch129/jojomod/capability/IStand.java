@@ -33,15 +33,9 @@ public interface IStand {
 
     void setCooldown(double cooldown);
 
-    void subtractCooldown(double subtraction);
-
     double getTimeLeft();
 
     void setTimeLeft(double timeLeft);
-
-    void addTimeLeft(double addition);
-
-    void subtractTimeLeft(double subtraction);
 
     String getDiavolo();
 

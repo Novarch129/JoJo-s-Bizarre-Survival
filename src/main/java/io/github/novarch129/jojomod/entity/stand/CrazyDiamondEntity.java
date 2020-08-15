@@ -69,7 +69,7 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getCooldown() > 0 && ability)
-                    props.subtractCooldown(1);
+                    props.setCooldown(props.getCooldown() - 1);
             });
 
             followMaster();

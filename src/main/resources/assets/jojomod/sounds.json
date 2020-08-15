@@ -358,5 +358,32 @@
         "steam": false
       }
     ]
+  },
+  "spawn_sticky_fingers": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_sticky_fingers",
+        "steam": false
+      }
+    ]
+  },
+  "zipper": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:zipper",
+        "steam": false
+      }
+    ]
+  },
+  "arrivederci": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:arrivederci",
+        "steam": false
+      }
+    ]
   }
 }

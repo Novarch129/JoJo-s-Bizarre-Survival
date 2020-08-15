@@ -61,9 +61,8 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
 
-                if (props.getTransformed() > 1) {
-                    props.subtractCooldown(1);
-                }
+                if (props.getTransformed() > 1)
+                    props.setCooldown(props.getCooldown() - 1);
                 if (props.getCooldown() <= 0) {
                     props.setTransformed(0);
                     props.setCooldown(60);

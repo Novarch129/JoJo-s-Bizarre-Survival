@@ -50,4 +50,7 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> EMERALD_SPLASH = SOUNDS.register("emerald_splash", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emerald_splash")));
     public static final RegistryObject<SoundEvent> SPAWN_GREEN_DAY = SOUNDS.register("spawn_green_day", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_green_day")));
     public static final RegistryObject<SoundEvent> SPAWN_THE_GRATEFUL_DEAD = SOUNDS.register("spawn_the_grateful_dead", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_the_grateful_dead")));
+    public static final RegistryObject<SoundEvent> SPAWN_STICKY_FINGERS = SOUNDS.register("spawn_sticky_fingers", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sticky_fingers")));
+    public static final RegistryObject<SoundEvent> ZIPPER = SOUNDS.register("zipper", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "zipper")));
+    public static final RegistryObject<SoundEvent> ARRIVEDERCI = SOUNDS.register("arrivederci", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "arrivederci")));
 }

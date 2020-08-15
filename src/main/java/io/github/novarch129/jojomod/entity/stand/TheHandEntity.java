@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.entity.stand.attack.TheHandPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -45,17 +44,16 @@ public class TheHandEntity extends AbstractStandEntity {
 
     public void teleportMaster() {
         if (world.isRemote) return;
-        PlayerEntity master = getMaster();
-        if (master != null) //Probably not necessary, but I'll leave it here anyway.
-            Stand.getLazyOptional(master).ifPresent(props -> {
-                if (props.getCooldown() <= 0) {
-                    double distance = 5; //The distance the player will teleport, feel free to change this.
-                    Vec3d position = master.getLookVec().mul(distance, distance, distance).add(master.getPositionVec());
-                    master.setPositionAndUpdate(position.getX(), position.getY() + 1, position.getZ());
-                    world.playSound(null, getPosition(), SoundInit.THE_HAND_TELEPORT.get(), SoundCategory.NEUTRAL, 1, 1);
-                    props.setCooldown(75);
-                }
-            });
+        if (getMaster() == null) return; //Probably not necessary, but I'll leave it here anyway.
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() <= 0) {
+                double distance = 5; //The distance the player will teleport, feel free to change this.
+                Vec3d position = master.getLookVec().mul(distance, distance, distance).add(master.getPositionVec());
+                master.setPositionAndUpdate(position.getX(), position.getY() + 1, position.getZ());
+                world.playSound(null, getPosition(), SoundInit.THE_HAND_TELEPORT.get(), SoundCategory.NEUTRAL, 1, 1);
+                props.setCooldown(75);
+            }
+        });
     }
 
     @Override

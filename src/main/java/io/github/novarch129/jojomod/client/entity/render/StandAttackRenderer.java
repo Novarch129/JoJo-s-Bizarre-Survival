@@ -24,7 +24,7 @@ public class StandAttackRenderer<T extends AbstractStandAttackEntity> extends En
         matrixStackIn.translate((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());
         matrixStackIn.scale(2, 2, 2);
         matrixStackIn.pop();
-        model.setRotationAngles(entityIn, 0, 0, partialTicks, entityIn.rotationYaw, -entityIn.rotationPitch); //Rotates the punch to face away from the Stand user,
+        model.setRotationAngles(entityIn, partialTicks, 0, partialTicks, entityIn.rotationYaw, entityIn.rotationPitch); //Rotates the punch to face away from the Stand user,
         model.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0, 0, 0, 0, 0);
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }

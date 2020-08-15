@@ -15,6 +15,7 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
@@ -34,6 +35,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -69,6 +71,14 @@ public class EventHandleStandAbilities {
                 if (invulnerableTicks == 0.5)
                     props.setCooldown(140);
             }
+            if (standID == Util.StandID.STICKY_FINGERS && props.getAbilityActive())
+                for (int i = 0; i < 10; i++)
+                    player.world.addOptionalParticle(
+                            ParticleTypes.DRAGON_BREATH,
+                            player.getPosX() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
+                            player.getPosY() + player.world.rand.nextDouble(),
+                            player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
+                            0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
 
             if (cooldown == 0.5)
                 props.setTimeLeft(1000);
@@ -78,21 +88,21 @@ public class EventHandleStandAbilities {
 
             if (!standOn) {
                 if (cooldown > 0)
-                    props.subtractCooldown(0.5);
+                    props.setCooldown(props.getCooldown() - 0.5);
 
                 if (timeLeft < 1000)
-                    props.addTimeLeft(0.5);
+                    props.setTimeLeft(props.getTimeLeft() + 0.5);
 
                 player.setInvulnerable(false);
             } else if (!props.getAbilityActive()) {
                 if (cooldown > 0)
-                    props.subtractCooldown(0.5);
+                    props.setCooldown(props.getCooldown() - 0.5);
 
                 if (cooldown == 0.5)
                     props.setTimeLeft(1000);
 
                 if (timeLeft < 1000 && cooldown <= 0)
-                    props.addTimeLeft(0.5);
+                    props.setTimeLeft(props.getTimeLeft() + 0.5);
             }
 
             if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !props.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
@@ -214,6 +224,10 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.THE_GRATEFUL_DEAD: {
                     standName = "The Grateful Dead";
+                    break;
+                }
+                case Util.StandID.STICKY_FINGERS: {
+                    standName = "Sticky Fingers";
                     break;
                 }
             }
@@ -567,7 +581,7 @@ public class EventHandleStandAbilities {
                         Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
                         if (!entity.world.isRemote) {
                             entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-                            entity.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), entity.rotationYaw, entity.rotationPitch);
+                            entity.lookAt(EntityAnchorArgument.Type.EYES, source.getPositionVec());
                         }
                         entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
                     }
@@ -600,6 +614,15 @@ public class EventHandleStandAbilities {
             StandEffects.getLazyOptional(entity).ifPresent(props -> {
                 PlayerEntity player = entity.world.getPlayerByUuid(props.getStandUser());
                 Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+            });
+    }
+
+    @SubscribeEvent
+    public static void noClip(LivingEvent.LivingUpdateEvent event) {
+        if (event.getEntityLiving() instanceof PlayerEntity)
+            Stand.getLazyOptional((PlayerEntity) event.getEntityLiving()).ifPresent(props -> {
+                PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+                player.noClip = props.getNoClip();
             });
     }
 }

@@ -67,7 +67,7 @@ public class AerosmithEntity extends AbstractStandEntity {
                     ability = props.getAbility();
                 if (ability)
                     if (props.getCooldown() > 0)
-                        props.subtractCooldown(1);
+                        props.setCooldown(props.getCooldown() - 1);
             });
 
             setRotation(master.rotationYaw, master.rotationPitch);

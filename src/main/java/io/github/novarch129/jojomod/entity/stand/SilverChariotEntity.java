@@ -117,7 +117,7 @@ public class SilverChariotEntity extends AbstractStandEntity {
                 }
 
                 if (!hasArmor())
-                    props.subtractTimeLeft(1);
+                    props.setTimeLeft(props.getTimeLeft() - 1);
                 if (props.getCooldown() > 0)
                     setHasArmor(true);
                 if (props.getTimeLeft() == 800) {

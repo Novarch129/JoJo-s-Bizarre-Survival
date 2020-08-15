@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.init.EntityInit;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -88,8 +87,6 @@ public class EmperorBulletEntity extends Entity implements IProjectile {
             setShotFromCrossbow(false);
             clearEntities();
             blockstate.onProjectileCollision(world, blockstate, blockraytraceresult, this);
-            if (world.isRemote)
-                blockstate.getBlock().addDestroyEffects(blockstate, world, blockraytraceresult.getPos(), Minecraft.getInstance().particles);
         }
     }
 
