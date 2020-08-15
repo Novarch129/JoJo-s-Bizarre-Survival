@@ -14,6 +14,7 @@ import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -167,15 +168,16 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> {
                                                 if (message.action == 1) {
                                                     if (((StickyFingersEntity) entity).disguiseEntity == null) {
-                                                        if (Minecraft.getInstance().objectMouseOver instanceof EntityRayTraceResult && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
+                                                        if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
                                                             ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
                                                         if (((StickyFingersEntity) entity).getDisguiseEntity() != null) {
                                                             Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).getDisguiseEntity());
                                                             Minecraft.getInstance().gameSettings.thirdPersonView = 1;
-                                                        } else {
-                                                            Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
-                                                            ((StickyFingersEntity) entity).disguise(-100);
                                                         }
+                                                    } else {
+                                                        Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
+                                                        Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                                                        ((StickyFingersEntity) entity).disguise(-100);
                                                     }
                                                 } else
                                                     ((StickyFingersEntity) entity).zipThroughWall();
