@@ -336,7 +336,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                 props2.setAbilityActive(ability && props2.getTimeLeft() > 780 && props2.getCooldown() <= 0);
 
                 if (ability && props2.getTimeLeft() > 780) {
-                    props2.subtractTimeLeft(1);
+                    props2.setTimeLeft(props2.getTimeLeft() - 1);
                     Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
                     shouldDamageBeCancelled = true;
@@ -565,7 +565,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                     world.playSound(null, getPosition(), SoundInit.RESUME_TIME.get(), getSoundCategory(), 5, 1);
 
                 if (props2.getCooldown() > 0)
-                    props2.subtractCooldown(1);
+                    props2.setCooldown(props2.getCooldown() - 1);
 
                 if (props2.getCooldown() == 1) {
                     props2.setTimeLeft(1000);

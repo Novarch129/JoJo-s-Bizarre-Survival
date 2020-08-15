@@ -137,7 +137,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                     master.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
                     if (!master.isCreative() && !master.isSpectator())
                         master.setGameType(GameType.ADVENTURE);
-                    props.subtractTimeLeft(1);
+                    props.setTimeLeft(props.getTimeLeft() - 1);
 
                     if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld.
                         getServer().getWorld(dimension).getEntities()
@@ -195,8 +195,6 @@ public class KingCrimsonEntity extends AbstractStandEntity {
             if (!props.getAbility()) {
                 if (master.isPotionActive(EffectInit.CRIMSON_USER.get()))
                     master.removePotionEffect(EffectInit.CRIMSON_USER.get());
-                if (props.getTimeLeft() < 1000)
-                    props.addTimeLeft(1);
             }
             if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;

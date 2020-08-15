@@ -281,4 +281,16 @@ public class EntityInit {
                     () -> EntityType.Builder.<TheGratefulDeadPunchEntity>create(TheGratefulDeadPunchEntity::new, EntityClassification.MISC)
                             .size(0.2f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_grateful_dead_punch").toString()));
+
+    public static final RegistryObject<EntityType<StickyFingersEntity>> STICKY_FINGERS = ENTITY_TYPES
+            .register("sticky_fingers",
+                    () -> EntityType.Builder.create(StickyFingersEntity::new, EntityClassification.CREATURE)
+                            .size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sticky_fingers").toString()));
+
+    public static final RegistryObject<EntityType<StickyFingersPunchEntity>> STICKY_FINGERS_PUNCH = ENTITY_TYPES
+            .register("sticky_fingers_punch",
+                    () -> EntityType.Builder.<StickyFingersPunchEntity>create(StickyFingersPunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sticky_fingers_punch").toString()));
 }

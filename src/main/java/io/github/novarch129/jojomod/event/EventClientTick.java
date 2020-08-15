@@ -9,6 +9,7 @@ import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.entity.stand.KingCrimsonEntity;
+import io.github.novarch129.jojomod.entity.stand.StickyFingersEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
@@ -21,16 +22,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityViewRenderEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderHandEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,20 +41,20 @@ public class EventClientTick {
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null) return;
-        PlayerEntity player = Minecraft.getInstance().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         Stand.getLazyOptional(player).ifPresent(props -> {
             if (Minecraft.getInstance().world == null) return;
             if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity instanceof AerosmithEntity)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster() != null)
-                        .filter(entity -> ((AerosmithEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                        .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(player))
                         .forEach(Minecraft.getInstance()::setRenderViewEntity);
             if (props.getStandID() == Util.StandID.HIEROPHANT_GREEN && props.getStandOn() && props.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity instanceof HierophantGreenEntity)
                         .filter(entity -> ((HierophantGreenEntity) entity).getMaster() != null)
-                        .filter(entity -> ((HierophantGreenEntity) entity).getMaster().getEntityId() == player.getEntityId())
+                        .filter(entity -> ((HierophantGreenEntity) entity).getMaster().equals(player))
                         .forEach(entity -> {
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket((byte) 2));
                             float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
@@ -68,7 +65,7 @@ public class EventClientTick {
                                 pitch = -89;
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
                         });
-            if (!player.isSpectator() && (!props.getStandOn() || !props.getAbility()))
+            if (!player.isSpectator() && !props.getStandOn())
                 if (Minecraft.getInstance().renderViewEntity != player)
                     Minecraft.getInstance().setRenderViewEntity(player);
         });
@@ -95,12 +92,13 @@ public class EventClientTick {
         ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player == null) return;
         Stand.getLazyOptional(player).ifPresent(props -> {
-            if (props.getStandOn() && props.getAbility())
+            if (props.getStandOn())
                 switch (props.getStandID()) {
                     default:
                         break;
                     case Util.StandID.AEROSMITH: {
-                        event.setCanceled(true);
+                        if (props.getAbility())
+                            event.setCanceled(true);
                         break;
                     }
                     case Util.StandID.HIEROPHANT_GREEN: {
@@ -108,7 +106,27 @@ public class EventClientTick {
                             event.setCanceled(true);
                         break;
                     }
+                    case Util.StandID.STICKY_FINGERS: {
+                        StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
+                                .filter(entity -> entity instanceof StickyFingersEntity)
+                                .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
+                                .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(player))
+                                .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).getDisguiseEntity() != null));
+                        break;
+                    }
                 }
+        });
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer(RenderPlayerEvent.Pre event) {
+        Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
+            if (props.getStandID() == Util.StandID.STICKY_FINGERS)
+                StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
+                        .filter(entity -> entity instanceof StickyFingersEntity)
+                        .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
+                        .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(event.getPlayer()))
+                        .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).getDisguiseEntity() != null));
         });
     }
 

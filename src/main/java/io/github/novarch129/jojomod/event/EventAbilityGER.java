@@ -7,8 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class EventAbilityGER {
     @SubscribeEvent
-    public static void cancelDamage(LivingHurtEvent event) {
+    public static void cancelDamage(LivingAttackEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             Stand.getLazyOptional(player).ifPresent(props -> {
@@ -53,24 +52,6 @@ public class EventAbilityGER {
             Stand.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
                 if (props.getStandID() == Util.StandID.GER)
                     event.setCanceled(true);
-            });
-    }
-
-    @SubscribeEvent
-    public static void noClip(LivingEvent.LivingUpdateEvent event) {
-        if (event.getEntityLiving() instanceof PlayerEntity)
-            Stand.getLazyOptional((PlayerEntity) event.getEntityLiving()).ifPresent(props -> {
-                PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-                if (props.getNoClip()) {
-                    player.noClip = true;
-//                    if (props.getStandID() == Util.StandID.GER) { fixme, deffer to packets
-//                        player.setVelocity(player.getMotion().getX(), 0, player.getMotion().getZ());
-//                        if (Minecraft.getInstance().gameSettings.keyBindJump.isKeyDown())
-//                            player.setPosition(player.getPosX(), player.getPosY() + 1, player.getPosZ());
-//                        else if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
-//                            player.setPosition(player.getPosX(), player.getPosY() - 1, player.getPosZ());
-//                    }
-                }
             });
     }
 }

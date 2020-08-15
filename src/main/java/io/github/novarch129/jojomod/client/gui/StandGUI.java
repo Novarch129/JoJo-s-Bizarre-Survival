@@ -73,6 +73,7 @@ public class StandGUI extends AbstractGui {
                             renderTimeLeft(timeLeft - 900);
                         break;
                     }
+                    case Util.StandID.STICKY_FINGERS:
                     case Util.StandID.THE_GRATEFUL_DEAD: {
                         if (timeLeft > 601 && cooldown == 0)
                             renderTimeLeft(timeLeft - 600);

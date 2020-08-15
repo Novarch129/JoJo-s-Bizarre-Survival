@@ -21,7 +21,7 @@
 - [x] Gold Experience
 - [x] Gold Experience Requiem
 - [x] Aerosmith
-- [ ] Sticky Fingers
+- [x] Sticky Fingers
 - [x] Purple Haze
 - [x] Green Day
 - [x] The Grateful Dead

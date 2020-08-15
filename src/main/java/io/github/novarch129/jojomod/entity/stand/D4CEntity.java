@@ -96,7 +96,7 @@ public class D4CEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
                 if (props.getCooldown() > 0 && ability)
-                    props.subtractCooldown(1);
+                    props.setCooldown(props.getCooldown() - 1);
                 master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 
                 if ((master.world.getBlockState(master.getPosition().add(0, 0, -1)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(0, 0, 1)).getMaterial() != Material.AIR) || (master.world.getBlockState(master.getPosition().add(-1, 0, 0)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(1, 0, 0)).getMaterial() != Material.AIR)) {

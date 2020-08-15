@@ -197,12 +197,6 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     }
 
     @Override
-    public void subtractCooldown(double subtraction) {
-        this.cooldown -= subtraction;
-        onDataUpdated();
-    }
-
-    @Override
     public double getTimeLeft() {
         return timeLeft;
     }
@@ -210,18 +204,6 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void setTimeLeft(double timeLeft) {
         this.timeLeft = timeLeft;
-        onDataUpdated();
-    }
-
-    @Override
-    public void addTimeLeft(double addition) {
-        this.timeLeft += addition;
-        onDataUpdated();
-    }
-
-    @Override
-    public void subtractTimeLeft(double subtraction) {
-        this.timeLeft -= subtraction;
         onDataUpdated();
     }
 

@@ -50,12 +50,10 @@ public class TheGratefulDeadEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                if (master.isCrouching())
-                    props.subtractTimeLeft(20);
                 props.setAbilityActive(props.getTimeLeft() > 601 && props.getCooldown() == 0 && props.getAbility());
                 ability = props.getTimeLeft() > 600 && props.getAbility();
                 if (ability)
-                    props.subtractTimeLeft(1);
+                    props.setTimeLeft(props.getTimeLeft() - 1);
                 if (props.getAbilityActive()) {
                     cropTicks++;
                     if (cropTicks % 20 == 0)

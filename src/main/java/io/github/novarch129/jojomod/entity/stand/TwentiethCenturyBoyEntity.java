@@ -49,7 +49,7 @@ public class TwentiethCenturyBoyEntity extends AbstractStandEntity {
                 ability = props.getTimeLeft() > 800 && props.getCooldown() <= 0 && props.getAbility();
                 if (ability) {
                     master.setMotion(0, master.onGround && !world.getBlockState(master.getPosition().down()).isAir(world, master.getPosition().down()) ? 0 : master.getMotion().getY(), 0);
-                    props.subtractTimeLeft(1);
+                    props.setTimeLeft(props.getTimeLeft() - 1);
                 }
             });
 

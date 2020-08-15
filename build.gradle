@@ -19,7 +19,7 @@ archivesBaseName = 'JoJoBizarreSurvival'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20200731-1.15.1'
+    mappings channel: 'snapshot', version: '20200815-1.15.1'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
@@ -60,7 +60,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.15.2-31.2.33'
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.36'
     compileOnly "com.google.code.findbugs:jsr305:3.0.2"
 }
 

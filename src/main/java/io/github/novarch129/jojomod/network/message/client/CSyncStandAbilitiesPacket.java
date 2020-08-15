@@ -127,7 +127,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                             Minecraft.getInstance().pointedEntity = null;
                                                             Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
                                                             Vec3d vec3d = entity1.getEyePosition(partialTicks);
-                                                            double range = 30.0;
+                                                            double range = 30;
                                                             Vec3d vec3d1 = entity1.getLook(1);
                                                             Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
                                                             AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
@@ -157,6 +157,28 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                     }
                                                 } else
                                                     ((TheHandEntity) entity).teleportMaster();
+                                            });
+                                    break;
+                                }
+                                case STICKY_FINGERS: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof StickyFingersEntity)
+                                            .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                if (message.action == 1) {
+                                                    if (((StickyFingersEntity) entity).disguiseEntity == null) {
+                                                        if (Minecraft.getInstance().objectMouseOver instanceof EntityRayTraceResult && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
+                                                            ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
+                                                        if (((StickyFingersEntity) entity).getDisguiseEntity() != null) {
+                                                            Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).getDisguiseEntity());
+                                                            Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                                                        } else {
+                                                            Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
+                                                            ((StickyFingersEntity) entity).disguise(-100);
+                                                        }
+                                                    }
+                                                } else
+                                                    ((StickyFingersEntity) entity).zipThroughWall();
                                             });
                                     break;
                                 }

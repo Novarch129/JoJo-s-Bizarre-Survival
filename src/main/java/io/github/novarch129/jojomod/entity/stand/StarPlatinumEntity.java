@@ -336,7 +336,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                 ability = props2.getAbility();
                 props2.setAbilityActive(props2.getTimeLeft() > 900 && props2.getAbility());
                 if (props2.getAbilityActive()) {
-                    props2.subtractTimeLeft(1);
+                    props2.setTimeLeft(props2.getTimeLeft() - 1);
                     Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
                     shouldDamageBeCancelled = true;

@@ -87,5 +87,8 @@ public class ClientEventBusSubscriber {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_GRATEFUL_DEAD.get(), TheGratefulDeadRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_GRATEFUL_DEAD_PUNCH.get(), StandAttackRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS.get(), StickyFingersRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS_PUNCH.get(), StandAttackRenderer::new);
     }
 }
