@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 
 public interface IStand {
     PlayerEntity getPlayer();
@@ -102,6 +103,12 @@ public interface IStand {
     void setAbilityUseCount(int abilityUseCount);
 
     void putAbilityUseCount(int abilityUseCount);
+
+    BlockPos getBlockPos();
+
+    void setBlockPos(BlockPos blockPos);
+
+    void putBlockPos(BlockPos blockPos);
 
     void clone(IStand props);
 

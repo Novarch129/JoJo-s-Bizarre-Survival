@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -17,6 +18,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -63,6 +65,12 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                         }
                                     })
                             );
+                if (props.getBlockPos() != BlockPos.ZERO) {
+                    world.createExplosion(this, props.getBlockPos().getX(), props.getBlockPos().getY(), props.getBlockPos().getZ(), 3, Explosion.Mode.DESTROY);
+                    StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master, master.getPosition().add(0, -1, 0)));
+                    props.setBlockPos(BlockPos.ZERO);
+                    props.setAbilityUseCount(0);
+                }
                 if (bombEntity != null) {
                     if (bombEntity.isAlive()) {
                         props.setCooldown(140);
@@ -155,10 +163,14 @@ public class KillerQueenEntity extends AbstractStandEntity {
                             props.setAbilityUseCount(1);
                         } else
                             master.sendStatusMessage(new StringTextComponent("Your hotbar is full!"), true);
-                    } else {
+                    } else if (master.getHeldItemMainhand().getCount() == 1) {
                         master.getHeldItemMainhand().getOrCreateTag().putBoolean("bomb", true);
                         props.setAbilityUseCount(1);
                     }
+                } else if (!world.isRemote && props.getAbilityUseCount() == 0 && (master.getHeldItemMainhand().getCount() == 0 || master.getHeldItemMainhand() == ItemStack.EMPTY)) {
+                    props.setBlockPos(master.getPosition().add(0, -1, 0));
+                    StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.addBombPos(master, master.getPosition().add(0, -1, 0)));
+                    props.setAbilityUseCount(1);
                 }
             });
 

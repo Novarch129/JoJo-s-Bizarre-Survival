@@ -9,6 +9,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -48,6 +49,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private float standDamage;
     private boolean charging;
     private int abilityUseCount;
+    private BlockPos blockPos = BlockPos.ZERO;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -83,6 +85,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putFloat("standDamage", instance.getStandDamage());
                 props.putBoolean("charging", instance.isCharging());
                 props.putInt("abilityUseCount", instance.getAbilityUseCount());
+                props.putDouble("blockPosX", instance.getBlockPos().getX());
+                props.putDouble("blockPosY", instance.getBlockPos().getY());
+                props.putDouble("blockPosZ", instance.getBlockPos().getZ());
                 return props;
             }
 
@@ -104,6 +109,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 instance.putStandDamage(compoundNBT.getFloat("standDamage"));
                 instance.putCharging(compoundNBT.getBoolean("charging"));
                 instance.putAbilityUseCount(compoundNBT.getInt("abilityUseCount"));
+                instance.putBlockPos(new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ")));
             }
         }, () -> new Stand(Null()));
     }
@@ -381,6 +387,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void putAbilityUseCount(int abilityUseCount) {
         this.abilityUseCount = abilityUseCount;
+    }
+
+    @Override
+    public BlockPos getBlockPos() {
+        return blockPos;
+    }
+
+    @Override
+    public void setBlockPos(BlockPos blockPos) {
+        this.blockPos = blockPos;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putBlockPos(BlockPos blockPos) {
+        this.blockPos = blockPos;
     }
 
     public void clone(IStand props) {

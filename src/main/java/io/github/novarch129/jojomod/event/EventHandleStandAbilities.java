@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
@@ -31,6 +32,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
@@ -39,6 +42,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -624,5 +628,22 @@ public class EventHandleStandAbilities {
                 PlayerEntity player = (PlayerEntity) event.getEntityLiving();
                 player.noClip = props.getNoClip();
             });
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (!(event.getWorld() instanceof World)) return;
+        World world = (World) event.getWorld();
+        if (world.isRemote) return;
+        Chunk chunk = world.getChunkAt(event.getPos());
+        StandChunkEffects.getLazyOptional(chunk).ifPresent(props ->
+                props.getBombs().forEach((uuid, blockPos) -> {
+                    if (blockPos.equals(event.getPos())) {
+                        PlayerEntity player = world.getPlayerByUuid(uuid);
+                        world.createExplosion(null, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 3, Explosion.Mode.DESTROY);
+                        Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                        props.removeBombPos(player, event.getPos());
+                    }
+                }));
     }
 }
