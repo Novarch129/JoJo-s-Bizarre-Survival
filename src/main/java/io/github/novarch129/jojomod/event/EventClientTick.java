@@ -3,6 +3,7 @@ package io.github.novarch129.jojomod.event;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
@@ -111,7 +112,7 @@ public class EventClientTick {
                                 .filter(entity -> entity instanceof StickyFingersEntity)
                                 .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
                                 .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(player))
-                                .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).getDisguiseEntity() != null));
+                                .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).disguiseEntity != null));
                         break;
                     }
                 }
@@ -126,7 +127,7 @@ public class EventClientTick {
                         .filter(entity -> entity instanceof StickyFingersEntity)
                         .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
                         .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(event.getPlayer()))
-                        .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).getDisguiseEntity() != null));
+                        .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).disguiseEntity != null));
         });
     }
 
@@ -161,10 +162,10 @@ public class EventClientTick {
             }
             if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
                 StreamSupport.stream(world.getAllEntities().spliterator(), false)
-                        .filter(entity -> entity != player)
+                        .filter(entity -> !entity.equals(player))
                         .filter(entity -> !(entity instanceof KingCrimsonEntity))
                         .filter(entity -> entity instanceof LivingEntity)
-                        .filter(entity -> ((LivingEntity) entity).isPotionActive(EffectInit.CRIMSON.get()))
+                        .filter(entity -> StandEffects.getCapabilityFromEntity(entity).isCrimson())
                         .forEach(entity -> {
                             double posX = MathHelper.lerp(partialTicks, entity.lastTickPosX, entity.getPosX());
                             double posY = MathHelper.lerp(partialTicks, entity.lastTickPosY, entity.getPosY());

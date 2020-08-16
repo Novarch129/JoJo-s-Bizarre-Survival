@@ -104,7 +104,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                 world.setDayTime(world.getDayTime() + 500);
             }
 
-            if (heavenTick <= 0) {
+            if (heavenTick <= 0 && JojoBizarreSurvivalConfig.COMMON.singularityPoint.get()) {
                 world.getPlayers().forEach(entity -> Stand.getLazyOptional(entity).ifPresent(prps -> {
                     if (prps.getStandID() != Util.StandID.GER) {
                         entity.inventory.clear();

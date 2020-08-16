@@ -24,10 +24,6 @@ public class StickyFingersEntity extends AbstractStandEntity {
         super(type, world);
     }
 
-    public LivingEntity getDisguiseEntity() {
-        return disguiseEntity;
-    }
-
     @Override
     public SoundEvent getSpawnSound() {
         return SoundInit.SPAWN_STICKY_FINGERS.get();
@@ -55,8 +51,10 @@ public class StickyFingersEntity extends AbstractStandEntity {
         if (entity instanceof LivingEntity) {
             disguiseEntity = (LivingEntity) entity;
             master.setInvulnerable(true);
-        } else if (entity == null)
+        } else if (entity == null) {
             disguiseEntity = null;
+            master.setInvulnerable(false);
+        }
         if (!world.isRemote)
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) master), new SSyncStickyFingersDisguisePacket(getEntityId(), entityID));
     }
@@ -93,6 +91,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
                 if (props.getAbilityActive()) {
                     props.setNoClip(true);
                     master.setSwimming(true);
+                    fallDistance = 0;
                     if (!world.getBlockState(master.getPosition()).isSolid())
                         master.setMotion(0, -0.5, 0);
                     if (master.getPosition().getY() < 1)
@@ -144,5 +143,6 @@ public class StickyFingersEntity extends AbstractStandEntity {
         super.onRemovedFromWorld();
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> props.setNoClip(false));
+        master.setInvulnerable(false);
     }
 }

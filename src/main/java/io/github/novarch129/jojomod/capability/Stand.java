@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.capability;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,7 +40,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private double cooldown;
     private double timeLeft = 1000;
     private String diavolo = "";
-    private boolean ability = true;
+    private boolean ability = JojoBizarreSurvivalConfig.COMMON.abilityImmediatelyActive.get();
     private boolean abilityActive;
     private int transformed;
     private boolean noClip;

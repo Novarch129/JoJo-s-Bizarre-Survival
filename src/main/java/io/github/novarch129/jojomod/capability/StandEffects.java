@@ -39,6 +39,10 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
         return entity.getCapability(STAND_EFFECTS);
     }
 
+    public static StandEffects getCapabilityFromEntity(Entity entity) {
+        return entity.getCapability(STAND_EFFECTS).orElse(new StandEffects(entity));
+    }
+
     public static void register() {
         CapabilityManager.INSTANCE.register(StandEffects.class, new Capability.IStorage<StandEffects>() {
             @Override
