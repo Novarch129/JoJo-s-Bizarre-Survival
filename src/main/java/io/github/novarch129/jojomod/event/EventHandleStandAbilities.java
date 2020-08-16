@@ -28,6 +28,7 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
@@ -641,7 +642,10 @@ public class EventHandleStandAbilities {
                     if (blockPos.equals(event.getPos())) {
                         PlayerEntity player = world.getPlayerByUuid(uuid);
                         world.createExplosion(null, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 3, Explosion.Mode.DESTROY);
-                        Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                        Stand.getLazyOptional(player).ifPresent(stand -> {
+                            stand.setBlockPos(BlockPos.ZERO);
+                            stand.setAbilityUseCount(0);
+                        });
                         props.removeBombPos(player, event.getPos());
                     }
                 }));

@@ -49,6 +49,11 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void detonate() {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
+            if (world.getBlockState(props.getBlockPos()).isAir(world, props.getBlockPos())) {
+                props.setBlockPos(BlockPos.ZERO);
+                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master, props.getBlockPos()));
+                props.setAbilityUseCount(0);
+            }
             if (props.getCooldown() <= 0) {
                 if (!world.isRemote)
                     getServer().getWorld(dimension).getEntities()
