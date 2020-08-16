@@ -200,6 +200,8 @@ public class Util {
                 return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
             case StandID.STICKY_FINGERS:
                 return new StickyFingersEntity(EntityInit.STICKY_FINGERS.get(), world);
+            case StandID.TUSK_ACT_1:
+                return new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
         }
     }
 
@@ -277,6 +279,8 @@ public class Util {
 
         public static final int STICKY_FINGERS = 23;
 
+        public static final int TUSK_ACT_1 = 24;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -300,7 +304,8 @@ public class Util {
                 GREEN_DAY,
                 TWENTIETH_CENTURY_BOY,
                 THE_GRATEFUL_DEAD,
-                STICKY_FINGERS
+                STICKY_FINGERS,
+                TUSK_ACT_1
         };
     }
 
@@ -359,5 +364,7 @@ public class Util {
         public static final ResourceLocation THE_GRATEFUL_DEAD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead_punch.png");
         public static final ResourceLocation STICKY_FINGERS = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers.png");
         public static final ResourceLocation STICKY_FINGERS_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers_punch.png");
+        public static final ResourceLocation TUSK_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_1.png");
+        public static final ResourceLocation NAIL_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/nail_bullet.png");
     }
 }

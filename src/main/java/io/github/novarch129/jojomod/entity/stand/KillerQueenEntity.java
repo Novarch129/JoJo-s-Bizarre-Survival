@@ -25,9 +25,9 @@ import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class KillerQueenEntity extends AbstractStandEntity {
+    public LivingEntity bombEntity;
     protected int shaCount;
     private SheerHeartAttackEntity sheerHeartAttack;
-    private LivingEntity bombEntity;
 
     public KillerQueenEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -38,20 +38,12 @@ public class KillerQueenEntity extends AbstractStandEntity {
         return SoundInit.SPAWN_KILLER_QUEEN.get();
     }
 
-    public LivingEntity getBombEntity() {
-        return bombEntity;
-    }
-
-    public void setBombEntity(LivingEntity bombEntity) {
-        this.bombEntity = bombEntity;
-    }
-
     public void detonate() {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (world.getBlockState(props.getBlockPos()).isAir(world, props.getBlockPos())) {
                 props.setBlockPos(BlockPos.ZERO);
-                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master, props.getBlockPos()));
+                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
                 props.setAbilityUseCount(0);
             }
             if (props.getCooldown() <= 0) {
@@ -72,7 +64,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                             );
                 if (props.getBlockPos() != BlockPos.ZERO) {
                     world.createExplosion(this, props.getBlockPos().getX(), props.getBlockPos().getY(), props.getBlockPos().getZ(), 3, Explosion.Mode.DESTROY);
-                    StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master, master.getPosition().add(0, -1, 0)));
+                    StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
                     props.setBlockPos(BlockPos.ZERO);
                     props.setAbilityUseCount(0);
                 }

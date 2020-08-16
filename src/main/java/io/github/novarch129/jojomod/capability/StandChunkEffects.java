@@ -41,6 +41,10 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
         return chunk.getCapability(STAND_CHUNK_EFFECTS);
     }
 
+    public static StandChunkEffects getCapabilityFromChunk(Chunk chunk) {
+        return getLazyOptional(chunk).orElse(new StandChunkEffects(chunk.getWorld(), chunk.getPos()));
+    }
+
     public static void register() {
         CapabilityManager.INSTANCE.register(StandChunkEffects.class, new Capability.IStorage<StandChunkEffects>() {
             @Override
@@ -83,8 +87,8 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
-    public void removeBombPos(PlayerEntity player, BlockPos blockPos) {
-        bombs.remove(player.getUniqueID(), blockPos);
+    public void removeBombPos(PlayerEntity player) {
+        bombs.remove(player.getUniqueID());
         onDataUpdated();
     }
 

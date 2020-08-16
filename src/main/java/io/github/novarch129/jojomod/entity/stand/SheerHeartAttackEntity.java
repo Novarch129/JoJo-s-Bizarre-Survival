@@ -68,30 +68,31 @@ public class SheerHeartAttackEntity extends CreeperEntity {
             if (masterStand != null) {
                 master = masterStand.getMaster();
                 if (master != null) {
+                    if (getAttackTarget() == null) return;
                     Stand.getLazyOptional(master).ifPresent(props -> {
                         if (!props.getStandOn()) {
-                            if (getAttackTarget() == this && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
+                            if (getAttackTarget().equals(this) && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
                                 remove();
-                            else if (getAttackTarget() != this)
+                            else if (!getAttackTarget().equals(this))
                                 remove();
                         } else
-                            this.setAttackTarget(masterStand.getBombEntity());
+                            setAttackTarget(masterStand.bombEntity);
                     });
-                    if (!master.isAlive() && getAttackTarget() != this) {
+                    if (!master.isAlive() && !getAttackTarget().equals(this)) {
                         if (getAttackTarget() == this && !JojoBizarreSurvivalConfig.COMMON.sheerHeartAttackDeathLoop.get())
                             remove();
-                        else if (getAttackTarget() != this)
+                        else if (!getAttackTarget().equals(this))
                             remove();
                     }
 
                 }
 
-                if (getAttackTarget() == masterStand || getAttackTarget() == master)
+                if (getAttackTarget().equals(masterStand) || getAttackTarget().equals(master))
                     setAttackTarget(this);
 
                 Optional<Entity> damageSource = Optional.empty();
-                if (this.getLastDamageSource() != null)
-                    damageSource = Optional.ofNullable(this.getLastDamageSource().getTrueSource());
+                if (getLastDamageSource() != null)
+                    damageSource = Optional.ofNullable(getLastDamageSource().getTrueSource());
 
                 damageSource.ifPresent(damageSourceEntity -> {
                     if (damageSourceEntity instanceof PlayerEntity)
@@ -112,11 +113,11 @@ public class SheerHeartAttackEntity extends CreeperEntity {
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
     }
 
     /**
-     * The maximum height from where the entity is alowed to jump (used in pathfinder)
+     * The maximum height from where the entity is allowed to jump (used in pathfinder)
      */
     @Override
     public int getMaxFallHeight() {

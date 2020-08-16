@@ -646,7 +646,7 @@ public class EventHandleStandAbilities {
                             stand.setBlockPos(BlockPos.ZERO);
                             stand.setAbilityUseCount(0);
                         });
-                        props.removeBombPos(player, event.getPos());
+                        props.removeBombPos(player);
                     }
                 }));
     }

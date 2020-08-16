@@ -79,6 +79,11 @@ public class StandGUI extends AbstractGui {
                             renderTimeLeft(timeLeft - 600);
                         break;
                     }
+                    case Util.StandID.TUSK_ACT_1: {
+                        if (charging && damage > 4.5f)
+                            renderString("Damage: " + damage + (damage == 15 ? " MAX DAMAGE" : ""));
+                        break;
+                    }
                 }
             }
             switch (standID) {
