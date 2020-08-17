@@ -26,6 +26,14 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         super(EntityInit.NAIL_BULLET.get(), worldIn, shooter, player);
     }
 
+    public NailBulletEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
+        super(type, worldIn, player.getPosX(), player.getPosY() + 0.1, player.getPosZ());
+        shootingEntity = shooter;
+        shootingStand = shooter;
+        standMaster = player;
+        movePunchInFrontOfStand(shooter);
+    }
+
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
