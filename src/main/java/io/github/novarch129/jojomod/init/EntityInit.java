@@ -264,12 +264,6 @@ public class EntityInit {
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy").toString()));
 
-    public static final RegistryObject<EntityType<TwentiethCenturyBoyPunchEntity>> TWENTIETH_CENTURY_BOY_PUNCH = ENTITY_TYPES
-            .register("twentieth_century_boy_punch",
-                    () -> EntityType.Builder.<TwentiethCenturyBoyPunchEntity>create(TwentiethCenturyBoyPunchEntity::new, EntityClassification.MISC)
-                            .size(0.2f, 0.2f)
-                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy_punch").toString()));
-
     public static final RegistryObject<EntityType<TheGratefulDeadEntity>> THE_GRATEFUL_DEAD = ENTITY_TYPES
             .register("the_grateful_dead",
                     () -> EntityType.Builder.create(TheGratefulDeadEntity::new, EntityClassification.CREATURE)

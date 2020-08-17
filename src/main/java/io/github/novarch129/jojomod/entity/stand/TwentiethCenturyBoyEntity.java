@@ -1,8 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.entity.stand.attack.TwentiethCenturyBoyPunchEntity;
-import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -27,17 +25,6 @@ public class TwentiethCenturyBoyEntity extends AbstractStandEntity {
 
     @Override
     public void attack(boolean special) {
-        if (getMaster() == null) return;
-        attackTick++;
-        if (attackTick == 1)
-            if (special)
-                attackRush = true;
-            else {
-                world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                TwentiethCenturyBoyPunchEntity twentiethCenturyBoyPunchEntity = new TwentiethCenturyBoyPunchEntity(world, this, getMaster());
-                twentiethCenturyBoyPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1, 0.3f);
-                world.addEntity(twentiethCenturyBoyPunchEntity);
-            }
     }
 
     @Override
@@ -59,26 +46,6 @@ public class TwentiethCenturyBoyEntity extends AbstractStandEntity {
 
             if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
-            if (attackRush) {
-                master.setSprinting(false);
-                attackTicker++;
-                if (attackTicker >= 10)
-                    if (!world.isRemote) {
-                        master.setSprinting(false);
-                        TwentiethCenturyBoyPunchEntity twentiethCenturyBoyPunchEntity1 = new TwentiethCenturyBoyPunchEntity(world, this, master);
-                        twentiethCenturyBoyPunchEntity1.randomizePositions();
-                        twentiethCenturyBoyPunchEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
-                        world.addEntity(twentiethCenturyBoyPunchEntity1);
-                        TwentiethCenturyBoyPunchEntity twentiethCenturyBoyPunchEntity = new TwentiethCenturyBoyPunchEntity(world, this, master);
-                        twentiethCenturyBoyPunchEntity.randomizePositions();
-                        twentiethCenturyBoyPunchEntity.shoot(master, master.rotationPitch, master.rotationYaw, 1, 0.25f);
-                        world.addEntity(twentiethCenturyBoyPunchEntity);
-                    }
-                if (attackTicker >= 80) {
-                    attackRush = false;
-                    attackTicker = 0;
-                }
-            }
         }
     }
 }

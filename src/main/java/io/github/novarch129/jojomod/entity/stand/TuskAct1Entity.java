@@ -23,7 +23,7 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_STICKY_FINGERS.get();
+        return SoundInit.SPAWN_TUSK_ACT_1.get();
     }
 
     @Override
@@ -70,11 +70,11 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                     NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master);
                     nailBulletEntity.damage = 3.95f + getPrevChargeTicks() / 20f;
-                    if (nailBulletEntity.damage >= 7) {
-                        for (int i = 0; i < nailBulletEntity.damage / 6; i++) {
-                            world.playSound(null, getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4, (1 + (rand.nextFloat() - rand.nextFloat()) * 0.2f) * 0.7f);
+                    if (nailBulletEntity.damage >= 9) {
+                        for (int i = 0; i < (nailBulletEntity.damage / 5 - 1); i++) {
+                            world.playSound(null, getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 2, (1 + (rand.nextFloat() - rand.nextFloat()) * 0.2f) * 0.7f);
                             if (world.isRemote) {
-                                for (int k = 0; k < 20; ++k) {
+                                for (int k = 0; k < 20; k++) {
                                     double d0 = rand.nextGaussian() * 0.02;
                                     double d1 = rand.nextGaussian() * 0.02;
                                     double d2 = rand.nextGaussian() * 0.02;

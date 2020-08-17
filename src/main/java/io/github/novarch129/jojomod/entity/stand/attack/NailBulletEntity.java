@@ -1,6 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.DefaultStandAttackModel;
+import io.github.novarch129.jojomod.client.entity.model.NailBulletModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -35,6 +35,7 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         entity.hurtResistantTime = 0;
     }
 
+
     @Override
     protected void onBlockHit(BlockRayTraceResult result) {
     }
@@ -51,6 +52,6 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return new DefaultStandAttackModel<>();
+        return Util.cast(new NailBulletModel());
     }
 }

@@ -52,7 +52,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     }
 
     public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
-        this(type, worldIn, shooter.getPosX(), shooter.getPosY() + (shooter.getMaster()).getEyeHeight(), shooter.getPosZ());
+        this(type, worldIn, shooter.getPosX(), shooter.getPosY() + 0.1, shooter.getPosZ());
         shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
@@ -100,7 +100,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     public void randomizePositions() {
         if (shootingStand == null) return;
         Vec3d random = new Vec3d(rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1);
-        Vec3d position = getPositionVec().add(random).add(shootingStand.getLookVec().mul(1.5, 1.5, 1.5));
+        Vec3d position = getPositionVec().add(random).add(shootingStand.getLookVec().mul(1.5, 0.2, 1.5));
         setPosition(position.getX(), position.getY(), position.getZ());
         setRotation(shootingStand.rotationYaw, shootingStand.rotationPitch);
     }

@@ -100,7 +100,7 @@ public class KingCrimsonEntity extends AbstractStandEntity implements IChargeabl
         master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
         Stand.getLazyOptional(master).ifPresent(props -> {
             ability = !(props.getCooldown() > 0);
-            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
+            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801 && props.getAbility());
 
             if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
                 if (punchChargeTicks == 0 && punchChargeTicks != prevPunchChargeTicks) {

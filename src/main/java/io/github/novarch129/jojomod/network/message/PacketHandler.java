@@ -25,6 +25,7 @@ public class PacketHandler {
         registerPacket(CChargeAttackPacket.class, new CChargeAttackPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(CSwitchStandActPacket.class, new CSwitchStandActPacket(), NetworkDirection.PLAY_TO_SERVER);
         registerPacket(SSyncStickyFingersDisguisePacket.class, new SSyncStickyFingersDisguisePacket(), NetworkDirection.PLAY_TO_CLIENT);
+        registerPacket(SAerosmithPacket.class, new SAerosmithPacket(), NetworkDirection.PLAY_TO_CLIENT);
     }
 
     public static <MSG> void registerPacket(Class<MSG> clazz, IMessage<MSG> message) {
