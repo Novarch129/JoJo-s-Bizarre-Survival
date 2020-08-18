@@ -291,7 +291,7 @@ public class EntityInit {
     public static final RegistryObject<EntityType<TuskAct1Entity>> TUSK_ACT_1 = ENTITY_TYPES
             .register("tusk_act_1",
                     () -> EntityType.Builder.create(TuskAct1Entity::new, EntityClassification.CREATURE)
-                            .size(0.9f, 1.2f)
+                            .size(0.9f, 1.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_1").toString()));
 
     public static final RegistryObject<EntityType<NailBulletEntity>> NAIL_BULLET = ENTITY_TYPES

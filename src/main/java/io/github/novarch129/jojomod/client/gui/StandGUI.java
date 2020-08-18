@@ -39,6 +39,7 @@ public class StandGUI extends AbstractGui {
             double invulnerableTicks = props.getInvulnerableTicks();
             boolean charging = props.isCharging();
             float damage = props.getStandDamage();
+            int abilityUseCount = props.getAbilityUseCount();
             if (props.getStandOn()) {
                 switch (standID) {
                     case Util.StandID.MADE_IN_HEAVEN: {
@@ -80,8 +81,9 @@ public class StandGUI extends AbstractGui {
                         break;
                     }
                     case Util.StandID.TUSK_ACT_1: {
+                        renderString("Nails left: " + (10 - abilityUseCount));
                         if (charging && damage > 4.5f)
-                            renderString("Damage: " + damage + (damage == 15 ? " MAX DAMAGE" : ""));
+                            renderString("Damage: " + damage + (damage == 15 ? " MAX DAMAGE" : ""), 4, 16);
                         break;
                     }
                 }
@@ -108,6 +110,11 @@ public class StandGUI extends AbstractGui {
                         renderString("Cooldown: " + cooldown / 20, 4, (invulnerableTicks > 0 ? 16 : 4));
                     if (invulnerableTicks > 0)
                         renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20));
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_1: {
+                    if (cooldown > 0)
+                        renderString("Cooldown: " + cooldown / 20, 4, props.getStandOn() ? 16 : 4);
                     break;
                 }
             }

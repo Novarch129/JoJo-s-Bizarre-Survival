@@ -34,6 +34,7 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
     public void chargeAttack(boolean isCharging) {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() > 0) return;
             props.setCharging(isCharging);
             if (isCharging && bulletChargeTicks <= 220) {
                 setChargeTicks(bulletChargeTicks + 1);
@@ -66,7 +67,7 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
 
-                if (getChargeTicks() == 0 && getChargeTicks() != getPrevChargeTicks()) {
+                if (props.getAbilityUseCount() < 11 && getChargeTicks() == 0 && getChargeTicks() != getPrevChargeTicks()) {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                     NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master);
                     nailBulletEntity.damage = 3.95f + getPrevChargeTicks() / 20f;
@@ -90,9 +91,14 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
                         }
                     }
                     nailBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4 + nailBulletEntity.damage / 7, 0.05f);
-                    if (!world.isRemote)
+                    if (!world.isRemote) {
                         world.addEntity(nailBulletEntity);
+                        props.setAbilityUseCount(props.getAbilityUseCount() + 1);
+                    }
                 }
+
+                if (props.getAbilityUseCount() == 10 && props.getCooldown() == 0)
+                    props.setCooldown(200);
             });
 
             followMaster();
