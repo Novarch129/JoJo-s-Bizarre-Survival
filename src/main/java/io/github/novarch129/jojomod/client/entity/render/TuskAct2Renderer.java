@@ -13,7 +13,6 @@ public class TuskAct2Renderer extends AbstractStandRenderer<TuskAct2Entity, Tusk
         super(renderManagerIn, new TuskAct2Model());
     }
 
-    @Nonnull
     @Override
     public ResourceLocation getEntityTexture(TuskAct2Entity entity) {
         return Util.ResourceLocations.TUSK_ACT_2;

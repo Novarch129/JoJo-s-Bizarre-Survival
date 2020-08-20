@@ -403,5 +403,23 @@
         "steam": false
       }
     ]
+  },
+  "spawn_tusk_act_3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_3",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_tusk_act_4": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_4",
+        "steam": false
+      }
+    ]
   }
 }

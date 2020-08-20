@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import net.minecraft.block.BlockState;
@@ -108,9 +109,9 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     public void randomizePositions() {
         if (shootingStand == null) return;
         Vec3d random = new Vec3d(rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1);
-        Vec3d position = getPositionVec().add(random).add(shootingStand.getLookVec().mul(1.5, 0.2, 1.5));
+        Vec3d position = getPositionVec().add(random).add(standMaster.getLookVec().mul(1.5, 0.2, 1.5));
         setPosition(position.getX(), position.getY(), position.getZ());
-        setRotation(shootingStand.rotationYaw, shootingStand.rotationPitch);
+        setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
     }
 
     public void movePunchInFrontOfStand(AbstractStandEntity stand) {
@@ -195,7 +196,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             if (isWet())
                 extinguish();
             setMotion(getMotion().getX() * f1, getMotion().getY() * f1, getMotion().getZ() * f1);
-            if (!hasNoGravity())
+            if (!hasNoGravity() && Stand.getCapabilityFromPlayer(standMaster).getStandID() > 23 && Stand.getCapabilityFromPlayer(standMaster).getStandID() < 28)
                 setMotion(getMotion().getX(), getMotion().getY() - 0.05000000074505806, getMotion().getZ());
             setPosition(getPosX(), getPosY(), getPosZ());
             doBlockCollisions();
@@ -212,7 +213,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             ))) return;
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entity = ((EntityRayTraceResult) result).getEntity();
-            if (entity != standMaster && entity != this) {
+            if (!entity.equals(standMaster) && !entity.equals(this)) {
                 if (isBurning() && !(entity instanceof EndermanEntity))
                     entity.setFire(5);
                 if (entity instanceof LivingEntity) {
@@ -225,7 +226,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                             onEntityHit((EntityRayTraceResult) result);
                         }
                     }
-                    if (standMaster != null && livingEntity != standMaster && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
+                    if (standMaster != null && !livingEntity.equals(standMaster) && livingEntity instanceof PlayerEntity && standMaster instanceof ServerPlayerEntity)
                         ((ServerPlayerEntity) standMaster).connection.sendPacket(new SChangeGameStatePacket(6, 0));
                 }
                 if (!(entity instanceof EndermanEntity))
@@ -270,17 +271,17 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Nullable
     protected EntityRayTraceResult rayTraceEntities(Vec3d startVec, Vec3d endVec) {
         return ProjectileHelper.rayTraceEntities(world, this, startVec, endVec, getBoundingBox().expand(getMotion()).grow(1), (entity) ->
-                !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && (entity != shootingStand || ticksInAir >= getRange()) && entity.getEntityId() != standMaster.getEntityId());
+                !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && (!entity.equals(shootingStand) || ticksInAir >= getRange()) && !entity.equals(standMaster));
     }
 
     @Override
     public void onCollideWithPlayer(PlayerEntity entityIn) {
-        if (!world.isRemote && inGround && arrowShake <= 0 && entityIn != standMaster) remove();
+        if (!world.isRemote && inGround && arrowShake <= 0 && !entityIn.equals(standMaster)) remove();
     }
 
     @Override
     public void applyEntityCollision(Entity entityIn) {
-        if (entityIn != shootingStand && entityIn != standMaster)
+        if (!entityIn.equals(shootingStand) && !entityIn.equals(standMaster))
             super.applyEntityCollision(entityIn);
     }
 

@@ -33,6 +33,7 @@ public class StandGUI extends AbstractGui {
         assert mc.player != null;
         Stand.getLazyOptional(mc.player).ifPresent(props -> {
             int standID = props.getStandID();
+            int act = props.getAct();
             int timeLeft = (int) props.getTimeLeft();
             int cooldown = (int) props.getCooldown();
             int transformed = props.getTransformed();
@@ -80,11 +81,12 @@ public class StandGUI extends AbstractGui {
                             renderTimeLeft(timeLeft - 600);
                         break;
                     }
+                    case Util.StandID.TUSK_ACT_3:
                     case Util.StandID.TUSK_ACT_2:
                     case Util.StandID.TUSK_ACT_1: {
                         renderString("Nails left: " + (10 - abilityUseCount));
                         if (charging && damage > 4.5f)
-                            renderString("Damage: " + damage + (damage == 15 ? " MAX DAMAGE" : ""), 4, 16);
+                            renderString("Damage: " + damage + (damage == (standID == Util.StandID.TUSK_ACT_1 ? 15 : 26) ? " MAX DAMAGE" : ""), 4, 16);
                         break;
                     }
                 }
@@ -113,6 +115,7 @@ public class StandGUI extends AbstractGui {
                         renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20));
                     break;
                 }
+                case Util.StandID.TUSK_ACT_3:
                 case Util.StandID.TUSK_ACT_2:
                 case Util.StandID.TUSK_ACT_1: {
                     if (cooldown > 0)

@@ -39,6 +39,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
@@ -241,6 +242,14 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.TUSK_ACT_2: {
                     standName = "Tusk (Act 2)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_3: {
+                    standName = "Tusk (Act 3)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_4: {
+                    standName = "Tusk (Act 4)";
                     break;
                 }
             }
@@ -657,5 +666,17 @@ public class EventHandleStandAbilities {
                         props.removeBombPos(player);
                     }
                 }));
+    }
+
+    @SubscribeEvent
+    public static void playerEatEvent(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+        if (player.world.isRemote) return;
+        if (event.getItem().getItem().isFood())
+            Stand.getLazyOptional(player).ifPresent(props -> {
+                if ((props.getStandID() == Util.StandID.TUSK_ACT_2 || props.getStandID() == Util.StandID.TUSK_ACT_3) && props.getCooldown() > 0)
+                    props.setCooldown(props.getCooldown() > 40 ? props.getCooldown() - 40 : 1);
+            });
     }
 }

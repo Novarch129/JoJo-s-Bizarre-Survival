@@ -14,10 +14,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 public class NailBulletEntity extends AbstractStandAttackEntity {
@@ -33,7 +30,8 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     }
 
     public NailBulletEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player, boolean isHoming) {
-        super(EntityInit.NAIL_BULLET.get(), worldIn, player.getPosX(), isHoming ? player.getPosY() + 0.8 : player.getPosY() + 0.4, player.getPosZ());
+        super(EntityInit.NAIL_BULLET.get(), worldIn, player.getPosX(), isHoming ? player.getPosY() + 1 : player.getPosY() + 0.4, player.getPosZ());
+        setNoGravity(true);
         shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
@@ -43,6 +41,7 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
 
     public NailBulletEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         super(type, worldIn, player.getPosX(), player.getPosY() + 0.4, player.getPosZ());
+        setNoGravity(true);
         shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
@@ -53,13 +52,15 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     public void tick() {
         super.tick();
         if (isHoming) {
-            LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity)), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
+            LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
             if (target == null) return;
             lookAt(EntityAnchorArgument.Type.EYES, target.getPositionVec());
             Vec3d motion = Util.getEntityForwardsMotion(this).mul(getDistance(target) < 6 ? new Vec3d(1.1, 1.1, 1.1) : new Vec3d(0.1, 0.1, 0.1));
             setMotion(motion);
             Vec3d distance = getPositionVec().subtract(target.getPositionVec());
-            if ((distance.getX() > -2 && distance.getX() < 2) && (distance.getZ() > -2 && distance.getZ() < 2) && getPosY() > target.getPosY())
+            if ((distance.getX() > -1 && distance.getX() < 1) && (distance.getZ() > -1 && distance.getZ() < 1) && getPosY() > target.getPosY())
+                setMotion(getMotion().add(0, -0.1, 0));
+            if (ticksInAir > 9800)
                 setMotion(getMotion().add(0, -0.3, 0));
         }
     }
@@ -75,6 +76,16 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
 
     @Override
     protected void onBlockHit(BlockRayTraceResult result) {
+        BlockPos pos = result.getPos();
+        BlockState state = world.getBlockState(pos);
+        if (isHoming) {
+            if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 3) {
+                world.removeBlock(pos, false);
+                state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+            }
+        }
+        if (state.isSolid())
+            remove();
     }
 
     @Override

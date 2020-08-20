@@ -24,6 +24,8 @@
   "item.jojomod.summon_sticky_fingers": "Sticky Fingers",
   "item.jojomod.summon_tusk_act_1": "Tusk (Act 1)",
   "item.jojomod.summon_tusk_act_2": "Tusk (Act 2)",
+  "item.jojomod.summon_tusk_act_3": "Tusk (Act 3)",
+  "item.jojomod.summon_tusk_act_4": "Tusk (Act 4)",
 
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
@@ -87,6 +89,8 @@
   "entity.jojomod.nail_bullet": "Tusk's nail bullet",
   "entity.jojomod.tusk_act_1": "Tusk (Act 1)",
   "entity.jojomod.tusk_act_2": "Tusk (Act 2)",
+  "entity.jojomod.tusk_act_3": "Tusk (Act 3)",
+  "entity.jojomod.tusk_act_4": "Tusk (Act 4)",
 
   "key.categories.jojomod": "JoJo's Bizarre Survival",
 

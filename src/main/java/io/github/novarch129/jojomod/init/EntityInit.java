@@ -306,4 +306,10 @@ public class EntityInit {
                             .size(0.9f, 1.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_2").toString()));
 
+    public static final RegistryObject<EntityType<TuskAct3Entity>> TUSK_ACT_3 = ENTITY_TYPES
+            .register("tusk_act_3",
+                    () -> EntityType.Builder.create(TuskAct3Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.5f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_3").toString()));
+
 }
