@@ -288,15 +288,22 @@ public class EntityInit {
                             .size(0.2f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sticky_fingers_punch").toString()));
 
+    public static final RegistryObject<EntityType<NailBulletEntity>> NAIL_BULLET = ENTITY_TYPES
+            .register("nail_bullet",
+                    () -> EntityType.Builder.<NailBulletEntity>create(NailBulletEntity::new, EntityClassification.MISC)
+                            .size(0.1f, 0.1f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "nail_bullet").toString()));
+
     public static final RegistryObject<EntityType<TuskAct1Entity>> TUSK_ACT_1 = ENTITY_TYPES
             .register("tusk_act_1",
                     () -> EntityType.Builder.create(TuskAct1Entity::new, EntityClassification.CREATURE)
                             .size(0.9f, 1.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_1").toString()));
 
-    public static final RegistryObject<EntityType<NailBulletEntity>> NAIL_BULLET = ENTITY_TYPES
-            .register("nail_bullet",
-                    () -> EntityType.Builder.<NailBulletEntity>create(NailBulletEntity::new, EntityClassification.MISC)
-                            .size(0.1f, 0.1f)
-                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "nail_bullet").toString()));
+    public static final RegistryObject<EntityType<TuskAct2Entity>> TUSK_ACT_2 = ENTITY_TYPES
+            .register("tusk_act_2",
+                    () -> EntityType.Builder.create(TuskAct2Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.5f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_2").toString()));
+
 }

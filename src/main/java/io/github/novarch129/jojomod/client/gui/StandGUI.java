@@ -80,6 +80,7 @@ public class StandGUI extends AbstractGui {
                             renderTimeLeft(timeLeft - 600);
                         break;
                     }
+                    case Util.StandID.TUSK_ACT_2:
                     case Util.StandID.TUSK_ACT_1: {
                         renderString("Nails left: " + (10 - abilityUseCount));
                         if (charging && damage > 4.5f)
@@ -112,6 +113,7 @@ public class StandGUI extends AbstractGui {
                         renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20));
                     break;
                 }
+                case Util.StandID.TUSK_ACT_2:
                 case Util.StandID.TUSK_ACT_1: {
                     if (cooldown > 0)
                         renderString("Cooldown: " + cooldown / 20, 4, props.getStandOn() ? 16 : 4);

@@ -90,7 +90,8 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS.get(), StickyFingersRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS_PUNCH.get(), StandAttackRenderer::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_1.get(), TuskAct1Renderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.NAIL_BULLET.get(), StandAttackRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_1.get(), TuskAct1Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_2.get(), TuskAct2Renderer::new);
     }
 }

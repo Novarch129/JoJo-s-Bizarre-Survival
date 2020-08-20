@@ -394,5 +394,14 @@
         "steam": false
       }
     ]
+  },
+  "spawn_tusk_act_2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_2",
+        "steam": false
+      }
+    ]
   }
 }

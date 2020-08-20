@@ -15,17 +15,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
-public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
+public class TuskAct2Entity extends AbstractStandEntity implements IChargeable {
     private int bulletChargeTicks;
     private int prevBulletChargeTicks;
 
-    public TuskAct1Entity(EntityType<? extends AbstractStandEntity> type, World world) {
+    public TuskAct2Entity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
 
     @Override
     public SoundEvent getSpawnSound() {
-        return SoundInit.SPAWN_TUSK_ACT_1.get();
+        return SoundInit.SPAWN_TUSK_ACT_2.get();
     }
 
     @Override
@@ -69,9 +69,9 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
 
-                if (props.getStandID() == Util.StandID.TUSK_ACT_2 && props.getAct() == 0 && props.getStandOn()) {
+                if (props.getStandID() == Util.StandID.TUSK_ACT_2 && props.getAct() == 1 && props.getStandOn()) {
                     remove();
-                    TuskAct2Entity tuskAct1Entity = new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
+                    TuskAct1Entity tuskAct1Entity = new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
                     Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
                     tuskAct1Entity.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
                     tuskAct1Entity.setMaster(master);
@@ -81,7 +81,7 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
 
                 if (props.getAbilityUseCount() < 10 && getChargeTicks() == 0 && getChargeTicks() != getPrevChargeTicks()) {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                    NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master);
+                    NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master, true);
                     nailBulletEntity.damage = 3.95f + getPrevChargeTicks() / 20f;
                     if (nailBulletEntity.damage >= 9) {
                         for (int i = 0; i < (nailBulletEntity.damage / 5 - 1); i++) {
@@ -102,7 +102,7 @@ public class TuskAct1Entity extends AbstractStandEntity implements IChargeable {
                                 world.setEntityState(this, (byte) 20);
                         }
                     }
-                    nailBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4 + nailBulletEntity.damage / 7, 0.05f);
+                    nailBulletEntity.shoot(getMaster(), 45, rotationYaw, 0.1f, 0.05f);
                     if (!world.isRemote) {
                         world.addEntity(nailBulletEntity);
                         props.setAbilityUseCount(props.getAbilityUseCount() + 1);

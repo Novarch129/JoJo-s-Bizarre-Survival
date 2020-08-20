@@ -30,6 +30,8 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -202,6 +204,8 @@ public class Util {
                 return new StickyFingersEntity(EntityInit.STICKY_FINGERS.get(), world);
             case StandID.TUSK_ACT_1:
                 return new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
+            case StandID.TUSK_ACT_2:
+                return new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
         }
     }
 
@@ -281,6 +285,12 @@ public class Util {
 
         public static final int TUSK_ACT_1 = 24;
 
+        public static final int TUSK_ACT_2 = 25;
+
+        public static final int TUSK_ACT_3 = 26;
+
+        public static final int TUSK_ACT_4 = 27;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -307,6 +317,14 @@ public class Util {
                 STICKY_FINGERS,
                 TUSK_ACT_1
         };
+
+        public static final List<Integer> STANDS_WITH_ACTS = Arrays.asList(
+                MADE_IN_HEAVEN,
+                CMOON,
+                TUSK_ACT_2,
+                TUSK_ACT_3,
+                TUSK_ACT_4
+        );
     }
 
     public static class KeyCodes {
@@ -363,7 +381,8 @@ public class Util {
         public static final ResourceLocation THE_GRATEFUL_DEAD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead_punch.png");
         public static final ResourceLocation STICKY_FINGERS = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers.png");
         public static final ResourceLocation STICKY_FINGERS_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers_punch.png");
-        public static final ResourceLocation TUSK_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_1.png");
         public static final ResourceLocation NAIL_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/nail_bullet.png");
+        public static final ResourceLocation TUSK_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_1.png");
+        public static final ResourceLocation TUSK_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_2.png");
     }
 }

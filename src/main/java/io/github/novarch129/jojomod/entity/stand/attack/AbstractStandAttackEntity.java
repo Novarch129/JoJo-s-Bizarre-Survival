@@ -74,6 +74,14 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         return 2;
     }
 
+    protected boolean shouldMatchMaster() {
+        return true;
+    }
+
+    protected boolean shouldBeDestroyedByBlocks(BlockState state) {
+        return true;
+    }
+
     private BlockPos getBlockPosFromNBT() {
         return new BlockPos(xTile, yTile, zTile);
     }
@@ -127,14 +135,14 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Override
     public void tick() {
         super.tick();
-        if (standMaster != null)
+        if (standMaster != null && shouldMatchMaster())
             setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
         if (shootingEntity == null && !world.isRemote)
             remove();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
         BlockState blockState = world.getBlockState(blockPos);
         if (blockState.getMaterial() != Material.AIR && !blockState.getCollisionShape(world, blockPos).isEmpty())
-            if (blockState.getCollisionShape(world, blockPos).getBoundingBox().offset(blockPos).contains(new Vec3d(getPosX(), getPosY(), getPosZ())))
+            if (blockState.getCollisionShape(world, blockPos).getBoundingBox().offset(blockPos).contains(getPositionVec()))
                 inGround = true;
         if (arrowShake > 0)
             arrowShake--;
@@ -143,12 +151,9 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             if (ticksInAir >= getRange())
                 if (!world.isRemote)
                     remove();
-            Vec3d vec3d1 = new Vec3d(getPosX(), getPosY(), getPosZ());
-            Vec3d vec3d = new Vec3d(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
-            BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(vec3d1, vec3d, BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, this));
+            BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(getPositionVec(), getPositionVec().add(getMotion()), BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, this));
             EntityRayTraceResult entityRayTraceResult = null;
-            vec3d1 = getPositionVec();
-            EntityRayTraceResult result = rayTraceEntities(vec3d1, vec3d1.add(getMotion()));
+            EntityRayTraceResult result = rayTraceEntities(getPositionVec(), getPositionVec().add(getMotion()));
             if (result != null) {
                 entityRayTraceResult = result;
                 if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof AbstractStandAttackEntity) {
@@ -158,7 +163,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 }
                 if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof PlayerEntity) {
                     PlayerEntity playerEntity = (PlayerEntity) entityRayTraceResult.getEntity();
-                    if (playerEntity.isEntityEqual(standMaster))
+                    if (playerEntity.equals(standMaster))
                         raytraceresult = null;
                     else
                         entityRayTraceResult = new EntityRayTraceResult(playerEntity);
@@ -172,15 +177,15 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
                 onHit(raytraceresult);
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
-            rotationYaw = (float) (MathHelper.atan2(getMotion().getX(), getMotion().getZ()) * 57.29577951308232);
-            while (rotationPitch - prevRotationPitch >= 180)
-                prevRotationPitch += 360;
-            while (rotationYaw - prevRotationYaw < -180)
-                prevRotationYaw -= 360;
-            while (rotationYaw - prevRotationYaw >= 180)
-                prevRotationYaw += 360;
-            rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2f;
-            rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2f;
+//            rotationYaw = (float) (MathHelper.atan2(getMotion().getX(), getMotion().getZ()) * 57.29577951308232);
+//            while (rotationPitch - prevRotationPitch >= 180)
+//                prevRotationPitch += 360;
+//            while (rotationYaw - prevRotationYaw < -180)
+//                prevRotationYaw -= 360;
+//            while (rotationYaw - prevRotationYaw >= 180)
+//                prevRotationYaw += 360;
+//            rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2f;
+//            rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2f;
             float f1 = 0.99f;
             if (isInWater()) {
                 for (int i = 0; i < 4; i++)
@@ -232,7 +237,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             xTile = blockPos.getX();
             yTile = blockPos.getY();
             zTile = blockPos.getZ();
-            setMotion((float) (result.getHitVec().getX() - getPosX()), (float) (result.getHitVec().getY() - getPosY()), (float) (result.getHitVec().getZ() - getPosZ()));
+            if (shouldBeDestroyedByBlocks(state))
+                setMotion((float) (result.getHitVec().getX() - getPosX()), (float) (result.getHitVec().getY() - getPosY()), (float) (result.getHitVec().getZ() - getPosZ()));
             float f2 = MathHelper.sqrt(getMotion().getX() * getMotion().getX() + getMotion().getY() * getMotion().getY() + getMotion().getZ() * getMotion().getZ());
             setPosition(getPosX() - getMotion().getX() / f2 * 0.05000000074505806, getPosY() - getMotion().getY() / f2 * 0.05000000074505806, getPosZ() - getMotion().getZ() / f2 * 0.05000000074505806);
             inGround = true;
@@ -244,7 +250,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 onBlockHit((BlockRayTraceResult) result);
                 if (state.getMaterial() != Material.AIR) {
                     state.getBlock().onProjectileCollision(world, state, (BlockRayTraceResult) result, this);
-                    remove();
+                    if (shouldBeDestroyedByBlocks(state))
+                        remove();
                 }
             }
         }

@@ -77,6 +77,9 @@ public class EventHandleKeybinds {
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.CROUCH));
                             break;
                         }
+                        case Util.StandID.TUSK_ACT_4:
+                        case Util.StandID.TUSK_ACT_3:
+                        case Util.StandID.TUSK_ACT_2:
                         case Util.StandID.TUSK_ACT_1:
                         case Util.StandID.KING_CRIMSON: {
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CChargeAttackPacket(mc.gameSettings.keyBindAttack.isKeyDown()));

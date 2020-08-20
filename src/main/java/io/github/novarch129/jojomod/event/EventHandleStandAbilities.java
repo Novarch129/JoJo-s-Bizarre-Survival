@@ -239,6 +239,10 @@ public class EventHandleStandAbilities {
                     standName = "Tusk (Act 1)";
                     break;
                 }
+                case Util.StandID.TUSK_ACT_2: {
+                    standName = "Tusk (Act 2)";
+                    break;
+                }
             }
         if (!standName.equals(""))
             event.getToolTip().add(new StringTextComponent(standName));

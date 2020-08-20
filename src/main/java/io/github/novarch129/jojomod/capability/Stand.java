@@ -3,6 +3,7 @@ package io.github.novarch129.jojomod.capability;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
+import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -21,8 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
-import static io.github.novarch129.jojomod.util.Util.StandID.CMOON;
-import static io.github.novarch129.jojomod.util.Util.StandID.MADE_IN_HEAVEN;
+import static io.github.novarch129.jojomod.util.Util.StandID.*;
 
 /**
  * The {@link Capability} used for storing the player's Stand ability.
@@ -167,14 +167,18 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public boolean hasAct() {
-        return getStandID() == MADE_IN_HEAVEN || getStandID() == CMOON;
+        return Util.StandID.STANDS_WITH_ACTS.contains(getStandID());
     }
 
     @Override
     public int getMaxAct() {
         switch (standID) {
+            case TUSK_ACT_4:
+                return 4;
+            case TUSK_ACT_3:
             case MADE_IN_HEAVEN:
                 return 3;
+            case TUSK_ACT_2:
             case CMOON:
                 return 2;
         }

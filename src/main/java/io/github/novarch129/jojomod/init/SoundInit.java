@@ -54,4 +54,5 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> ZIPPER = SOUNDS.register("zipper", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "zipper")));
     public static final RegistryObject<SoundEvent> ARRIVEDERCI = SOUNDS.register("arrivederci", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "arrivederci")));
     public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_1 = SOUNDS.register("spawn_tusk_act_1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_1")));
+    public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_2 = SOUNDS.register("spawn_tusk_act_2", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_2")));
 }
