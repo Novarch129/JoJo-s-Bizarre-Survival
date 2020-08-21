@@ -22,6 +22,7 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     public float damage = 4;
     public boolean isHoming;
     public boolean isInfinite;
+    private PlayerEntity master;
 
     public NailBulletEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
@@ -55,13 +56,16 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         movePunchInFrontOfStand(shooter);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void tick() {
         super.tick();
+        if (shootingStand != null && shootingStand.getMaster() != null)
+            master = shootingStand.getMaster();
         if (isInfinite)
             ticksInAir = 0;
         if (isHoming) {
-            LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
+            LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity && !entity.equals(master.getRidingEntity())) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
             if (target == null) return;
             lookAt(EntityAnchorArgument.Type.EYES, target.getPositionVec());
             Vec3d motion = Util.getEntityForwardsMotion(this).mul(getDistance(target) < 6 ? new Vec3d(1.1, 1.1, 1.1) : new Vec3d(0.1, 0.1, 0.1));

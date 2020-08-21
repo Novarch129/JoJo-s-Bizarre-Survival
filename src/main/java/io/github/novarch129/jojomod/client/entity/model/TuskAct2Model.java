@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.client.entity.model;
 
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.TuskAct2Entity;
@@ -65,9 +66,9 @@ public class TuskAct2Model extends AbstractStandModel<TuskAct2Entity> {
     private final ModelRenderer Star22;
     private final ModelRenderer Star23;
     private final ModelRenderer Star24;
-    private final ModelRenderer littleleg;
-    private final ModelRenderer littleleg2;
     private final ModelRenderer littleleg3;
+    private final ModelRenderer littleleg2;
+    private final ModelRenderer littleleg;
 
     public TuskAct2Model() {
         textureWidth = 128;
@@ -468,23 +469,23 @@ public class TuskAct2Model extends AbstractStandModel<TuskAct2Entity> {
         setRotationAngle(Star24, -0.0349F, 0.0F, 0.0F);
         Star24.setTextureOffset(33, 14).addBox(7.85F, -0.925F, -0.45F, 1.0F, 1.0F, 1.0F, 0.0F, false);
 
-        littleleg = new ModelRenderer(this);
-        littleleg.setRotationPoint(-2.0F, 25.0F, 0.0F);
-        TuskAct2.addChild(littleleg);
-        setRotationAngle(littleleg, 0.0F, 0.0F, 0.3927F);
-        littleleg.setTextureOffset(43, 0).addBox(-3.0F, -4.0F, -4.0F, 1.0F, 2.0F, 1.0F, 0.0F, false);
+        littleleg3 = new ModelRenderer(this);
+        littleleg3.setRotationPoint(-3.0F, -7.0F, 5.0F);
+        TuskAct2.addChild(littleleg3);
+        setRotationAngle(littleleg3, 0.3491F, 0.0F, 0.0F);
+        littleleg3.setTextureOffset(43, 0).addBox(2.5F, -4.0F, -4.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
 
         littleleg2 = new ModelRenderer(this);
-        littleleg2.setRotationPoint(2.0F, 25.0F, 0.0F);
+        littleleg2.setRotationPoint(2.0F, -5.0F, 0.0F);
         TuskAct2.addChild(littleleg2);
         setRotationAngle(littleleg2, 0.0F, 0.0F, -0.3927F);
         littleleg2.setTextureOffset(43, 0).addBox(2.0F, -4.0F, -4.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
 
-        littleleg3 = new ModelRenderer(this);
-        littleleg3.setRotationPoint(-3.0F, 23.0F, 5.0F);
-        TuskAct2.addChild(littleleg3);
-        setRotationAngle(littleleg3, 0.3491F, 0.0F, 0.0F);
-        littleleg3.setTextureOffset(43, 0).addBox(2.5F, -4.0F, -4.0F, 1.0F, 2.0F, 1.0F, 0.0F, true);
+        littleleg = new ModelRenderer(this);
+        littleleg.setRotationPoint(-2.0F, -5.0F, 0.0F);
+        TuskAct2.addChild(littleleg);
+        setRotationAngle(littleleg, 0.0F, 0.0F, 0.3927F);
+        littleleg.setTextureOffset(43, 0).addBox(-3.0F, -4.0F, -4.0F, 1.0F, 2.0F, 1.0F, 0.0F, false);
     }
 
     @Override

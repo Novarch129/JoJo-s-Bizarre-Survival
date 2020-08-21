@@ -173,8 +173,11 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                     if (entityRayTraceResult.getEntity() == shootingStand)
                         entityRayTraceResult = null;
             }
-            if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult))
+            if (entityRayTraceResult != null && !ForgeEventFactory.onProjectileImpact(this, entityRayTraceResult)) {
+                if (entityRayTraceResult.getEntity() instanceof PlayerEntity && entityRayTraceResult.getEntity().equals(standMaster))
+                    return;
                 onHit(entityRayTraceResult);
+            }
             if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
                 onHit(raytraceresult);
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());

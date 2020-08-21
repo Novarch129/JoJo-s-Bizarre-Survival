@@ -308,6 +308,22 @@ public class Timestop implements ITimestop, ICapabilitySerializable<INBT> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return posX == 0 &&
+                posY == 0 &&
+                posZ == 0 &&
+                motionX == 0 &&
+                motionY == 0 &&
+                motionZ == 0 &&
+                rotationYaw == 0 &&
+                rotationPitch == 0 &&
+                rotationYawHead == 0 &&
+                fallDistance == 0 &&
+                fuse == 0 &&
+                fire == 0;
+    }
+
+    @Override
     public void onDataUpdated() {
         if (entity != null)
             if (!entity.world.isRemote)

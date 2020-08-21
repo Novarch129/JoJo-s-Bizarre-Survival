@@ -79,6 +79,8 @@ public interface ITimestop {
 
     void putDamage(Map<String, Float> damage);
 
+    boolean isEmpty();
+
     void onDataUpdated();
 
     void clear();

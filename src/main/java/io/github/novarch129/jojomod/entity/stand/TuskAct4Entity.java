@@ -1,11 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.NailBulletEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.IChargeable;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -65,6 +67,7 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
+            StandEffects.getLazyOptional(master).ifPresent(props -> props.setRotating(false));
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
 
@@ -80,7 +83,7 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
 
                 if (props.getAbilityUseCount() < 10 && getChargeTicks() == 0 && getChargeTicks() != getPrevChargeTicks()) {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                    NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master, true, true);
+                    NailBulletEntity nailBulletEntity = new NailBulletEntity(world, this, master, true, master.getRidingEntity() instanceof AbstractHorseEntity);
                     nailBulletEntity.damage = 4 + (getPrevChargeTicks() + 10) / 20f;
                     if (nailBulletEntity.damage >= 15) {
                         for (int i = 0; i < (nailBulletEntity.damage / 5 - 1); i++) {

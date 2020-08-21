@@ -75,6 +75,8 @@ public class TheWorldEntity extends AbstractStandEntity {
                 world.getServer().getWorld(world.dimension.getType()).getEntities()
                         .filter(entity -> !(entity instanceof PlayerEntity))
                         .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+                            if (props.isEmpty())
+                                return;
                             if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                 entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                 entity.setNoGravity(false);
