@@ -80,10 +80,20 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (message.action == 1)
-                                                    ((KillerQueenEntity) entity).detonate();
-                                                else
-                                                    ((KillerQueenEntity) entity).toggleSheerHeartAttack();
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((KillerQueenEntity) entity).detonate();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((KillerQueenEntity) entity).toggleSheerHeartAttack();
+                                                        break;
+                                                    }
+                                                    default: {
+                                                        ((KillerQueenEntity) entity).turnItemOrBlockIntoBomb();
+                                                        break;
+                                                    }
+                                                }
                                             });
                                     break;
                                 }

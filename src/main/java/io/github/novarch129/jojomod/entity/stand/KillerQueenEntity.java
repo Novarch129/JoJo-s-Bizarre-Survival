@@ -20,6 +20,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -56,7 +57,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                             PlayerEntity player = world.getPlayerByUuid(effects.getStandUser());
                                             if (player != null && player.equals(master)) {
                                                 entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
-                                                Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(0));
+                                                props.setAbilityUseCount(0);
                                                 entity.remove();
                                             }
                                         }
@@ -128,6 +129,38 @@ public class KillerQueenEntity extends AbstractStandEntity {
         });
     }
 
+    public void turnItemOrBlockIntoBomb() {
+        if (getMaster() == null || world.isRemote) return;
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (!master.isCrouching() && master.getHeldItemMainhand() != ItemStack.EMPTY && props.getAbilityUseCount() == 0) {
+                if (master.getHeldItemMainhand().getCount() > 1) {
+                    if (master.inventory.getStackInSlot(master.inventory.getBestHotbarSlot()).isEmpty()) {
+                        ItemStack stack = master.getHeldItemMainhand().copy();
+                        stack.shrink(master.getHeldItemMainhand().getCount() - 1);
+                        stack.getOrCreateTag().putBoolean("bomb", true);
+                        master.getHeldItemMainhand().shrink(1);
+                        stack.setDisplayName(new StringTextComponent("Bomb"));
+                        master.inventory.add(master.inventory.getBestHotbarSlot(), stack);
+                        master.sendStatusMessage(new StringTextComponent("Killer Queen has turned 1 " + new TranslationTextComponent(master.getHeldItemMainhand().getTranslationKey()).getFormattedText() + " into a bomb."), true);
+                        props.setAbilityUseCount(1);
+                    } else
+                        master.sendStatusMessage(new StringTextComponent("Your hotbar is full!"), true);
+                } else if (master.getHeldItemMainhand().getCount() == 1) {
+                    master.getHeldItemMainhand().getOrCreateTag().putBoolean("bomb", true);
+                    master.getHeldItemMainhand().setDisplayName(new StringTextComponent("Bomb"));
+                    master.sendStatusMessage(new StringTextComponent("Killer Queen has turned your " + new TranslationTextComponent(master.getHeldItemMainhand().getTranslationKey()).getFormattedText() + " into a bomb."), true);
+                    props.setAbilityUseCount(1);
+                }
+            } else if (master.isCrouching() && props.getAbilityUseCount() == 0) {
+                BlockPos position = master.getPosition().add(0, -1, 0);
+                props.setBlockPos(position);
+                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.addBombPos(master, position));
+                master.sendStatusMessage(new StringTextComponent("Killer Queen has turned the block at X" + position.getX() + " Y" + position.getY() + " Z" + position.getX() + " into a bomb."), true);
+                props.setAbilityUseCount(1);
+            }
+        });
+    }
+
     @Override
     public void attack(boolean special) {
         if (getMaster() == null) return;
@@ -147,29 +180,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> {
-                props.setAbility(false);
-                if (!world.isRemote && master.isCrouching() && master.getHeldItemMainhand() != ItemStack.EMPTY && props.getAbilityUseCount() == 0) {
-                    if (master.getHeldItemMainhand().getCount() > 1) {
-                        if (master.inventory.getStackInSlot(master.inventory.getBestHotbarSlot()).isEmpty()) {
-                            ItemStack stack = master.getHeldItemMainhand().copy();
-                            stack.shrink(master.getHeldItemMainhand().getCount() - 1);
-                            stack.getOrCreateTag().putBoolean("bomb", true);
-                            master.getHeldItemMainhand().shrink(1);
-                            master.inventory.add(master.inventory.getBestHotbarSlot(), stack);
-                            props.setAbilityUseCount(1);
-                        } else
-                            master.sendStatusMessage(new StringTextComponent("Your hotbar is full!"), true);
-                    } else if (master.getHeldItemMainhand().getCount() == 1) {
-                        master.getHeldItemMainhand().getOrCreateTag().putBoolean("bomb", true);
-                        props.setAbilityUseCount(1);
-                    }
-                } else if (!world.isRemote && props.getAbilityUseCount() == 0 && (master.getHeldItemMainhand().getCount() == 0 || master.getHeldItemMainhand() == ItemStack.EMPTY)) {
-                    props.setBlockPos(master.getPosition().add(0, -1, 0));
-                    StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.addBombPos(master, master.getPosition().add(0, -1, 0)));
-                    props.setAbilityUseCount(1);
-                }
-            });
+            Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);
