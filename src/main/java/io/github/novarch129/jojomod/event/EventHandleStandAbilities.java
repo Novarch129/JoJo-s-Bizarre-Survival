@@ -24,6 +24,7 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.item.HoneyBottleItem;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
@@ -673,9 +674,9 @@ public class EventHandleStandAbilities {
         if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
         PlayerEntity player = (PlayerEntity) event.getEntityLiving();
         if (player.world.isRemote) return;
-        if (event.getItem().getItem().isFood())
+        if (event.getItem().getItem() instanceof HoneyBottleItem)
             Stand.getLazyOptional(player).ifPresent(props -> {
-                if ((props.getStandID() == Util.StandID.TUSK_ACT_2 || props.getStandID() == Util.StandID.TUSK_ACT_3) && props.getCooldown() > 0)
+                if ((props.getStandID() == Util.StandID.TUSK_ACT_2 || props.getStandID() == Util.StandID.TUSK_ACT_3 || props.getStandID() == Util.StandID.TUSK_ACT_4) && props.getCooldown() > 0)
                     props.setCooldown(props.getCooldown() > 40 ? props.getCooldown() - 40 : 1);
             });
     }
@@ -685,7 +686,7 @@ public class EventHandleStandAbilities {
         LivingEntity entity = event.getEntityLiving();
         StandEffects.getLazyOptional(entity).ifPresent(props -> {
             if (props.isRotating()) {
-                entity.rotationYaw += 15;
+                entity.rotationYaw += 30;
                 if (entity.rotationYaw > 180)
                     entity.rotationYaw = -180;
                 entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 2);
