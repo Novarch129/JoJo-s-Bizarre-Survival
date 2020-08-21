@@ -82,7 +82,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                props.setAbilityActive(props.getTimeLeft() > 601 && props.getCooldown() == 0 && props.getAbility() && disguiseEntity == null);
+                props.setAbilityActive(props.getStandOn() && props.getTimeLeft() > 601 && props.getCooldown() == 0 && props.getAbility() && disguiseEntity == null);
                 ability = props.getAbility() && props.getTimeLeft() > 600;
                 if (ability)
                     props.setTimeLeft(props.getTimeLeft() - 1);

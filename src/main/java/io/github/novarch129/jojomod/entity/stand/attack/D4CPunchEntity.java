@@ -28,10 +28,6 @@ public class D4CPunchEntity extends AbstractStandAttackEntity {
         super(EntityInit.D4C_PUNCH.get(), worldIn, shooter, player);
     }
 
-    public boolean isGrab() {
-        return isGrab;
-    }
-
     public void setGrab(boolean grab) {
         isGrab = grab;
     }
@@ -53,9 +49,14 @@ public class D4CPunchEntity extends AbstractStandAttackEntity {
         BlockState state = world.getBlockState(pos);
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 3) {
             world.removeBlock(pos, false);
-            if (world.rand.nextBoolean())
+            if (world.rand.nextBoolean() && !isGrab)
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
         }
+    }
+
+    @Override
+    protected int getRange() {
+        return isGrab ? 5 : super.getRange();
     }
 
     @Override

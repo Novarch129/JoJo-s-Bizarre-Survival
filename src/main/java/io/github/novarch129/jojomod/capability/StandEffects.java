@@ -29,6 +29,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private Vec3d motion = Vec3d.ZERO;
     private boolean bomb;
     private UUID standUser = UUID.fromString("c9362041-f5e8-447c-80a8-9db27a2646bb");
+    private boolean rotating;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -55,6 +56,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putDouble("motionZ", instance.motion.getZ());
                 nbt.putBoolean("bomb", instance.bomb);
                 nbt.putUniqueId("standUser", instance.standUser);
+                nbt.putBoolean("rotating", instance.rotating);
                 return nbt;
             }
 
@@ -66,6 +68,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.motion = new Vec3d(compoundNBT.getDouble("motionX"), compoundNBT.getDouble("motionY"), compoundNBT.getDouble("motionZ"));
                 instance.bomb = compoundNBT.getBoolean("bomb");
                 instance.standUser = compoundNBT.getUniqueId("standUser");
+                instance.rotating = compoundNBT.getBoolean("rotating");
             }
         }, () -> new StandEffects(Null()));
     }
@@ -131,6 +134,15 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setStandUser(UUID standUser) {
         this.standUser = standUser;
+        onDataUpdated();
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
+    public void setRotating(boolean rotating) {
+        this.rotating = rotating;
         onDataUpdated();
     }
 

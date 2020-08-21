@@ -122,12 +122,23 @@ public class EventClientTick {
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event) {
         Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
-            if (props.getStandID() == Util.StandID.STICKY_FINGERS)
-                StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
-                        .filter(entity -> entity instanceof StickyFingersEntity)
-                        .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
-                        .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(event.getPlayer()))
-                        .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).disguiseEntity != null));
+            if (props.getStandOn())
+                switch (props.getStandID()) {
+                    case Util.StandID.STICKY_FINGERS: {
+                        StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
+                                .filter(entity -> entity instanceof StickyFingersEntity)
+                                .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
+                                .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(event.getPlayer()))
+                                .forEach(entity -> event.setCanceled(((StickyFingersEntity) entity).disguiseEntity != null));
+                        break;
+                    }
+                    case Util.StandID.TUSK_ACT_3: {
+                        event.setCanceled(props.getAbilityActive());
+                        break;
+                    }
+                    default:
+                        break;
+                }
         });
     }
 

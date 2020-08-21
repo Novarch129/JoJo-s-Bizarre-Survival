@@ -196,6 +196,14 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             });
                                     break;
                                 }
+                                case TUSK_ACT_3: {
+                                    if (props.getAct() == 0)
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof TuskAct3Entity)
+                                                .filter(entity -> ((TuskAct3Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> ((TuskAct3Entity) entity).teleport());
+                                    break;
+                                }
                                 default:
                                     break;
                             }

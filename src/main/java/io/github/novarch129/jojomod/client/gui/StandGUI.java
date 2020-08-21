@@ -81,12 +81,15 @@ public class StandGUI extends AbstractGui {
                             renderTimeLeft(timeLeft - 600);
                         break;
                     }
+                    case Util.StandID.TUSK_ACT_4:
                     case Util.StandID.TUSK_ACT_3:
                     case Util.StandID.TUSK_ACT_2:
                     case Util.StandID.TUSK_ACT_1: {
                         renderString("Nails left: " + (10 - abilityUseCount));
                         if (charging && damage > 4.5f)
                             renderString("Damage: " + damage + (damage == (standID == Util.StandID.TUSK_ACT_1 ? 15 : 26) ? " MAX DAMAGE" : ""), 4, 16);
+                        if (props.getAbilityActive())
+                            renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
                         break;
                     }
                 }
@@ -115,6 +118,7 @@ public class StandGUI extends AbstractGui {
                         renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20));
                     break;
                 }
+                case Util.StandID.TUSK_ACT_4:
                 case Util.StandID.TUSK_ACT_3:
                 case Util.StandID.TUSK_ACT_2:
                 case Util.StandID.TUSK_ACT_1: {

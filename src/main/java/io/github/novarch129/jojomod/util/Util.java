@@ -208,6 +208,8 @@ public class Util {
                 return new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
             case StandID.TUSK_ACT_3:
                 return new TuskAct3Entity(EntityInit.TUSK_ACT_3.get(), world);
+            case StandID.TUSK_ACT_4:
+                return new TuskAct4Entity(EntityInit.TUSK_ACT_4.get(), world);
         }
     }
 
@@ -387,5 +389,6 @@ public class Util {
         public static final ResourceLocation TUSK_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_1.png");
         public static final ResourceLocation TUSK_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_2.png");
         public static final ResourceLocation TUSK_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_3.png");
+        public static final ResourceLocation TUSK_ACT_4 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4.png");
     }
 }

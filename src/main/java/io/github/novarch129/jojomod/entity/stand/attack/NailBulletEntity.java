@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.entity.model.NailBulletModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
@@ -20,6 +21,7 @@ import net.minecraft.world.World;
 public class NailBulletEntity extends AbstractStandAttackEntity {
     public float damage = 4;
     public boolean isHoming;
+    public boolean isInfinite;
 
     public NailBulletEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
@@ -39,6 +41,11 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         this.isHoming = isHoming;
     }
 
+    public NailBulletEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player, boolean isHoming, boolean isInfinite) {
+        this(worldIn, shooter, player, isHoming);
+        this.isInfinite = isInfinite;
+    }
+
     public NailBulletEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         super(type, worldIn, player.getPosX(), player.getPosY() + 0.4, player.getPosZ());
         setNoGravity(true);
@@ -51,6 +58,8 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     @Override
     public void tick() {
         super.tick();
+        if (isInfinite)
+            ticksInAir = 0;
         if (isHoming) {
             LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
             if (target == null) return;
@@ -71,6 +80,8 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), damage);
         if (damage > 5 && entity instanceof LivingEntity)
             ((LivingEntity) entity).knockBack(this, damage / 7, getPosX() - entity.getPosX(), getPosZ() - entity.getPosZ());
+        if (isInfinite && !entity.equals(standMaster))
+            StandEffects.getLazyOptional(entity).ifPresent(props -> props.setRotating(!props.isRotating()));
         entity.hurtResistantTime = 0;
     }
 

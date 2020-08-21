@@ -29,7 +29,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 
 /**
- * This class is a mess, I can barely read it, especially the {@link #tick()} method..
+ * This class is a mess, I can barely read it, especially the {@link #tick()} method.
  */
 @SuppressWarnings("ALL")
 public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
@@ -178,26 +178,17 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             if (raytraceresult != null && !ForgeEventFactory.onProjectileImpact(this, raytraceresult))
                 onHit(raytraceresult);
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
-//            rotationYaw = (float) (MathHelper.atan2(getMotion().getX(), getMotion().getZ()) * 57.29577951308232);
-//            while (rotationPitch - prevRotationPitch >= 180)
-//                prevRotationPitch += 360;
-//            while (rotationYaw - prevRotationYaw < -180)
-//                prevRotationYaw -= 360;
-//            while (rotationYaw - prevRotationYaw >= 180)
-//                prevRotationYaw += 360;
-//            rotationPitch = prevRotationPitch + (rotationPitch - prevRotationPitch) * 0.2f;
-//            rotationYaw = prevRotationYaw + (rotationYaw - prevRotationYaw) * 0.2f;
             float f1 = 0.99f;
             if (isInWater()) {
                 for (int i = 0; i < 4; i++)
-                    world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().getX() * 0.25, getPosY() - getMotion().getY() * 0.25d, getPosZ() - getMotion().getZ() * 0.25d, getMotion().getX(), getMotion().getY(), getMotion().getZ());
+                    world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().getX() * 0.25, getPosY() - getMotion().getY() * 0.25, getPosZ() - getMotion().getZ() * 0.25, getMotion().getX(), getMotion().getY(), getMotion().getZ());
                 f1 = 0.8f;
             }
             if (isWet())
                 extinguish();
-            setMotion(getMotion().getX() * f1, getMotion().getY() * f1, getMotion().getZ() * f1);
+            setMotion(getMotion().mul(f1, f1, f1));
             if (!hasNoGravity() && Stand.getCapabilityFromPlayer(standMaster).getStandID() > 23 && Stand.getCapabilityFromPlayer(standMaster).getStandID() < 28)
-                setMotion(getMotion().getX(), getMotion().getY() - 0.05000000074505806, getMotion().getZ());
+                setMotion(getMotion().add(0, -0.05000000074505806, 0));
             setPosition(getPosX(), getPosY(), getPosZ());
             doBlockCollisions();
         }

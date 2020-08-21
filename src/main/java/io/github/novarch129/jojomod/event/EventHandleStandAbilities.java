@@ -679,4 +679,17 @@ public class EventHandleStandAbilities {
                     props.setCooldown(props.getCooldown() > 40 ? props.getCooldown() - 40 : 1);
             });
     }
+
+    @SubscribeEvent
+    public static void livingTick(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            if (props.isRotating()) {
+                entity.rotationYaw += 15;
+                if (entity.rotationYaw > 180)
+                    entity.rotationYaw = -180;
+                entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 2);
+            }
+        });
+    }
 }
