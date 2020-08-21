@@ -390,5 +390,6 @@ public class Util {
         public static final ResourceLocation TUSK_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_2.png");
         public static final ResourceLocation TUSK_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_3.png");
         public static final ResourceLocation TUSK_ACT_4 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4.png");
+        public static final ResourceLocation TUSK_ACT_4_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4_punch.png");
     }
 }

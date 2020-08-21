@@ -315,7 +315,13 @@ public class EntityInit {
     public static final RegistryObject<EntityType<TuskAct4Entity>> TUSK_ACT_4 = ENTITY_TYPES
             .register("tusk_act_4",
                     () -> EntityType.Builder.create(TuskAct4Entity::new, EntityClassification.CREATURE)
-                            .size(0.9f, 1.5f)
+                            .size(1.5f, 2.4f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct4PunchEntity>> TUSK_ACT_4_PUNCH = ENTITY_TYPES
+            .register("tusk_act_4_punch",
+                    () -> EntityType.Builder.<TuskAct4PunchEntity>create(TuskAct4PunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4_punch").toString()));
 
 }

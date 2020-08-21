@@ -3,11 +3,13 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.NailBulletEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.TuskAct4PunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.IChargeable;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.entity.passive.horse.HorseEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -31,6 +33,13 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
 
     @Override
     public void attack(boolean special) {
+        if (getMaster() == null) return;
+        attackTick++;
+        if (attackTick == 1)
+            if (special) {
+                world.playSound(null, getPosition(), SoundInit.TUSK_ACT_4_ORA.get(), SoundCategory.VOICE, 1, 1);
+                attackRush = true;
+            }
     }
 
     @Override
@@ -39,7 +48,7 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() > 0) return;
             props.setCharging(isCharging);
-            if (isCharging && bulletChargeTicks <= 1000) {
+            if (isCharging && bulletChargeTicks <= (master.getRidingEntity() instanceof HorseEntity ? 1000 : 440)) {
                 setChargeTicks(bulletChargeTicks + 10);
                 props.setStandDamage(4 + (bulletChargeTicks + 10) / 20f);
             } else if (!isCharging)
@@ -67,7 +76,8 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            StandEffects.getLazyOptional(master).ifPresent(props -> props.setRotating(false));
+            if (master.getRidingEntity() instanceof AbstractHorseEntity)
+                StandEffects.getLazyOptional(master).ifPresent(props -> props.setRotating(false));
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
 
@@ -124,6 +134,27 @@ public class TuskAct4Entity extends AbstractStandEntity implements IChargeable {
 
             if (master.swingProgressInt == 0 && !attackRush)
                 attackTick = 0;
+
+            if (attackRush) {
+                master.setSprinting(false);
+                attackTicker++;
+                if (attackTicker > 55)
+                    if (!world.isRemote) {
+                        master.setSprinting(false);
+                        TuskAct4PunchEntity tuskAct4PunchEntity = new TuskAct4PunchEntity(world, this, master);
+                        tuskAct4PunchEntity.randomizePositions();
+                        tuskAct4PunchEntity.shoot(master, master.rotationPitch, master.rotationYaw, 5, 0.001f);
+                        world.addEntity(tuskAct4PunchEntity);
+                        TuskAct4PunchEntity tuskAct4PunchEntity1 = new TuskAct4PunchEntity(world, this, master);
+                        tuskAct4PunchEntity1.randomizePositions();
+                        tuskAct4PunchEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 5, 0.001f);
+                        world.addEntity(tuskAct4PunchEntity1);
+                    }
+                if (attackTicker >= 170) {
+                    attackRush = false;
+                    attackTicker = 0;
+                }
+            }
         }
     }
 }

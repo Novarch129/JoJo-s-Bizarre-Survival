@@ -95,5 +95,6 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_2.get(), TuskAct2Renderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_3.get(), TuskAct3Renderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_4.get(), TuskAct4Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_4_PUNCH.get(), StandAttackRenderer::new);
     }
 }

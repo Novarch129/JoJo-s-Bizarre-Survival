@@ -421,5 +421,14 @@
         "steam": false
       }
     ]
+  },
+  "tusk_act_4_ora": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:tusk_act_4_ora",
+        "steam": false
+      }
+    ]
   }
 }
