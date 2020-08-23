@@ -298,6 +298,8 @@ public class TheWorldEntity extends AbstractStandEntity {
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() == 0) {
                 Vec3d position = master.getLookVec().mul(7, 1, 7).add(master.getPositionVec());
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                    position = position.add(0, 0.5, 0);
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, master.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
                 props.setCooldown(80);
@@ -356,10 +358,12 @@ public class TheWorldEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props2 -> {
                 ability = props2.getAbility();
-                props2.setAbilityActive(ability && props2.getTimeLeft() > 780 && props2.getCooldown() <= 0);
+                props2.setAbilityActive(ability && props2.getTimeLeft() > 780 && props2.getCooldown() == 0 && props2.getInvulnerableTicks() == 0);
 
-                if (ability && props2.getTimeLeft() > 780) {
+                if (ability && props2.getTimeLeft() > 780 && props2.getInvulnerableTicks() == 0)
                     props2.setTimeLeft(props2.getTimeLeft() - 1);
+
+                if (props2.getAbilityActive()) {
                     Timestop.getLazyOptional(master).ifPresent(ITimestop::clear);
                     timestopTick++;
                     shouldDamageBeCancelled = true;
@@ -449,7 +453,7 @@ public class TheWorldEntity extends AbstractStandEntity {
                                     }
                                 });
                     }
-                } else if (!ability || props2.getTimeLeft() <= 780) {
+                } else {
                     shouldDamageBeCancelled = false;
                     timestopTick = 0;
                     master.setInvulnerable(false);
@@ -588,9 +592,6 @@ public class TheWorldEntity extends AbstractStandEntity {
 
                 if (props2.getTimeLeft() == 831)
                     world.playSound(null, getPosition(), SoundInit.RESUME_TIME.get(), getSoundCategory(), 5, 1);
-
-                if (props2.getCooldown() > 0)
-                    props2.setCooldown(props2.getCooldown() - 1);
 
                 if (props2.getCooldown() == 1) {
                     props2.setTimeLeft(1000);

@@ -66,12 +66,12 @@ public class StandGUI extends AbstractGui {
                         break;
                     }
                     case Util.StandID.THE_WORLD: {
-                        if (timeLeft > 780 && cooldown == 0)
+                        if (timeLeft > 780 && cooldown == 0 && invulnerableTicks == 0)
                             renderTimeLeft(timeLeft - 780);
                         break;
                     }
                     case Util.StandID.STAR_PLATINUM: {
-                        if (timeLeft > 900 && cooldown == 0)
+                        if (timeLeft > 900 && cooldown == 0 && invulnerableTicks == 0)
                             renderTimeLeft(timeLeft - 900);
                         break;
                     }
@@ -140,6 +140,8 @@ public class StandGUI extends AbstractGui {
                         renderCooldown(cooldown);
                     break;
                 }
+                case Util.StandID.STAR_PLATINUM:
+                case Util.StandID.THE_WORLD:
                 case Util.StandID.KING_CRIMSON: {
                     if (cooldown > 0)
                         renderString("Cooldown: " + cooldown / 20, 4, (invulnerableTicks > 0 ? 16 : 4));

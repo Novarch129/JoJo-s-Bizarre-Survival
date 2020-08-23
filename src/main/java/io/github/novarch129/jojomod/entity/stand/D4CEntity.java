@@ -17,6 +17,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -39,6 +40,8 @@ public class D4CEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 if (props.getCooldown() == 0) {
                     Vec3d position = master.getLookVec().mul(7, 1, 7).add(master.getPositionVec());
+                    for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                        position = position.add(0, 0.5, 0);
                     master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                     props.setCooldown(80);
                 }

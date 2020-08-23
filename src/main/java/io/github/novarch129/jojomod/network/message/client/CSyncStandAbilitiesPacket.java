@@ -150,6 +150,26 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             });
                                     break;
                                 }
+                                case STAR_PLATINUM: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof StarPlatinumEntity)
+                                            .filter(entity -> ((StarPlatinumEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((StarPlatinumEntity) entity).teleport();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((StarPlatinumEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
+                                    break;
+                                }
                                 case MAGICIANS_RED: {
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof MagiciansRedEntity)
