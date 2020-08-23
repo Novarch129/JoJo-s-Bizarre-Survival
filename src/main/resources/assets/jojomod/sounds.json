@@ -224,6 +224,15 @@
       }
     ]
   },
+  "the_world_teleport": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:the_world_teleport",
+        "stream": false
+      }
+    ]
+  },
   "spawn_star_platinum": {
     "category": "neutral",
     "sounds": [

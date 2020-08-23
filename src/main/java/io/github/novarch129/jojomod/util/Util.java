@@ -295,6 +295,12 @@ public class Util {
 
         public static final int TUSK_ACT_4 = 27;
 
+        public static final int ECHOES_ACT_1 = 28;
+
+        public static final int ECHOES_ACT_2 = 29;
+
+        public static final int ECHOES_ACT_3 = 30;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -319,7 +325,8 @@ public class Util {
                 TWENTIETH_CENTURY_BOY,
                 THE_GRATEFUL_DEAD,
                 STICKY_FINGERS,
-                TUSK_ACT_1
+                TUSK_ACT_1,
+                ECHOES_ACT_1
         };
 
         public static final List<Integer> STANDS_WITH_ACTS = Arrays.asList(
@@ -327,7 +334,9 @@ public class Util {
                 CMOON,
                 TUSK_ACT_2,
                 TUSK_ACT_3,
-                TUSK_ACT_4
+                TUSK_ACT_4,
+                ECHOES_ACT_2,
+                ECHOES_ACT_3
         );
     }
 
@@ -336,6 +345,7 @@ public class Util {
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+        public static final String ABILITY_3 = KeyInit.ABILITY3.getLocalizedName().toUpperCase();
         public static final String SWITCH_ACT = KeyInit.SWITCH_ACT.getLocalizedName().toUpperCase();
     }
 
@@ -391,5 +401,6 @@ public class Util {
         public static final ResourceLocation TUSK_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_3.png");
         public static final ResourceLocation TUSK_ACT_4 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4.png");
         public static final ResourceLocation TUSK_ACT_4_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4_punch.png");
+        public static final ResourceLocation ECHOES_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1.png");
     }
 }

@@ -23,6 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -292,6 +293,26 @@ public class TheWorldEntity extends AbstractStandEntity {
             });
     }
 
+    public void teleport() {
+        if (getMaster() == null) return;
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() == 0) {
+                Vec3d position = master.getLookVec().mul(7, 1, 7).add(master.getPositionVec());
+                master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
+                world.playSound(null, master.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
+                props.setCooldown(80);
+            }
+        });
+    }
+
+    public void dodgeAttacks() {
+        if (getMaster() == null) return;
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (props.getCooldown() == 0)
+                props.setInvulnerableTicks(100);
+        });
+    }
+
     public void addBrokenBlocks(BlockPos pos) {
         brokenBlocks.add(pos);
     }
@@ -443,6 +464,8 @@ public class TheWorldEntity extends AbstractStandEntity {
                                 .filter(entity -> entity != this)
                                 .filter(entity -> entity != master)
                                 .forEach(entity -> Timestop.getLazyOptional(entity).ifPresent(props -> {
+                                    if (props.isEmpty())
+                                        return;
                                     if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props.getMotionX() != 0 && props.getMotionY() != 0 && props.getMotionZ() != 0)) {
                                         entity.setMotion(props.getMotionX(), props.getMotionY(), props.getMotionZ());
                                         entity.setNoGravity(false);
@@ -628,6 +651,8 @@ public class TheWorldEntity extends AbstractStandEntity {
                     .filter(entity -> entity != this)
                     .forEach(entity ->
                             Timestop.getLazyOptional(entity).ifPresent(props2 -> {
+                                if (props2.isEmpty())
+                                    return;
                                 if ((entity instanceof IProjectile || entity instanceof ItemEntity || entity instanceof DamagingProjectileEntity) && (props2.getMotionX() != 0 && props2.getMotionY() != 0 && props2.getMotionZ() != 0)) {
                                     entity.setMotion(props2.getMotionX(), props2.getMotionY(), props2.getMotionZ());
                                     entity.setNoGravity(false);

@@ -130,6 +130,26 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> ((WeatherReportEntity) entity).changeWeather());
                                     break;
                                 }
+                                case THE_WORLD: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof TheWorldEntity)
+                                            .filter(entity -> ((TheWorldEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((TheWorldEntity) entity).teleport();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((TheWorldEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
+                                    break;
+                                }
                                 case MAGICIANS_RED: {
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof MagiciansRedEntity)

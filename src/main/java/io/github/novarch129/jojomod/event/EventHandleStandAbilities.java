@@ -597,16 +597,27 @@ public class EventHandleStandAbilities {
                                     entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
                                 });
                     event.setCanceled(true);
-                } else if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getInvulnerableTicks() > 0) {
+                } else if (props.getInvulnerableTicks() > 0) {
                     event.setCanceled(true);
                     Entity source = event.getSource().getTrueSource();
                     if (source != null) {
                         Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
                         if (!entity.world.isRemote) {
                             entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-                            entity.lookAt(EntityAnchorArgument.Type.EYES, source.getPositionVec());
+                            entity.lookAt(EntityAnchorArgument.Type.FEET, source.getPositionVec());
                         }
-                        entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                        switch (props.getStandID()) {
+                            case Util.StandID.KING_CRIMSON: {
+                                entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                                break;
+                            }
+                            case Util.StandID.THE_WORLD: {
+                                entity.world.playSound(null, entity.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
+                                break;
+                            }
+                            default:
+                                break;
+                        }
                     }
                 }
             });

@@ -35,6 +35,7 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> STOP_TIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
     public static final RegistryObject<SoundEvent> RESUME_TIME = SOUNDS.register("resumetime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "resumetime")));
     public static final RegistryObject<SoundEvent> MUDARUSH = SOUNDS.register("mudarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudarush")));
+    public static final RegistryObject<SoundEvent> THE_WORLD_TELEPORT = SOUNDS.register("the_world_teleport", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world_teleport")));
     public static final RegistryObject<SoundEvent> SPAWN_STAR_PLATINUM = SOUNDS.register("spawn_star_platinum", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_star_platinum")));
     public static final RegistryObject<SoundEvent> ORARUSH = SOUNDS.register("orarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "orarush")));
     public static final RegistryObject<SoundEvent> STAR_PLATINUM_THE_WORLD = SOUNDS.register("star_platinum_the_world", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_the_world")));
