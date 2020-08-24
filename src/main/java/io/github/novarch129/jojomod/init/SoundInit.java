@@ -59,4 +59,7 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_3 = SOUNDS.register("spawn_tusk_act_3", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_3")));
     public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_4 = SOUNDS.register("spawn_tusk_act_4", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_4")));
     public static final RegistryObject<SoundEvent> TUSK_ACT_4_ORA = SOUNDS.register("tusk_act_4_ora", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4_ora")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_1 = SOUNDS.register("spawn_echoes_act_1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_1")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_2 = SOUNDS.register("spawn_echoes_act_2", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_2")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_3 = SOUNDS.register("spawn_echoes_act_3", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_3")));
 }

@@ -77,6 +77,12 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.TUSK_ACT_3)))
                                 .then(Commands.literal("tusk_act_4")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.TUSK_ACT_4)))
+                                .then(Commands.literal("echoes_act_1")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_1)))
+                                .then(Commands.literal("echoes_act_2")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_2)))
+                                .then(Commands.literal("echoes_act_3")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_3)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())
@@ -144,6 +150,14 @@ public class StandCommand {
             }
             case Util.StandID.TUSK_ACT_3: {
                 standID = Util.StandID.TUSK_ACT_4;
+                break;
+            }
+            case Util.StandID.ECHOES_ACT_1: {
+                standID = Util.StandID.ECHOES_ACT_2;
+                break;
+            }
+            case Util.StandID.ECHOES_ACT_2: {
+                standID = Util.StandID.ECHOES_ACT_3;
                 break;
             }
         }

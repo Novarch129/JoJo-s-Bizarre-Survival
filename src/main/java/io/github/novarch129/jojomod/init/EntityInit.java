@@ -324,4 +324,16 @@ public class EntityInit {
                             .size(0.2f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4_punch").toString()));
 
+    public static final RegistryObject<EntityType<EchoesAct1Entity>> ECHOES_ACT_1 = ENTITY_TYPES
+            .register("echoes_act_1",
+                    () -> EntityType.Builder.create(EchoesAct1Entity::new, EntityClassification.CREATURE)
+                            .size(1.3f, 0.5f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct1AttackEntity>> ECHOES_ACT_1_ATTACK = ENTITY_TYPES
+            .register("echoes_act_1_attack",
+                    () -> EntityType.Builder.<EchoesAct1AttackEntity>create(EchoesAct1AttackEntity::new, EntityClassification.MISC)
+                            .size(0.3f, 0.3f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1_attack").toString()));
+
 }

@@ -26,6 +26,9 @@
   "item.jojomod.summon_tusk_act_2": "Tusk (Act 2)",
   "item.jojomod.summon_tusk_act_3": "Tusk (Act 3)",
   "item.jojomod.summon_tusk_act_4": "Tusk (Act 4)",
+  "item.jojomod.summon_echoes_act_1": "Echoes (Act 1)",
+  "item.jojomod.summon_echoes_act_2": "Echoes (Act 2)",
+  "item.jojomod.summon_echoes_act_3": "Echoes (Act 3)",
 
   "item.jojomod.canzoni_preferite": "Music Disc",
   "item.jojomod.the_emperor": "The Emperor",
@@ -91,6 +94,7 @@
   "entity.jojomod.tusk_act_2": "Tusk (Act 2)",
   "entity.jojomod.tusk_act_3": "Tusk (Act 3)",
   "entity.jojomod.tusk_act_4": "Tusk (Act 4)",
+  "entity.jojomod.echoes_act_1": "Echoes (Act 1)",
 
   "key.categories.jojomod": "JoJo's Bizarre Survival",
 

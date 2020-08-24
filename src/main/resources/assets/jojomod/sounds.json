@@ -439,5 +439,32 @@
         "steam": false
       }
     ]
+  },
+  "spawn_echoes_act_1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_1",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_echoes_act_2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_2",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_echoes_act_3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_3",
+        "steam": false
+      }
+    ]
   }
 }

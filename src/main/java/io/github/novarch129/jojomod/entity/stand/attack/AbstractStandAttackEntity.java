@@ -69,10 +69,10 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     public abstract <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel();
 
     /**
-     * Defines the range of a Stand attack, {@link Override} to change, default is 2.
+     * Defines the range of a Stand attack, {@link Override} to change, default is 1.
      */
     protected int getRange() {
-        return 2;
+        return 1;
     }
 
     protected boolean shouldMatchMaster() {
@@ -149,9 +149,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             arrowShake--;
         if (!inGround) {
             ticksInAir++;
-            if (ticksInAir >= getRange())
-                if (!world.isRemote)
-                    remove();
+            if (ticksInAir > getRange() && !world.isRemote)
+                remove();
             BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(getPositionVec(), getPositionVec().add(getMotion()), BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, this));
             EntityRayTraceResult entityRayTraceResult = null;
             EntityRayTraceResult result = rayTraceEntities(getPositionVec(), getPositionVec().add(getMotion()));
@@ -265,7 +264,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     @Nullable
     protected EntityRayTraceResult rayTraceEntities(Vec3d startVec, Vec3d endVec) {
         return ProjectileHelper.rayTraceEntities(world, this, startVec, endVec, getBoundingBox().expand(getMotion()).grow(1), (entity) ->
-                !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && (!entity.equals(shootingStand) || ticksInAir >= getRange()) && !entity.equals(standMaster));
+                !entity.isSpectator() && entity.isAlive() && entity.canBeCollidedWith() && (!entity.equals(shootingStand) || ticksInAir > getRange()) && !entity.equals(standMaster));
     }
 
     @Override

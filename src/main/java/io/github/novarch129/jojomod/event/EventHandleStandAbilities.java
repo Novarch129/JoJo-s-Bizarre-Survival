@@ -696,6 +696,12 @@ public class EventHandleStandAbilities {
     public static void livingTick(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
         StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            if (props.getSoundEffect() != 0) {
+                if (entity.world.rand.nextInt(40) == 1) {
+                    entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_ECHOES_ACT_3.get(), SoundCategory.BLOCKS, 1, 1);
+                    entity.attackEntityFrom(DamageSource.DROWN, 2);
+                }
+            }
             if (props.isRotating()) {
                 entity.rotationYaw += 30;
                 if (entity.rotationYaw > 180)

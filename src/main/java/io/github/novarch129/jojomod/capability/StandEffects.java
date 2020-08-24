@@ -30,6 +30,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private boolean bomb;
     private UUID standUser = UUID.fromString("c9362041-f5e8-447c-80a8-9db27a2646bb");
     private boolean rotating;
+    private byte soundEffect;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -57,6 +58,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putBoolean("bomb", instance.bomb);
                 nbt.putUniqueId("standUser", instance.standUser);
                 nbt.putBoolean("rotating", instance.rotating);
+                nbt.putByte("soundEffect", instance.soundEffect);
                 return nbt;
             }
 
@@ -69,6 +71,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.bomb = compoundNBT.getBoolean("bomb");
                 instance.standUser = compoundNBT.getUniqueId("standUser");
                 instance.rotating = compoundNBT.getBoolean("rotating");
+                instance.soundEffect = compoundNBT.getByte("soundEffect");
             }
         }, () -> new StandEffects(Null()));
     }
@@ -143,6 +146,15 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setRotating(boolean rotating) {
         this.rotating = rotating;
+        onDataUpdated();
+    }
+
+    public byte getSoundEffect() {
+        return soundEffect;
+    }
+
+    public void setSoundEffect(byte soundEffect) {
+        this.soundEffect = soundEffect;
         onDataUpdated();
     }
 
