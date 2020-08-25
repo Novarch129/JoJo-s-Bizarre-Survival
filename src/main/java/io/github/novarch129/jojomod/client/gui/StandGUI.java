@@ -45,8 +45,8 @@ public class StandGUI extends AbstractGui {
                 switch (standID) {
                     case Util.StandID.MADE_IN_HEAVEN: {
                         if (props.getAct() == 0) {
-                            if (timeLeft > 0 && cooldown <= 0)
-                                renderTimeValue(timeLeft);
+                            if (timeLeft > -1400)
+                                renderTimeValue(timeLeft + 1400);
                             else
                                 renderString("\"Heaven\" has begun!");
                         }
@@ -125,14 +125,20 @@ public class StandGUI extends AbstractGui {
             }
             switch (standID) {
                 default: {
-                    if (standID != Util.StandID.MADE_IN_HEAVEN)
-                        if (cooldown > 0)
-                            renderCooldown(cooldown);
+                    if (cooldown > 0)
+                        renderCooldown(cooldown);
                     break;
                 }
                 case Util.StandID.GOLD_EXPERIENCE: {
                     if (cooldown > 0 && transformed > 0)
                         renderCooldown(cooldown);
+                    break;
+                }
+                case Util.StandID.MADE_IN_HEAVEN: {
+                    if (cooldown > 0)
+                        renderString("Cooldown: " + cooldown / 20, 4, (props.getStandOn() ? 16 : 4));
+                    if (invulnerableTicks > 0)
+                        renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20), 4, props.getStandOn() ? 16 : 4);
                     break;
                 }
                 case Util.StandID.GER: {

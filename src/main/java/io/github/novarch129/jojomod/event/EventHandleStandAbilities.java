@@ -87,7 +87,7 @@ public class EventHandleStandAbilities {
                             player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
 
-            if (cooldown == 0.5)
+            if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
                 props.setTimeLeft(1000);
 
             if (standID == Util.StandID.GER)
@@ -105,10 +105,10 @@ public class EventHandleStandAbilities {
                 if (cooldown > 0)
                     props.setCooldown(props.getCooldown() - 0.5);
 
-                if (cooldown == 0.5)
+                if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
                     props.setTimeLeft(1000);
 
-                if (timeLeft < 1000 && cooldown <= 0)
+                if (timeLeft < 1000 && cooldown == 0)
                     props.setTimeLeft(props.getTimeLeft() + 0.5);
             }
 

@@ -75,6 +75,26 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             });
                                     break;
                                 }
+                                case MADE_IN_HEAVEN: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof MadeInHeavenEntity)
+                                            .filter(entity -> ((MadeInHeavenEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((MadeInHeavenEntity) entity).teleport();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((MadeInHeavenEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
+                                    break;
+                                }
                                 case KILLER_QUEEN: {
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KillerQueenEntity)
