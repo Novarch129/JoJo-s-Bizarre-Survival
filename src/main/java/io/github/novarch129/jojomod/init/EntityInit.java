@@ -297,19 +297,19 @@ public class EntityInit {
     public static final RegistryObject<EntityType<TuskAct1Entity>> TUSK_ACT_1 = ENTITY_TYPES
             .register("tusk_act_1",
                     () -> EntityType.Builder.create(TuskAct1Entity::new, EntityClassification.CREATURE)
-                            .size(0.9f, 1.5f)
+                            .size(0.9f, 1.6f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_1").toString()));
 
     public static final RegistryObject<EntityType<TuskAct2Entity>> TUSK_ACT_2 = ENTITY_TYPES
             .register("tusk_act_2",
                     () -> EntityType.Builder.create(TuskAct2Entity::new, EntityClassification.CREATURE)
-                            .size(0.9f, 1.5f)
+                            .size(0.9f, 1.85f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_2").toString()));
 
     public static final RegistryObject<EntityType<TuskAct3Entity>> TUSK_ACT_3 = ENTITY_TYPES
             .register("tusk_act_3",
                     () -> EntityType.Builder.create(TuskAct3Entity::new, EntityClassification.CREATURE)
-                            .size(0.9f, 1.5f)
+                            .size(0.9f, 1.9f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_3").toString()));
 
     public static final RegistryObject<EntityType<TuskAct4Entity>> TUSK_ACT_4 = ENTITY_TYPES
@@ -327,7 +327,7 @@ public class EntityInit {
     public static final RegistryObject<EntityType<EchoesAct1Entity>> ECHOES_ACT_1 = ENTITY_TYPES
             .register("echoes_act_1",
                     () -> EntityType.Builder.create(EchoesAct1Entity::new, EntityClassification.CREATURE)
-                            .size(1.3f, 0.5f)
+                            .size(1.3f, 2.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1").toString()));
 
     public static final RegistryObject<EntityType<EchoesAct1AttackEntity>> ECHOES_ACT_1_ATTACK = ENTITY_TYPES

@@ -29,6 +29,8 @@ import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
@@ -698,8 +700,42 @@ public class EventHandleStandAbilities {
         StandEffects.getLazyOptional(entity).ifPresent(props -> {
             if (props.getSoundEffect() != 0) {
                 if (entity.world.rand.nextInt(40) == 1) {
-                    entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_ECHOES_ACT_3.get(), SoundCategory.BLOCKS, 1, 1);
-                    entity.attackEntityFrom(DamageSource.DROWN, 2);
+                    SoundEvent soundEvent = SoundEvents.ENTITY_GENERIC_EXPLODE;
+                    switch (props.getSoundEffect()) {
+                        case 1: {
+                            soundEvent = SoundEvents.BLOCK_ANVIL_BREAK;
+                            break;
+                        }
+                        case 2: {
+                            soundEvent = SoundEvents.BLOCK_BELL_USE;
+                            break;
+                        }
+                        case 3: {
+                            soundEvent = SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST;
+                            break;
+                        }
+                        case 4: {
+                            soundEvent = SoundEvents.ENTITY_GENERIC_BURN;
+                            break;
+                        }
+                        case 6: {
+                            soundEvent = SoundEvents.BLOCK_GLASS_BREAK;
+                            break;
+                        }
+                        case 7: {
+                            soundEvent = SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON;
+                            break;
+                        }
+                    }
+                    if (props.getSoundEffect() != 2 && props.getSoundEffect() % 2 == 0) {
+                        for (int i = 0; i < 2; i++) {
+                            entity.world.playSound(null, entity.getPosition(), soundEvent, SoundCategory.BLOCKS, 1, 1);
+                            entity.attackEntityFrom(DamageSource.DROWN, 2);
+                        }
+                    } else {
+                        entity.world.playSound(null, entity.getPosition(), soundEvent, SoundCategory.BLOCKS, 1, 1);
+                        entity.attackEntityFrom(DamageSource.DROWN, 2);
+                    }
                 }
             }
             if (props.isRotating()) {

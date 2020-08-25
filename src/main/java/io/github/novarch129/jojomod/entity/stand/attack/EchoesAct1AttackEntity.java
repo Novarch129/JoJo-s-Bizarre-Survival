@@ -36,7 +36,10 @@ public class EchoesAct1AttackEntity extends AbstractStandAttackEntity {
                     props.setSoundEffect((byte) rand.nextInt(3));
                     break;
                 }
-                case 1:
+                case 1: {
+                    props.setSoundEffect((byte) 7);
+                    break;
+                }
                 case 2:
                 case 3: {
                     props.setSoundEffect((byte) (props.getSoundEffect() * 2));

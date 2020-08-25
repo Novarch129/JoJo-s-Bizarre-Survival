@@ -35,9 +35,7 @@ public class EchoesAct1Entity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> {
-                ability = props.getAbility();
-            });
+            Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);
