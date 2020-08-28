@@ -94,6 +94,7 @@ public class StandGUI extends AbstractGui {
                             renderString("Damage: " + damage + (damage == (act == 2 ? 15 : 26) ? " MAX DAMAGE" : ""), 4, act == 1 && props.getAbilityActive() ? 32 : 16);
                         if (props.getAbilityActive() && act == 0 && cooldown == 0)
                             renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
+                        break;
                     }
                     case Util.StandID.TUSK_ACT_4: {
                         renderString("Nails left: " + (10 - abilityUseCount));
@@ -120,6 +121,11 @@ public class StandGUI extends AbstractGui {
                             renderString("Damage: " + damage + (damage == maxDamage ? " MAX DAMAGE" : ""), 4, act == 1 && props.getAbilityActive() ? 32 : 16);
                         if (props.getAbilityActive() && act == 1 && cooldown == 0)
                             renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
+                        break;
+                    }
+                    case Util.StandID.ECHOES_ACT_2: {
+                        renderString("Sound effects left: " + (4 - abilityUseCount));
+                        break;
                     }
                 }
             }

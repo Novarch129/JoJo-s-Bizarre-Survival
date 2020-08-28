@@ -1,15 +1,15 @@
 package io.github.novarch129.jojomod.client.entity.model;
 
-import io.github.novarch129.jojomod.entity.stand.attack.EchoesAct1AttackEntity;
+import io.github.novarch129.jojomod.entity.stand.attack.EchoesSoundEntity;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
-public class EchoesAct1AttackModel extends AbstractStandAttackModel<EchoesAct1AttackEntity> {
+public class EchoesSoundModel extends AbstractStandAttackModel<EchoesSoundEntity> {
     private final ModelRenderer SoundEffect;
     private final ModelRenderer Line1;
     private final ModelRenderer Line3;
     private final ModelRenderer Line2;
 
-    public EchoesAct1AttackModel() {
+    public EchoesSoundModel() {
         textureWidth = 64;
         textureHeight = 32;
 

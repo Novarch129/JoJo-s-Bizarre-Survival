@@ -2,6 +2,8 @@ package io.github.novarch129.jojomod.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
@@ -16,20 +18,25 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -65,6 +72,37 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0); //The location of the End exit portal.
+    }
+
+    public static void activateEchoesAbility(World world, @Nonnull LivingEntity entity, BlockPos pos, StandChunkEffects chunkEffects, @Nullable PlayerEntity player, List<BlockPos> list) {
+        if (world.isRemote) return;
+        switch (new Random().nextInt(4)) {
+            case 0: {
+                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3, Explosion.Mode.DESTROY);
+                break;
+            }
+            case 1: {
+                entity.setMotion(entity.getMotion().add(0, 1, 0));
+                entity.velocityChanged = true;
+                break;
+            }
+            case 2: {
+                entity.attackEntityFrom(DamageSource.HOT_FLOOR, 2);
+                entity.setFire(10);
+                break;
+            }
+            case 3: {
+                entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 10);
+                break;
+            }
+            default:
+                break;
+        }
+        if (player != null) {
+            list.add(pos);
+            Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(stand.getAbilityUseCount() - 1));
+        }
+        world.removeBlock(pos, false);
     }
 
     public static boolean isClientHoldingShift() {
@@ -212,6 +250,8 @@ public class Util {
                 return new TuskAct4Entity(EntityInit.TUSK_ACT_4.get(), world);
             case StandID.ECHOES_ACT_1:
                 return new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
+            case StandID.ECHOES_ACT_2:
+                return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
         }
     }
 
@@ -404,6 +444,7 @@ public class Util {
         public static final ResourceLocation TUSK_ACT_4 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4.png");
         public static final ResourceLocation TUSK_ACT_4_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4_punch.png");
         public static final ResourceLocation ECHOES_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1.png");
-        public static final ResourceLocation ECHOES_ACT_1_ATTACK = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1_attack.png");
+        public static final ResourceLocation ECHOES_SOUND_WAVE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1_attack.png");
+        public static final ResourceLocation ECHOES_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_2.png");
     }
 }

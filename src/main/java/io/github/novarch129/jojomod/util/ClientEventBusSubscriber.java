@@ -98,6 +98,7 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_4_PUNCH.get(), StandAttackRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_1.get(), EchoesAct1Renderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_1_ATTACK.get(), StandAttackRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_2.get(), EchoesAct2Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_SOUND.get(), StandAttackRenderer::new);
     }
 }

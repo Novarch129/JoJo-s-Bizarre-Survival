@@ -282,6 +282,27 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                 .forEach(entity -> ((TuskAct3Entity) entity).teleport());
                                     break;
                                 }
+                                case ECHOES_ACT_2: {
+                                    if (props.getAct() == 0)
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct2Entity)
+                                                .filter(entity -> ((EchoesAct2Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> {
+                                                    switch (message.action) {
+                                                        case 1: {
+                                                            ((EchoesAct2Entity) entity).addSoundEffect();
+                                                            break;
+                                                        }
+                                                        case 2: {
+                                                            ((EchoesAct2Entity) entity).removeAllSoundEffects();
+                                                            break;
+                                                        }
+                                                        default:
+                                                            break;
+                                                    }
+                                                });
+                                    break;
+                                }
                                 default:
                                     break;
                             }

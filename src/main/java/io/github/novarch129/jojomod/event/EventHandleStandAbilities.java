@@ -48,9 +48,12 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
@@ -253,6 +256,18 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.TUSK_ACT_4: {
                     standName = "Tusk (Act 4)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_1: {
+                    standName = "Echoes (Act 1)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_2: {
+                    standName = "Echoes (Act 2)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_3: {
+                    standName = "Echoes (Act 3)";
                     break;
                 }
             }
@@ -610,11 +625,18 @@ public class EventHandleStandAbilities {
                         }
                         switch (props.getStandID()) {
                             case Util.StandID.KING_CRIMSON: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 1);
                                 entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
                                 break;
                             }
+                            case Util.StandID.STAR_PLATINUM:
                             case Util.StandID.THE_WORLD: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 1);
                                 entity.world.playSound(null, entity.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
+                                break;
+                            }
+                            case Util.StandID.MADE_IN_HEAVEN: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 5);
                                 break;
                             }
                             default:
@@ -668,17 +690,62 @@ public class EventHandleStandAbilities {
         World world = (World) event.getWorld();
         if (world.isRemote) return;
         Chunk chunk = world.getChunkAt(event.getPos());
-        StandChunkEffects.getLazyOptional(chunk).ifPresent(props ->
-                props.getBombs().forEach((uuid, blockPos) -> {
-                    if (blockPos.equals(event.getPos())) {
-                        PlayerEntity player = world.getPlayerByUuid(uuid);
-                        world.createExplosion(null, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 3, Explosion.Mode.DESTROY);
-                        Stand.getLazyOptional(player).ifPresent(stand -> {
-                            stand.setBlockPos(BlockPos.ZERO);
-                            stand.setAbilityUseCount(0);
-                        });
-                        props.removeBombPos(player);
-                    }
+        StandChunkEffects.getLazyOptional(chunk).ifPresent(props -> {
+            props.getBombs().forEach((uuid, blockPos) -> {
+                if (blockPos.equals(event.getPos())) {
+                    PlayerEntity player = world.getPlayerByUuid(uuid);
+                    world.createExplosion(null, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 3, Explosion.Mode.DESTROY);
+                    Stand.getLazyOptional(player).ifPresent(stand -> {
+                        stand.setBlockPos(BlockPos.ZERO);
+                        stand.setAbilityUseCount(0);
+                    });
+                    props.removeBombPos(player);
+                }
+            });
+            props.getSoundEffects().forEach((uuid, list) -> {
+                if (list.size() > 0) {
+                    List<BlockPos> removalList = new ArrayList<>();
+                    list.forEach(blockPos -> {
+                        if (blockPos.equals(event.getPos())) {
+                            PlayerEntity player = world.getPlayerByUuid(uuid);
+                            Util.activateEchoesAbility(world, event.getPlayer(), event.getPos(), props, player, removalList);
+                        }
+                    });
+                    list.removeAll(removalList);
+                }
+            });
+        });
+    }
+
+    @SubscribeEvent
+    public static void explosionEvent(ExplosionEvent.Detonate event) {
+        World world = event.getWorld();
+        if (world == null || world.isRemote) return;
+        event.getAffectedBlocks().forEach(blockPos ->
+                StandChunkEffects.getLazyOptional(world.getChunkAt(blockPos)).ifPresent(props -> {
+                    props.getBombs().forEach((uuid, pos) -> {
+                        if (pos.equals(blockPos)) {
+                            PlayerEntity player = world.getPlayerByUuid(uuid);
+                            Stand.getLazyOptional(player).ifPresent(stand -> {
+                                stand.setBlockPos(BlockPos.ZERO);
+                                stand.setAbilityUseCount(0);
+                            });
+                            props.removeBombPos(player);
+                        }
+                    });
+                    props.getSoundEffects().forEach((uuid, list) -> {
+                        if (list.size() > 0) {
+                            List<BlockPos> removalList = new ArrayList<>();
+                            list.forEach(pos -> {
+                                if (pos.equals(blockPos)) {
+                                    PlayerEntity player = world.getPlayerByUuid(uuid);
+                                    Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(stand.getAbilityUseCount() - 1));
+                                    removalList.add(pos);
+                                }
+                            });
+                            list.removeAll(removalList);
+                        }
+                    });
                 }));
     }
 
@@ -697,6 +764,7 @@ public class EventHandleStandAbilities {
     @SubscribeEvent
     public static void livingTick(LivingEvent.LivingUpdateEvent event) {
         LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof AbstractStandEntity) return;
         StandEffects.getLazyOptional(entity).ifPresent(props -> {
             if (props.getSoundEffect() != 0) {
                 if (entity.world.rand.nextInt(40) == 1) {
@@ -745,5 +813,16 @@ public class EventHandleStandAbilities {
                 entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 2);
             }
         });
+        StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->
+                props.getSoundEffects().forEach((uuid, list) -> {
+                    if (list.size() > 0) {
+                        List<BlockPos> removalList = new ArrayList<>();
+                        list.forEach(blockPos -> {
+                            if (blockPos.equals(entity.getPosition().add(0, -1, 0)))
+                                Util.activateEchoesAbility(entity.world, entity, blockPos, props, entity.world.getPlayerByUuid(uuid), removalList);
+                        });
+                        list.removeAll(removalList);
+                    }
+                }));
     }
 }

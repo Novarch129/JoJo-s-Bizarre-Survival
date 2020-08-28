@@ -155,7 +155,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 BlockPos position = master.getPosition().add(0, -1, 0);
                 props.setBlockPos(position);
                 StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.addBombPos(master, position));
-                master.sendStatusMessage(new StringTextComponent("Killer Queen has turned the block at X" + position.getX() + " Y" + position.getY() + " Z" + position.getX() + " into a bomb."), true);
+                master.sendStatusMessage(new StringTextComponent("Killer Queen has turned the block at X" + position.getX() + " Y" + position.getY() + " Z" + position.getZ() + " into a bomb."), true);
                 props.setAbilityUseCount(1);
             }
         });

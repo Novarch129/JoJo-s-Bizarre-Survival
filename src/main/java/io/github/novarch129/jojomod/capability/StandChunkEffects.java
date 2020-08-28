@@ -1,5 +1,7 @@
 package io.github.novarch129.jojomod.capability;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.network.message.server.SSyncStandChunkEffectCapabilityPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -15,11 +17,13 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
@@ -31,6 +35,7 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
     private final World world;
     private LazyOptional<StandChunkEffects> holder = LazyOptional.of(() -> new StandChunkEffects(getWorld(), getChunk()));
     private Map<UUID, BlockPos> bombs = new ConcurrentHashMap<>();
+    private Map<UUID, ArrayBlockingQueue<BlockPos>> soundEffects = new ConcurrentHashMap<>();
 
     public StandChunkEffects(World world, ChunkPos chunk) {
         this.world = world;
@@ -50,16 +55,32 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
             @Override
             public INBT writeNBT(Capability<StandChunkEffects> capability, StandChunkEffects instance, Direction side) {
                 CompoundNBT nbt = new CompoundNBT();
-                ListNBT listNBT = new ListNBT();
+                ListNBT bombList = new ListNBT();
                 instance.bombs.forEach(((uuid, pos) -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
                     compoundNBT.putUniqueId("standUser", uuid);
                     compoundNBT.putDouble("blockPosX", pos.getX());
                     compoundNBT.putDouble("blockPosY", pos.getY());
                     compoundNBT.putDouble("blockPosZ", pos.getZ());
-                    listNBT.add(compoundNBT);
+                    bombList.add(compoundNBT);
                 }));
-                nbt.put("bombs", listNBT);
+                nbt.put("bombs", bombList);
+                ListNBT soundList = new ListNBT();
+                instance.soundEffects.forEach(((uuid, list) -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putUniqueId("standUser", uuid);
+                    ListNBT listNBT = new ListNBT();
+                    list.forEach(pos -> {
+                        CompoundNBT compound = new CompoundNBT();
+                        compound.putDouble("blockPosX", pos.getX());
+                        compound.putDouble("blockPosY", pos.getY());
+                        compound.putDouble("blockPosZ", pos.getZ());
+                        listNBT.add(compound);
+                    });
+                    compoundNBT.put("blockPosList", listNBT);
+                    soundList.add(compoundNBT);
+                }));
+                nbt.put("sounds", soundList);
                 return nbt;
             }
 
@@ -69,6 +90,16 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
                 compoundNBT.getList("bombs", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
                     if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("blockPosX"))
                         instance.bombs.put(compoundNBT.getUniqueId("standUser"), new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
+                });
+                compoundNBT.getList("sounds", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("standUser")) {
+                        ArrayBlockingQueue<BlockPos> list = new ArrayBlockingQueue<>(1000);
+                        ((CompoundNBT) compound).getList("blockPosList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
+                            if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("blockPosX"))
+                                list.add(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
+                        });
+                        instance.soundEffects.put(compoundNBT.getUniqueId("standUser"), list);
+                    }
                 });
             }
         }, () -> new StandChunkEffects(Null(), Null()));
@@ -96,7 +127,32 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
         return bombs;
     }
 
+    public Map<UUID, ArrayBlockingQueue<BlockPos>> getSoundEffects() {
+        return soundEffects;
+    }
+
+    public void addSoundEffect(PlayerEntity player, BlockPos pos) {
+        if (!soundEffects.containsKey(player.getUniqueID())) {
+            ArrayBlockingQueue<BlockPos> list = new ArrayBlockingQueue<>(1000);
+            list.add(pos);
+            soundEffects.put(player.getUniqueID(), list);
+        } else
+            soundEffects.get(player.getUniqueID()).add(pos);
+        onDataUpdated();
+    }
+
+    public void removeSoundEffect(PlayerEntity player, BlockPos pos) {
+        soundEffects.get(player.getUniqueID()).remove(pos);
+        onDataUpdated();
+    }
+
     private void onDataUpdated() {
+        if (world.isRemote) return;
+        if (world.getChunkProvider().isChunkLoaded(chunk)) {
+            Chunk chunk = world.getChunk(this.chunk.x, this.chunk.z);
+            chunk.markDirty();
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), new SSyncStandChunkEffectCapabilityPacket(this));
+        }
     }
 
     @Nonnull

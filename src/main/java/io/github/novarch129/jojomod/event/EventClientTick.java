@@ -3,6 +3,7 @@ package io.github.novarch129.jojomod.event;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
@@ -15,7 +16,6 @@ import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.OreBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -29,6 +29,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -200,8 +201,8 @@ public class EventClientTick {
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
             //Code below is *very* experimental, not final in any way.
             if (JojoBizarreSurvivalConfig.CLIENT.kingCrimsonOreRendering.get() && props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn()) {
-                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(50, -100, 50))
-                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
+                BlockPos.getAllInBox(player.getPosition().add(10, 10, 10), player.getPosition().add(-10, -10, -10))
+                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock().getTags().contains(Tags.Blocks.ORES.getId()))
                         .forEach(blockPos ->
                                 Util.renderBlockStatic(
                                         matrixStack,
@@ -213,8 +214,10 @@ public class EventClientTick {
                                         false,
                                         RenderType.getOutline(new ResourceLocation("minecraft", "textures/block/diamond_ore.png"))
                                 ));
-                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(-50, -100, 50))
-                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
+            }
+            if (props.getStandID() == Util.StandID.ECHOES_ACT_2 || props.getStandID() == Util.StandID.ECHOES_ACT_3) {
+                BlockPos.getAllInBox(player.getPosition().add(10, 10, 10), player.getPosition().add(-10, -10, -10))
+                        .filter(blockPos -> StandChunkEffects.getCapabilityFromChunk(world.getChunkAt(blockPos)).getSoundEffects().get(player.getUniqueID()) != null)
                         .forEach(blockPos ->
                                 Util.renderBlockStatic(
                                         matrixStack,
@@ -226,21 +229,10 @@ public class EventClientTick {
                                         false,
                                         RenderType.getOutline(new ResourceLocation("minecraft", "textures/block/diamond_ore.png"))
                                 ));
-                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(-50, -100, 50))
-                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
-                        .forEach(blockPos ->
-                                Util.renderBlockStatic(
-                                        matrixStack,
-                                        IRenderTypeBuffer.getImpl(Tessellator.getInstance().getBuffer()),
-                                        world,
-                                        Blocks.DIAMOND_ORE.getDefaultState(),
-                                        blockPos,
-                                        projectedView,
-                                        false,
-                                        RenderType.getOutline(new ResourceLocation("minecraft", "textures/block/diamond_ore.png"))
-                                ));
-                BlockPos.getAllInBox(player.getPosition(), player.getPosition().add(-50, -100, -50))
-                        .filter(blockPos -> player.world.getBlockState(blockPos).getBlock() instanceof OreBlock)
+            }
+            if (props.getStandID() == Util.StandID.KILLER_QUEEN) {
+                BlockPos.getAllInBox(player.getPosition().add(10, 10, 10), player.getPosition().add(-10, -10, -10))
+                        .filter(blockPos -> StandChunkEffects.getCapabilityFromChunk(world.getChunkAt(blockPos)).getBombs().containsKey(player.getUniqueID()))
                         .forEach(blockPos ->
                                 Util.renderBlockStatic(
                                         matrixStack,

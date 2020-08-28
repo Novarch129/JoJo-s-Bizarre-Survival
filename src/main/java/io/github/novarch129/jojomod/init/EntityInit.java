@@ -330,10 +330,15 @@ public class EntityInit {
                             .size(1.3f, 2.5f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1").toString()));
 
-    public static final RegistryObject<EntityType<EchoesAct1AttackEntity>> ECHOES_ACT_1_ATTACK = ENTITY_TYPES
-            .register("echoes_act_1_attack",
-                    () -> EntityType.Builder.<EchoesAct1AttackEntity>create(EchoesAct1AttackEntity::new, EntityClassification.MISC)
+    public static final RegistryObject<EntityType<EchoesSoundEntity>> ECHOES_SOUND = ENTITY_TYPES
+            .register("echoes_sound",
+                    () -> EntityType.Builder.<EchoesSoundEntity>create(EchoesSoundEntity::new, EntityClassification.MISC)
                             .size(0.3f, 0.3f)
-                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1_attack").toString()));
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_sound").toString()));
 
+    public static final RegistryObject<EntityType<EchoesAct2Entity>> ECHOES_ACT_2 = ENTITY_TYPES
+            .register("echoes_act_2",
+                    () -> EntityType.Builder.create(EchoesAct2Entity::new, EntityClassification.CREATURE)
+                            .size(1.3f, 1.9f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_2").toString()));
 }
