@@ -60,12 +60,13 @@ public class EchoesAct2Entity extends AbstractStandEntity {
         Stand.getLazyOptional(master).ifPresent(props ->
                 props.getAffectedChunkList().forEach(pos -> {
                     Chunk chunk = world.getChunk(pos.x, pos.z);
-                    StandChunkEffects.getLazyOptional(chunk).ifPresent(chunkEffects -> {
-                        if (chunkEffects.getSoundEffects().containsKey(master.getUniqueID())) {
-                            chunkEffects.getSoundEffects().remove(master.getUniqueID());
-                            props.setAbilityUseCount(props.getAbilityUseCount() - 1);
-                        }
-                    });
+                    if (world.getChunkProvider().isChunkLoaded(pos))
+                        StandChunkEffects.getLazyOptional(chunk).ifPresent(chunkEffects -> {
+                            if (chunkEffects.getSoundEffects().containsKey(master.getUniqueID())) {
+                                chunkEffects.getSoundEffects().remove(master.getUniqueID());
+                                props.setAbilityUseCount(props.getAbilityUseCount() - 1);
+                            }
+                        });
                 }));
     }
 
@@ -75,7 +76,7 @@ public class EchoesAct2Entity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
-                if (props.getAct() == props.getMaxAct() - 1) {
+                if (props.getAct() == props.getMaxAct() - 1 && props.getStandOn()) {
                     remove();
                     EchoesAct1Entity echoesAct1Entity = new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
                     Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);

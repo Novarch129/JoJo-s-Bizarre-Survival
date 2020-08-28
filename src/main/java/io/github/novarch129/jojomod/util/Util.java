@@ -88,7 +88,7 @@ public class Util {
             }
             case 2: {
                 entity.attackEntityFrom(DamageSource.HOT_FLOOR, 2);
-                entity.setFire(10);
+                entity.setFire(4);
                 break;
             }
             case 3: {
@@ -252,6 +252,8 @@ public class Util {
                 return new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
             case StandID.ECHOES_ACT_2:
                 return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
+            case StandID.ECHOES_ACT_3:
+                return new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
         }
     }
 
@@ -446,5 +448,7 @@ public class Util {
         public static final ResourceLocation ECHOES_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1.png");
         public static final ResourceLocation ECHOES_SOUND_WAVE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1_attack.png");
         public static final ResourceLocation ECHOES_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_2.png");
+        public static final ResourceLocation ECHOES_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3.png");
+        public static final ResourceLocation ECHOES_ACT_3_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3_punch.png");
     }
 }

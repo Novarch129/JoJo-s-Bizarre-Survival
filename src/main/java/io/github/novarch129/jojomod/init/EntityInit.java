@@ -341,4 +341,16 @@ public class EntityInit {
                     () -> EntityType.Builder.create(EchoesAct2Entity::new, EntityClassification.CREATURE)
                             .size(1.3f, 1.9f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_2").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct3Entity>> ECHOES_ACT_3 = ENTITY_TYPES
+            .register("echoes_act_3",
+                    () -> EntityType.Builder.create(EchoesAct3Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.8f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_3").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct3PunchEntity>> ECHOES_ACT_3_PUNCH = ENTITY_TYPES
+            .register("echoes_act_3_punch",
+                    () -> EntityType.Builder.<EchoesAct3PunchEntity>create(EchoesAct3PunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_3_punch").toString()));
 }

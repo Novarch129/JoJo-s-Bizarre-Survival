@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.DefaultStandAttackModel;
+import io.github.novarch129.jojomod.capability.StandEffects;
+import io.github.novarch129.jojomod.client.entity.model.EchoesAct3PunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -8,7 +9,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -17,23 +17,24 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.World;
 
-public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
-    public float damage = 3;
-
-    public KingCrimsonPunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
+public class EchoesAct3PunchEntity extends AbstractStandAttackEntity {
+    public EchoesAct3PunchEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
-    public KingCrimsonPunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
-        super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn, shooter, player);
+    public EchoesAct3PunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
+        super(EntityInit.ECHOES_ACT_3_PUNCH.get(), worldIn, shooter, player);
     }
 
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), damage);
-        if (damage > 3.5f && entity instanceof LivingEntity)
-            ((LivingEntity) entity).knockBack(this, damage / 5, getPosX() - entity.getPosX(), getPosZ() - entity.getPosZ());
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3);
+        StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            props.setThreeFreeze(shootingStand.ability);
+            props.setStandUser(standMaster.getUniqueID());
+        });
+        StandEffects.getLazyOptional(standMaster).ifPresent(props -> props.setThreeFreeze(false));
         entity.hurtResistantTime = 0;
     }
 
@@ -50,16 +51,16 @@ public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
 
     @Override
     protected int getRange() {
-        return (int) (2 + damage / 13);
+        return 2;
     }
 
     @Override
     public ResourceLocation getEntityTexture() {
-        return Util.ResourceLocations.KING_CRIMSON_PUNCH;
+        return Util.ResourceLocations.ECHOES_ACT_3_PUNCH;
     }
 
     @Override
     public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return new DefaultStandAttackModel<>();
+        return Util.cast(new EchoesAct3PunchModel());
     }
 }

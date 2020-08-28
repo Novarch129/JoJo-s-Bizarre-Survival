@@ -5,7 +5,7 @@ import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.entity.model.EchoesSoundModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
-import io.github.novarch129.jojomod.entity.stand.EchoesAct1Entity;
+import io.github.novarch129.jojomod.entity.stand.EchoesAct2Entity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
@@ -59,7 +59,7 @@ public class EchoesSoundEntity extends AbstractStandAttackEntity {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
         if (shootingStand == null) return;
-        if (shootingStand instanceof EchoesAct1Entity) {
+        if (!(shootingStand instanceof EchoesAct2Entity)) {
             if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 4) {
                 world.removeBlock(pos, false);
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());

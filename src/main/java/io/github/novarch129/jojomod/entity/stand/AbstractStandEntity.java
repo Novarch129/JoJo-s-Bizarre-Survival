@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
@@ -185,6 +186,13 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
                     remove();
                 }
             });
+            StandEffects.getLazyOptional(this).ifPresent(props -> {
+                if (props.isThreeFreeze()) {
+                    master.setMotion(0, getMotion().getY(), 0);
+                    master.velocityChanged = true;
+                }
+            });
+
             dodgeAttacks();
         }
     }

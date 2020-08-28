@@ -100,5 +100,7 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_1.get(), EchoesAct1Renderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_2.get(), EchoesAct2Renderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_SOUND.get(), StandAttackRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_3.get(), EchoesAct3Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_3_PUNCH.get(), StandAttackRenderer::new);
     }
 }

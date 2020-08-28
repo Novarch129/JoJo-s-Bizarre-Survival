@@ -293,11 +293,11 @@ public class TheWorldEntity extends AbstractStandEntity {
             });
     }
 
-    public void teleport() {
+    public void teleport(double multiplier) {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() == 0) {
-                Vec3d position = master.getLookVec().mul(7, 1, 7).add(master.getPositionVec());
+                Vec3d position = master.getLookVec().mul(7 * multiplier, 1, 7 * multiplier).add(master.getPositionVec());
                 for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
                     position = position.add(0, 0.5, 0);
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());

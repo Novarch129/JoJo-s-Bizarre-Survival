@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
@@ -96,6 +97,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     break;
                                 }
                                 case KILLER_QUEEN: {
+                                    if (StandEffects.getCapabilityFromEntity(sender).isThreeFreeze()) return;
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().equals(sender))
@@ -157,7 +159,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> {
                                                 switch (message.action) {
                                                     case 1: {
-                                                        ((TheWorldEntity) entity).teleport();
+                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 0.5 : 1);
                                                         break;
                                                     }
                                                     case 2: {
@@ -301,6 +303,33 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                             break;
                                                     }
                                                 });
+                                    break;
+                                }
+                                case ECHOES_ACT_3: {
+                                    if (props.getAct() == 0) {
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct3Entity)
+                                                .filter(entity -> ((EchoesAct3Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> ((EchoesAct3Entity) entity).barrier());
+                                    } else if (props.getAct() == props.getMaxAct() - 2) {
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct2Entity)
+                                                .filter(entity -> ((EchoesAct2Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> {
+                                                    switch (message.action) {
+                                                        case 1: {
+                                                            ((EchoesAct2Entity) entity).addSoundEffect();
+                                                            break;
+                                                        }
+                                                        case 2: {
+                                                            ((EchoesAct2Entity) entity).removeAllSoundEffects();
+                                                            break;
+                                                        }
+                                                        default:
+                                                            break;
+                                                    }
+                                                });
+                                    }
                                     break;
                                 }
                                 default:

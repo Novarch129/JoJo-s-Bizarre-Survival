@@ -812,6 +812,24 @@ public class EventHandleStandAbilities {
                     entity.rotationYaw = -180;
                 entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 2);
             }
+            if (props.isThreeFreeze()) {
+                PlayerEntity playerEntity = entity.world.getPlayerByUuid(props.getStandUser());
+                if (playerEntity == null) return;
+                float distance = entity.getDistance(playerEntity);
+                if (distance < 2)
+                    entity.setMotion(0, -1000, 0);
+                else if (distance < 3)
+                    entity.setMotion(0, -100, 0);
+                else if (distance < 6)
+                    entity.setMotion(0, -50, 0);
+                else if (distance < 10)
+                    entity.setMotion(0, -10, 0);
+                else if (distance < 15)
+                    entity.setMotion(0, -5, 0);
+                else
+                    return;
+                entity.velocityChanged = true;
+            }
         });
         StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->
                 props.getSoundEffects().forEach((uuid, list) -> {

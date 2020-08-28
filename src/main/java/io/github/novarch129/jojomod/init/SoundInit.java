@@ -62,4 +62,5 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_1 = SOUNDS.register("spawn_echoes_act_1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_1")));
     public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_2 = SOUNDS.register("spawn_echoes_act_2", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_2")));
     public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_3 = SOUNDS.register("spawn_echoes_act_3", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_3")));
+    public static final RegistryObject<SoundEvent> THREE_FREEZE = SOUNDS.register("three_freeze", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "three_freeze")));
 }

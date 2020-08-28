@@ -10,7 +10,7 @@
 ## A mod that adds Stands from JoJo's Bizarre Adventure to Minecraft.
 
 ### List of planned Stands:
-- [ ] Tusk
+- [x] Tusk
 - [x] Dirty Deeds Done Dirt Cheap
 - [x] 20th Century Boy
 - [x] Whitesnake
@@ -29,7 +29,7 @@
 - [x] Crazy Diamond
 - [x] Killer Queen
 - [x] The Hand
-- [ ] Echoes
+- [x] Echoes
 - [x] 「THE WORLD」
 - [x] Star Platinum
 - [x] Magician's Red

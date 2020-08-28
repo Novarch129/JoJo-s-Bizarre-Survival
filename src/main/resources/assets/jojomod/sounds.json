@@ -466,5 +466,14 @@
         "steam": false
       }
     ]
+  },
+  "three_freeze": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:three_freeze",
+        "steam": false
+      }
+    ]
   }
 }

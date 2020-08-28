@@ -123,8 +123,10 @@ public class StandGUI extends AbstractGui {
                             renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
                         break;
                     }
+                    case Util.StandID.ECHOES_ACT_3:
                     case Util.StandID.ECHOES_ACT_2: {
-                        renderString("Sound effects left: " + (4 - abilityUseCount));
+                        if (act == props.getAct() - 2)
+                            renderString("Sound effects left: " + (4 - abilityUseCount), 4, cooldown > 0 ? 16 : 4);
                         break;
                     }
                 }

@@ -39,8 +39,6 @@ public class EchoesAct1Entity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                ability = props.getAbility();
-
                 if (props.getAct() == 0 && props.getStandOn()) {
                     switch (props.getStandID()) {
                         case Util.StandID.ECHOES_ACT_2: {
@@ -54,6 +52,13 @@ public class EchoesAct1Entity extends AbstractStandEntity {
                             break;
                         }
                         case Util.StandID.ECHOES_ACT_3: {
+                            remove();
+                            EchoesAct3Entity echoesAct3Entity = new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
+                            Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);
+                            echoesAct3Entity.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), master.rotationYaw, master.rotationPitch);
+                            echoesAct3Entity.setMaster(master);
+                            echoesAct3Entity.setMasterUUID(master.getUniqueID());
+                            world.addEntity(echoesAct3Entity);
                             break;
                         }
                         default:
