@@ -264,12 +264,6 @@ public class EntityInit {
                             .size(1.2f, 2.7f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy").toString()));
 
-    public static final RegistryObject<EntityType<TwentiethCenturyBoyPunchEntity>> TWENTIETH_CENTURY_BOY_PUNCH = ENTITY_TYPES
-            .register("twentieth_century_boy_punch",
-                    () -> EntityType.Builder.<TwentiethCenturyBoyPunchEntity>create(TwentiethCenturyBoyPunchEntity::new, EntityClassification.MISC)
-                            .size(0.2f, 0.2f)
-                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "twentieth_century_boy_punch").toString()));
-
     public static final RegistryObject<EntityType<TheGratefulDeadEntity>> THE_GRATEFUL_DEAD = ENTITY_TYPES
             .register("the_grateful_dead",
                     () -> EntityType.Builder.create(TheGratefulDeadEntity::new, EntityClassification.CREATURE)
@@ -293,4 +287,70 @@ public class EntityInit {
                     () -> EntityType.Builder.<StickyFingersPunchEntity>create(StickyFingersPunchEntity::new, EntityClassification.MISC)
                             .size(0.2f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "sticky_fingers_punch").toString()));
+
+    public static final RegistryObject<EntityType<NailBulletEntity>> NAIL_BULLET = ENTITY_TYPES
+            .register("nail_bullet",
+                    () -> EntityType.Builder.<NailBulletEntity>create(NailBulletEntity::new, EntityClassification.MISC)
+                            .size(0.1f, 0.1f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "nail_bullet").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct1Entity>> TUSK_ACT_1 = ENTITY_TYPES
+            .register("tusk_act_1",
+                    () -> EntityType.Builder.create(TuskAct1Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.6f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_1").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct2Entity>> TUSK_ACT_2 = ENTITY_TYPES
+            .register("tusk_act_2",
+                    () -> EntityType.Builder.create(TuskAct2Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.85f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_2").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct3Entity>> TUSK_ACT_3 = ENTITY_TYPES
+            .register("tusk_act_3",
+                    () -> EntityType.Builder.create(TuskAct3Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.9f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_3").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct4Entity>> TUSK_ACT_4 = ENTITY_TYPES
+            .register("tusk_act_4",
+                    () -> EntityType.Builder.create(TuskAct4Entity::new, EntityClassification.CREATURE)
+                            .size(1.5f, 2.4f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4").toString()));
+
+    public static final RegistryObject<EntityType<TuskAct4PunchEntity>> TUSK_ACT_4_PUNCH = ENTITY_TYPES
+            .register("tusk_act_4_punch",
+                    () -> EntityType.Builder.<TuskAct4PunchEntity>create(TuskAct4PunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4_punch").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct1Entity>> ECHOES_ACT_1 = ENTITY_TYPES
+            .register("echoes_act_1",
+                    () -> EntityType.Builder.create(EchoesAct1Entity::new, EntityClassification.CREATURE)
+                            .size(1.3f, 2.5f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_1").toString()));
+
+    public static final RegistryObject<EntityType<EchoesSoundEntity>> ECHOES_SOUND = ENTITY_TYPES
+            .register("echoes_sound",
+                    () -> EntityType.Builder.<EchoesSoundEntity>create(EchoesSoundEntity::new, EntityClassification.MISC)
+                            .size(0.3f, 0.3f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_sound").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct2Entity>> ECHOES_ACT_2 = ENTITY_TYPES
+            .register("echoes_act_2",
+                    () -> EntityType.Builder.create(EchoesAct2Entity::new, EntityClassification.CREATURE)
+                            .size(1.3f, 1.9f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_2").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct3Entity>> ECHOES_ACT_3 = ENTITY_TYPES
+            .register("echoes_act_3",
+                    () -> EntityType.Builder.create(EchoesAct3Entity::new, EntityClassification.CREATURE)
+                            .size(0.9f, 1.8f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_3").toString()));
+
+    public static final RegistryObject<EntityType<EchoesAct3PunchEntity>> ECHOES_ACT_3_PUNCH = ENTITY_TYPES
+            .register("echoes_act_3_punch",
+                    () -> EntityType.Builder.<EchoesAct3PunchEntity>create(EchoesAct3PunchEntity::new, EntityClassification.MISC)
+                            .size(0.2f, 0.2f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "echoes_act_3_punch").toString()));
 }

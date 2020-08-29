@@ -1,8 +1,10 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.AerosmithBulletEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
+import io.github.novarch129.jojomod.network.message.server.SAerosmithPacket;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
@@ -10,6 +12,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @SuppressWarnings("ConstantConditions")
 public class AerosmithEntity extends AbstractStandEntity {
@@ -63,8 +66,11 @@ public class AerosmithEntity extends AbstractStandEntity {
         setMotion(getMotion().getX(), 0, getMotion().getZ());
         if (master != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                if (ability != props.getAbility())
+                if (ability != props.getAbility()) {
+                    if (ability && !world.isRemote)
+                        JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SAerosmithPacket(getEntityId(), (byte) 0));
                     ability = props.getAbility();
+                }
                 if (ability)
                     if (props.getCooldown() > 0)
                         props.setCooldown(props.getCooldown() - 1);
@@ -99,5 +105,12 @@ public class AerosmithEntity extends AbstractStandEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
+        if (!world.isRemote)
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SAerosmithPacket(getEntityId(), (byte) 0));
     }
 }

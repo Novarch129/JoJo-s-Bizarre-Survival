@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.command.impl.StandCommand;
@@ -63,6 +64,7 @@ public class JojoBizarreSurvival {
         Stand.register();
         Timestop.register();
         StandEffects.register();
+        StandChunkEffects.register();
         PacketHandler.register();
     }
 

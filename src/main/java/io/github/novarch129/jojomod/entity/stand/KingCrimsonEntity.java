@@ -7,6 +7,7 @@ import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
 import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
+import io.github.novarch129.jojomod.util.IChargeable;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -27,7 +28,7 @@ import net.minecraft.world.World;
  * You shouldn't be surprised if you're confused by this code, even I can barely read it now.
  */
 @SuppressWarnings("ConstantConditions")
-public class KingCrimsonEntity extends AbstractStandEntity {
+public class KingCrimsonEntity extends AbstractStandEntity implements IChargeable {
     private int punchChargeTicks;
     private int prevPunchChargeTicks;
 
@@ -44,21 +45,33 @@ public class KingCrimsonEntity extends AbstractStandEntity {
     public void attack(boolean special) {
     }
 
-    public void setPunchChargeTicks(int punchChargeTicks) {
-        this.prevPunchChargeTicks = this.punchChargeTicks;
-        this.punchChargeTicks = punchChargeTicks;
-    }
-
-    public void chargePunch(boolean isCharging) {
+    @Override
+    public void chargeAttack(boolean isCharging) {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             props.setCharging(isCharging);
             if (isCharging && punchChargeTicks <= 200) {
-                setPunchChargeTicks(punchChargeTicks + 1);
+                setChargeTicks(punchChargeTicks + 1);
                 props.setStandDamage(2.95f + punchChargeTicks / 20f);
             } else if (!isCharging)
-                setPunchChargeTicks(0);
+                setChargeTicks(0);
         });
+    }
+
+    @Override
+    public int getChargeTicks() {
+        return punchChargeTicks;
+    }
+
+    @Override
+    public void setChargeTicks(int chargeTicks) {
+        this.prevPunchChargeTicks = this.punchChargeTicks;
+        this.punchChargeTicks = chargeTicks;
+    }
+
+    @Override
+    public int getPrevChargeTicks() {
+        return prevPunchChargeTicks;
     }
 
     public void epitaph() {
@@ -87,7 +100,7 @@ public class KingCrimsonEntity extends AbstractStandEntity {
         master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
         Stand.getLazyOptional(master).ifPresent(props -> {
             ability = !(props.getCooldown() > 0);
-            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801);
+            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801 && props.getAbility());
 
             if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
                 if (punchChargeTicks == 0 && punchChargeTicks != prevPunchChargeTicks) {
@@ -109,12 +122,11 @@ public class KingCrimsonEntity extends AbstractStandEntity {
                                             position.getZ() + ((rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()) / 2),
                                             d0, d1, d2);
                                 }
-                            } else {
-                                this.world.setEntityState(this, (byte) 20);
-                            }
+                            } else
+                                world.setEntityState(this, (byte) 20);
                         }
                     }
-                    kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.05f);
+                    kingCrimsonPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3 + kingCrimsonPunchEntity.damage / 6.5f, 0.0001f);
                     if (!world.isRemote)
                         world.addEntity(kingCrimsonPunchEntity);
                 }

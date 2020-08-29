@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
@@ -23,25 +24,36 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.item.HoneyBottleItem;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.GameType;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("ConstantConditions")
@@ -80,7 +92,7 @@ public class EventHandleStandAbilities {
                             player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
 
-            if (cooldown == 0.5)
+            if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
                 props.setTimeLeft(1000);
 
             if (standID == Util.StandID.GER)
@@ -98,10 +110,10 @@ public class EventHandleStandAbilities {
                 if (cooldown > 0)
                     props.setCooldown(props.getCooldown() - 0.5);
 
-                if (cooldown == 0.5)
+                if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
                     props.setTimeLeft(1000);
 
-                if (timeLeft < 1000 && cooldown <= 0)
+                if (timeLeft < 1000 && cooldown == 0)
                     props.setTimeLeft(props.getTimeLeft() + 0.5);
             }
 
@@ -228,6 +240,34 @@ public class EventHandleStandAbilities {
                 }
                 case Util.StandID.STICKY_FINGERS: {
                     standName = "Sticky Fingers";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_1: {
+                    standName = "Tusk (Act 1)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_2: {
+                    standName = "Tusk (Act 2)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_3: {
+                    standName = "Tusk (Act 3)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_4: {
+                    standName = "Tusk (Act 4)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_1: {
+                    standName = "Echoes (Act 1)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_2: {
+                    standName = "Echoes (Act 2)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_3: {
+                    standName = "Echoes (Act 3)";
                     break;
                 }
             }
@@ -574,16 +614,34 @@ public class EventHandleStandAbilities {
                                     entity1.attackEntityFrom(event.getSource(), event.getAmount() / 1.4f);
                                 });
                     event.setCanceled(true);
-                } else if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getInvulnerableTicks() > 0) {
+                } else if (props.getInvulnerableTicks() > 0) {
                     event.setCanceled(true);
                     Entity source = event.getSource().getTrueSource();
                     if (source != null) {
                         Vec3d pos = source.getLookVec().mul(-0.5, 1, -0.5).add(source.getPositionVec());
                         if (!entity.world.isRemote) {
                             entity.setPositionAndUpdate(pos.getX(), pos.getY(), pos.getZ());
-                            entity.lookAt(EntityAnchorArgument.Type.EYES, source.getPositionVec());
+                            entity.lookAt(EntityAnchorArgument.Type.FEET, source.getPositionVec());
                         }
-                        entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                        switch (props.getStandID()) {
+                            case Util.StandID.KING_CRIMSON: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 1);
+                                entity.world.playSound(null, entity.getPosition(), SoundInit.SPAWN_KING_CRIMSON.get(), SoundCategory.VOICE, 1, 1);
+                                break;
+                            }
+                            case Util.StandID.STAR_PLATINUM:
+                            case Util.StandID.THE_WORLD: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 1);
+                                entity.world.playSound(null, entity.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
+                                break;
+                            }
+                            case Util.StandID.MADE_IN_HEAVEN: {
+                                source.attackEntityFrom(DamageSource.OUT_OF_WORLD, 5);
+                                break;
+                            }
+                            default:
+                                break;
+                        }
                     }
                 }
             });
@@ -624,5 +682,165 @@ public class EventHandleStandAbilities {
                 PlayerEntity player = (PlayerEntity) event.getEntityLiving();
                 player.noClip = props.getNoClip();
             });
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        if (!(event.getWorld() instanceof World)) return;
+        World world = (World) event.getWorld();
+        if (world.isRemote) return;
+        Chunk chunk = world.getChunkAt(event.getPos());
+        StandChunkEffects.getLazyOptional(chunk).ifPresent(props -> {
+            props.getBombs().forEach((uuid, blockPos) -> {
+                if (blockPos.equals(event.getPos())) {
+                    PlayerEntity player = world.getPlayerByUuid(uuid);
+                    world.createExplosion(null, event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 3, Explosion.Mode.DESTROY);
+                    Stand.getLazyOptional(player).ifPresent(stand -> {
+                        stand.setBlockPos(BlockPos.ZERO);
+                        stand.setAbilityUseCount(0);
+                    });
+                    props.removeBombPos(player);
+                }
+            });
+            props.getSoundEffects().forEach((uuid, list) -> {
+                if (list.size() > 0) {
+                    List<BlockPos> removalList = new ArrayList<>();
+                    list.forEach(blockPos -> {
+                        if (blockPos.equals(event.getPos())) {
+                            PlayerEntity player = world.getPlayerByUuid(uuid);
+                            Util.activateEchoesAbility(world, event.getPlayer(), event.getPos(), props, player, removalList);
+                        }
+                    });
+                    list.removeAll(removalList);
+                }
+            });
+        });
+    }
+
+    @SubscribeEvent
+    public static void explosionEvent(ExplosionEvent.Detonate event) {
+        World world = event.getWorld();
+        if (world == null || world.isRemote) return;
+        event.getAffectedBlocks().forEach(blockPos ->
+                StandChunkEffects.getLazyOptional(world.getChunkAt(blockPos)).ifPresent(props -> {
+                    props.getBombs().forEach((uuid, pos) -> {
+                        if (pos.equals(blockPos)) {
+                            PlayerEntity player = world.getPlayerByUuid(uuid);
+                            Stand.getLazyOptional(player).ifPresent(stand -> {
+                                stand.setBlockPos(BlockPos.ZERO);
+                                stand.setAbilityUseCount(0);
+                            });
+                            props.removeBombPos(player);
+                        }
+                    });
+                    props.getSoundEffects().forEach((uuid, list) -> {
+                        if (list.size() > 0) {
+                            List<BlockPos> removalList = new ArrayList<>();
+                            list.forEach(pos -> {
+                                if (pos.equals(blockPos)) {
+                                    PlayerEntity player = world.getPlayerByUuid(uuid);
+                                    Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(stand.getAbilityUseCount() - 1));
+                                    removalList.add(pos);
+                                }
+                            });
+                            list.removeAll(removalList);
+                        }
+                    });
+                }));
+    }
+
+    @SubscribeEvent
+    public static void playerEatEvent(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+        if (player.world.isRemote) return;
+        if (event.getItem().getItem() instanceof HoneyBottleItem)
+            Stand.getLazyOptional(player).ifPresent(props -> {
+                if ((props.getStandID() == Util.StandID.TUSK_ACT_2 || props.getStandID() == Util.StandID.TUSK_ACT_3 || props.getStandID() == Util.StandID.TUSK_ACT_4) && props.getCooldown() > 0)
+                    props.setCooldown(props.getCooldown() > 40 ? props.getCooldown() - 40 : 1);
+            });
+    }
+
+    @SubscribeEvent
+    public static void livingTick(LivingEvent.LivingUpdateEvent event) {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity instanceof AbstractStandEntity) return;
+        StandEffects.getLazyOptional(entity).ifPresent(props -> {
+            if (props.getSoundEffect() != 0) {
+                if (entity.world.rand.nextInt(40) == 1) {
+                    SoundEvent soundEvent = SoundEvents.ENTITY_GENERIC_EXPLODE;
+                    switch (props.getSoundEffect()) {
+                        case 1: {
+                            soundEvent = SoundEvents.BLOCK_ANVIL_BREAK;
+                            break;
+                        }
+                        case 2: {
+                            soundEvent = SoundEvents.BLOCK_BELL_USE;
+                            break;
+                        }
+                        case 3: {
+                            soundEvent = SoundEvents.ENTITY_FIREWORK_ROCKET_BLAST;
+                            break;
+                        }
+                        case 4: {
+                            soundEvent = SoundEvents.ENTITY_GENERIC_BURN;
+                            break;
+                        }
+                        case 6: {
+                            soundEvent = SoundEvents.BLOCK_GLASS_BREAK;
+                            break;
+                        }
+                        case 7: {
+                            soundEvent = SoundEvents.BLOCK_METAL_PRESSURE_PLATE_CLICK_ON;
+                            break;
+                        }
+                    }
+                    if (props.getSoundEffect() != 2 && props.getSoundEffect() % 2 == 0) {
+                        for (int i = 0; i < 2; i++) {
+                            entity.world.playSound(null, entity.getPosition(), soundEvent, SoundCategory.BLOCKS, 1, 1);
+                            entity.attackEntityFrom(DamageSource.DROWN, 2);
+                        }
+                    } else {
+                        entity.world.playSound(null, entity.getPosition(), soundEvent, SoundCategory.BLOCKS, 1, 1);
+                        entity.attackEntityFrom(DamageSource.DROWN, 2);
+                    }
+                }
+            }
+            if (props.isRotating()) {
+                entity.rotationYaw += 30;
+                if (entity.rotationYaw > 180)
+                    entity.rotationYaw = -180;
+                entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 2);
+            }
+            if (props.isThreeFreeze()) {
+                PlayerEntity playerEntity = entity.world.getPlayerByUuid(props.getStandUser());
+                if (playerEntity == null) return;
+                float distance = entity.getDistance(playerEntity);
+                if (distance < 2)
+                    entity.setMotion(0, -1000, 0);
+                else if (distance < 3)
+                    entity.setMotion(0, -100, 0);
+                else if (distance < 6)
+                    entity.setMotion(0, -50, 0);
+                else if (distance < 10)
+                    entity.setMotion(0, -10, 0);
+                else if (distance < 15)
+                    entity.setMotion(0, -5, 0);
+                else
+                    return;
+                entity.velocityChanged = true;
+            }
+        });
+        StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->
+                props.getSoundEffects().forEach((uuid, list) -> {
+                    if (list.size() > 0) {
+                        List<BlockPos> removalList = new ArrayList<>();
+                        list.forEach(blockPos -> {
+                            if (blockPos.equals(entity.getPosition().add(0, -1, 0)))
+                                Util.activateEchoesAbility(entity.world, entity, blockPos, props, entity.world.getPlayerByUuid(uuid), removalList);
+                        });
+                        list.removeAll(removalList);
+                    }
+                }));
     }
 }

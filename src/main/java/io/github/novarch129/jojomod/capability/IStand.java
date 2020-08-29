@@ -1,6 +1,10 @@
 package io.github.novarch129.jojomod.capability;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+
+import java.util.List;
 
 public interface IStand {
     PlayerEntity getPlayer();
@@ -102,6 +106,20 @@ public interface IStand {
     void setAbilityUseCount(int abilityUseCount);
 
     void putAbilityUseCount(int abilityUseCount);
+
+    BlockPos getBlockPos();
+
+    void setBlockPos(BlockPos blockPos);
+
+    void putBlockPos(BlockPos blockPos);
+
+    List<ChunkPos> getAffectedChunkList();
+
+    void addAffectedChunk(ChunkPos pos);
+
+    void removeAffectedChunk(ChunkPos pos);
+
+    void putAffectedChunkList(List<ChunkPos> list);
 
     void clone(IStand props);
 

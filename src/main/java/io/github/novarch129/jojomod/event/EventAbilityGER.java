@@ -50,8 +50,10 @@ public class EventAbilityGER {
     public static void stopKnockback(LivingKnockBackEvent event) {
         if (event.getEntityLiving() instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) event.getEntity()).ifPresent(props -> {
-                if (props.getStandID() == Util.StandID.GER)
+                if (props.getStandID() == Util.StandID.GER) {
+                    event.setStrength(0);
                     event.setCanceled(true);
+                }
             });
     }
 }

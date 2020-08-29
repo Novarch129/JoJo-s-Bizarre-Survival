@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.util.DimensionHopTeleporter;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -19,7 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 @EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE)
 public class EventD4CTeleportProcessor {
-    public static Map<PlayerEntity, DimensionType> d4cPassengers = Maps.newHashMap();
+    public static Map<LivingEntity, DimensionType> d4cPassengers = Maps.newHashMap();
     public static ArrayBlockingQueue<PlayerEntity> madeInHeaven = new ArrayBlockingQueue<>(100000);
 
     @SubscribeEvent

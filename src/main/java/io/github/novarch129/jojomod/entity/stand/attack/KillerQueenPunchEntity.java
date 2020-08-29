@@ -32,7 +32,7 @@ public class KillerQueenPunchEntity extends AbstractStandAttackEntity {
         Entity entity = result.getEntity();
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 0.5f);
         if (entity instanceof LivingEntity)
-            ((KillerQueenEntity) shootingStand).setBombEntity((LivingEntity) entity);
+            ((KillerQueenEntity) shootingStand).bombEntity = (LivingEntity) entity;
         entity.hurtResistantTime = 0;
     }
 

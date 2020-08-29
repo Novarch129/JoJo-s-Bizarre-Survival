@@ -31,7 +31,7 @@ public class KingCrimsonPunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : damage);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), damage);
         if (damage > 3.5f && entity instanceof LivingEntity)
             ((LivingEntity) entity).knockBack(this, damage / 5, getPosX() - entity.getPosX(), getPosZ() - entity.getPosZ());
         entity.hurtResistantTime = 0;

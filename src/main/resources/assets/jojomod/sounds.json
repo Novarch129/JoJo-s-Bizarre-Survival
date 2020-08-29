@@ -224,6 +224,15 @@
       }
     ]
   },
+  "the_world_teleport": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:the_world_teleport",
+        "stream": false
+      }
+    ]
+  },
   "spawn_star_platinum": {
     "category": "neutral",
     "sounds": [
@@ -382,6 +391,87 @@
     "sounds": [
       {
         "name": "jojomod:arrivederci",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_tusk_act_1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_1",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_tusk_act_2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_2",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_tusk_act_3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_3",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_tusk_act_4": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_tusk_act_4",
+        "steam": false
+      }
+    ]
+  },
+  "tusk_act_4_ora": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:tusk_act_4_ora",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_echoes_act_1": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_1",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_echoes_act_2": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_2",
+        "steam": false
+      }
+    ]
+  },
+  "spawn_echoes_act_3": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_echoes_act_3",
+        "steam": false
+      }
+    ]
+  },
+  "three_freeze": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:three_freeze",
         "steam": false
       }
     ]

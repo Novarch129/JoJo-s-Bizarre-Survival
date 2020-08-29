@@ -40,6 +40,11 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
 
                     if (props.getAbility()) {
                         switch (standID) {
+                            case Util.StandID.ECHOES_ACT_1:
+                            case Util.StandID.TUSK_ACT_4:
+                            case Util.StandID.TUSK_ACT_3:
+                            case Util.StandID.TUSK_ACT_2:
+                            case Util.StandID.TUSK_ACT_1:
                             case Util.StandID.THE_HAND:
                             case Util.StandID.MAGICIANS_RED:
                             case Util.StandID.KILLER_QUEEN:
@@ -61,6 +66,11 @@ public class CToggleAbilityPacket implements IMessage<CToggleAbilityPacket> {
                         }
                     } else {
                         switch (standID) {
+                            case Util.StandID.ECHOES_ACT_1:
+                            case Util.StandID.TUSK_ACT_4:
+                            case Util.StandID.TUSK_ACT_3:
+                            case Util.StandID.TUSK_ACT_2:
+                            case Util.StandID.TUSK_ACT_1:
                             case Util.StandID.THE_HAND:
                             case Util.StandID.MAGICIANS_RED:
                             case Util.StandID.THE_EMPEROR:

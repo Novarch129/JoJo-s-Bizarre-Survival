@@ -4,7 +4,6 @@ import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.CMoonPunchEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
-import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.EntityType;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -45,7 +44,7 @@ public class CMoonEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
-                if ((props.getStandID() == Util.StandID.CMOON && props.getAct() == 1) || (props.getStandID() == Util.StandID.MADE_IN_HEAVEN && props.getAct() == 2)) {
+                if (props.getAct() == props.getMaxAct() - 1) {
                     remove();
                     WhitesnakeEntity whitesnake = new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
                     Vec3d position = master.getLookVec().mul(0.5, 1, 0.5).add(master.getPositionVec()).add(0, 0.5, 0);

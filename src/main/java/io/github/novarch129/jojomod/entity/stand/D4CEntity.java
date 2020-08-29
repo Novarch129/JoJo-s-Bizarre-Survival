@@ -7,15 +7,18 @@ import io.github.novarch129.jojomod.init.DimensionInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.DimensionHopTeleporter;
 import io.github.novarch129.jojomod.util.Util;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BannerItem;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
@@ -31,6 +34,35 @@ public class D4CEntity extends AbstractStandEntity {
         return SoundInit.SPAWN_D4C.get();
     }
 
+    public void teleport() {
+        if (getMaster() == null) return;
+        if ((master.getHeldItemMainhand().getItem() instanceof ShieldItem || master.getHeldItemOffhand().getItem() instanceof ShieldItem) || (master.getHeldItemMainhand().getItem() instanceof BannerItem || master.getHeldItemOffhand().getItem() instanceof BannerItem))
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                if (props.getCooldown() == 0) {
+                    Vec3d position = master.getLookVec().mul(7, 1, 7).add(master.getPositionVec());
+                    for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                        position = position.add(0, 0.5, 0);
+                    master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
+                    props.setCooldown(80);
+                }
+            });
+    }
+
+    public void grabEntity() {
+        if (getMaster() == null) return;
+        if ((master.getHeldItemMainhand().getItem() instanceof ShieldItem || master.getHeldItemOffhand().getItem() instanceof ShieldItem) || (master.getHeldItemMainhand().getItem() instanceof BannerItem || master.getHeldItemOffhand().getItem() instanceof BannerItem))
+            Stand.getLazyOptional(master).ifPresent(props -> {
+                if (props.getCooldown() == 0) {
+                    world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                    D4CPunchEntity d4CPunchEntity = new D4CPunchEntity(world, this, master);
+                    d4CPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.0001f);
+                    d4CPunchEntity.setGrab(true);
+                    world.addEntity(d4CPunchEntity);
+                    props.setCooldown(200);
+                }
+            });
+    }
+
     /**
      * Used to shorten the code of the method below, removing the need to make a <code>new</code> {@link DimensionHopTeleporter} every time {@link Entity}# changeDimension is called.
      *
@@ -42,7 +74,7 @@ public class D4CEntity extends AbstractStandEntity {
             entity.changeDimension(type, new DimensionHopTeleporter((ServerWorld) entity.getEntityWorld()));
     }
 
-    private void transportEntity(Entity entity) {
+    public void transportEntity(Entity entity) {
         if (entity.world.isRemote) return;
         if (entity.world.getDimension().getType() == DimensionType.OVERWORLD)
             changeDimension(DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE), entity);
@@ -72,6 +104,7 @@ public class D4CEntity extends AbstractStandEntity {
             EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END));
         else if (player.world.getDimension().getType() == DimensionType.byName(DimensionInit.D4C_DIMENSION_TYPE_END))
             EventD4CTeleportProcessor.d4cPassengers.put(player, DimensionType.THE_END);
+        remove();
     }
 
     @Override
@@ -95,32 +128,27 @@ public class D4CEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
                 ability = props.getAbility();
-                if (props.getCooldown() > 0 && ability)
-                    props.setCooldown(props.getCooldown() - 1);
                 master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
 
-                if ((master.world.getBlockState(master.getPosition().add(0, 0, -1)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(0, 0, 1)).getMaterial() != Material.AIR) || (master.world.getBlockState(master.getPosition().add(-1, 0, 0)).getMaterial() != Material.AIR && master.world.getBlockState(master.getPosition().add(1, 0, 0)).getMaterial() != Material.AIR)) {
+                if ((master.world.getBlockState(master.getPosition().add(0, 0, -1)).isSolid() && master.world.getBlockState(master.getPosition().add(0, 0, 1)).isSolid()) || (master.world.getBlockState(master.getPosition().add(-1, 0, 0)).isSolid() && master.world.getBlockState(master.getPosition().add(1, 0, 0)).isSolid())) {
                     if (master.isCrouching() || master.isAirBorne) {
-                        if (ability && props.getCooldown() <= 0) {
+                        if (!world.isRemote && ability && props.getCooldown() == 0) {
                             changePlayerDimension(master);
-                            if (!world.isRemote) {
-                                world.getServer().getWorld(dimension).getEntities()
-                                        .filter(entity -> entity instanceof LivingEntity)
-                                        .filter(entity -> !(entity instanceof PlayerEntity))
-                                        .filter(entity -> !(entity instanceof AbstractStandEntity))
-                                        .filter(entity -> entity.getDistance(master) < 3.0f || entity.getDistance(this) < 3.0f)
-                                        .forEach(this::transportEntity);
+                            world.getServer().getWorld(dimension).getEntities()
+                                    .filter(entity -> entity instanceof LivingEntity)
+                                    .filter(entity -> !(entity instanceof PlayerEntity))
+                                    .filter(entity -> !(entity instanceof AbstractStandEntity))
+                                    .filter(entity -> entity.getDistance(master) < 3 || entity.getDistance(this) < 3)
+                                    .forEach(this::transportEntity);
 
-                                world.getPlayers()
-                                        .stream()
-                                        .filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
-                                        .filter(playerEntity -> master.getDistance(master) < 3.0f || playerEntity.getDistance(this) < 3.0f)
-                                        .forEach(this::changePlayerDimension);
-                            }
-                            if (!master.isCreative()) master.getFoodStats().addStats(-3, 0.0f);
+                            world.getPlayers()
+                                    .stream()
+                                    .filter(playerEntity -> Stand.getCapabilityFromPlayer(playerEntity).getStandID() != Util.StandID.GER)
+                                    .filter(playerEntity -> master.getDistance(master) < 3 || playerEntity.getDistance(this) < 3)
+                                    .forEach(this::changePlayerDimension);
+                            if (!master.isCreative()) master.getFoodStats().addStats(-3, 0);
                             props.setStandOn(false);
                             props.setCooldown(200);
-                            remove();
                         }
                     }
                 }

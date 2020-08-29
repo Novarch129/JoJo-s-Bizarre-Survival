@@ -83,12 +83,24 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.GREEN_DAY_PUNCH.get(), StandAttackRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.TWENTIETH_CENTURY_BOY.get(), TwentiethCenturyBoyRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TWENTIETH_CENTURY_BOY_PUNCH.get(), StandAttackRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_GRATEFUL_DEAD.get(), TheGratefulDeadRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.THE_GRATEFUL_DEAD_PUNCH.get(), StandAttackRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS.get(), StickyFingersRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.STICKY_FINGERS_PUNCH.get(), StandAttackRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.NAIL_BULLET.get(), StandAttackRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_1.get(), TuskAct1Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_2.get(), TuskAct2Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_3.get(), TuskAct3Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_4.get(), TuskAct4Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.TUSK_ACT_4_PUNCH.get(), StandAttackRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_1.get(), EchoesAct1Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_2.get(), EchoesAct2Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_SOUND.get(), StandAttackRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_3.get(), EchoesAct3Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_3_PUNCH.get(), StandAttackRenderer::new);
     }
 }

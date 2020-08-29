@@ -33,6 +33,8 @@ public class JojoBizarreSurvivalConfig {
         public final ForgeConfigSpec.BooleanValue standPunchDamage;
         public final ForgeConfigSpec.BooleanValue standPunchBlockBreaking;
         public final ForgeConfigSpec.BooleanValue infiniteTimestop;
+        public final ForgeConfigSpec.BooleanValue abilityImmediatelyActive;
+        public final ForgeConfigSpec.BooleanValue singularityPoint;
 
         Common(final ForgeConfigSpec.Builder builder) {
             builder.push("common");
@@ -60,6 +62,14 @@ public class JojoBizarreSurvivalConfig {
             infiniteTimestop = builder
                     .comment("Toggle The World's and Star Platinum's timestop not having a time limit.")
                     .define("infiniteTimestop", false);
+
+            abilityImmediatelyActive = builder
+                    .comment("Toggle Stand abilities being active by default when summoning a Stand.")
+                    .define("abilityImmediatelyActive", true);
+
+            singularityPoint = builder
+                    .comment("Toggle Made in Heaven's singularity point.")
+                    .define("singularityPoint", true);
 
             builder.pop();
         }

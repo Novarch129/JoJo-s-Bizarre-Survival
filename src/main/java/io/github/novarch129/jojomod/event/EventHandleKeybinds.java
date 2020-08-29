@@ -17,7 +17,7 @@ import static io.github.novarch129.jojomod.network.message.client.CAerosmithMove
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class EventHandleKeybinds {
     @SubscribeEvent
-    public static void onInput(TickEvent.ClientTickEvent event) { //It's recommended to use ClientTickEvent instead of any of the input events.
+    public static void onInput(TickEvent.ClientTickEvent event) { //It's recommended to use ClientickEvent instead of any of the input events.
         if (event.phase != TickEvent.Phase.END || !Minecraft.getInstance().isGameFocused()) return;
         Minecraft mc = Minecraft.getInstance();
 
@@ -41,6 +41,8 @@ public class EventHandleKeybinds {
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 1));
                     if (KeyInit.ABILITY2.isPressed())
                         JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 2));
+                    if (KeyInit.ABILITY3.isPressed())
+                        JojoBizarreSurvival.INSTANCE.sendToServer(new CSyncStandAbilitiesPacket((byte) 3));
 
                     switch (props.getStandID()) {
                         default:
@@ -77,8 +79,12 @@ public class EventHandleKeybinds {
                                 JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(CHierophantGreenPossessionPacket.Direction.CROUCH));
                             break;
                         }
+                        case Util.StandID.TUSK_ACT_4:
+                        case Util.StandID.TUSK_ACT_3:
+                        case Util.StandID.TUSK_ACT_2:
+                        case Util.StandID.TUSK_ACT_1:
                         case Util.StandID.KING_CRIMSON: {
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CKingCrimsonChargePunchPacket(mc.gameSettings.keyBindAttack.isKeyDown()));
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CChargeAttackPacket(mc.gameSettings.keyBindAttack.isKeyDown()));
                             break;
                         }
                     }

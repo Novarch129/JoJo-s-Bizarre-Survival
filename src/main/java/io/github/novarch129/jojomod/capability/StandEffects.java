@@ -29,6 +29,9 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private Vec3d motion = Vec3d.ZERO;
     private boolean bomb;
     private UUID standUser = UUID.fromString("c9362041-f5e8-447c-80a8-9db27a2646bb");
+    private boolean rotating;
+    private byte soundEffect;
+    private boolean threeFreeze;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -37,6 +40,10 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public static LazyOptional<StandEffects> getLazyOptional(Entity entity) {
         return entity.getCapability(STAND_EFFECTS);
+    }
+
+    public static StandEffects getCapabilityFromEntity(Entity entity) {
+        return entity.getCapability(STAND_EFFECTS).orElse(new StandEffects(entity));
     }
 
     public static void register() {
@@ -51,6 +58,9 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putDouble("motionZ", instance.motion.getZ());
                 nbt.putBoolean("bomb", instance.bomb);
                 nbt.putUniqueId("standUser", instance.standUser);
+                nbt.putBoolean("rotating", instance.rotating);
+                nbt.putByte("soundEffect", instance.soundEffect);
+                nbt.putBoolean("threeFreeze", instance.threeFreeze);
                 return nbt;
             }
 
@@ -62,6 +72,9 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.motion = new Vec3d(compoundNBT.getDouble("motionX"), compoundNBT.getDouble("motionY"), compoundNBT.getDouble("motionZ"));
                 instance.bomb = compoundNBT.getBoolean("bomb");
                 instance.standUser = compoundNBT.getUniqueId("standUser");
+                instance.rotating = compoundNBT.getBoolean("rotating");
+                instance.soundEffect = compoundNBT.getByte("soundEffect");
+                instance.threeFreeze = compoundNBT.getBoolean("threeFreeze");
             }
         }, () -> new StandEffects(Null()));
     }
@@ -127,6 +140,33 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setStandUser(UUID standUser) {
         this.standUser = standUser;
+        onDataUpdated();
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
+    public void setRotating(boolean rotating) {
+        this.rotating = rotating;
+        onDataUpdated();
+    }
+
+    public byte getSoundEffect() {
+        return soundEffect;
+    }
+
+    public void setSoundEffect(byte soundEffect) {
+        this.soundEffect = soundEffect;
+        onDataUpdated();
+    }
+
+    public boolean isThreeFreeze() {
+        return threeFreeze;
+    }
+
+    public void setThreeFreeze(boolean threeFreeze) {
+        this.threeFreeze = threeFreeze;
         onDataUpdated();
     }
 

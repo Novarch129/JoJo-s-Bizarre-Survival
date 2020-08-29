@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
@@ -63,15 +64,58 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> ((KingCrimsonEntity) entity).epitaph());
                                     break;
                                 }
+                                case D4C: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof D4CEntity)
+                                            .filter(entity -> ((D4CEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                if (message.action == 1)
+                                                    ((D4CEntity) entity).teleport();
+                                                else
+                                                    ((D4CEntity) entity).grabEntity();
+                                            });
+                                    break;
+                                }
+                                case MADE_IN_HEAVEN: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof MadeInHeavenEntity)
+                                            .filter(entity -> ((MadeInHeavenEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((MadeInHeavenEntity) entity).teleport();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((MadeInHeavenEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
+                                    break;
+                                }
                                 case KILLER_QUEEN: {
+                                    if (StandEffects.getCapabilityFromEntity(sender).isThreeFreeze()) return;
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KillerQueenEntity)
                                             .filter(entity -> ((KillerQueenEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (message.action == 1)
-                                                    ((KillerQueenEntity) entity).detonate();
-                                                else
-                                                    ((KillerQueenEntity) entity).toggleSheerHeartAttack();
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((KillerQueenEntity) entity).detonate();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((KillerQueenEntity) entity).toggleSheerHeartAttack();
+                                                        break;
+                                                    }
+                                                    default: {
+                                                        ((KillerQueenEntity) entity).turnItemOrBlockIntoBomb();
+                                                        break;
+                                                    }
+                                                }
                                             });
                                     break;
                                 }
@@ -106,6 +150,46 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof WeatherReportEntity)
                                             .filter(entity -> ((WeatherReportEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> ((WeatherReportEntity) entity).changeWeather());
+                                    break;
+                                }
+                                case THE_WORLD: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof TheWorldEntity)
+                                            .filter(entity -> ((TheWorldEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 0.5 : 1);
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((TheWorldEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
+                                    break;
+                                }
+                                case STAR_PLATINUM: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof StarPlatinumEntity)
+                                            .filter(entity -> ((StarPlatinumEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                switch (message.action) {
+                                                    case 1: {
+                                                        ((StarPlatinumEntity) entity).teleport();
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        ((StarPlatinumEntity) entity).dodgeAttacks();
+                                                        break;
+                                                    }
+                                                    default:
+                                                        break;
+                                                }
+                                            });
                                     break;
                                 }
                                 case MAGICIANS_RED: {
@@ -170,8 +254,8 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                     if (((StickyFingersEntity) entity).disguiseEntity == null) {
                                                         if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
                                                             ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
-                                                        if (((StickyFingersEntity) entity).getDisguiseEntity() != null) {
-                                                            Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).getDisguiseEntity());
+                                                        if (((StickyFingersEntity) entity).disguiseEntity != null) {
+                                                            Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).disguiseEntity);
                                                             Minecraft.getInstance().gameSettings.thirdPersonView = 1;
                                                         }
                                                     } else {
@@ -182,6 +266,70 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                 } else
                                                     ((StickyFingersEntity) entity).zipThroughWall();
                                             });
+                                    break;
+                                }
+                                case TUSK_ACT_3: {
+                                    if (props.getAct() == 0)
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof TuskAct3Entity)
+                                                .filter(entity -> ((TuskAct3Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> ((TuskAct3Entity) entity).teleport());
+                                    break;
+                                }
+                                case TUSK_ACT_4: {
+                                    if (props.getAct() == 1)
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof TuskAct3Entity)
+                                                .filter(entity -> ((TuskAct3Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> ((TuskAct3Entity) entity).teleport());
+                                    break;
+                                }
+                                case ECHOES_ACT_2: {
+                                    if (props.getAct() == 0)
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct2Entity)
+                                                .filter(entity -> ((EchoesAct2Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> {
+                                                    switch (message.action) {
+                                                        case 1: {
+                                                            ((EchoesAct2Entity) entity).addSoundEffect();
+                                                            break;
+                                                        }
+                                                        case 2: {
+                                                            ((EchoesAct2Entity) entity).removeAllSoundEffects();
+                                                            break;
+                                                        }
+                                                        default:
+                                                            break;
+                                                    }
+                                                });
+                                    break;
+                                }
+                                case ECHOES_ACT_3: {
+                                    if (props.getAct() == 0) {
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct3Entity)
+                                                .filter(entity -> ((EchoesAct3Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> ((EchoesAct3Entity) entity).barrier());
+                                    } else if (props.getAct() == props.getMaxAct() - 2) {
+                                        world.getServer().getWorld(sender.dimension).getEntities()
+                                                .filter(entity -> entity instanceof EchoesAct2Entity)
+                                                .filter(entity -> ((EchoesAct2Entity) entity).getMaster().equals(sender))
+                                                .forEach(entity -> {
+                                                    switch (message.action) {
+                                                        case 1: {
+                                                            ((EchoesAct2Entity) entity).addSoundEffect();
+                                                            break;
+                                                        }
+                                                        case 2: {
+                                                            ((EchoesAct2Entity) entity).removeAllSoundEffects();
+                                                            break;
+                                                        }
+                                                        default:
+                                                            break;
+                                                    }
+                                                });
+                                    }
                                     break;
                                 }
                                 default:

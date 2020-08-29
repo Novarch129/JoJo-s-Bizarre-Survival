@@ -2,6 +2,8 @@ package io.github.novarch129.jojomod.util;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
@@ -16,20 +18,27 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -63,6 +72,37 @@ public class Util {
             }
         }
         return new BlockPos(0, 65, 0); //The location of the End exit portal.
+    }
+
+    public static void activateEchoesAbility(World world, @Nonnull LivingEntity entity, BlockPos pos, StandChunkEffects chunkEffects, @Nullable PlayerEntity player, List<BlockPos> list) {
+        if (world.isRemote) return;
+        switch (new Random().nextInt(4)) {
+            case 0: {
+                world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3, Explosion.Mode.DESTROY);
+                break;
+            }
+            case 1: {
+                entity.setMotion(entity.getMotion().add(0, 1, 0));
+                entity.velocityChanged = true;
+                break;
+            }
+            case 2: {
+                entity.attackEntityFrom(DamageSource.HOT_FLOOR, 2);
+                entity.setFire(4);
+                break;
+            }
+            case 3: {
+                entity.attackEntityFrom(DamageSource.OUT_OF_WORLD, 10);
+                break;
+            }
+            default:
+                break;
+        }
+        if (player != null) {
+            list.add(pos);
+            Stand.getLazyOptional(player).ifPresent(stand -> stand.setAbilityUseCount(stand.getAbilityUseCount() - 1));
+        }
+        world.removeBlock(pos, false);
     }
 
     public static boolean isClientHoldingShift() {
@@ -200,6 +240,20 @@ public class Util {
                 return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
             case StandID.STICKY_FINGERS:
                 return new StickyFingersEntity(EntityInit.STICKY_FINGERS.get(), world);
+            case StandID.TUSK_ACT_1:
+                return new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
+            case StandID.TUSK_ACT_2:
+                return new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
+            case StandID.TUSK_ACT_3:
+                return new TuskAct3Entity(EntityInit.TUSK_ACT_3.get(), world);
+            case StandID.TUSK_ACT_4:
+                return new TuskAct4Entity(EntityInit.TUSK_ACT_4.get(), world);
+            case StandID.ECHOES_ACT_1:
+                return new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
+            case StandID.ECHOES_ACT_2:
+                return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
+            case StandID.ECHOES_ACT_3:
+                return new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
         }
     }
 
@@ -277,6 +331,20 @@ public class Util {
 
         public static final int STICKY_FINGERS = 23;
 
+        public static final int TUSK_ACT_1 = 24;
+
+        public static final int TUSK_ACT_2 = 25;
+
+        public static final int TUSK_ACT_3 = 26;
+
+        public static final int TUSK_ACT_4 = 27;
+
+        public static final int ECHOES_ACT_1 = 28;
+
+        public static final int ECHOES_ACT_2 = 29;
+
+        public static final int ECHOES_ACT_3 = 30;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -300,8 +368,20 @@ public class Util {
                 GREEN_DAY,
                 TWENTIETH_CENTURY_BOY,
                 THE_GRATEFUL_DEAD,
-                STICKY_FINGERS
+                STICKY_FINGERS,
+                TUSK_ACT_1,
+                ECHOES_ACT_1
         };
+
+        public static final List<Integer> STANDS_WITH_ACTS = Arrays.asList(
+                MADE_IN_HEAVEN,
+                CMOON,
+                TUSK_ACT_2,
+                TUSK_ACT_3,
+                TUSK_ACT_4,
+                ECHOES_ACT_2,
+                ECHOES_ACT_3
+        );
     }
 
     public static class KeyCodes {
@@ -309,6 +389,7 @@ public class Util {
         public static final String ABILITY_TOGGLE = KeyInit.TOGGLE_ABILITY.getLocalizedName().toUpperCase();
         public static final String ABILITY_1 = KeyInit.ABILITY1.getLocalizedName().toUpperCase();
         public static final String ABILITY_2 = KeyInit.ABILITY2.getLocalizedName().toUpperCase();
+        public static final String ABILITY_3 = KeyInit.ABILITY3.getLocalizedName().toUpperCase();
         public static final String SWITCH_ACT = KeyInit.SWITCH_ACT.getLocalizedName().toUpperCase();
     }
 
@@ -354,10 +435,20 @@ public class Util {
         public static final ResourceLocation GREEN_DAY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day.png");
         public static final ResourceLocation GREEN_DAY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/green_day_punch.png");
         public static final ResourceLocation TWENTIETH_CENTURY_BOY = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy.png");
-        public static final ResourceLocation TWENTIETH_CENTURY_BOY_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/20th_century_boy_punch.png");
         public static final ResourceLocation THE_GRATEFUL_DEAD = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead.png");
         public static final ResourceLocation THE_GRATEFUL_DEAD_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/the_grateful_dead_punch.png");
         public static final ResourceLocation STICKY_FINGERS = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers.png");
         public static final ResourceLocation STICKY_FINGERS_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/sticky_fingers_punch.png");
+        public static final ResourceLocation NAIL_BULLET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/nail_bullet.png");
+        public static final ResourceLocation TUSK_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_1.png");
+        public static final ResourceLocation TUSK_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_2.png");
+        public static final ResourceLocation TUSK_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_3.png");
+        public static final ResourceLocation TUSK_ACT_4 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4.png");
+        public static final ResourceLocation TUSK_ACT_4_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/tusk_act_4_punch.png");
+        public static final ResourceLocation ECHOES_ACT_1 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1.png");
+        public static final ResourceLocation ECHOES_SOUND_WAVE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_1_attack.png");
+        public static final ResourceLocation ECHOES_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_2.png");
+        public static final ResourceLocation ECHOES_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3.png");
+        public static final ResourceLocation ECHOES_ACT_3_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3_punch.png");
     }
 }

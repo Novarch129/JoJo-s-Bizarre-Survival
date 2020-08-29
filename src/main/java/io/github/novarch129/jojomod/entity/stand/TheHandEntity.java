@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -49,7 +50,9 @@ public class TheHandEntity extends AbstractStandEntity {
             if (props.getCooldown() <= 0) {
                 double distance = 5; //The distance the player will teleport, feel free to change this.
                 Vec3d position = master.getLookVec().mul(distance, distance, distance).add(master.getPositionVec());
-                master.setPositionAndUpdate(position.getX(), position.getY() + 1, position.getZ());
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                    position = position.add(0, 0.5, 0);
+                master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, getPosition(), SoundInit.THE_HAND_TELEPORT.get(), SoundCategory.NEUTRAL, 1, 1);
                 props.setCooldown(75);
             }

@@ -35,6 +35,7 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> STOP_TIME = SOUNDS.register("stoptime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "stoptime")));
     public static final RegistryObject<SoundEvent> RESUME_TIME = SOUNDS.register("resumetime", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "resumetime")));
     public static final RegistryObject<SoundEvent> MUDARUSH = SOUNDS.register("mudarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "mudarush")));
+    public static final RegistryObject<SoundEvent> THE_WORLD_TELEPORT = SOUNDS.register("the_world_teleport", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "the_world_teleport")));
     public static final RegistryObject<SoundEvent> SPAWN_STAR_PLATINUM = SOUNDS.register("spawn_star_platinum", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_star_platinum")));
     public static final RegistryObject<SoundEvent> ORARUSH = SOUNDS.register("orarush", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "orarush")));
     public static final RegistryObject<SoundEvent> STAR_PLATINUM_THE_WORLD = SOUNDS.register("star_platinum_the_world", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "star_platinum_the_world")));
@@ -53,4 +54,13 @@ public class SoundInit {
     public static final RegistryObject<SoundEvent> SPAWN_STICKY_FINGERS = SOUNDS.register("spawn_sticky_fingers", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_sticky_fingers")));
     public static final RegistryObject<SoundEvent> ZIPPER = SOUNDS.register("zipper", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "zipper")));
     public static final RegistryObject<SoundEvent> ARRIVEDERCI = SOUNDS.register("arrivederci", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "arrivederci")));
+    public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_1 = SOUNDS.register("spawn_tusk_act_1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_1")));
+    public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_2 = SOUNDS.register("spawn_tusk_act_2", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_2")));
+    public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_3 = SOUNDS.register("spawn_tusk_act_3", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_3")));
+    public static final RegistryObject<SoundEvent> SPAWN_TUSK_ACT_4 = SOUNDS.register("spawn_tusk_act_4", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_tusk_act_4")));
+    public static final RegistryObject<SoundEvent> TUSK_ACT_4_ORA = SOUNDS.register("tusk_act_4_ora", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "tusk_act_4_ora")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_1 = SOUNDS.register("spawn_echoes_act_1", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_1")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_2 = SOUNDS.register("spawn_echoes_act_2", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_2")));
+    public static final RegistryObject<SoundEvent> SPAWN_ECHOES_ACT_3 = SOUNDS.register("spawn_echoes_act_3", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "spawn_echoes_act_3")));
+    public static final RegistryObject<SoundEvent> THREE_FREEZE = SOUNDS.register("three_freeze", () -> new SoundEvent(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "three_freeze")));
 }
