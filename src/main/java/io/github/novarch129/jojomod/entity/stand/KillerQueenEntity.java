@@ -64,6 +64,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                     })
                             );
                 if (props.getBlockPos() != BlockPos.ZERO) {
+                    if (!world.getChunkProvider().isChunkLoaded(world.getChunkAt(props.getBlockPos()).getPos())) return;
                     world.createExplosion(this, props.getBlockPos().getX(), props.getBlockPos().getY(), props.getBlockPos().getZ(), 3, Explosion.Mode.DESTROY);
                     StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
                     props.setBlockPos(BlockPos.ZERO);
