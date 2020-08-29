@@ -35,7 +35,6 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     public NailBulletEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player, boolean isHoming) {
         super(EntityInit.NAIL_BULLET.get(), worldIn, player.getPosX(), isHoming ? player.getPosY() + 1 : player.getPosY() + 0.4, player.getPosZ());
         setNoGravity(true);
-        shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
         movePunchInFrontOfStand(shooter);
@@ -50,7 +49,6 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     public NailBulletEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         super(type, worldIn, player.getPosX(), player.getPosY() + 0.4, player.getPosZ());
         setNoGravity(true);
-        shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
         movePunchInFrontOfStand(shooter);
