@@ -5,6 +5,7 @@ import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.entity.model.EchoesSoundModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.EchoesAct1Entity;
 import io.github.novarch129.jojomod.entity.stand.EchoesAct2Entity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -34,23 +35,24 @@ public class EchoesSoundEntity extends AbstractStandAttackEntity {
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 0.5f);
-        StandEffects.getLazyOptional(entity).ifPresent(props -> {
-            switch (props.getSoundEffect()) {
-                case 0: {
-                    props.setSoundEffect((byte) rand.nextInt(3));
-                    break;
+        if (shootingStand instanceof EchoesAct1Entity)
+            StandEffects.getLazyOptional(entity).ifPresent(props -> {
+                switch (props.getSoundEffect()) {
+                    case 0: {
+                        props.setSoundEffect((byte) rand.nextInt(3));
+                        break;
+                    }
+                    case 1: {
+                        props.setSoundEffect((byte) 7);
+                        break;
+                    }
+                    case 2:
+                    case 3: {
+                        props.setSoundEffect((byte) (props.getSoundEffect() * 2));
+                        break;
+                    }
                 }
-                case 1: {
-                    props.setSoundEffect((byte) 7);
-                    break;
-                }
-                case 2:
-                case 3: {
-                    props.setSoundEffect((byte) (props.getSoundEffect() * 2));
-                    break;
-                }
-            }
-        });
+            });
         entity.hurtResistantTime = 0;
     }
 

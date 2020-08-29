@@ -34,7 +34,6 @@ import javax.annotation.Nullable;
 @SuppressWarnings("ALL")
 public abstract class AbstractStandAttackEntity extends Entity implements IProjectile, IEntityAdditionalSpawnData {
     public double xTile, yTile, zTile, arrowShake, ticksInAir;
-    public Entity shootingEntity;
     public AbstractStandEntity shootingStand;
     public PlayerEntity standMaster;
     protected boolean inGround;
@@ -54,7 +53,6 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
 
     public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
         this(type, worldIn, shooter.getPosX(), shooter.getPosY() + 0.1, shooter.getPosZ());
-        shootingEntity = shooter;
         shootingStand = shooter;
         standMaster = player;
         movePunchInFrontOfStand(shooter);
@@ -138,7 +136,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         super.tick();
         if (standMaster != null && shouldMatchMaster())
             setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
-        if (shootingEntity == null && !world.isRemote)
+        if (shootingStand == null && !world.isRemote)
             remove();
         BlockPos blockPos = new BlockPos(xTile, yTile, zTile);
         BlockState blockState = world.getBlockState(blockPos);
@@ -158,7 +156,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 entityRayTraceResult = result;
                 if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof AbstractStandAttackEntity) {
                     AbstractStandAttackEntity punch = (AbstractStandAttackEntity) entityRayTraceResult.getEntity();
-                    if (punch.shootingEntity == shootingEntity)
+                    if (punch.shootingStand == shootingStand)
                         raytraceresult = null;
                 }
                 if (raytraceresult != null && entityRayTraceResult.getEntity() instanceof PlayerEntity) {

@@ -29,7 +29,7 @@ public class EchoesAct3PunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 3);
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), shootingStand.attackRush ? 1.5f : 2);
         StandEffects.getLazyOptional(entity).ifPresent(props -> {
             props.setThreeFreeze(shootingStand.ability);
             props.setStandUser(standMaster.getUniqueID());

@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.entity.stand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.EchoesAct3PunchEntity;
-import io.github.novarch129.jojomod.entity.stand.attack.EchoesSoundEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
@@ -38,9 +37,9 @@ public class EchoesAct3Entity extends AbstractStandEntity {
                 attackRush = true;
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
-                EchoesSoundEntity echoesSoundEntity = new EchoesSoundEntity(world, this, getMaster());
-                echoesSoundEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1.5f, 0.2f);
-                world.addEntity(echoesSoundEntity);
+                EchoesAct3PunchEntity echoesAct3PunchEntity = new EchoesAct3PunchEntity(world, this, master);
+                echoesAct3PunchEntity.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.05f);
+                world.addEntity(echoesAct3PunchEntity);
             }
         }
     }
