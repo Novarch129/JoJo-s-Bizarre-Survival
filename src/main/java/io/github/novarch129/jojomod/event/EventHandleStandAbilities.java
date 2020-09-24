@@ -680,7 +680,10 @@ public class EventHandleStandAbilities {
         if (event.getEntityLiving() instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) event.getEntityLiving()).ifPresent(props -> {
                 PlayerEntity player = (PlayerEntity) event.getEntityLiving();
-                player.noClip = props.getNoClip();
+                if (!player.isSpectator())
+                    player.noClip = props.getNoClip();
+                else
+                    player.noClip = true;
             });
     }
 
@@ -814,7 +817,7 @@ public class EventHandleStandAbilities {
             }
             if (props.isThreeFreeze()) {
                 PlayerEntity playerEntity = entity.world.getPlayerByUuid(props.getStandUser());
-                if (playerEntity == null) return;
+                if (playerEntity == null || !playerEntity.isAlive()) return;
                 float distance = entity.getDistance(playerEntity);
                 if (distance < 2)
                     entity.setMotion(0, -1000, 0);

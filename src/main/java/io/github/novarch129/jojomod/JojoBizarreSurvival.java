@@ -11,12 +11,26 @@ import io.github.novarch129.jojomod.network.message.PacketHandler;
 import io.github.novarch129.jojomod.proxy.ClientProxy;
 import io.github.novarch129.jojomod.proxy.IProxy;
 import io.github.novarch129.jojomod.proxy.ServerProxy;
+import io.github.novarch129.jojomod.world.gen.feature.structure.DesertStructure;
+import io.github.novarch129.jojomod.world.gen.feature.structure.DesertStructurePieces;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.placement.IPlacementConfig;
+import net.minecraft.world.gen.placement.Placement;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -25,6 +39,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * @author Novarch129
@@ -37,6 +53,7 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 public class JojoBizarreSurvival {
     public static final IProxy PROXY = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
     public static final String MOD_ID = "jojomod";
+    public static final ResourceLocation STRUCTURE = new ResourceLocation(MOD_ID, "desert_structure");
     private static final String PROTOCOL_VERSION = "1";
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
             new ResourceLocation(MOD_ID, "main"),
@@ -44,6 +61,8 @@ public class JojoBizarreSurvival {
             PROTOCOL_VERSION::equals,
             PROTOCOL_VERSION::equals
     );
+    @ObjectHolder(MOD_ID + ":desert_structure")
+    public static Structure<NoFeatureConfig> DESERT_STRUCTURE;
 
     public JojoBizarreSurvival() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -58,6 +77,13 @@ public class JojoBizarreSurvival {
         DimensionInit.DIMENSIONS.register(modBus); //Deprecated in preparation for 1.16.
         EffectInit.EFFECTS.register(modBus);
         JojoBizarreSurvivalConfig.register(ModLoadingContext.get());
+        modBus.register(this);
+    }
+
+    @SubscribeEvent
+    public void registerFeatures(RegistryEvent.Register<Feature<?>> args) {
+        DesertStructurePieces.DESERT_STRUCTURE_PIECE = Registry.register(Registry.STRUCTURE_PIECE, STRUCTURE, DesertStructurePieces.Piece::new);
+        args.getRegistry().register(new DesertStructure(NoFeatureConfig::deserialize).setRegistryName(STRUCTURE));
     }
 
     private void setup(FMLCommonSetupEvent event) {
@@ -66,6 +92,12 @@ public class JojoBizarreSurvival {
         StandEffects.register();
         StandChunkEffects.register();
         PacketHandler.register();
+
+        DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> {
+            if (biome.getCategory() != Biome.Category.DESERT) return;
+            biome.addStructure(DESERT_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+            biome.addFeature(GenerationStage.Decoration.UNDERGROUND_STRUCTURES, DESERT_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+        }));
     }
 
     @Deprecated //Replace with RegisterCommandsEvent in 1.16, todo.
