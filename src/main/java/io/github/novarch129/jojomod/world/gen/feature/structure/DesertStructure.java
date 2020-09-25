@@ -92,7 +92,7 @@ public class DesertStructure extends Structure<NoFeatureConfig> {
             NoFeatureConfig nofeatureconfig = generator.getStructureConfig(biomeIn, JojoBizarreSurvival.DESERT_STRUCTURE);
             BlockPos blockpos = new BlockPos(chunkX * 16, generator.getGroundHeight(), chunkZ * 16);
             Rotation rotation = Rotation.values()[rand.nextInt(Rotation.values().length)];
-            DesertStructurePieces.setup(templateManagerIn, blockpos, rotation, components, rand, nofeatureconfig);
+            DesertStructurePieces.setup(templateManagerIn, blockpos, rotation, components);
             recalculateStructureSize();
         }
     }

@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.world.gen.feature.structure;
 
-import com.google.common.collect.ImmutableMap;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Mirror;
@@ -11,7 +10,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
@@ -22,18 +20,15 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class DesertStructurePieces {
     public static final ResourceLocation DESERT_STRUCTURE_PIECE_1_LOCATION = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "desertstructure1");
     public static final ResourceLocation DESERT_STRUCTURE_PIECE_2_LOCATION = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "desertstructure2");
     public static final ResourceLocation DESERT_STRUCTURE_PIECE_3_LOCATION = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "desertstructure3");
-    //    private static final Map<ResourceLocation, BlockPos> map = ImmutableMap.of(DESERT_STRUCTURE_PIECE_1_LOCATION, new BlockPos(-40, -4, 0), DESERT_STRUCTURE_PIECE_2_LOCATION, new BlockPos(-5, 0, 20), DESERT_STRUCTURE_PIECE_3_LOCATION, BlockPos.ZERO);
-    private static final Map<ResourceLocation, BlockPos> map = ImmutableMap.of(DESERT_STRUCTURE_PIECE_1_LOCATION, BlockPos.ZERO, DESERT_STRUCTURE_PIECE_2_LOCATION, BlockPos.ZERO, DESERT_STRUCTURE_PIECE_3_LOCATION, BlockPos.ZERO);
     public static IStructurePieceType DESERT_STRUCTURE_PIECE = null;
 
-    public static void setup(TemplateManager manager, BlockPos pos, Rotation rotation, List<StructurePiece> structurePieces, Random random, NoFeatureConfig noFeatureConfig) {
+    public static void setup(TemplateManager manager, BlockPos pos, Rotation rotation, List<StructurePiece> structurePieces) {
         BlockPos structurePiece2Pos = pos.add(-17, 0, 0);
         BlockPos structurePiece3Pos = pos.add(-45, 0, 0);
         switch (rotation) {
@@ -71,8 +66,7 @@ public class DesertStructurePieces {
             this.structure = structure;
             this.rotation = rotation;
             this.y = y;
-            BlockPos blockpos = map.get(structure);
-            templatePosition = pos.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+            templatePosition = pos;
             setupStructure(manager);
         }
 
@@ -96,7 +90,7 @@ public class DesertStructurePieces {
 
         private void setupStructure(TemplateManager manager) {
             Template template = manager.getTemplateDefaulted(structure);
-            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(rotation).setMirror(Mirror.NONE).setCenterOffset(map.get(structure)).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
+            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(rotation).setMirror(Mirror.NONE).setCenterOffset(BlockPos.ZERO).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
             setup(template, templatePosition, placementsettings);
         }
 
@@ -105,7 +99,6 @@ public class DesertStructurePieces {
             templatePosition = new BlockPos(templatePosition.getX(), y - 13, templatePosition.getZ());
             return super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn);
         }
-
 
         @Override
         protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
