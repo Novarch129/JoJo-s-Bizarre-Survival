@@ -21,7 +21,6 @@ import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -56,32 +55,19 @@ public class DesertStructurePieces {
             default:
                 break;
         }
-        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_3_LOCATION, pos, rotation, pos.getY()));
-        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_2_LOCATION, structurePiece2Pos, rotation, pos.getY()));
-        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_1_LOCATION, structurePiece3Pos, rotation, pos.getY()));
+        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_3_LOCATION, pos, rotation));
+        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_2_LOCATION, structurePiece2Pos, rotation));
+        structurePieces.add(new Piece(manager, DESERT_STRUCTURE_PIECE_1_LOCATION, structurePiece3Pos, rotation));
     }
 
-    @ParametersAreNonnullByDefault
     public static class Piece extends TemplateStructurePiece {
         private final ResourceLocation structure;
         private final Rotation rotation;
-        private int y;
 
         public Piece(TemplateManager manager, ResourceLocation structure, BlockPos pos, Rotation rotation) {
             super(DESERT_STRUCTURE_PIECE, 0);
             this.structure = structure;
             this.rotation = rotation;
-            this.y = 0;
-            BlockPos blockpos = map.get(structure);
-            templatePosition = pos.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-            setupStructure(manager);
-        }
-
-        public Piece(TemplateManager manager, ResourceLocation structure, BlockPos pos, Rotation rotation, int y) {
-            super(DESERT_STRUCTURE_PIECE, 0);
-            this.structure = structure;
-            this.rotation = rotation;
-            this.y = y;
             BlockPos blockpos = map.get(structure);
             templatePosition = pos.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
             setupStructure(manager);
@@ -91,7 +77,6 @@ public class DesertStructurePieces {
             super(DESERT_STRUCTURE_PIECE, nbt);
             structure = new ResourceLocation(nbt.getString("Template"));
             rotation = Rotation.valueOf(nbt.getString("Rotation"));
-            y = nbt.getInt("Y");
             setupStructure(manager);
         }
 
@@ -102,7 +87,6 @@ public class DesertStructurePieces {
             super.readAdditional(tagCompound);
             tagCompound.putString("Template", structure.toString());
             tagCompound.putString("Rotation", rotation.name());
-            tagCompound.putInt("Y", y);
         }
 
         private void setupStructure(TemplateManager manager) {
@@ -117,7 +101,7 @@ public class DesertStructurePieces {
             BlockPos blockPos = DesertStructurePieces.map.get(structure);
             BlockPos blockPos1 = templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(3 - blockPos.getX(), 0, -blockPos.getZ())));
             int posY = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, blockPos1.getX(), blockPos1.getZ()) - 1;
-            templatePosition = new BlockPos(templatePosition.getX(), y - 13, templatePosition.getZ());
+            templatePosition = new BlockPos(templatePosition.getX(), posY, templatePosition.getZ());
             return super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn);
         }
 
