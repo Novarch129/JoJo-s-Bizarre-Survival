@@ -11,7 +11,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.gen.ChunkGenerator;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -67,16 +66,6 @@ public class DesertStructurePieces {
         private final Rotation rotation;
         private int y;
 
-        public Piece(TemplateManager manager, ResourceLocation structure, BlockPos pos, Rotation rotation) {
-            super(DESERT_STRUCTURE_PIECE, 0);
-            this.structure = structure;
-            this.rotation = rotation;
-            this.y = 0;
-            BlockPos blockpos = map.get(structure);
-            templatePosition = pos.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-            setupStructure(manager);
-        }
-
         public Piece(TemplateManager manager, ResourceLocation structure, BlockPos pos, Rotation rotation, int y) {
             super(DESERT_STRUCTURE_PIECE, 0);
             this.structure = structure;
@@ -113,10 +102,6 @@ public class DesertStructurePieces {
 
         @Override
         public boolean create(IWorld worldIn, ChunkGenerator<?> chunkGeneratorIn, Random randomIn, MutableBoundingBox mutableBoundingBoxIn, ChunkPos chunkPosIn) {
-            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(rotation).setMirror(Mirror.NONE).setCenterOffset(map.get(structure)).addProcessor(BlockIgnoreStructureProcessor.STRUCTURE_BLOCK);
-            BlockPos blockPos = DesertStructurePieces.map.get(structure);
-            BlockPos blockPos1 = templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(3 - blockPos.getX(), 0, -blockPos.getZ())));
-            int posY = worldIn.getHeight(Heightmap.Type.WORLD_SURFACE_WG, blockPos1.getX(), blockPos1.getZ()) - 1;
             templatePosition = new BlockPos(templatePosition.getX(), y - 13, templatePosition.getZ());
             return super.create(worldIn, chunkGeneratorIn, randomIn, mutableBoundingBoxIn, chunkPosIn);
         }
