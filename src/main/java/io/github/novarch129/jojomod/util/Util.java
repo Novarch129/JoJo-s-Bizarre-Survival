@@ -185,7 +185,7 @@ public class Util {
     public static <T> T Null() {
         return null;
     }
-    
+
     /**
      * Returns an {@link AbstractStandEntity} based on the StandID inputted.
      *
