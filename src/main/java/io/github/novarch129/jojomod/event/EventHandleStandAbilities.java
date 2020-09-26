@@ -833,6 +833,12 @@ public class EventHandleStandAbilities {
                     return;
                 entity.velocityChanged = true;
             }
+            if (props.getTimeNearFlames() > 0) {
+                entity.setFireTimer((int) (props.getTimeNearFlames() * 2));
+                props.setTimeNearFlames(props.getTimeNearFlames() - 0.25);
+                if (entity.world.rand.nextInt(6) == 1)
+                    entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
+            }
         });
         StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->
                 props.getSoundEffects().forEach((uuid, list) -> {

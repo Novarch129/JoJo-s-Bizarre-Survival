@@ -32,6 +32,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private boolean rotating;
     private byte soundEffect;
     private boolean threeFreeze;
+    private double timeNearFlames;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -61,6 +62,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putBoolean("rotating", instance.rotating);
                 nbt.putByte("soundEffect", instance.soundEffect);
                 nbt.putBoolean("threeFreeze", instance.threeFreeze);
+                nbt.putDouble("timeNearFlames", instance.timeNearFlames);
                 return nbt;
             }
 
@@ -75,6 +77,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.rotating = compoundNBT.getBoolean("rotating");
                 instance.soundEffect = compoundNBT.getByte("soundEffect");
                 instance.threeFreeze = compoundNBT.getBoolean("threeFreeze");
+                instance.timeNearFlames = compoundNBT.getDouble("timeNearFlames");
             }
         }, () -> new StandEffects(Null()));
     }
@@ -167,6 +170,15 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setThreeFreeze(boolean threeFreeze) {
         this.threeFreeze = threeFreeze;
+        onDataUpdated();
+    }
+
+    public double getTimeNearFlames() {
+        return timeNearFlames;
+    }
+
+    public void setTimeNearFlames(double timeNearFlames) {
+        this.timeNearFlames = timeNearFlames;
         onDataUpdated();
     }
 

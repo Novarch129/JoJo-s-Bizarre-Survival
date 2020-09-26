@@ -1,10 +1,12 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.attack.MagiciansRedFlameEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
@@ -25,7 +27,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
     public void crossfireHurricane() {
         if (getMaster() == null) return;
         MagiciansRedFlameEntity crossfireHurricane = new MagiciansRedFlameEntity(world, this, master);
-        crossfireHurricane.shoot(master, master.rotationPitch, master.rotationYaw, 4.0f, 0.5f);
+        crossfireHurricane.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.5f);
         crossfireHurricane.setExplosive(true);
         world.addEntity(crossfireHurricane);
         world.addParticle(ParticleTypes.LARGE_SMOKE, crossfireHurricane.getPosX(), crossfireHurricane.getPosY(), crossfireHurricane.getPosZ(), crossfireHurricane.getMotion().getX(), crossfireHurricane.getMotion().getY(), crossfireHurricane.getMotion().getZ());
@@ -73,6 +75,13 @@ public class MagiciansRedEntity extends AbstractStandEntity {
                 world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX() - 0.2, getPosY(), getPosZ() + 0.1, 0, 0.075, 0);
                 world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, getPosX(), getPosY() + 0.1, getPosZ() - 0.02, 0, 0.07, 0.005);
             }
+
+            if (!world.isRemote)
+                getServer().getWorld(dimension).getEntities()
+                        .filter(entity -> !entity.equals(this) && !entity.equals(master))
+                        .filter(entity -> entity instanceof LivingEntity)
+                        .filter(entity -> entity.getDistance(this) < 6)
+                        .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(standEffects -> standEffects.setTimeNearFlames(standEffects.getTimeNearFlames() + 1)));
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);
