@@ -54,7 +54,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
         attackTick++;
         if (attackTick == 1)
             if (special) {
-                world.playSound(null, getPosition(), SoundInit.CROSSFIRE_HURRICANE_SPECIAL.get(), getSoundCategory(), 1.5f, 1.0f);
+                world.playSound(null, getPosition(), SoundInit.CROSSFIRE_HURRICANE_SPECIAL.get(), getSoundCategory(), 1.5f, 1);
                 attackRush = true;
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
@@ -80,7 +80,7 @@ public class MagiciansRedEntity extends AbstractStandEntity {
                 getServer().getWorld(dimension).getEntities()
                         .filter(entity -> !entity.equals(this) && !entity.equals(master))
                         .filter(entity -> entity instanceof LivingEntity)
-                        .filter(entity -> entity.getDistance(this) < 6)
+                        .filter(entity -> entity.getDistance(this) < 4)
                         .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(standEffects -> standEffects.setTimeNearFlames(standEffects.getTimeNearFlames() + 1)));
 
             followMaster();
