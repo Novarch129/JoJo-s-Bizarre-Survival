@@ -193,6 +193,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         switch (standID) {
             case TUSK_ACT_4:
                 return 4;
+            case BEACH_BOY:
             case ECHOES_ACT_3:
             case TUSK_ACT_3:
             case MADE_IN_HEAVEN:

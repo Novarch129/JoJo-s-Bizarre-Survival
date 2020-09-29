@@ -54,7 +54,7 @@ public class StandArrowItem extends ArrowItem {
                     stack.shrink(1);
                 props.setStandID(newStandID);
                 props.setStandOn(true);
-                final AbstractStandEntity stand = Util.getStandByID(newStandID, world);
+                final AbstractStandEntity stand = Util.StandID.getStandByID(newStandID, world);
                 if (stand != null) { //Can be null if Stand is The Emperor
                     stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                     stand.setMasterUUID(player.getUniqueID());

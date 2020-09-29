@@ -83,6 +83,8 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_2)))
                                 .then(Commands.literal("echoes_act_3")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_3)))
+                                .then(Commands.literal("beach_boy")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.BEACH_BOY)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())

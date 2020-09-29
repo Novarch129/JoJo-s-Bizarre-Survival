@@ -135,7 +135,7 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<EmperorBulletEntity>> EMPEROR_BULLET = ENTITY_TYPES
             .register("emperor_bullet", () -> EntityType.Builder.<EmperorBulletEntity>create(EmperorBulletEntity::new, EntityClassification.MISC)
-                    .size(0.1f, 0.1f)
+                    .size(0.5f, 0.5f)
                     .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emperor_bullet").toString()));
 
     public static final RegistryObject<EntityType<WhitesnakeEntity>> WHITESNAKE = ENTITY_TYPES

@@ -7,7 +7,9 @@ import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.KeyInit;
+import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandArrowItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -24,12 +26,17 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -185,77 +192,6 @@ public class Util {
     public static <T> T Null() {
         return null;
     }
-    
-    /**
-     * Returns an {@link AbstractStandEntity} based on the StandID inputted.
-     *
-     * @param standID The StandID of the Stand, see {@link StandID}.
-     * @param world   The {@link World} the Stand will be summoned in.
-     */
-    public static AbstractStandEntity getStandByID(int standID, World world) {
-        switch (standID) {
-            default:
-                return Null();
-            case StandID.KING_CRIMSON:
-                return new KingCrimsonEntity(EntityInit.KING_CRIMSON.get(), world);
-            case StandID.D4C:
-                return new D4CEntity(EntityInit.D4C.get(), world);
-            case StandID.GOLD_EXPERIENCE:
-                return new GoldExperienceEntity(EntityInit.GOLD_EXPERIENCE.get(), world);
-            case StandID.MADE_IN_HEAVEN:
-                return new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), world);
-            case StandID.GER:
-                return new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
-            case StandID.AEROSMITH:
-                return new AerosmithEntity(EntityInit.AEROSMITH.get(), world);
-            case StandID.WEATHER_REPORT:
-                return new WeatherReportEntity(EntityInit.WEATHER_REPORT.get(), world);
-            case StandID.KILLER_QUEEN:
-                return new KillerQueenEntity(EntityInit.KILLER_QUEEN.get(), world);
-            case StandID.CRAZY_DIAMOND:
-                return new CrazyDiamondEntity(EntityInit.CRAZY_DIAMOND.get(), world);
-            case StandID.PURPLE_HAZE:
-                return new PurpleHazeEntity(EntityInit.PURPLE_HAZE.get(), world);
-            case StandID.WHITESNAKE:
-                return new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
-            case StandID.CMOON:
-                return new CMoonEntity(EntityInit.CMOON.get(), world);
-            case StandID.THE_WORLD:
-                return new TheWorldEntity(EntityInit.THE_WORLD.get(), world);
-            case StandID.STAR_PLATINUM:
-                return new StarPlatinumEntity(EntityInit.STAR_PLATINUM.get(), world);
-            case StandID.SILVER_CHARIOT:
-                return new SilverChariotEntity(EntityInit.SILVER_CHARIOT.get(), world);
-            case StandID.MAGICIANS_RED:
-                return new MagiciansRedEntity(EntityInit.MAGICIANS_RED.get(), world);
-            case StandID.THE_HAND:
-                return new TheHandEntity(EntityInit.THE_HAND.get(), world);
-            case StandID.HIEROPHANT_GREEN:
-                return new HierophantGreenEntity(EntityInit.HIEROPHANT_GREEN.get(), world);
-            case StandID.GREEN_DAY:
-                return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
-            case StandID.TWENTIETH_CENTURY_BOY:
-                return new TwentiethCenturyBoyEntity(EntityInit.TWENTIETH_CENTURY_BOY.get(), world);
-            case StandID.THE_GRATEFUL_DEAD:
-                return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
-            case StandID.STICKY_FINGERS:
-                return new StickyFingersEntity(EntityInit.STICKY_FINGERS.get(), world);
-            case StandID.TUSK_ACT_1:
-                return new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
-            case StandID.TUSK_ACT_2:
-                return new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
-            case StandID.TUSK_ACT_3:
-                return new TuskAct3Entity(EntityInit.TUSK_ACT_3.get(), world);
-            case StandID.TUSK_ACT_4:
-                return new TuskAct4Entity(EntityInit.TUSK_ACT_4.get(), world);
-            case StandID.ECHOES_ACT_1:
-                return new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
-            case StandID.ECHOES_ACT_2:
-                return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
-            case StandID.ECHOES_ACT_3:
-                return new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
-        }
-    }
 
     public static class Predicates {
         public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof AbstractStandEntity);
@@ -345,6 +281,8 @@ public class Util {
 
         public static final int ECHOES_ACT_3 = 30;
 
+        public static final int BEACH_BOY = 31;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -370,8 +308,15 @@ public class Util {
                 THE_GRATEFUL_DEAD,
                 STICKY_FINGERS,
                 TUSK_ACT_1,
-                ECHOES_ACT_1
+                ECHOES_ACT_1,
+                BEACH_BOY
         };
+
+        public static final List<Integer> ITEM_STANDS = Arrays.asList(
+                THE_EMPEROR,
+                BEACH_BOY
+        );
+
 
         public static final List<Integer> STANDS_WITH_ACTS = Arrays.asList(
                 MADE_IN_HEAVEN,
@@ -380,8 +325,119 @@ public class Util {
                 TUSK_ACT_3,
                 TUSK_ACT_4,
                 ECHOES_ACT_2,
-                ECHOES_ACT_3
+                ECHOES_ACT_3,
+                BEACH_BOY
         );
+
+        /**
+         * Returns an {@link AbstractStandEntity} based on the StandID inputted.
+         *
+         * @param standID The StandID of the Stand, see {@link StandID}.
+         * @param world   The {@link World} the Stand will be summoned in.
+         */
+        public static AbstractStandEntity getStandByID(int standID, World world) {
+            switch (standID) {
+                default:
+                    return Null();
+                case KING_CRIMSON:
+                    return new KingCrimsonEntity(EntityInit.KING_CRIMSON.get(), world);
+                case D4C:
+                    return new D4CEntity(EntityInit.D4C.get(), world);
+                case GOLD_EXPERIENCE:
+                    return new GoldExperienceEntity(EntityInit.GOLD_EXPERIENCE.get(), world);
+                case MADE_IN_HEAVEN:
+                    return new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), world);
+                case GER:
+                    return new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
+                case AEROSMITH:
+                    return new AerosmithEntity(EntityInit.AEROSMITH.get(), world);
+                case WEATHER_REPORT:
+                    return new WeatherReportEntity(EntityInit.WEATHER_REPORT.get(), world);
+                case KILLER_QUEEN:
+                    return new KillerQueenEntity(EntityInit.KILLER_QUEEN.get(), world);
+                case CRAZY_DIAMOND:
+                    return new CrazyDiamondEntity(EntityInit.CRAZY_DIAMOND.get(), world);
+                case PURPLE_HAZE:
+                    return new PurpleHazeEntity(EntityInit.PURPLE_HAZE.get(), world);
+                case WHITESNAKE:
+                    return new WhitesnakeEntity(EntityInit.WHITESNAKE.get(), world);
+                case CMOON:
+                    return new CMoonEntity(EntityInit.CMOON.get(), world);
+                case THE_WORLD:
+                    return new TheWorldEntity(EntityInit.THE_WORLD.get(), world);
+                case STAR_PLATINUM:
+                    return new StarPlatinumEntity(EntityInit.STAR_PLATINUM.get(), world);
+                case SILVER_CHARIOT:
+                    return new SilverChariotEntity(EntityInit.SILVER_CHARIOT.get(), world);
+                case MAGICIANS_RED:
+                    return new MagiciansRedEntity(EntityInit.MAGICIANS_RED.get(), world);
+                case THE_HAND:
+                    return new TheHandEntity(EntityInit.THE_HAND.get(), world);
+                case HIEROPHANT_GREEN:
+                    return new HierophantGreenEntity(EntityInit.HIEROPHANT_GREEN.get(), world);
+                case GREEN_DAY:
+                    return new GreenDayEntity(EntityInit.GREEN_DAY.get(), world);
+                case TWENTIETH_CENTURY_BOY:
+                    return new TwentiethCenturyBoyEntity(EntityInit.TWENTIETH_CENTURY_BOY.get(), world);
+                case THE_GRATEFUL_DEAD:
+                    return new TheGratefulDeadEntity(EntityInit.THE_GRATEFUL_DEAD.get(), world);
+                case STICKY_FINGERS:
+                    return new StickyFingersEntity(EntityInit.STICKY_FINGERS.get(), world);
+                case TUSK_ACT_1:
+                    return new TuskAct1Entity(EntityInit.TUSK_ACT_1.get(), world);
+                case TUSK_ACT_2:
+                    return new TuskAct2Entity(EntityInit.TUSK_ACT_2.get(), world);
+                case TUSK_ACT_3:
+                    return new TuskAct3Entity(EntityInit.TUSK_ACT_3.get(), world);
+                case TUSK_ACT_4:
+                    return new TuskAct4Entity(EntityInit.TUSK_ACT_4.get(), world);
+                case ECHOES_ACT_1:
+                    return new EchoesAct1Entity(EntityInit.ECHOES_ACT_1.get(), world);
+                case ECHOES_ACT_2:
+                    return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
+                case ECHOES_ACT_3:
+                    return new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
+            }
+        }
+
+        public static ItemStack getItemStandById(int standID) {
+            switch (standID) {
+                default:
+                    return Null();
+                case THE_EMPEROR:
+                    return new ItemStack(ItemInit.THE_EMPEROR.get());
+                case BEACH_BOY:
+                    return new ItemStack(ItemInit.BEACH_BOY.get());
+            }
+        }
+
+        public static void summonItemStand(ServerPlayerEntity master) {
+            Stand.getLazyOptional(master).ifPresent(capability -> {
+                ItemStack itemStack = Util.StandID.getItemStandById(capability.getStandID());
+                if (!master.inventory.hasItemStack(itemStack)) {
+                    if (master.inventory.getStackInSlot(master.inventory.getBestHotbarSlot()).isEmpty()) {
+                        master.inventory.currentItem = master.inventory.getBestHotbarSlot();
+                        master.inventory.add(master.inventory.getBestHotbarSlot(), itemStack);
+                        switch (capability.getStandID()) {
+                            default:
+                                break;
+                            case THE_EMPEROR: {
+                                master.world.playSound(null, master.getPosition(), SoundInit.SPAWN_THE_EMPEROR.get(), SoundCategory.NEUTRAL, 1, 1);
+                                break;
+                            }
+                            case BEACH_BOY: {
+                                break;
+                            }
+                        }
+                        capability.setStandOn(true);
+                    } else
+                        master.sendMessage(new StringTextComponent("Your hotbar is full!"), ChatType.GAME_INFO);
+                } else {
+                    itemStack.shrink(1);
+                    capability.setStandOn(false);
+                }
+            });
+        }
     }
 
     public static class KeyCodes {

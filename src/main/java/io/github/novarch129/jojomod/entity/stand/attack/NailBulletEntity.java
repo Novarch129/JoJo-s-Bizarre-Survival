@@ -65,7 +65,7 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
         if (isHoming) {
             LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(standMaster) && !(entity instanceof AbstractStandEntity && !entity.equals(master.getRidingEntity())) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
             if (target == null) return;
-            lookAt(EntityAnchorArgument.Type.EYES, target.getPositionVec());
+            lookAt(EntityAnchorArgument.Type.FEET, target.getPositionVec());
             Vec3d motion = Util.getEntityForwardsMotion(this).mul(getDistance(target) < 6 ? new Vec3d(1.1, 1.1, 1.1) : new Vec3d(0.1, 0.1, 0.1));
             setMotion(motion);
             Vec3d distance = getPositionVec().subtract(target.getPositionVec());
