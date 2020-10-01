@@ -270,6 +270,10 @@ public class EventHandleStandAbilities {
                     standName = "Echoes (Act 3)";
                     break;
                 }
+                case Util.StandID.BEACH_BOY: {
+                    standName = "Beach Boy";
+                    break;
+                }
             }
         if (!standName.equals(""))
             event.getToolTip().add(new StringTextComponent(standName));
@@ -277,7 +281,7 @@ public class EventHandleStandAbilities {
 
     @SubscribeEvent
     public static void throwawayEvent(ItemTossEvent event) {
-        if (event.getEntityItem().getItem().getItem() == ItemInit.THE_EMPEROR.get()) {
+        if (event.getEntityItem().getItem().getItem() == ItemInit.THE_EMPEROR.get() || event.getEntityItem().getItem().getItem() == ItemInit.BEACH_BOY.get()) {
             event.setCanceled(true);
             Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> props.setStandOn(false));
         }

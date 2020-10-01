@@ -112,6 +112,33 @@ public class Util {
         world.removeBlock(pos, false);
     }
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    public static void setupActSwitch(ServerPlayerEntity standMaster, int standID, int act) {
+        switch (standID) {
+            default:
+                break;
+            case StandID.BEACH_BOY: {
+                switch (act) {
+                    default:
+                        break;
+                    case 0: {
+                        standMaster.sendStatusMessage(new StringTextComponent("Mode: Fishing Rod"), true);
+                        break;
+                    }
+                    case 1: {
+                        standMaster.sendStatusMessage(new StringTextComponent("Mode: Damage"), true);
+                        break;
+                    }
+                    case 2: {
+                        standMaster.sendStatusMessage(new StringTextComponent("Mode: Homing"), true);
+                        break;
+                    }
+                }
+            }
+            break;
+        }
+    }
+
     public static boolean isClientHoldingShift() {
         return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT);
     }
@@ -426,6 +453,7 @@ public class Util {
                                 break;
                             }
                             case BEACH_BOY: {
+                                master.world.playSound(null, master.getPosition(), SoundInit.SPAWN_BEACH_BOY.get(), SoundCategory.NEUTRAL, 1, 1);
                                 break;
                             }
                         }

@@ -52,6 +52,7 @@ public class ItemInit {
     public static final RegistryObject<Item> SUMMON_ECHOES_ACT_1 = ITEMS.register("summon_echoes_act_1", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("echoes_act_1", TextFormatting.GREEN)).group(JojoItemGroup.INSTANCE), Util.StandID.ECHOES_ACT_1, ""));
     public static final RegistryObject<Item> SUMMON_ECHOES_ACT_2 = ITEMS.register("summon_echoes_act_2", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("echoes_act_2", TextFormatting.GREEN)).group(JojoItemGroup.INSTANCE), Util.StandID.ECHOES_ACT_2, ""));
     public static final RegistryObject<Item> SUMMON_ECHOES_ACT_3 = ITEMS.register("summon_echoes_act_3", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("echoes_act_3", TextFormatting.GREEN)).group(JojoItemGroup.INSTANCE), Util.StandID.ECHOES_ACT_3, ""));
+    public static final RegistryObject<Item> SUMMON_BEACH_BOY = ITEMS.register("summon_beach_boy", () -> new StandArrowItem(new Item.Properties().maxStackSize(1).rarity(Rarity.create("beach_boy", TextFormatting.LIGHT_PURPLE)).group(JojoItemGroup.INSTANCE), Util.StandID.BEACH_BOY, ""));
 
     public static final RegistryObject<Item> STAND_DISC = ITEMS.register("stand_disc", () -> new StandDiscItem(new Item.Properties().maxStackSize(1).group(JojoItemGroup.INSTANCE)));
     public static final RegistryObject<Item> THE_EMPEROR = ITEMS.register("the_emperor", () -> new EmperorItem(new Item.Properties().maxStackSize(1)));

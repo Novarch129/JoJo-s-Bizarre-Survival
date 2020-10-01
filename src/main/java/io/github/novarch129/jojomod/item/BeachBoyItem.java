@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.item;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.BeachBoyBobberEntity;
 import io.github.novarch129.jojomod.util.Util;
-import io.github.novarch129.jojomod.util.ValueTextComponent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
@@ -48,8 +47,6 @@ public class BeachBoyItem extends FishingRodItem {
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if (entityIn instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entityIn).ifPresent(stand -> {
-                if (entityIn.isCrouching())
-                    ((PlayerEntity) entityIn).sendStatusMessage(new ValueTextComponent(stand.getAct()), true);
                 stand.setAbility(false);
                 if (!stand.getStandOn() || stand.getStandID() != Util.StandID.BEACH_BOY)
                     stack.shrink(1);

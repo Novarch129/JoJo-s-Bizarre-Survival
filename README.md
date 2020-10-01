@@ -25,7 +25,7 @@
 - [x] Purple Haze
 - [x] Green Day
 - [x] The Grateful Dead
-- [ ] Beach Boy
+- [x] Beach Boy
 - [x] Crazy Diamond
 - [x] Killer Queen
 - [x] The Hand

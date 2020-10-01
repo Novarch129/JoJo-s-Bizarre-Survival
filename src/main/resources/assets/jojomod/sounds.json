@@ -475,5 +475,14 @@
         "steam": false
       }
     ]
+  },
+  "spawn_beach_boy": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_beach_boy",
+        "steam": false
+      }
+    ]
   }
 }

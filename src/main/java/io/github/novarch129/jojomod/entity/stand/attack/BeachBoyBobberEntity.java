@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
-import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,12 +16,6 @@ import net.minecraft.world.World;
 public class BeachBoyBobberEntity extends FishingBobberEntity {
     private PlayerEntity master;
     private int act;
-    private float yaw;
-    private float pitch;
-
-    public BeachBoyBobberEntity(World worldIn, PlayerEntity playerEntity, double x, double y, double z) {
-        super(worldIn, playerEntity, x, y, z);
-    }
 
     public BeachBoyBobberEntity(PlayerEntity playerEntity, World world) {
         super(playerEntity, world, 5, 5);
@@ -50,29 +43,22 @@ public class BeachBoyBobberEntity extends FishingBobberEntity {
 
     @Override
     public void tick() {
-        if (act == 2 && !world.isRemote) {
-            noClip = true;
+        super.tick();
+        if (act == 2) {
             LivingEntity target = world.getClosestEntityWithinAABB(LivingEntity.class, new EntityPredicate().setCustomPredicate(entity -> !entity.equals(master) && !(entity instanceof AbstractStandEntity && !entity.equals(master.getRidingEntity())) && entity.isAlive()), null, getPosX(), getPosY(), getPosZ(), new AxisAlignedBB(getPosition().add(20, 20, 20), getPosition().add(-20, -20, -20)));
             if (target == null) return;
-            Vec3d vec3d = EntityAnchorArgument.Type.EYES.apply(this);
-            double d0 = target.getPositionVec().x - vec3d.x;
-            double d1 = target.getPositionVec().y - vec3d.y;
-            double d2 = target.getPositionVec().z - vec3d.z;
-            double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
-            pitch = MathHelper.wrapDegrees((float) (-(MathHelper.atan2(d1, d3) * (double) (180F / (float) Math.PI))));
-            yaw = MathHelper.wrapDegrees((float) (MathHelper.atan2(d2, d0) * (double) (180F / (float) Math.PI)) - 90.0F);
-            Vec3d motion = new Vec3d(
-                    -MathHelper.sin(rotationYaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI),
-                    MathHelper.cos(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI),
-                    MathHelper.cos(yaw / 180 * (float) Math.PI) * MathHelper.cos(pitch / 180 * (float) Math.PI)
-            ).mul(getDistance(target) < 10 ? new Vec3d(1.1, 1.1, 1.1) : new Vec3d(0.6, 0.6, 0.6));
-            setMotion(motion);
-            if (target.getDistance(this) < 1.5f)
-                caughtEntity = target;
-            onGround = false;
-            collidedHorizontally = false;
+            noClip = true;
+            double x = (target.getBoundingBox().minX + (target.getBoundingBox().maxX - target.getBoundingBox().minX) / 2) - getPosX();
+            double y = (target.getBoundingBox().minY + (target.getBoundingBox().maxY - target.getBoundingBox().minY) / 2) - getPosY();
+            double z = (target.getBoundingBox().minZ + (target.getBoundingBox().maxZ - target.getBoundingBox().minZ) / 2) - getPosZ();
+            Vec3d vec3d = (new Vec3d(x, y, z)).normalize().add(rand.nextGaussian() * (double) 0.0075f * (double) 0, rand.nextGaussian() * (double) 0.0075f * 0, rand.nextGaussian() * (double) 0.0075F * 0).scale(1);
+            setMotion(vec3d);
+            float f = MathHelper.sqrt(horizontalMag(vec3d));
+            rotationYaw = (float) (MathHelper.atan2(vec3d.x, vec3d.z) * (double) (180 / (float) Math.PI));
+            rotationPitch = (float) (MathHelper.atan2(vec3d.y, f) * (double) (180 / (float) Math.PI));
+            prevRotationYaw = rotationYaw;
+            prevRotationPitch = rotationPitch;
         }
-        super.tick();
     }
 
     @Override
@@ -94,15 +80,11 @@ public class BeachBoyBobberEntity extends FishingBobberEntity {
         ItemStack heldItemOffhand = master.getHeldItemOffhand();
         boolean flag = heldItemMainhand.getItem() instanceof net.minecraft.item.FishingRodItem;
         boolean flag1 = heldItemOffhand.getItem() instanceof net.minecraft.item.FishingRodItem;
-        if (!master.removed && master.isAlive() && (flag || flag1) && !(getDistanceSq(master) > 2048))
+        if (!master.removed && master.isAlive() && (flag || flag1) && !(getDistanceSq(master) > 5096))
             return false;
         else {
             remove();
             return true;
         }
-    }
-
-    @Override
-    protected void doBlockCollisions() {
     }
 }
