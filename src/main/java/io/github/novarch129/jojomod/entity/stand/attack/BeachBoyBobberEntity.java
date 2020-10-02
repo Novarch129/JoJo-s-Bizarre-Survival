@@ -2,6 +2,8 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +11,7 @@ import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -59,13 +62,20 @@ public class BeachBoyBobberEntity extends FishingBobberEntity {
             prevRotationYaw = rotationYaw;
             prevRotationPitch = rotationPitch;
         }
+        float f = 0;
+        BlockPos blockpos = new BlockPos(this);
+        BlockState state = world.getBlockState(blockpos);
+        if (state.getBlock() == Blocks.LAVA || state.getBlock() == Blocks.END_PORTAL)
+            f = 1;
+        if (!world.isRemote && f > 0)
+            catchingFish(blockpos);
     }
 
     @Override
     public void bringInHookedEntity() {
         if (master != null) {
-            if (act == 1) {
-                caughtEntity.attackEntityFrom(DamageSource.causePlayerDamage(master), 5);
+            if (act != 0) {
+                caughtEntity.attackEntityFrom(DamageSource.causePlayerDamage(master), act == 1 ? 10 : 5);
                 return;
             }
             Vec3d vec3d = (new Vec3d(master.getPosX() - getPosX(), master.getPosY() - getPosY(), master.getPosZ() - getPosZ())).mul(1.4, 1.4, 1.4).scale(0.1);
