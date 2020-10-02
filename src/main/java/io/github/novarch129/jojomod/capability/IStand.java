@@ -121,6 +121,12 @@ public interface IStand {
 
     void putAffectedChunkList(List<ChunkPos> list);
 
+    void addExperiencePoints(int experiencePoints);
+
+    int getExperiencePoints();
+
+    void putExperiencePoints(int experiencePoints);
+
     void clone(IStand props);
 
     void removeStand();

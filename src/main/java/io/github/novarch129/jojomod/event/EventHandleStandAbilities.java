@@ -47,6 +47,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -119,6 +120,73 @@ public class EventHandleStandAbilities {
 
             if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !props.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
+        });
+    }
+
+    @SubscribeEvent
+    public static void xpEvent(PlayerXpEvent.XpChange event) {
+        PlayerEntity player = event.getPlayer();
+        if (player == null) return;
+        Stand.getLazyOptional(player).ifPresent(stand -> {
+            if (Util.StandID.EVOLUTION_STANDS.contains(stand.getStandID())) {
+                stand.addExperiencePoints(event.getAmount());
+                switch (stand.getExperiencePoints()) {
+                    default:
+                        break;
+                    case 1000: {
+                        switch (stand.getStandID()) {
+                            default:
+                                break;
+                            case Util.StandID.ECHOES_ACT_1: {
+                                stand.removeStand();
+                                stand.setStandID(Util.StandID.ECHOES_ACT_2);
+                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 2!"), true);
+                                break;
+                            }
+                            case Util.StandID.TUSK_ACT_1: {
+                                stand.removeStand();
+                                stand.setStandID(Util.StandID.TUSK_ACT_2);
+                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 2!"), true);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 3000: {
+                        switch (stand.getStandID()) {
+                            default:
+                                break;
+                            case Util.StandID.WHITESNAKE: {
+                                stand.removeStand();
+                                stand.setStandID(Util.StandID.CMOON);
+                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Whitesnake\u00A7f has evolved into\u00A7e C-Moon!"), true);
+                                break;
+                            }
+                            case Util.StandID.ECHOES_ACT_2: {
+                                stand.removeStand();
+                                stand.setStandID(Util.StandID.ECHOES_ACT_3);
+                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 3!"), true);
+                                break;
+                            }
+                            case Util.StandID.TUSK_ACT_2: {
+                                stand.removeStand();
+                                stand.setStandID(Util.StandID.TUSK_ACT_3);
+                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 3!"), true);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    case 5000: {
+                        if (stand.getStandID() == Util.StandID.TUSK_ACT_3) {
+                            stand.removeStand();
+                            stand.setStandID(Util.StandID.TUSK_ACT_4);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 4!"), true);
+                        }
+                        break;
+                    }
+                }
+            }
         });
     }
 

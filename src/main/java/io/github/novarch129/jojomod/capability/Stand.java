@@ -56,6 +56,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private int abilityUseCount;
     private BlockPos blockPos = BlockPos.ZERO;
     private List<ChunkPos> affectedChunkList = new ArrayList<>();
+    private int experiencePoints;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -94,6 +95,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 nbt.putDouble("blockPosX", props.getBlockPos().getX());
                 nbt.putDouble("blockPosY", props.getBlockPos().getY());
                 nbt.putDouble("blockPosZ", props.getBlockPos().getZ());
+                nbt.putInt("experiencePoints", props.getExperiencePoints());
                 ListNBT listNBT = new ListNBT();
                 props.getAffectedChunkList().forEach(pos -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
@@ -124,6 +126,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putCharging(compoundNBT.getBoolean("charging"));
                 props.putAbilityUseCount(compoundNBT.getInt("abilityUseCount"));
                 props.putBlockPos(new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ")));
+                props.putExperiencePoints(compoundNBT.getInt("experiencePoints"));
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
                         props.addAffectedChunk(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
@@ -452,6 +455,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         affectedChunkList = list;
     }
 
+    @Override
+    public void addExperiencePoints(int experiencePoints) {
+        this.experiencePoints += experiencePoints;
+        onDataUpdated();
+    }
+
+    @Override
+    public int getExperiencePoints() {
+        return experiencePoints;
+    }
+
+    @Override
+    public void putExperiencePoints(int experiencePoints) {
+        this.experiencePoints = experiencePoints;
+    }
+
     public void clone(IStand props) {
         putStandID(props.getStandID());
         putAct(props.getAct());
@@ -468,6 +487,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putCharging(props.isCharging());
         putAbilityUseCount(props.getAbilityUseCount());
         putAffectedChunkList(props.getAffectedChunkList());
+        putExperiencePoints(props.getExperiencePoints());
         onDataUpdated();
     }
 
@@ -480,7 +500,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putTimeLeft(1000);
         putTransformed(0);
         putDiavolo("");
-        putAbility(true);
+        putAbility(false);
         putNoClip(false);
         putPlayerStand(0);
         putAbilityActive(false);
@@ -489,6 +509,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         putCharging(false);
         putAbilityUseCount(0);
         putAffectedChunkList(new ArrayList<>());
+        putExperiencePoints(0);
         onDataUpdated();
     }
 

@@ -353,7 +353,17 @@ public class Util {
                 TUSK_ACT_4,
                 ECHOES_ACT_2,
                 ECHOES_ACT_3,
-                BEACH_BOY
+                BEACH_BOY //Not really, but he uses the switch act button.
+        );
+
+        public static final List<Integer> EVOLUTION_STANDS = Arrays.asList(
+                WHITESNAKE,
+                CMOON,
+                TUSK_ACT_2,
+                TUSK_ACT_2,
+                TUSK_ACT_3,
+                ECHOES_ACT_1,
+                ECHOES_ACT_2
         );
 
         /**
