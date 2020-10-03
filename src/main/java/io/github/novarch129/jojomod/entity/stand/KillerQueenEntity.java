@@ -1,9 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
-import io.github.novarch129.jojomod.capability.IStand;
-import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.capability.StandChunkEffects;
-import io.github.novarch129.jojomod.capability.StandEffects;
+import io.github.novarch129.jojomod.capability.*;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -47,11 +44,15 @@ public class KillerQueenEntity extends AbstractStandEntity {
             if (master.isCrouching() && stand.getGameTime() == -1) {
                 stand.setGameTime(world.getGameTime());
                 stand.setDayTime(world.getDayTime());
-                getServer().getWorld(dimension).getEntities().forEach(entity ->
-                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
-                            standEffects.setBitesTheDustPos(entity.getPosition());
-                            standEffects.setStandUser(master.getUniqueID());
-                        }));
+                getServer().getWorld(dimension).getEntities().forEach(entity -> {
+                    if (entity instanceof PlayerEntity)
+                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
+                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> standItemEffects.setErasable(true))));
+                    StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                        standEffects.setBitesTheDustPos(entity.getPosition());
+                        standEffects.setStandUser(master.getUniqueID());
+                    });
+                });
                 master.sendStatusMessage(new StringTextComponent("Set checkpoint for\u00A7e Bites the Dust\u00A7f!"), true);
             } else if (stand.getGameTime() != -1) {
                 world.setGameTime(stand.getGameTime());
@@ -59,13 +60,20 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 stand.setGameTime(-1);
                 stand.setDayTime(-1);
                 master.setHealth(master.getMaxHealth());
-                getServer().getWorld(dimension).getEntities().forEach(entity ->
-                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
-                            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
-                                entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
-                                standEffects.setBitesTheDustPos(BlockPos.ZERO);
-                            }
-                        }));
+                getServer().getWorld(dimension).getEntities().forEach(entity -> {
+                    if (entity instanceof PlayerEntity)
+                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
+                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> {
+                                    if (!standItemEffects.isErasable())
+                                        stack.shrink(stack.getCount());
+                                })));
+                    StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                        if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
+                            entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
+                            standEffects.setBitesTheDustPos(BlockPos.ZERO);
+                        }
+                    });
+                });
             }
             return;
         }

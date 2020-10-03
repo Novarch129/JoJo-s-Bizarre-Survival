@@ -1,9 +1,6 @@
 package io.github.novarch129.jojomod;
 
-import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.capability.StandChunkEffects;
-import io.github.novarch129.jojomod.capability.StandEffects;
-import io.github.novarch129.jojomod.capability.Timestop;
+import io.github.novarch129.jojomod.capability.*;
 import io.github.novarch129.jojomod.command.impl.StandCommand;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.init.*;
@@ -91,6 +88,7 @@ public class JojoBizarreSurvival {
         Timestop.register();
         StandEffects.register();
         StandChunkEffects.register();
+        StandItemEffects.register();
         PacketHandler.register();
 
         DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> {
