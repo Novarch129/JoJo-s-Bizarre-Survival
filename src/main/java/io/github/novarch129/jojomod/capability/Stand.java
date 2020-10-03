@@ -57,6 +57,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private BlockPos blockPos = BlockPos.ZERO;
     private List<ChunkPos> affectedChunkList = new ArrayList<>();
     private int experiencePoints;
+    private long gameTime = -1;
+    private long dayTime = -1;
+    private int abilitiesUnlocked;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -96,6 +99,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 nbt.putDouble("blockPosY", props.getBlockPos().getY());
                 nbt.putDouble("blockPosZ", props.getBlockPos().getZ());
                 nbt.putInt("experiencePoints", props.getExperiencePoints());
+                nbt.putLong("gameTime", props.getGameTime());
+                nbt.putLong("dayTime", props.getDayTime());
+                nbt.putInt("abilitiesUnlocked", props.getAbilitiesUnlocked());
                 ListNBT listNBT = new ListNBT();
                 props.getAffectedChunkList().forEach(pos -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
@@ -127,6 +133,9 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putAbilityUseCount(compoundNBT.getInt("abilityUseCount"));
                 props.putBlockPos(new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ")));
                 props.putExperiencePoints(compoundNBT.getInt("experiencePoints"));
+                props.putGameTime(compoundNBT.getLong("gameTime"));
+                props.putDayTime(compoundNBT.getLong("dayTime"));
+                props.putAbilitiesUnlocked(compoundNBT.getInt("abilitiesUnlocked"));
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
                         props.addAffectedChunk(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
@@ -469,6 +478,54 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void putExperiencePoints(int experiencePoints) {
         this.experiencePoints = experiencePoints;
+    }
+
+    @Override
+    public long getGameTime() {
+        return gameTime;
+    }
+
+    @Override
+    public void setGameTime(long time) {
+        this.gameTime = time;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putGameTime(long time) {
+        this.gameTime = time;
+    }
+
+    @Override
+    public long getDayTime() {
+        return dayTime;
+    }
+
+    @Override
+    public void setDayTime(long time) {
+        this.dayTime = time;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putDayTime(long time) {
+        this.dayTime = time;
+    }
+
+    @Override
+    public int getAbilitiesUnlocked() {
+        return abilitiesUnlocked;
+    }
+
+    @Override
+    public void addAbilityUnlocked(int amount) {
+        abilitiesUnlocked += amount;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putAbilitiesUnlocked(int abilitiesUnlocked) {
+        this.abilitiesUnlocked = abilitiesUnlocked;
     }
 
     public void clone(IStand props) {

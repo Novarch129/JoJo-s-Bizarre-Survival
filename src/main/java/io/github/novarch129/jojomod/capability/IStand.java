@@ -127,6 +127,24 @@ public interface IStand {
 
     void putExperiencePoints(int experiencePoints);
 
+    long getGameTime();
+
+    void setGameTime(long time);
+
+    void putGameTime(long time);
+
+    long getDayTime();
+
+    void setDayTime(long time);
+
+    void putDayTime(long time);
+
+    int getAbilitiesUnlocked();
+
+    void addAbilityUnlocked(int amount);
+
+    void putAbilitiesUnlocked(int abilitiesUnlocked);
+
     void clone(IStand props);
 
     void removeStand();

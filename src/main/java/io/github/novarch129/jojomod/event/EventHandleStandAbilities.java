@@ -41,10 +41,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
@@ -63,17 +60,32 @@ public class EventHandleStandAbilities {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
-        Stand.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(stand -> {
             Random rand = player.world.rand;
-            int standID = props.getStandID();
-            boolean standOn = props.getStandOn();
-            boolean ability = props.getAbility();
-            double cooldown = props.getCooldown();
-            double timeLeft = props.getTimeLeft();
-            double invulnerableTicks = props.getInvulnerableTicks();
+            int standID = stand.getStandID();
+            boolean standOn = stand.getStandOn();
+            boolean ability = stand.getAbility();
+            double cooldown = stand.getCooldown();
+            double timeLeft = stand.getTimeLeft();
+            double invulnerableTicks = stand.getInvulnerableTicks();
+
+            if (!player.world.isRemote && stand.getGameTime() != -1 && stand.getGameTime() < player.world.getGameTime() - 24000) {
+                player.world.setGameTime(stand.getGameTime());
+                player.world.setDayTime(stand.getDayTime());
+                stand.setGameTime(-1);
+                stand.setDayTime(-1);
+                player.setHealth(player.getMaxHealth());
+                player.getServer().getWorld(player.dimension).getEntities().forEach(entity ->
+                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
+                                entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
+                                standEffects.setBitesTheDustPos(BlockPos.ZERO);
+                            }
+                        }));
+            }
 
             if (invulnerableTicks > 0) {
-                props.setInvulnerableTicks(props.getInvulnerableTicks() - 0.5);
+                stand.setInvulnerableTicks(stand.getInvulnerableTicks() - 0.5);
                 for (int i = 0; i < 10; i++)
                     player.world.addOptionalParticle(
                             ParticleTypes.DRAGON_BREATH,
@@ -82,9 +94,9 @@ public class EventHandleStandAbilities {
                             player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
                 if (invulnerableTicks == 0.5)
-                    props.setCooldown(140);
+                    stand.setCooldown(140);
             }
-            if (standID == Util.StandID.STICKY_FINGERS && props.getAbilityActive())
+            if (standID == Util.StandID.STICKY_FINGERS && stand.getAbilityActive())
                 for (int i = 0; i < 10; i++)
                     player.world.addOptionalParticle(
                             ParticleTypes.DRAGON_BREATH,
@@ -93,32 +105,32 @@ public class EventHandleStandAbilities {
                             player.getPosZ() + (player.world.rand.nextBoolean() ? rand.nextDouble() : -rand.nextDouble()),
                             0, 0.3 + (rand.nextBoolean() ? 0.1 : -0.1), 0);
 
-            if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
-                props.setTimeLeft(1000);
+            if (cooldown == 0.5 && stand.getStandID() != Util.StandID.MADE_IN_HEAVEN)
+                stand.setTimeLeft(1000);
 
             if (standID == Util.StandID.GER)
                 player.clearActivePotions();
 
             if (!standOn) {
                 if (cooldown > 0)
-                    props.setCooldown(props.getCooldown() - 0.5);
+                    stand.setCooldown(stand.getCooldown() - 0.5);
 
                 if (timeLeft < 1000)
-                    props.setTimeLeft(props.getTimeLeft() + 0.5);
+                    stand.setTimeLeft(stand.getTimeLeft() + 0.5);
 
                 player.setInvulnerable(false);
-            } else if (!props.getAbilityActive()) {
+            } else if (!stand.getAbilityActive()) {
                 if (cooldown > 0)
-                    props.setCooldown(props.getCooldown() - 0.5);
+                    stand.setCooldown(stand.getCooldown() - 0.5);
 
-                if (cooldown == 0.5 && props.getStandID() != Util.StandID.MADE_IN_HEAVEN)
-                    props.setTimeLeft(1000);
+                if (cooldown == 0.5 && stand.getStandID() != Util.StandID.MADE_IN_HEAVEN)
+                    stand.setTimeLeft(1000);
 
                 if (timeLeft < 1000 && cooldown == 0)
-                    props.setTimeLeft(props.getTimeLeft() + 0.5);
+                    stand.setTimeLeft(stand.getTimeLeft() + 0.5);
             }
 
-            if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !props.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
+            if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !stand.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
                 player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
@@ -186,6 +198,33 @@ public class EventHandleStandAbilities {
                         break;
                     }
                 }
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void livingDeath(LivingDeathEvent event) {
+        if (!(event.getSource().getTrueSource() instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) event.getSource().getTrueSource();
+        LivingEntity entityLiving = event.getEntityLiving();
+        if (player.world.isRemote) return;
+        Stand.getLazyOptional(player).ifPresent(stand -> {
+            if (stand.getGameTime() != -1) {
+                event.setCanceled(true);
+                entityLiving.setHealth(entityLiving.getMaxHealth());
+                StandEffects.getLazyOptional(event.getEntityLiving()).ifPresent(standEffects -> standEffects.setTimeOfDeath(player.world.getGameTime()));
+                player.world.setGameTime(stand.getGameTime());
+                player.world.setDayTime(stand.getDayTime());
+                stand.setGameTime(-1);
+                stand.setDayTime(-1);
+                player.setHealth(player.getMaxHealth());
+                player.getServer().getWorld(player.dimension).getEntities().forEach(entity ->
+                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
+                                entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
+                                standEffects.setBitesTheDustPos(BlockPos.ZERO);
+                            }
+                        }));
             }
         });
     }
@@ -910,6 +949,13 @@ public class EventHandleStandAbilities {
                 props.setTimeNearFlames(props.getTimeNearFlames() - 0.25);
                 if (entity.world.rand.nextInt(6) == 1)
                     entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
+            }
+            if (props.getTimeOfDeath() != -1 && props.getTimeOfDeath() <= entity.world.getGameTime()) {
+                Explosion explosion = new Explosion(entity.world, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 4, true, Explosion.Mode.NONE);
+                ((MobEntity) entity).spawnExplosionParticle();
+                explosion.doExplosionB(true);
+                entity.world.playSound(null, entity.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
+                entity.remove();
             }
         });
         StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->

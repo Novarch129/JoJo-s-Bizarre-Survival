@@ -1,5 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.capability.StandEffects;
@@ -41,13 +42,40 @@ public class KillerQueenEntity extends AbstractStandEntity {
 
     public void detonate() {
         if (getMaster() == null) return;
-        Stand.getLazyOptional(master).ifPresent(props -> {
-            if (world.getBlockState(props.getBlockPos()).isAir(world, props.getBlockPos())) {
-                props.setBlockPos(BlockPos.ZERO);
-                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
-                props.setAbilityUseCount(0);
+        IStand stand = Stand.getCapabilityFromPlayer(master);
+        if (master.isCrouching() && !world.isRemote) {
+            if (master.isCrouching() && stand.getGameTime() == -1) {
+                stand.setGameTime(world.getGameTime());
+                stand.setDayTime(world.getDayTime());
+                getServer().getWorld(dimension).getEntities().forEach(entity ->
+                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                            standEffects.setBitesTheDustPos(entity.getPosition());
+                            standEffects.setStandUser(master.getUniqueID());
+                        }));
+                master.sendStatusMessage(new StringTextComponent("Set checkpoint for\u00A7e Bites the Dust\u00A7f!"), true);
+            } else if (stand.getGameTime() != -1) {
+                world.setGameTime(stand.getGameTime());
+                world.setDayTime(stand.getDayTime());
+                stand.setGameTime(-1);
+                stand.setDayTime(-1);
+                master.setHealth(master.getMaxHealth());
+                getServer().getWorld(dimension).getEntities().forEach(entity ->
+                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
+                                entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
+                                standEffects.setBitesTheDustPos(BlockPos.ZERO);
+                            }
+                        }));
             }
-            if (props.getCooldown() <= 0) {
+            return;
+        }
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            if (world.getBlockState(stand.getBlockPos()).isAir(world, stand.getBlockPos())) {
+                stand.setBlockPos(BlockPos.ZERO);
+                StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
+                stand.setAbilityUseCount(0);
+            }
+            if (stand.getCooldown() <= 0) {
                 if (!world.isRemote)
                     getServer().getWorld(dimension).getEntities()
                             .filter(entity -> entity instanceof ItemEntity)
@@ -57,28 +85,44 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                             PlayerEntity player = world.getPlayerByUuid(effects.getStandUser());
                                             if (player != null && player.equals(master)) {
                                                 entity.world.createExplosion(entity, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 2.3f, Explosion.Mode.DESTROY);
-                                                props.setAbilityUseCount(0);
+                                                stand.setAbilityUseCount(0);
                                                 entity.remove();
                                             }
                                         }
                                     })
                             );
-                if (props.getBlockPos() != BlockPos.ZERO) {
-                    if (!world.getChunkProvider().isChunkLoaded(world.getChunkAt(props.getBlockPos()).getPos())) return;
-                    world.createExplosion(this, props.getBlockPos().getX(), props.getBlockPos().getY(), props.getBlockPos().getZ(), 3, Explosion.Mode.DESTROY);
+                if (stand.getBlockPos() != BlockPos.ZERO) {
+                    if (!world.getChunkProvider().isChunkLoaded(world.getChunkAt(stand.getBlockPos()).getPos())) return;
+                    world.createExplosion(this, stand.getBlockPos().getX(), stand.getBlockPos().getY(), stand.getBlockPos().getZ(), 3, Explosion.Mode.DESTROY);
                     StandChunkEffects.getLazyOptional(world.getChunkAt(master.getPosition())).ifPresent(standChunkEffects -> standChunkEffects.removeBombPos(master));
-                    props.setBlockPos(BlockPos.ZERO);
-                    props.setAbilityUseCount(0);
+                    stand.setBlockPos(BlockPos.ZERO);
+                    stand.setAbilityUseCount(0);
                 }
                 if (bombEntity != null) {
                     if (bombEntity.isAlive()) {
-                        props.setCooldown(140);
+                        stand.setCooldown(140);
                         if (bombEntity instanceof MobEntity) {
                             Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4, true, Explosion.Mode.NONE);
                             ((MobEntity) bombEntity).spawnExplosionParticle();
                             explosion.doExplosionB(true);
                             world.playSound(null, master.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
-                            bombEntity.remove();
+                            if (stand.getGameTime() == -1)
+                                bombEntity.remove();
+                            else {
+                                StandEffects.getLazyOptional(bombEntity).ifPresent(standEffects -> standEffects.setTimeOfDeath(world.getGameTime()));
+                                world.setGameTime(stand.getGameTime());
+                                world.setDayTime(stand.getDayTime());
+                                stand.setGameTime(-1);
+                                stand.setDayTime(-1);
+                                master.setHealth(master.getMaxHealth());
+                                getServer().getWorld(dimension).getEntities().forEach(entity ->
+                                        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                                            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
+                                                entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
+                                                standEffects.setBitesTheDustPos(BlockPos.ZERO);
+                                            }
+                                        }));
+                            }
                         } else if (bombEntity instanceof PlayerEntity) {
                             Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
                                 if (bombProps.getStandID() != Util.StandID.GER) {
@@ -114,12 +158,12 @@ public class KillerQueenEntity extends AbstractStandEntity {
         if (getMaster() == null || world.isRemote) return;
         if (sheerHeartAttack == null)
             sheerHeartAttack = new SheerHeartAttackEntity(world, this);
-        Stand.getLazyOptional(getMaster()).ifPresent(props -> {
+        Stand.getLazyOptional(getMaster()).ifPresent(stand -> {
             if (shaCount <= 0) {
                 sheerHeartAttack.setPosition(getPosX(), getPosY(), getPosZ());
                 world.addEntity(sheerHeartAttack);
                 shaCount++;
-                props.setCooldown(300);
+                stand.setCooldown(300);
             } else {
                 if (!world.isRemote)
                     world.getServer().getWorld(dimension).getEntities()
@@ -181,7 +225,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void tick() {
         super.tick();
         if (getMaster() != null) {
-            Stand.getLazyOptional(master).ifPresent(props -> props.setAbility(false));
+            Stand.getLazyOptional(master).ifPresent(stand -> stand.setAbility(false));
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);

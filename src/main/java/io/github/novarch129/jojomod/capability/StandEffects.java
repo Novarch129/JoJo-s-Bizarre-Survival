@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -33,6 +34,8 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private byte soundEffect;
     private boolean threeFreeze;
     private double timeNearFlames;
+    private BlockPos bitesTheDustPos = BlockPos.ZERO;
+    private long timeOfDeath = -1;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -63,6 +66,10 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putByte("soundEffect", instance.soundEffect);
                 nbt.putBoolean("threeFreeze", instance.threeFreeze);
                 nbt.putDouble("timeNearFlames", instance.timeNearFlames);
+                nbt.putDouble("bitesTheDustX", instance.bitesTheDustPos.getX());
+                nbt.putDouble("bitesTheDustY", instance.bitesTheDustPos.getY());
+                nbt.putDouble("bitesTheDustZ", instance.bitesTheDustPos.getZ());
+                nbt.putLong("timeOfDeath", instance.timeOfDeath);
                 return nbt;
             }
 
@@ -78,6 +85,8 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.soundEffect = compoundNBT.getByte("soundEffect");
                 instance.threeFreeze = compoundNBT.getBoolean("threeFreeze");
                 instance.timeNearFlames = compoundNBT.getDouble("timeNearFlames");
+                instance.bitesTheDustPos = new BlockPos(compoundNBT.getDouble("bitesTheDustX"), compoundNBT.getDouble("bitesTheDustY"), compoundNBT.getDouble("bitesTheDustZ"));
+                instance.timeOfDeath = compoundNBT.getLong("timeOfDeath");
             }
         }, () -> new StandEffects(Null()));
     }
@@ -179,6 +188,24 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setTimeNearFlames(double timeNearFlames) {
         this.timeNearFlames = timeNearFlames;
+        onDataUpdated();
+    }
+
+    public BlockPos getBitesTheDustPos() {
+        return bitesTheDustPos;
+    }
+
+    public void setBitesTheDustPos(BlockPos bitesTheDustPos) {
+        this.bitesTheDustPos = bitesTheDustPos;
+        onDataUpdated();
+    }
+
+    public long getTimeOfDeath() {
+        return timeOfDeath;
+    }
+
+    public void setTimeOfDeath(long timeOfDeath) {
+        this.timeOfDeath = timeOfDeath;
         onDataUpdated();
     }
 

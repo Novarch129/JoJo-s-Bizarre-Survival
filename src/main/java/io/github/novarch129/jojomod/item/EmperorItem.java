@@ -46,10 +46,6 @@ public class EmperorItem extends Item {
         if (entityIn instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entityIn).ifPresent(props -> {
                 props.setAbility(false);
-                if (!isSelected) {
-                    props.setStandOn(false);
-                    stack.shrink(1);
-                }
                 if (!props.getStandOn() || props.getStandID() != Util.StandID.THE_EMPEROR)
                     stack.shrink(1);
             });
