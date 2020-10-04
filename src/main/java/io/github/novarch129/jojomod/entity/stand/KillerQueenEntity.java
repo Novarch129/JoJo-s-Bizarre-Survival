@@ -44,6 +44,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
             if (master.isCrouching() && stand.getGameTime() == -1) {
                 stand.setGameTime(world.getGameTime());
                 stand.setDayTime(world.getDayTime());
+//                StandPlayerEffects.getLazyOptional(master).ifPresent(standPlayerEffects -> standPlayerEffects.getInventory().copyInventory(master.inventory));
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
                     if (entity instanceof PlayerEntity)
                         StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> standPlayerEffects.getInventory().copyInventory(((PlayerEntity) entity).inventory));
@@ -60,12 +61,13 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 stand.setDayTime(-1);
                 master.setHealth(master.getMaxHealth());
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity) {
+                    if (entity instanceof PlayerEntity && !entity.world.isRemote)
                         StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
                             standPlayerEffects.getInventory().mainInventory.forEach(stack -> entity.sendMessage(stack.getDisplayName()));
+                            ((PlayerEntity) entity).inventory.clear();
                             ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+                            ((PlayerEntity) entity).inventory.markDirty();
                         });
-                    }
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (!standEffects.getDestroyedBlocks().isEmpty())
                             standEffects.getDestroyedBlocks().forEach((pos, list) ->

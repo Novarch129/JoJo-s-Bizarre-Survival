@@ -36,54 +36,46 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
             public INBT writeNBT(Capability<StandPlayerEffects> capability, StandPlayerEffects instance, Direction side) {
                 CompoundNBT compoundNBT = new CompoundNBT();
                 ListNBT inventory = new ListNBT();
-                for (int i = 0; i < instance.inventory.mainInventory.size(); ++i) {
+                for (int i = 0; i < instance.inventory.mainInventory.size(); ++i)
                     if (!instance.inventory.mainInventory.get(i).isEmpty()) {
                         CompoundNBT compoundnbt = new CompoundNBT();
                         compoundnbt.putByte("Slot", (byte) i);
                         instance.inventory.mainInventory.get(i).write(compoundnbt);
                         inventory.add(compoundnbt);
                     }
-                }
-                for (int j = 0; j < instance.inventory.armorInventory.size(); ++j) {
+                for (int j = 0; j < instance.inventory.armorInventory.size(); ++j)
                     if (!instance.inventory.armorInventory.get(j).isEmpty()) {
                         CompoundNBT compoundnbt1 = new CompoundNBT();
                         compoundnbt1.putByte("Slot", (byte) (j + 100));
                         instance.inventory.armorInventory.get(j).write(compoundnbt1);
                         inventory.add(compoundnbt1);
                     }
-                }
-                for (int k = 0; k < instance.inventory.offHandInventory.size(); ++k) {
+                for (int k = 0; k < instance.inventory.offHandInventory.size(); ++k)
                     if (!instance.inventory.offHandInventory.get(k).isEmpty()) {
                         CompoundNBT compoundnbt2 = new CompoundNBT();
                         compoundnbt2.putByte("Slot", (byte) (k + 150));
                         instance.inventory.offHandInventory.get(k).write(compoundnbt2);
                         inventory.add(compoundnbt2);
                     }
-                }
                 compoundNBT.put("inventory", inventory);
                 return compoundNBT;
             }
 
+            @SuppressWarnings("ConstantConditions")
             @Override
             public void readNBT(Capability<StandPlayerEffects> capability, StandPlayerEffects instance, Direction side, INBT nbt) {
-                instance.inventory.mainInventory.clear();
-                instance.inventory.armorInventory.clear();
-                instance.inventory.offHandInventory.clear();
                 ListNBT listNBT = ((CompoundNBT) nbt).getList("inventory", Constants.NBT.TAG_COMPOUND);
-
                 for (int i = 0; i < listNBT.size(); ++i) {
                     CompoundNBT compoundnbt = listNBT.getCompound(i);
                     int j = compoundnbt.getByte("Slot") & 255;
                     ItemStack itemstack = ItemStack.read(compoundnbt);
-                    if (!itemstack.isEmpty()) {
-                        if (j >= 0 && j < instance.inventory.mainInventory.size()) {
+                    if (!itemstack.isEmpty())
+                        if (j >= 0 && j < instance.inventory.mainInventory.size())
                             instance.inventory.mainInventory.set(j, itemstack);
-                        } else if (j >= 100 && j < instance.inventory.armorInventory.size() + 100) {
+                        else if (j >= 100 && j < instance.inventory.armorInventory.size() + 100)
                             instance.inventory.armorInventory.set(j - 100, itemstack);
-                        } else if (j >= 150 && j < instance.inventory.offHandInventory.size() + 150) {
+                        else if (j >= 150 && j < instance.inventory.offHandInventory.size() + 150)
                             instance.inventory.offHandInventory.set(j - 150, itemstack);
-                        }
-                    }
                 }
             }
         }, () -> new StandPlayerEffects(Null()));

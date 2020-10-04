@@ -1,10 +1,7 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.capability.StandChunkEffects;
-import io.github.novarch129.jojomod.capability.StandEffects;
-import io.github.novarch129.jojomod.capability.Timestop;
+import io.github.novarch129.jojomod.capability.*;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
@@ -76,6 +73,11 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
+                    if (entity instanceof PlayerEntity)
+                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
+                            ((PlayerEntity) entity).inventory.clear();
+                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+                        });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
@@ -220,15 +222,12 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
+                    if (entity instanceof PlayerEntity)
+                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
+                            ((PlayerEntity) entity).inventory.clear();
+                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+                        });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
-//                        if (!standEffects.getDestroyedBlocks().isEmpty())
-//                            standEffects.getDestroyedBlocks().forEach((chunkPos, list) -> {
-//                                if (!player.world.getChunkProvider().isChunkLoaded(chunkPos))
-//                                    player.world.getChunkProvider().forceChunk(chunkPos, true);
-//                                Chunk chunk = player.world.getChunk(chunkPos.x, chunkPos.z);
-//                                if (chunk.getBlockState(blockPos).isAir(player.world, blockPos))
-//                                    chunk.setBlockState(blockPos, Blocks.DIAMOND_BLOCK.getDefaultState(), false);
-//                            });
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                             standEffects.setBitesTheDustPos(BlockPos.ZERO);
