@@ -46,8 +46,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 stand.setDayTime(world.getDayTime());
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
                     if (entity instanceof PlayerEntity)
-                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
-                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> standItemEffects.setErasable(true))));
+                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> standPlayerEffects.getInventory().copyInventory(((PlayerEntity) entity).inventory));
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         standEffects.setBitesTheDustPos(entity.getPosition());
                         standEffects.setStandUser(master.getUniqueID());
@@ -61,13 +60,20 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 stand.setDayTime(-1);
                 master.setHealth(master.getMaxHealth());
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity)
-                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
-                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> {
-                                    if (!standItemEffects.isErasable())
-                                        stack.shrink(stack.getCount());
-                                })));
+                    if (entity instanceof PlayerEntity) {
+                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
+                            standPlayerEffects.getInventory().mainInventory.forEach(stack -> entity.sendMessage(stack.getDisplayName()));
+                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+                        });
+                    }
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+                        if (!standEffects.getDestroyedBlocks().isEmpty())
+                            standEffects.getDestroyedBlocks().forEach((pos, list) ->
+                                    list.forEach((blockPos, blockState) -> {
+                                        if (world.getChunkProvider().isChunkLoaded(pos))
+                                            world.getChunkProvider().forceChunk(pos, true);
+                                        world.setBlockState(blockPos, blockState);
+                                    }));
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                             standEffects.setBitesTheDustPos(BlockPos.ZERO);

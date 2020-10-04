@@ -88,7 +88,7 @@ public class JojoBizarreSurvival {
         Timestop.register();
         StandEffects.register();
         StandChunkEffects.register();
-        StandItemEffects.register();
+        StandPlayerEffects.register();
         PacketHandler.register();
 
         DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> {

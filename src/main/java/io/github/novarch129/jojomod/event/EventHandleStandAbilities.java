@@ -1,7 +1,10 @@
 package io.github.novarch129.jojomod.event;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.*;
+import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandChunkEffects;
+import io.github.novarch129.jojomod.capability.StandEffects;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
@@ -73,12 +76,6 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity)
-                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
-                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> {
-                                    if (!standItemEffects.isErasable())
-                                        stack.shrink(stack.getCount());
-                                })));
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
@@ -223,13 +220,15 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity)
-                        Util.getEntirePlayerInventory((PlayerEntity) entity).forEach(list ->
-                                list.forEach(stack -> StandItemEffects.getLazyOptional(stack).ifPresent(standItemEffects -> {
-                                    if (!standItemEffects.isErasable())
-                                        stack.shrink(stack.getCount());
-                                })));
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+//                        if (!standEffects.getDestroyedBlocks().isEmpty())
+//                            standEffects.getDestroyedBlocks().forEach((chunkPos, list) -> {
+//                                if (!player.world.getChunkProvider().isChunkLoaded(chunkPos))
+//                                    player.world.getChunkProvider().forceChunk(chunkPos, true);
+//                                Chunk chunk = player.world.getChunk(chunkPos.x, chunkPos.z);
+//                                if (chunk.getBlockState(blockPos).isAir(player.world, blockPos))
+//                                    chunk.setBlockState(blockPos, Blocks.DIAMOND_BLOCK.getDefaultState(), false);
+//                            });
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                             standEffects.setBitesTheDustPos(BlockPos.ZERO);
@@ -237,6 +236,17 @@ public class EventHandleStandAbilities {
                     });
                 });
             }
+        });
+    }
+
+    @SubscribeEvent
+    public static void blockDestroyed(BlockEvent.BreakEvent event) {
+        LivingEntity livingEntity = event.getPlayer();
+        if (livingEntity == null) return;
+        Chunk chunk = livingEntity.world.getChunkAt(livingEntity.getPosition());
+        StandEffects.getLazyOptional(livingEntity).ifPresent(standEffects -> {
+            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO)
+                standEffects.putDestroyedBlock(chunk.getPos(), event.getPos(), event.getState());
         });
     }
 
