@@ -13,6 +13,7 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -98,6 +99,8 @@ public class EventHandleStandAbilities {
                         });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.isShouldBeRemoved())
+                            entity.remove();
+                        if (entity instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
                             entity.remove();
                         if (!standEffects.getDestroyedBlocks().isEmpty())
                             standEffects.getDestroyedBlocks().forEach((pos, list) ->
@@ -238,8 +241,24 @@ public class EventHandleStandAbilities {
         if (livingEntity == null) return;
         Chunk chunk = livingEntity.world.getChunkAt(livingEntity.getPosition());
         StandEffects.getLazyOptional(livingEntity).ifPresent(standEffects -> {
+            if (standEffects.getDestroyedBlocks().containsKey(chunk.getPos()) && standEffects.getDestroyedBlocks().get(chunk.getPos()).containsKey(event.getPos()))
+                return;
             if (standEffects.getBitesTheDustPos() != BlockPos.ZERO)
                 standEffects.putDestroyedBlock(chunk.getPos(), event.getPos(), event.getState());
+        });
+    }
+
+    @SubscribeEvent
+    public static void blockPlaced(BlockEvent.EntityPlaceEvent event) {
+        Entity entity = event.getEntity();
+        if (entity == null) return;
+        Chunk chunk = entity.world.getChunkAt(entity.getPosition());
+        StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
+            if (standEffects.getDestroyedBlocks().containsKey(chunk.getPos()) && standEffects.getDestroyedBlocks().get(chunk.getPos()).containsKey(event.getPos()))
+                return;
+            if (standEffects.getBitesTheDustPos() != BlockPos.ZERO)
+                standEffects.putDestroyedBlock(chunk.getPos(), event.getPos(), Blocks.AIR.getDefaultState());
+
         });
     }
 
@@ -761,6 +780,8 @@ public class EventHandleStandAbilities {
                         StandEffects.getLazyOptional(entity1).ifPresent(standEffects -> {
                             if (standEffects.isShouldBeRemoved())
                                 entity1.remove();
+                            if (entity1 instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
+                                entity.remove();
                             if (!standEffects.getDestroyedBlocks().isEmpty())
                                 standEffects.getDestroyedBlocks().forEach((pos, list) ->
                                         list.forEach((blockPos, blockState) -> {

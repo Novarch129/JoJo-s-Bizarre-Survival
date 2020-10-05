@@ -98,6 +98,8 @@ public class KillerQueenEntity extends AbstractStandEntity {
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.isShouldBeRemoved())
                             entity.remove();
+                        if (entity instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
+                            entity.remove();
                         if (!standEffects.getDestroyedBlocks().isEmpty())
                             standEffects.getDestroyedBlocks().forEach((pos, list) ->
                                     list.forEach((blockPos, blockState) -> {
