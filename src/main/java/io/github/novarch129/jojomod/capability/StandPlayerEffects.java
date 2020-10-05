@@ -38,21 +38,21 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
             public INBT writeNBT(Capability<StandPlayerEffects> capability, StandPlayerEffects instance, Direction side) {
                 CompoundNBT compoundNBT = new CompoundNBT();
                 ListNBT inventory = new ListNBT();
-                for (int i = 0; i < instance.mainInventory.size(); ++i)
+                for (int i = 0; i < instance.mainInventory.size(); i++)
                     if (!instance.mainInventory.get(i).isEmpty()) {
                         CompoundNBT compoundnbt = new CompoundNBT();
                         compoundnbt.putByte("Slot", (byte) i);
                         instance.mainInventory.get(i).write(compoundnbt);
                         inventory.add(compoundnbt);
                     }
-                for (int j = 0; j < instance.armorInventory.size(); ++j)
+                for (int j = 0; j < instance.armorInventory.size(); j++)
                     if (!instance.armorInventory.get(j).isEmpty()) {
                         CompoundNBT compoundnbt1 = new CompoundNBT();
                         compoundnbt1.putByte("Slot", (byte) (j + 100));
                         instance.armorInventory.get(j).write(compoundnbt1);
                         inventory.add(compoundnbt1);
                     }
-                for (int k = 0; k < instance.offHandInventory.size(); ++k)
+                for (int k = 0; k < instance.offHandInventory.size(); k++)
                     if (!instance.offHandInventory.get(k).isEmpty()) {
                         CompoundNBT compoundnbt2 = new CompoundNBT();
                         compoundnbt2.putByte("Slot", (byte) (k + 150));

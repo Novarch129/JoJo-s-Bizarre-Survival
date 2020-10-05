@@ -5,12 +5,10 @@ import io.github.novarch129.jojomod.network.message.server.SSyncStandEffectsCapa
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.Direction;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
@@ -24,8 +22,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +44,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private BlockPos bitesTheDustPos = BlockPos.ZERO;
     private long timeOfDeath = -1;
     private Map<ChunkPos, Map<BlockPos, BlockState>> destroyedBlocks = new ConcurrentHashMap<>();
-    private List<ItemStack> mainInventory = new ArrayList<>();
+    private boolean shouldBeRemoved;
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -83,6 +79,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 nbt.putDouble("bitesTheDustY", instance.bitesTheDustPos.getY());
                 nbt.putDouble("bitesTheDustZ", instance.bitesTheDustPos.getZ());
                 nbt.putLong("timeOfDeath", instance.timeOfDeath);
+                nbt.putBoolean("shouldBeRemoved", instance.shouldBeRemoved);
                 ListNBT destroyedBlocks = new ListNBT();
                 instance.destroyedBlocks.forEach((pos, list) -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
@@ -101,14 +98,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                     destroyedBlocks.add(compoundNBT);
                 });
                 nbt.put("destroyedBlocks", destroyedBlocks);
-                ListNBT inventoryList = new ListNBT();
-                instance.mainInventory.forEach(stack -> {
-                    CompoundNBT subCompound = new CompoundNBT();
-                    stack.write(subCompound);
-                    subCompound.putInt("slot", instance.mainInventory.indexOf(stack));
-                    inventoryList.add(subCompound);
-                });
-                nbt.put("inventoryList", inventoryList);
                 return nbt;
             }
 
@@ -126,6 +115,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                 instance.timeNearFlames = compoundNBT.getDouble("timeNearFlames");
                 instance.bitesTheDustPos = new BlockPos(compoundNBT.getDouble("bitesTheDustX"), compoundNBT.getDouble("bitesTheDustY"), compoundNBT.getDouble("bitesTheDustZ"));
                 instance.timeOfDeath = compoundNBT.getLong("timeOfDeath");
+                instance.shouldBeRemoved = compoundNBT.getBoolean("shouldBeRemoved");
                 compoundNBT.getList("destroyedBlocks", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
                     if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("chunkPosX")) {
                         Map<BlockPos, BlockState> map = new ConcurrentHashMap<>();
@@ -136,10 +126,17 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                         instance.destroyedBlocks.put(new ChunkPos(((CompoundNBT) compound).getInt("chunkPosX"), ((CompoundNBT) compound).getInt("chunkPosX")), map);
                     }
                 });
-                compoundNBT.getList("inventoryList", Constants.NBT.TAG_COMPOUND).forEach(compound ->
-                        instance.mainInventory.set(((CompoundNBT) compound).getInt("slot"), ItemStack.read((CompoundNBT) compound)));
             }
         }, () -> new StandEffects(Null()));
+    }
+
+    public boolean isShouldBeRemoved() {
+        return shouldBeRemoved;
+    }
+
+    public void setShouldBeRemoved(boolean shouldBeRemoved) {
+        this.shouldBeRemoved = shouldBeRemoved;
+        onDataUpdated();
     }
 
     @Nonnull
@@ -277,19 +274,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     public void removeDestroyedBlock(@Nonnull ChunkPos pos, @Nonnull BlockPos blockPos) {
         destroyedBlocks.get(pos).remove(blockPos);
         onDataUpdated();
-    }
-
-    public List<ItemStack> getMainInventory() {
-        return mainInventory;
-    }
-
-    public void setMainInventory(NonNullList<ItemStack> mainInventory) {
-        this.mainInventory.clear();
-        for (int i = 0; i < mainInventory.size(); i++) {
-            ItemStack stack = mainInventory.get(i);
-            if (!stack.isEmpty())
-                this.mainInventory.set(i, stack);
-        }
     }
 
     public void onDataUpdated() {
