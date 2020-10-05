@@ -73,10 +73,10 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity)
+                    if (entity instanceof PlayerEntity && !entity.world.isRemote)
                         StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
                             ((PlayerEntity) entity).inventory.clear();
-                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+//                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
                         });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
@@ -222,10 +222,10 @@ public class EventHandleStandAbilities {
                 stand.setDayTime(-1);
                 player.setHealth(player.getMaxHealth());
                 player.getServer().getWorld(player.dimension).getEntities().forEach(entity -> {
-                    if (entity instanceof PlayerEntity)
+                    if (entity instanceof PlayerEntity && !entity.world.isRemote)
                         StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
                             ((PlayerEntity) entity).inventory.clear();
-                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
+//                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
                         });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {

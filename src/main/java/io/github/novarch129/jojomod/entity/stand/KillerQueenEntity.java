@@ -47,7 +47,23 @@ public class KillerQueenEntity extends AbstractStandEntity {
 //                StandPlayerEffects.getLazyOptional(master).ifPresent(standPlayerEffects -> standPlayerEffects.getInventory().copyInventory(master.inventory));
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
                     if (entity instanceof PlayerEntity)
-                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> standPlayerEffects.getInventory().copyInventory(((PlayerEntity) entity).inventory));
+                        StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
+                            for (int i = 0; i < ((PlayerEntity) entity).inventory.mainInventory.size(); i++) {
+                                ItemStack stack = ((PlayerEntity) entity).inventory.mainInventory.get(i);
+                                if (!stack.isEmpty())
+                                    standPlayerEffects.getMainInventory().set(i, stack);
+                            }
+                            for (int i = 0; i < ((PlayerEntity) entity).inventory.armorInventory.size(); i++) {
+                                ItemStack stack = ((PlayerEntity) entity).inventory.armorInventory.get(i);
+                                if (!stack.isEmpty())
+                                    standPlayerEffects.getArmorInventory().set(i, stack);
+                            }
+                            for (int i = 0; i < ((PlayerEntity) entity).inventory.offHandInventory.size(); i++) {
+                                ItemStack stack = ((PlayerEntity) entity).inventory.offHandInventory.get(i);
+                                if (!stack.isEmpty())
+                                    standPlayerEffects.getOffHandInventory().set(i, stack);
+                            }
+                        });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         standEffects.setBitesTheDustPos(entity.getPosition());
                         standEffects.setStandUser(master.getUniqueID());
@@ -63,10 +79,22 @@ public class KillerQueenEntity extends AbstractStandEntity {
                 getServer().getWorld(dimension).getEntities().forEach(entity -> {
                     if (entity instanceof PlayerEntity && !entity.world.isRemote)
                         StandPlayerEffects.getLazyOptional((PlayerEntity) entity).ifPresent(standPlayerEffects -> {
-                            standPlayerEffects.getInventory().mainInventory.forEach(stack -> entity.sendMessage(stack.getDisplayName()));
                             ((PlayerEntity) entity).inventory.clear();
-                            ((PlayerEntity) entity).inventory.copyInventory(standPlayerEffects.getInventory());
-                            ((PlayerEntity) entity).inventory.markDirty();
+                            for (int i = 0; i < standPlayerEffects.getMainInventory().size(); i++) {
+                                ItemStack stack = standPlayerEffects.getMainInventory().get(i);
+                                ((PlayerEntity) entity).inventory.setInventorySlotContents(i, stack);
+                                standPlayerEffects.getMainInventory().set(i, ItemStack.EMPTY);
+                            }
+                            for (int i = 0; i < standPlayerEffects.getArmorInventory().size(); i++) {
+                                ItemStack stack = standPlayerEffects.getArmorInventory().get(i);
+                                ((PlayerEntity) entity).inventory.setInventorySlotContents(i + 36, stack);
+                                standPlayerEffects.getArmorInventory().set(i, ItemStack.EMPTY);
+                            }
+                            for (int i = 0; i < standPlayerEffects.getOffHandInventory().size(); i++) {
+                                ItemStack stack = standPlayerEffects.getOffHandInventory().get(i);
+                                ((PlayerEntity) entity).inventory.setInventorySlotContents(i + 40, stack);
+                                standPlayerEffects.getOffHandInventory().set(i, ItemStack.EMPTY);
+                            }
                         });
                     StandEffects.getLazyOptional(entity).ifPresent(standEffects -> {
                         if (!standEffects.getDestroyedBlocks().isEmpty())
