@@ -26,6 +26,7 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
     private final NonNullList<ItemStack> mainInventory = NonNullList.withSize(36, ItemStack.EMPTY);
     private final NonNullList<ItemStack> armorInventory = NonNullList.withSize(4, ItemStack.EMPTY);
     private final NonNullList<ItemStack> offHandInventory = NonNullList.withSize(1, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> enderChestInventory = NonNullList.withSize(27, ItemStack.EMPTY);
     private LazyOptional<StandPlayerEffects> holder = LazyOptional.of(() -> new StandPlayerEffects(getPlayer()));
 
     public StandPlayerEffects(PlayerEntity player) {
@@ -38,6 +39,7 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
             public INBT writeNBT(Capability<StandPlayerEffects> capability, StandPlayerEffects instance, Direction side) {
                 CompoundNBT compoundNBT = new CompoundNBT();
                 ListNBT inventory = new ListNBT();
+                ListNBT enderChestInventory = new ListNBT();
                 for (int i = 0; i < instance.mainInventory.size(); i++)
                     if (!instance.mainInventory.get(i).isEmpty()) {
                         CompoundNBT compoundnbt = new CompoundNBT();
@@ -59,16 +61,24 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
                         instance.offHandInventory.get(k).write(compoundnbt2);
                         inventory.add(compoundnbt2);
                     }
+                for (int l = 0; l < instance.enderChestInventory.size(); l++)
+                    if (!instance.enderChestInventory.get(l).isEmpty()) {
+                        CompoundNBT compoundnbt3 = new CompoundNBT();
+                        compoundnbt3.putByte("Slot", (byte) l);
+                        instance.enderChestInventory.get(l).write(compoundnbt3);
+                        enderChestInventory.add(compoundnbt3);
+                    }
                 compoundNBT.put("inventory", inventory);
+                compoundNBT.put("enderChestInventory", enderChestInventory);
                 return compoundNBT;
             }
 
             @SuppressWarnings("ConstantConditions")
             @Override
             public void readNBT(Capability<StandPlayerEffects> capability, StandPlayerEffects instance, Direction side, INBT nbt) {
-                ListNBT listNBT = ((CompoundNBT) nbt).getList("inventory", Constants.NBT.TAG_COMPOUND);
-                for (int i = 0; i < listNBT.size(); ++i) {
-                    CompoundNBT compoundnbt = listNBT.getCompound(i);
+                ListNBT inventory = ((CompoundNBT) nbt).getList("inventory", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < inventory.size(); i++) {
+                    CompoundNBT compoundnbt = inventory.getCompound(i);
                     int j = compoundnbt.getByte("Slot") & 255;
                     ItemStack itemstack = ItemStack.read(compoundnbt);
                     if (!itemstack.isEmpty())
@@ -78,6 +88,14 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
                             instance.armorInventory.set(j - 100, itemstack);
                         else if (j >= 150 && j < instance.offHandInventory.size() + 150)
                             instance.offHandInventory.set(j - 150, itemstack);
+                }
+                ListNBT enderChestInventory = ((CompoundNBT) nbt).getList("enderChestInventory", Constants.NBT.TAG_COMPOUND);
+                for (int k = 0; k < enderChestInventory.size(); k++) {
+                    CompoundNBT compoundnbt = enderChestInventory.getCompound(k);
+                    int j = compoundnbt.getByte("Slot") & 255;
+                    ItemStack itemstack = ItemStack.read(compoundnbt);
+                    if (!itemstack.isEmpty())
+                        instance.enderChestInventory.set(j, itemstack);
                 }
             }
         }, () -> new StandPlayerEffects(Null()));
@@ -101,6 +119,10 @@ public class StandPlayerEffects implements ICapabilitySerializable<INBT> {
 
     public NonNullList<ItemStack> getOffHandInventory() {
         return offHandInventory;
+    }
+
+    public NonNullList<ItemStack> getEnderChestInventory() {
+        return enderChestInventory;
     }
 
     @Nonnull

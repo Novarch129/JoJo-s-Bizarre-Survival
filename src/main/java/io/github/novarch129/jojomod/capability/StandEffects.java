@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
@@ -45,6 +46,7 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     private long timeOfDeath = -1;
     private Map<ChunkPos, Map<BlockPos, BlockState>> destroyedBlocks = new ConcurrentHashMap<>();
     private boolean shouldBeRemoved;
+    private Map<ChunkPos, ArrayBlockingQueue<BlockPos>> alteredTileEntities = new ConcurrentHashMap<>();
     private LazyOptional<StandEffects> holder = LazyOptional.of(() -> new StandEffects(getEntity()));
 
     public StandEffects(Entity entity) {
@@ -98,6 +100,23 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                     destroyedBlocks.add(compoundNBT);
                 });
                 nbt.put("destroyedBlocks", destroyedBlocks);
+                ListNBT alteredTileEntities = new ListNBT();
+                instance.alteredTileEntities.forEach((pos, blockPosList) -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putInt("chunkPosX", pos.x);
+                    compoundNBT.putInt("chunkPosZ", pos.z);
+                    ListNBT listNBT = new ListNBT();
+                    blockPosList.forEach(blockPos -> {
+                        CompoundNBT compound = new CompoundNBT();
+                        compound.putDouble("blockPosX", blockPos.getX());
+                        compound.putDouble("blockPosY", blockPos.getY());
+                        compound.putDouble("blockPosZ", blockPos.getZ());
+                        listNBT.add(compound);
+                    });
+                    compoundNBT.put("blockPosList", listNBT);
+                    alteredTileEntities.add(compoundNBT);
+                });
+                nbt.put("alteredTileEntities", alteredTileEntities);
                 return nbt;
             }
 
@@ -124,6 +143,16 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
                                 map.put(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")), Block.getStateById(compoundNBT.getInt("blockState")));
                         });
                         instance.destroyedBlocks.put(new ChunkPos(((CompoundNBT) compound).getInt("chunkPosX"), ((CompoundNBT) compound).getInt("chunkPosX")), map);
+                    }
+                });
+                compoundNBT.getList("alteredTileEntities", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("chunkPosX")) {
+                        ArrayBlockingQueue<BlockPos> blockPosList = new ArrayBlockingQueue<>(1000);
+                        ((CompoundNBT) compound).getList("blockPosList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
+                            if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("blockPosX"))
+                                blockPosList.add(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
+                        });
+                        instance.alteredTileEntities.put(new ChunkPos(((CompoundNBT) compound).getInt("chunkPosX"), ((CompoundNBT) compound).getInt("chunkPosX")), blockPosList);
                     }
                 });
             }
@@ -273,6 +302,20 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void removeDestroyedBlock(@Nonnull ChunkPos pos, @Nonnull BlockPos blockPos) {
         destroyedBlocks.get(pos).remove(blockPos);
+        onDataUpdated();
+    }
+
+    public Map<ChunkPos, ArrayBlockingQueue<BlockPos>> getAlteredTileEntities() {
+        return alteredTileEntities;
+    }
+
+    public void putAlteredTileEntity(@Nonnull ChunkPos pos, @Nonnull BlockPos blockPos) {
+        if (!alteredTileEntities.containsKey(pos)) {
+            ArrayBlockingQueue<BlockPos> list = new ArrayBlockingQueue<>(1000);
+            list.add(blockPos);
+            alteredTileEntities.put(pos, list);
+        } else
+            alteredTileEntities.get(pos).add(blockPos);
         onDataUpdated();
     }
 

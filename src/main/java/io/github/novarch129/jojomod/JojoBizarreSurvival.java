@@ -89,8 +89,9 @@ public class JojoBizarreSurvival {
         StandEffects.register();
         StandChunkEffects.register();
         StandPlayerEffects.register();
+        StandTileEntityEffects.register();
         PacketHandler.register();
-
+        
         DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> {
             if (biome.getCategory() != Biome.Category.DESERT) return;
             biome.addStructure(DESERT_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
