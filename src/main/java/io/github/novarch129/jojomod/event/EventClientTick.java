@@ -44,15 +44,16 @@ public class EventClientTick {
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (Minecraft.getInstance().player == null) return;
         ClientPlayerEntity player = Minecraft.getInstance().player;
-        Stand.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(stand -> {
+            player.setInvisible(stand.getStandID() == Util.StandID.KING_CRIMSON && stand.getStandOn() && stand.getAbility() && stand.getTimeLeft() > 800 && stand.getCooldown() == 0);
             if (Minecraft.getInstance().world == null) return;
-            if (props.getStandID() == Util.StandID.AEROSMITH && props.getStandOn() && props.getAbility())
+            if (stand.getStandID() == Util.StandID.AEROSMITH && stand.getStandOn() && stand.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity instanceof AerosmithEntity)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster() != null)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(player))
                         .forEach(Minecraft.getInstance()::setRenderViewEntity);
-            if (props.getStandID() == Util.StandID.HIEROPHANT_GREEN && props.getStandOn() && props.getAbility())
+            if (stand.getStandID() == Util.StandID.HIEROPHANT_GREEN && stand.getStandOn() && stand.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity instanceof HierophantGreenEntity)
                         .filter(entity -> ((HierophantGreenEntity) entity).getMaster() != null)
@@ -67,7 +68,7 @@ public class EventClientTick {
                                 pitch = -89;
                             JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
                         });
-            if (!player.isSpectator() && !props.getStandOn())
+            if (!player.isSpectator() && !stand.getStandOn())
                 if (Minecraft.getInstance().renderViewEntity != player)
                     Minecraft.getInstance().setRenderViewEntity(player);
         });
@@ -122,9 +123,9 @@ public class EventClientTick {
 
     @SubscribeEvent
     public static void renderPlayer(RenderPlayerEvent.Pre event) {
-        Stand.getLazyOptional(event.getPlayer()).ifPresent(props -> {
-            if (props.getStandOn())
-                switch (props.getStandID()) {
+        Stand.getLazyOptional(event.getPlayer()).ifPresent(stand -> {
+            if (stand.getStandOn())
+                switch (stand.getStandID()) {
                     case Util.StandID.STICKY_FINGERS: {
                         StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                                 .filter(entity -> entity instanceof StickyFingersEntity)
@@ -134,7 +135,11 @@ public class EventClientTick {
                         break;
                     }
                     case Util.StandID.TUSK_ACT_3: {
-                        event.setCanceled(props.getAbilityActive());
+                        event.setCanceled(stand.getAbilityActive());
+                        break;
+                    }
+                    case Util.StandID.KING_CRIMSON: {
+                        event.setCanceled(stand.getAbility() && stand.getTimeLeft() > 800 && stand.getCooldown() == 0 && stand.getInvulnerableTicks() == 0);
                         break;
                     }
                     default:

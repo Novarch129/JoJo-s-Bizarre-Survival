@@ -61,7 +61,10 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KingCrimsonEntity)
                                             .filter(entity -> ((KingCrimsonEntity) entity).getMaster().equals(sender))
-                                            .forEach(entity -> ((KingCrimsonEntity) entity).epitaph());
+                                            .forEach(entity -> {
+                                                if (message.action == 1)
+                                                    ((KingCrimsonEntity) entity).epitaph();
+                                            });
                                     break;
                                 }
                                 case D4C: {

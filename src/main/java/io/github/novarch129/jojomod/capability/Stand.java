@@ -60,6 +60,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private long gameTime = -1;
     private long dayTime = -1;
     private int abilitiesUnlocked;
+    private double prevTimeLeft = 1000;
     private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -102,6 +103,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 nbt.putLong("gameTime", props.getGameTime());
                 nbt.putLong("dayTime", props.getDayTime());
                 nbt.putInt("abilitiesUnlocked", props.getAbilitiesUnlocked());
+                nbt.putDouble("prevTimeLeft", props.getPrevTimeLeft());
                 ListNBT listNBT = new ListNBT();
                 props.getAffectedChunkList().forEach(pos -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
@@ -136,6 +138,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
                 props.putGameTime(compoundNBT.getLong("gameTime"));
                 props.putDayTime(compoundNBT.getLong("dayTime"));
                 props.putAbilitiesUnlocked(compoundNBT.getInt("abilitiesUnlocked"));
+                props.putPrevTimeLeft(compoundNBT.getDouble("prevTimeLeft"));
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
                         props.addAffectedChunk(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
@@ -247,6 +250,7 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
 
     @Override
     public void setTimeLeft(double timeLeft) {
+        this.prevTimeLeft = this.timeLeft;
         this.timeLeft = timeLeft;
         onDataUpdated();
     }
@@ -526,6 +530,22 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     @Override
     public void putAbilitiesUnlocked(int abilitiesUnlocked) {
         this.abilitiesUnlocked = abilitiesUnlocked;
+    }
+
+    @Override
+    public double getPrevTimeLeft() {
+        return prevTimeLeft;
+    }
+
+    @Override
+    public void setPrevTimeLeft(double prevTimeLeft) {
+        this.prevTimeLeft = prevTimeLeft;
+        onDataUpdated();
+    }
+
+    @Override
+    public void putPrevTimeLeft(double prevTimeLeft) {
+        this.prevTimeLeft = prevTimeLeft;
     }
 
     public void clone(IStand props) {

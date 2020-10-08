@@ -145,6 +145,12 @@ public interface IStand {
 
     void putAbilitiesUnlocked(int abilitiesUnlocked);
 
+    double getPrevTimeLeft();
+
+    void setPrevTimeLeft(double prevTimeLeft);
+
+    void putPrevTimeLeft(double prevTimeLeft);
+
     void clone(IStand props);
 
     void removeStand();

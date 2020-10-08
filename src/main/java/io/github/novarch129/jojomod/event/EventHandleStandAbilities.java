@@ -373,7 +373,10 @@ public class EventHandleStandAbilities {
         if (player == null) return;
         Chunk chunk = player.world.getChunkAt(player.getPosition());
         if (event.getUseBlock() == Event.Result.ALLOW && player.world.getTileEntity(event.getPos()) != null)
-            StandEffects.getLazyOptional(player).ifPresent(standEffects -> standEffects.putAlteredTileEntity(chunk.getPos(), event.getPos()));
+            StandEffects.getLazyOptional(player).ifPresent(standEffects -> {
+                if (standEffects.getBitesTheDustPos() != BlockPos.ZERO)
+                    standEffects.putAlteredTileEntity(chunk.getPos(), event.getPos());
+            });
     }
 
     @SubscribeEvent

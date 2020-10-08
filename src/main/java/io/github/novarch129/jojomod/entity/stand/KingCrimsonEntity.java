@@ -1,19 +1,16 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.effect.CrimsonEffect;
 import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
+import io.github.novarch129.jojomod.entity.KingCrimsonAfterimageEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
-import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.IChargeable;
-import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -24,6 +21,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 /**
  * You shouldn't be surprised if you're confused by this code, even I can barely read it now.
  */
@@ -31,6 +30,7 @@ import net.minecraft.world.World;
 public class KingCrimsonEntity extends AbstractStandEntity implements IChargeable {
     private int punchChargeTicks;
     private int prevPunchChargeTicks;
+    private KingCrimsonAfterimageEntity afterimage;
 
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -94,15 +94,16 @@ public class KingCrimsonEntity extends AbstractStandEntity implements IChargeabl
         super.tick();
         if (getMaster() == null) return;
         followMaster();
-        setRotationYawHead(master.rotationYawHead);
-        setRotation(master.rotationYaw, master.rotationPitch);
-
         master.addPotionEffect(new EffectInstance(Effects.RESISTANCE, 40, 2));
-        Stand.getLazyOptional(master).ifPresent(props -> {
-            ability = !(props.getCooldown() > 0);
-            props.setAbilityActive(props.getCooldown() <= 0 && props.getTimeLeft() > 801 && props.getAbility());
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (!stand.getAbility() || stand.getTimeLeft() <= 800 || stand.getCooldown() > 0 || stand.getInvulnerableTicks() > 0) {
+                setRotationYawHead(master.rotationYawHead);
+                setRotation(master.rotationYaw, master.rotationPitch);
+            }
+            ability = stand.getAbility();
+            stand.setAbilityActive(stand.getStandOn() && stand.getCooldown() <= 0 && stand.getTimeLeft() > 801 && stand.getAbility());
 
-            if (!props.getAbility() || (props.getTimeLeft() <= 0 && props.getCooldown() > 0)) {
+            if (!stand.getAbility() || (stand.getTimeLeft() <= 0 && stand.getCooldown() > 0)) {
                 if (punchChargeTicks == 0 && punchChargeTicks != prevPunchChargeTicks) {
                     world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                     KingCrimsonPunchEntity kingCrimsonPunchEntity = new KingCrimsonPunchEntity(world, this, master);
@@ -132,93 +133,106 @@ public class KingCrimsonEntity extends AbstractStandEntity implements IChargeabl
                 }
             }
 
-            if (!props.getAbility()) {
+            if (!stand.getAbility()) {
                 if (!master.isCreative() && !master.isSpectator())
                     master.setGameType(GameType.SURVIVAL);
                 master.setInvulnerable(false);
-                if (!world.isRemote)
-                    getServer().getWorld(dimension).getEntities()
-                            .filter(entity -> entity instanceof LivingEntity)
-                            .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
+                master.setInvisible(true);
             }
 
-            if (props.getCooldown() == 0 && props.getAbility()) {
-                if (props.getTimeLeft() > 800) {
-                    attackRush = false;
+            if (stand.getCooldown() == 0 && stand.getAbility()) {
+                if (stand.getTimeLeft() > 800) {
+                    if (!world.isRemote && getServer().getWorld(dimension).getEntities().noneMatch(entity -> entity instanceof KingCrimsonAfterimageEntity && ((KingCrimsonAfterimageEntity) entity).getMaster().equals(master))) {
+                        afterimage = new KingCrimsonAfterimageEntity(world, master);
+                        world.addEntity(afterimage);
+                        getServer().getWorld(dimension).getEntities()
+                                .filter(entity -> entity instanceof AbstractArrowEntity)
+                                .forEach(Entity::remove);
+                    }
+                    if (getAfterimage() != null) {
+                        setRotationYawHead(afterimage.rotationYawHead);
+                        setRotation(afterimage.rotationYaw, afterimage.rotationPitch);
+                    }
+                    if (!world.isRemote)
+                        getServer().getWorld(dimension).getEntities()
+                                .filter(entity -> entity instanceof MobEntity)
+                                .filter(entity -> ((((MobEntity) entity).getAttackTarget() != null && ((MobEntity) entity).getAttackTarget().equals(master)) || (((MobEntity) entity).getRevengeTarget() != null && ((MobEntity) entity).getRevengeTarget().equals(master))))
+                                .forEach(entity -> {
+                                    ((MobEntity) entity).setAttackTarget(afterimage);
+                                    ((MobEntity) entity).setRevengeTarget(afterimage);
+                                });
                     getMaster().setInvulnerable(true);
-                    master.addPotionEffect(new EffectInstance(EffectInit.CRIMSON_USER.get(), 10000, 255));
                     if (!master.isCreative() && !master.isSpectator())
                         master.setGameType(GameType.ADVENTURE);
-                    props.setTimeLeft(props.getTimeLeft() - 1);
-
-                    if (!world.isRemote) //Pretty much equal to world instanceof ServerWorld.
-                        getServer().getWorld(dimension).getEntities()
-                                .filter(entity -> entity instanceof LivingEntity)
-                                .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
-                                .filter(entity -> entity != this)
-                                .filter(Entity::isAlive)
-                                .forEach(entity -> {
-                                    if (entity instanceof MobEntity) {
-                                        if (((MobEntity) entity).getAttackTarget() == master || ((MobEntity) entity).getRevengeTarget() == master) {
-                                            ((MobEntity) entity).setAttackTarget(null);
-                                            ((MobEntity) entity).setRevengeTarget(null);
-                                        }
-                                        ((MobEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-                                        StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
-                                    }
-
-                                    if (entity instanceof PlayerEntity)
-                                        Stand.getLazyOptional((PlayerEntity) entity).ifPresent(prs -> {
-                                            if (entity != master && prs.getStandID() != Util.StandID.GER) {
-                                                if (prs.getStandID() == Util.StandID.KING_CRIMSON && prs.getStandOn() && prs.getAbility() && prs.getTimeLeft() > 800)
-                                                    return;
-                                                ((PlayerEntity) entity).addPotionEffect(new EffectInstance(EffectInit.CRIMSON.get(), 200, 255));
-                                                StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(true));
-                                            }
-                                        });
-                                });
-                } else {
+                    stand.setTimeLeft(stand.getTimeLeft() - 1);
+                }
+                if (stand.getTimeLeft() == 801) {
                     if (!master.isCreative() && !master.isSpectator())
                         master.setGameType(GameType.SURVIVAL);
                     master.setInvulnerable(false);
-                    props.setAbilityActive(false);
-                    master.removePotionEffect(EffectInit.CRIMSON_USER.get());
-                    props.setCooldown(200);
+                    master.setInvisible(false);
+                    stand.setAbilityActive(false);
+                    afterimage = null;
+                    stand.setCooldown(200);
                 }
             }
 
-            if (props.getInvulnerableTicks() > 0) {
+            if (stand.getInvulnerableTicks() > 0) {
                 if (!master.isCreative() && !master.isSpectator())
                     master.setGameType(GameType.SURVIVAL);
                 master.setInvulnerable(false);
-                props.setAbilityActive(false);
-                master.removePotionEffect(EffectInit.CRIMSON_USER.get());
+                master.setInvisible(false);
+                stand.setAbilityActive(false);
             }
-
-            if (!props.getAbilityActive()) {
-                if (props.getCooldown() <= 0)
-                    props.setAbilityActive(true);
-                if (!world.isRemote)
-                    getServer().getWorld(dimension).getEntities()
-                            .filter(entity -> entity instanceof LivingEntity)
-                            .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
-            }
-
-            if (!props.getAbility()) {
-                if (master.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                    master.removePotionEffect(EffectInit.CRIMSON_USER.get());
-            }
-            if (master.swingProgressInt == 0 && !attackRush)
-                attackTick = 0;
         });
     }
 
     @Override
-    public void onRemovedFromWorld() {
-        super.onRemovedFromWorld();
-        if (!world.isRemote)
-            getServer().getWorld(dimension).getEntities()
-                    .filter(entity -> entity instanceof LivingEntity)
-                    .forEach(entity -> StandEffects.getLazyOptional(entity).ifPresent(props2 -> props2.setCrimson(false)));
+    protected void followMaster() {
+        if (this.master == null) return;
+        Stand.getLazyOptional(this.master).ifPresent(stand -> {
+            Entity master = (stand.getStandOn() && stand.getAbility() && stand.getTimeLeft() > 800 && stand.getCooldown() == 0 && stand.getInvulnerableTicks() == 0) ? getAfterimage() : this.master;
+            if (master == null) return;
+            double distance = master.getDistance(this);
+            double minimum = 0.5; //The Stand's minimum and maximum distance from it's master.
+            double maximum = 3;
+
+            if (distance < minimum)
+                moveStand();
+            else if (distance > minimum)
+                if (distance < maximum && distance > minimum + 0.3)
+                    moveStand();
+                else if (distance > maximum && !world.isRemote)
+                    setPosition(master.getPosX(), master.getPosY(), master.getPosZ());
+        });
+    }
+
+    @Override
+    protected void moveStand() {
+        if (this.master == null) return;
+        Stand.getLazyOptional(this.master).ifPresent(stand -> {
+            Entity master = (stand.getStandOn() && stand.getAbility() && stand.getTimeLeft() > 800 && stand.getCooldown() == 0 && stand.getInvulnerableTicks() == 0) ? getAfterimage() : this.master;
+            if (master == null) return;
+            double distanceFromMaster = master.getDistance(this);
+            Vec3d distance = getPositionVec().subtract(master.getPositionVec());
+            float speed = distanceFromMaster < 0.5 ? -0.1f : (float) distanceFromMaster / 45; //The speed at which the Stand should move towards it's master
+            if (distance.getX() > 0)
+                moveForward -= speed;
+            else if (distance.getX() < 0)
+                moveForward += speed;
+            if (distance.getY() > 0)
+                moveVertical -= speed;
+            else if (distance.getY() < 0)
+                moveVertical += speed;
+            if (distance.getZ() > 0)
+                moveStrafing -= speed;
+            else if (distance.getZ() < 0)
+                moveStrafing += speed;
+        });
+    }
+
+    @Nullable
+    private KingCrimsonAfterimageEntity getAfterimage() {
+        return afterimage;
     }
 }

@@ -91,8 +91,8 @@ public class JojoBizarreSurvival {
         StandPlayerEffects.register();
         StandTileEntityEffects.register();
         PacketHandler.register();
-        
-        DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> {
+
+        DeferredWorkQueue.runLater(() -> ForgeRegistries.BIOMES.forEach(biome -> { //This is deprecated for no reason at all.
             if (biome.getCategory() != Biome.Category.DESERT) return;
             biome.addStructure(DESERT_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
             biome.addFeature(GenerationStage.Decoration.UNDERGROUND_STRUCTURES, DESERT_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
