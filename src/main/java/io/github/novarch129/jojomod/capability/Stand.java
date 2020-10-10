@@ -4,6 +4,8 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandCapabilityPacket;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -25,6 +27,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
 import static io.github.novarch129.jojomod.util.Util.StandID.*;
@@ -60,7 +64,7 @@ public class Stand implements ICapabilitySerializable<INBT> {
     private long gameTime = -1;
     private long dayTime = -1;
     private int abilitiesUnlocked;
-    private double prevTimeLeft = 1000;
+    private Map<ChunkPos, Map<BlockPos, BlockState>> crazyDiamondBlocks = new ConcurrentHashMap<>();
     private LazyOptional<Stand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
@@ -79,72 +83,112 @@ public class Stand implements ICapabilitySerializable<INBT> {
         CapabilityManager.INSTANCE.register(Stand.class, new Capability.IStorage<Stand>() {
             @Nonnull
             @Override
-            public INBT writeNBT(Capability<Stand> capability, Stand props, Direction side) {
+            public INBT writeNBT(Capability<Stand> capability, Stand instance, Direction side) {
                 CompoundNBT nbt = new CompoundNBT();
-                nbt.putInt("standID", props.getStandID());
-                nbt.putInt("standAct", props.getAct());
-                nbt.putBoolean("standOn", props.getStandOn());
-                nbt.putDouble("cooldown", props.getCooldown());
-                nbt.putDouble("timeLeft", props.getTimeLeft());
-                nbt.putBoolean("ability", props.getAbility());
-                nbt.putInt("transformed", props.getTransformed());
-                nbt.putString("diavolo", props.getDiavolo());
-                nbt.putBoolean("noClip", props.getNoClip());
-                nbt.putInt("standEntityID", props.getPlayerStand());
-                nbt.putBoolean("abilityActive", props.getAbilityActive());
-                nbt.putDouble("invulnerableTicks", props.getInvulnerableTicks());
-                nbt.putFloat("standDamage", props.getStandDamage());
-                nbt.putBoolean("charging", props.isCharging());
-                nbt.putInt("abilityUseCount", props.getAbilityUseCount());
-                nbt.putDouble("blockPosX", props.getBlockPos().getX());
-                nbt.putDouble("blockPosY", props.getBlockPos().getY());
-                nbt.putDouble("blockPosZ", props.getBlockPos().getZ());
-                nbt.putInt("experiencePoints", props.getExperiencePoints());
-                nbt.putLong("gameTime", props.getGameTime());
-                nbt.putLong("dayTime", props.getDayTime());
-                nbt.putInt("abilitiesUnlocked", props.getAbilitiesUnlocked());
-                nbt.putDouble("prevTimeLeft", props.getPrevTimeLeft());
-                ListNBT listNBT = new ListNBT();
-                props.getAffectedChunkList().forEach(pos -> {
+                nbt.putInt("standID", instance.getStandID());
+                nbt.putInt("standAct", instance.getAct());
+                nbt.putBoolean("standOn", instance.getStandOn());
+                nbt.putDouble("cooldown", instance.getCooldown());
+                nbt.putDouble("timeLeft", instance.getTimeLeft());
+                nbt.putBoolean("ability", instance.getAbility());
+                nbt.putInt("transformed", instance.getTransformed());
+                nbt.putString("diavolo", instance.getDiavolo());
+                nbt.putBoolean("noClip", instance.getNoClip());
+                nbt.putInt("standEntityID", instance.getPlayerStand());
+                nbt.putBoolean("abilityActive", instance.getAbilityActive());
+                nbt.putDouble("invulnerableTicks", instance.getInvulnerableTicks());
+                nbt.putFloat("standDamage", instance.getStandDamage());
+                nbt.putBoolean("charging", instance.isCharging());
+                nbt.putInt("abilityUseCount", instance.getAbilityUseCount());
+                nbt.putDouble("blockPosX", instance.getBlockPos().getX());
+                nbt.putDouble("blockPosY", instance.getBlockPos().getY());
+                nbt.putDouble("blockPosZ", instance.getBlockPos().getZ());
+                nbt.putInt("experiencePoints", instance.getExperiencePoints());
+                nbt.putLong("gameTime", instance.getGameTime());
+                nbt.putLong("dayTime", instance.getDayTime());
+                nbt.putInt("abilitiesUnlocked", instance.getAbilitiesUnlocked());
+                ListNBT affectedChunkList = new ListNBT();
+                instance.getAffectedChunkList().forEach(pos -> {
                     CompoundNBT compoundNBT = new CompoundNBT();
                     compoundNBT.putInt("chunkX", pos.x);
                     compoundNBT.putInt("chunkZ", pos.z);
-                    listNBT.add(compoundNBT);
+                    affectedChunkList.add(compoundNBT);
                 });
-                nbt.put("affectedChunkList", listNBT);
+                nbt.put("affectedChunkList", affectedChunkList);
+                ListNBT crazyDiamondBlocks = new ListNBT();
+                instance.crazyDiamondBlocks.forEach((pos, list) -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putInt("chunkPosX", pos.x);
+                    compoundNBT.putInt("chunkPosZ", pos.z);
+                    ListNBT listNBT = new ListNBT();
+                    list.forEach((blockPos, blockState) -> {
+                        CompoundNBT compound = new CompoundNBT();
+                        compound.putDouble("blockPosX", blockPos.getX());
+                        compound.putDouble("blockPosY", blockPos.getY());
+                        compound.putDouble("blockPosZ", blockPos.getZ());
+                        compound.putInt("blockState", Block.getStateId(blockState));
+                        listNBT.add(compound);
+                    });
+                    compoundNBT.put("blockPosList", listNBT);
+                    crazyDiamondBlocks.add(compoundNBT);
+                });
+                nbt.put("crazyDiamondBlocks", crazyDiamondBlocks);
                 return nbt;
             }
 
             @Override
-            public void readNBT(Capability<Stand> capability, Stand props, Direction side, INBT nbt) {
+            public void readNBT(Capability<Stand> capability, Stand instance, Direction side, INBT nbt) {
                 CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                props.standID = compoundNBT.getInt("standID");
-                props.standAct = compoundNBT.getInt("standAct");
-                props.standOn = compoundNBT.getBoolean("standOn");
-                props.cooldown = compoundNBT.getDouble("cooldown");
-                props.timeLeft = compoundNBT.getDouble("timeLeft");
-                props.ability = compoundNBT.getBoolean("ability");
-                props.transformed = compoundNBT.getInt("transformed");
-                props.diavolo = compoundNBT.getString("diavolo");
-                props.noClip = compoundNBT.getBoolean("noClip");
-                props.standEntityID = compoundNBT.getInt("standEntityID");
-                props.abilityActive = compoundNBT.getBoolean("abilityActive");
-                props.invulnerableTicks = compoundNBT.getDouble("invulnerableTicks");
-                props.standDamage = compoundNBT.getFloat("standDamage");
-                props.charging = compoundNBT.getBoolean("charging");
-                props.abilityUseCount = compoundNBT.getInt("abilityUseCount");
-                props.blockPos = new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ"));
-                props.experiencePoints = compoundNBT.getInt("experiencePoints");
-                props.gameTime = compoundNBT.getLong("gameTime");
-                props.dayTime = compoundNBT.getLong("dayTime");
-                props.abilityUseCount = compoundNBT.getInt("abilitiesUnlocked");
-                props.prevTimeLeft = compoundNBT.getDouble("prevTimeLeft");
+                instance.standID = compoundNBT.getInt("standID");
+                instance.standAct = compoundNBT.getInt("standAct");
+                instance.standOn = compoundNBT.getBoolean("standOn");
+                instance.cooldown = compoundNBT.getDouble("cooldown");
+                instance.timeLeft = compoundNBT.getDouble("timeLeft");
+                instance.ability = compoundNBT.getBoolean("ability");
+                instance.transformed = compoundNBT.getInt("transformed");
+                instance.diavolo = compoundNBT.getString("diavolo");
+                instance.noClip = compoundNBT.getBoolean("noClip");
+                instance.standEntityID = compoundNBT.getInt("standEntityID");
+                instance.abilityActive = compoundNBT.getBoolean("abilityActive");
+                instance.invulnerableTicks = compoundNBT.getDouble("invulnerableTicks");
+                instance.standDamage = compoundNBT.getFloat("standDamage");
+                instance.charging = compoundNBT.getBoolean("charging");
+                instance.abilityUseCount = compoundNBT.getInt("abilityUseCount");
+                instance.blockPos = new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ"));
+                instance.experiencePoints = compoundNBT.getInt("experiencePoints");
+                instance.gameTime = compoundNBT.getLong("gameTime");
+                instance.dayTime = compoundNBT.getLong("dayTime");
+                instance.abilityUseCount = compoundNBT.getInt("abilitiesUnlocked");
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
-                        props.affectedChunkList.add(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
+                        instance.affectedChunkList.add(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
+                });
+                compoundNBT.getList("crazyDiamondBlocks", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("chunkPosX")) {
+                        Map<BlockPos, BlockState> map = new ConcurrentHashMap<>();
+                        ((CompoundNBT) compound).getList("blockPosList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
+                            if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("blockPosX"))
+                                map.put(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")), Block.getStateById(compoundNBT.getInt("blockState")));
+                        });
+                        instance.crazyDiamondBlocks.put(new ChunkPos(((CompoundNBT) compound).getInt("chunkPosX"), ((CompoundNBT) compound).getInt("chunkPosX")), map);
+                    }
                 });
             }
         }, () -> new Stand(Null()));
+    }
+
+    public Map<ChunkPos, Map<BlockPos, BlockState>> getCrazyDiamondBlocks() {
+        return crazyDiamondBlocks;
+    }
+
+    public void putCrazyDiamondBlock(@Nonnull ChunkPos pos, @Nonnull BlockPos blockPos, @Nonnull BlockState state) {
+        if (!crazyDiamondBlocks.containsKey(pos)) {
+            Map<BlockPos, BlockState> map = new ConcurrentHashMap<>();
+            map.put(blockPos, state);
+            crazyDiamondBlocks.put(pos, map);
+        } else
+            crazyDiamondBlocks.get(pos).put(blockPos, state);
+        onDataUpdated();
     }
 
     public PlayerEntity getPlayer() {
@@ -229,7 +273,6 @@ public class Stand implements ICapabilitySerializable<INBT> {
     }
 
     public void setTimeLeft(double timeLeft) {
-        this.prevTimeLeft = this.timeLeft;
         this.timeLeft = timeLeft;
         onDataUpdated();
     }
@@ -338,11 +381,6 @@ public class Stand implements ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
-    public void removeAffectedChunk(ChunkPos pos) {
-        affectedChunkList.remove(pos);
-        onDataUpdated();
-    }
-
     public void addExperiencePoints(int experiencePoints) {
         this.experiencePoints += experiencePoints;
         onDataUpdated();
@@ -379,15 +417,6 @@ public class Stand implements ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
-    public double getPrevTimeLeft() {
-        return prevTimeLeft;
-    }
-
-    public void setPrevTimeLeft(double prevTimeLeft) {
-        this.prevTimeLeft = prevTimeLeft;
-        onDataUpdated();
-    }
-
     public void clone(Stand stand) {
         standID = stand.getStandID();
         standAct = stand.getAct();
@@ -405,7 +434,6 @@ public class Stand implements ICapabilitySerializable<INBT> {
         abilityUseCount = stand.getAbilityUseCount();
         affectedChunkList = stand.getAffectedChunkList();
         experiencePoints = stand.getExperiencePoints();
-        prevTimeLeft = stand.getTimeLeft();
         onDataUpdated();
     }
 
@@ -427,7 +455,6 @@ public class Stand implements ICapabilitySerializable<INBT> {
         abilityUseCount = 0;
         affectedChunkList = new ArrayList<>();
         experiencePoints = 0;
-        prevTimeLeft = 0;
         onDataUpdated();
     }
 

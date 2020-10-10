@@ -13,6 +13,7 @@ import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.Entity;
@@ -57,7 +58,9 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -206,13 +209,19 @@ public class EventHandleStandAbilities {
                             entity.remove();
                         if (entity instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
                             entity.remove();
-                        if (!standEffects.getDestroyedBlocks().isEmpty())
-                            standEffects.getDestroyedBlocks().forEach((pos, list) ->
-                                    list.forEach((blockPos, blockState) -> {
-                                        if (player.world.getChunkProvider().isChunkLoaded(pos))
-                                            player.world.getChunkProvider().forceChunk(pos, true);
-                                        player.world.setBlockState(blockPos, blockState);
-                                    }));
+                        if (!standEffects.getDestroyedBlocks().isEmpty()) {
+                            Map<BlockPos, BlockState> removalMap = new ConcurrentHashMap<>();
+                            standEffects.getDestroyedBlocks().forEach((pos, list) -> {
+                                list.forEach((blockPos, blockState) -> {
+                                    if (player.world.getChunkProvider().isChunkLoaded(pos))
+                                        player.world.getChunkProvider().forceChunk(pos, true);
+                                    player.world.setBlockState(blockPos, blockState);
+                                    removalMap.put(blockPos, blockState);
+                                });
+                                if (!removalMap.isEmpty())
+                                    removalMap.forEach(list::remove);
+                            });
+                        }
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                             standEffects.setBitesTheDustPos(BlockPos.ZERO);

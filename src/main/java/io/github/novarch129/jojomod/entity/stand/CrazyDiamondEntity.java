@@ -10,12 +10,11 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import java.util.WeakHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("ConstantConditions")
 public class CrazyDiamondEntity extends AbstractStandEntity {
-    private WeakHashMap<BlockPos, BlockState> repairBlocks = new WeakHashMap<>();
-
     public CrazyDiamondEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
@@ -25,20 +24,27 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
         return SoundInit.SPAWN_CRAZY_DIAMOND.get();
     }
 
-    public void putRepairBlock(BlockPos blockPos, BlockState state) {
-        repairBlocks.put(blockPos, state);
-    }
-
     public void repair() {
-        if (getMaster() != null)
-            Stand.getLazyOptional(getMaster()).ifPresent(props -> {
-                if (repairBlocks.size() > 0) {
-                    world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
-                    props.setCooldown(100);
-                }
-                repairBlocks.forEach(world::setBlockState);
-                repairBlocks.clear();
-            });
+        if (getMaster() == null) return;
+        Stand.getLazyOptional(getMaster()).ifPresent(stand -> {
+            if (stand.getCooldown() > 0)
+                return;
+            if (!stand.getCrazyDiamondBlocks().isEmpty()) {
+                Map<BlockPos, BlockState> removalMap = new ConcurrentHashMap<>();
+                stand.getCrazyDiamondBlocks().forEach((pos, list) -> {
+                    list.forEach((blockPos, blockState) -> {
+                        if (world.getChunkProvider().isChunkLoaded(pos))
+                            world.getChunkProvider().forceChunk(pos, true);
+                        world.setBlockState(blockPos, blockState);
+                        removalMap.put(blockPos, blockState);
+                    });
+                    if (!removalMap.isEmpty())
+                        removalMap.forEach((list::remove));
+                });
+                world.playSound(null, new BlockPos(getPosX(), getPosY(), getPosZ()), SoundInit.SPAWN_CRAZY_DIAMOND.get(), getSoundCategory(), 1.0f, 1.0f);
+                stand.setCooldown(100);
+            }
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import io.github.novarch129.jojomod.capability.*;
 import io.github.novarch129.jojomod.entity.stand.attack.KillerQueenPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.Util;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -22,6 +23,9 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("ConstantConditions")
 public class KillerQueenEntity extends AbstractStandEntity {
@@ -258,13 +262,19 @@ public class KillerQueenEntity extends AbstractStandEntity {
                             entity.remove();
                         if (entity instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
                             entity.remove();
-                        if (!standEffects.getDestroyedBlocks().isEmpty())
-                            standEffects.getDestroyedBlocks().forEach((pos, list) ->
-                                    list.forEach((blockPos, blockState) -> {
-                                        if (world.getChunkProvider().isChunkLoaded(pos))
-                                            world.getChunkProvider().forceChunk(pos, true);
-                                        world.setBlockState(blockPos, blockState);
-                                    }));
+                        if (!standEffects.getDestroyedBlocks().isEmpty()) {
+                            Map<BlockPos, BlockState> removalMap = new ConcurrentHashMap<>();
+                            standEffects.getDestroyedBlocks().forEach((pos, list) -> {
+                                list.forEach((blockPos, blockState) -> {
+                                    if (world.getChunkProvider().isChunkLoaded(pos))
+                                        world.getChunkProvider().forceChunk(pos, true);
+                                    world.setBlockState(blockPos, blockState);
+                                    removalMap.put(blockPos, blockState);
+                                });
+                                if (!removalMap.isEmpty())
+                                    removalMap.forEach(list::remove);
+                            });
+                        }
                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                             standEffects.setBitesTheDustPos(BlockPos.ZERO);
@@ -452,13 +462,19 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                             entity.remove();
                                         if (entity instanceof ItemEntity && standEffects.getBitesTheDustPos() == BlockPos.ZERO)
                                             entity.remove();
-                                        if (!standEffects.getDestroyedBlocks().isEmpty())
-                                            standEffects.getDestroyedBlocks().forEach((pos, list) ->
-                                                    list.forEach((blockPos, blockState) -> {
-                                                        if (world.getChunkProvider().isChunkLoaded(pos))
-                                                            world.getChunkProvider().forceChunk(pos, true);
-                                                        world.setBlockState(blockPos, blockState);
-                                                    }));
+                                        if (!standEffects.getDestroyedBlocks().isEmpty()) {
+                                            Map<BlockPos, BlockState> removalMap = new ConcurrentHashMap<>();
+                                            standEffects.getDestroyedBlocks().forEach((pos, list) -> {
+                                                list.forEach((blockPos, blockState) -> {
+                                                    if (world.getChunkProvider().isChunkLoaded(pos))
+                                                        world.getChunkProvider().forceChunk(pos, true);
+                                                    world.setBlockState(blockPos, blockState);
+                                                    removalMap.put(blockPos, blockState);
+                                                });
+                                                if (!removalMap.isEmpty())
+                                                    removalMap.forEach(list::remove);
+                                            });
+                                        }
                                         if (standEffects.getBitesTheDustPos() != BlockPos.ZERO) {
                                             entity.setPositionAndUpdate(standEffects.getBitesTheDustPos().getX(), standEffects.getBitesTheDustPos().getY(), standEffects.getBitesTheDustPos().getZ());
                                             standEffects.setBitesTheDustPos(BlockPos.ZERO);
