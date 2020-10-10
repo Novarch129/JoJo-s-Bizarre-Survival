@@ -144,7 +144,7 @@ public class StandGUI extends AbstractGui {
                 }
                 case Util.StandID.MADE_IN_HEAVEN: {
                     if (cooldown > 0)
-                        renderString("Cooldown: " + cooldown / 20, 4, (props.getStandOn() ? 16 : 4));
+                        renderString("Cooldown: " + cooldown / 20, 4, (props.getStandOn() && act == 0 ? 16 : 4));
                     if (invulnerableTicks > 0)
                         renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20), 4, props.getStandOn() ? 16 : 4);
                     break;

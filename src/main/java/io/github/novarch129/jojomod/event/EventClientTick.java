@@ -85,7 +85,7 @@ public class EventClientTick {
     public static void renderCrimsonEffect(EntityViewRenderEvent.FogDensity event) {
         event.setDensity(0.3f);
         if (event.getInfo().getRenderViewEntity() instanceof LivingEntity)
-            if (((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON_USER.get()) || ((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.CRIMSON.get()) || ((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISONING.get()))
+            if (((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISONING.get()))
                 event.setCanceled(true);
         event.setDensity(5);
     }

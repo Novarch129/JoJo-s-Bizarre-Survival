@@ -57,17 +57,20 @@ public class EchoesAct2Entity extends AbstractStandEntity {
 
     public void removeAllSoundEffects() {
         if (getMaster() == null) return;
-        Stand.getLazyOptional(master).ifPresent(props ->
-                props.getAffectedChunkList().forEach(pos -> {
-                    Chunk chunk = world.getChunk(pos.x, pos.z);
-                    if (world.getChunkProvider().isChunkLoaded(pos))
-                        StandChunkEffects.getLazyOptional(chunk).ifPresent(chunkEffects -> {
-                            if (chunkEffects.getSoundEffects().containsKey(master.getUniqueID())) {
-                                chunkEffects.getSoundEffects().remove(master.getUniqueID());
-                                props.setAbilityUseCount(props.getAbilityUseCount() - 1);
-                            }
-                        });
-                }));
+        Stand.getLazyOptional(master).ifPresent(props -> {
+            props.getAffectedChunkList().forEach(pos -> {
+                Chunk chunk = world.getChunk(pos.x, pos.z);
+                if (world.getChunkProvider().isChunkLoaded(pos))
+                    StandChunkEffects.getLazyOptional(chunk).ifPresent(chunkEffects -> {
+                        if (chunkEffects.getSoundEffects().containsKey(master.getUniqueID())) {
+                            chunkEffects.getSoundEffects().remove(master.getUniqueID());
+                            props.setAbilityUseCount(props.getAbilityUseCount() - 1);
+                        }
+                    });
+            });
+            if (!master.world.isRemote)
+                master.sendStatusMessage(new StringTextComponent("Removed all sound effects."), true);
+        });
     }
 
     @Override

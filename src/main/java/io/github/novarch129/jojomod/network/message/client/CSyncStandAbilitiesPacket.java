@@ -64,6 +64,8 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> {
                                                 if (message.action == 1)
                                                     ((KingCrimsonEntity) entity).epitaph();
+                                                else
+                                                    ((KingCrimsonEntity) entity).teleport(8.01714285714);
                                             });
                                     break;
                                 }
@@ -162,7 +164,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> {
                                                 switch (message.action) {
                                                     case 1: {
-                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 0.5 : 1);
+                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 2 : 8.01714285714);
                                                         break;
                                                     }
                                                     case 2: {

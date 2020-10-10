@@ -358,6 +358,6 @@ public class EntityInit {
     public static final RegistryObject<EntityType<KingCrimsonAfterimageEntity>> KING_CRIMSON_AFTERIMAGE = ENTITY_TYPES
             .register("king_crimson_afterimage",
                     () -> EntityType.Builder.<KingCrimsonAfterimageEntity>create(KingCrimsonAfterimageEntity::new, EntityClassification.MISC)
-                            .size(0.6f, 1.8f)
+                            .disableSummoning()
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson_afterimage").toString()));
 }

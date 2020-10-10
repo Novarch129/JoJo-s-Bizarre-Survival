@@ -1,12 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.effect.CrimsonEffect;
-import io.github.novarch129.jojomod.effect.CrimsonEffectUser;
 import io.github.novarch129.jojomod.entity.KingCrimsonAfterimageEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.KingCrimsonPunchEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.util.IChargeable;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.CropsBlock;
+import net.minecraft.block.StemBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -17,19 +18,16 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-/**
- * You shouldn't be surprised if you're confused by this code, even I can barely read it now.
- */
 @SuppressWarnings("ConstantConditions")
 public class KingCrimsonEntity extends AbstractStandEntity implements IChargeable {
-    private int punchChargeTicks;
-    private int prevPunchChargeTicks;
+    private int punchChargeTicks, prevPunchChargeTicks;
     private KingCrimsonAfterimageEntity afterimage;
 
     public KingCrimsonEntity(EntityType<? extends AbstractStandEntity> type, World world) {
@@ -84,11 +82,33 @@ public class KingCrimsonEntity extends AbstractStandEntity implements IChargeabl
         });
     }
 
-    /**
-     * Gets all entities in the {@link net.minecraft.world.server.ServerWorld} using {@link net.minecraft.world.server.ServerWorld}#getAllEntities,
-     * then applies the {@link CrimsonEffect} to them to make them glow.
-     * Also applies the {@link CrimsonEffectUser} to it's user, impairing his vision.
-     */
+    public void teleport(double multiplier) {
+        if (world.isRemote || master == null) return;
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (stand.getCooldown() == 0 && !stand.getAbilityActive()) {
+                Vec3d position = master.getLookVec().mul(7 * multiplier, 1, 7 * multiplier).add(master.getPositionVec());
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getX(), i, position.getZ())).isSolid(); i++)
+                    position = position.add(0, 0.5, 0);
+                if (world.getBlockState(new BlockPos(position)).isSolid())
+                    return;
+                BlockPos.getAllInBox(getPosition().add(10, 10, 10), getPosition().add(-10, -10, -10))
+                        .filter(pos -> world.getBlockState(pos).getBlock() instanceof CropsBlock || world.getBlockState(pos).getBlock() instanceof StemBlock)
+                        .forEach(pos -> {
+                            BlockState state = world.getBlockState(pos);
+                            if (state.getBlock() instanceof CropsBlock) {
+                                if (state.get(((CropsBlock) state.getBlock()).getAgeProperty()) < ((CropsBlock) state.getBlock()).getMaxAge())
+                                    world.setBlockState(pos, ((CropsBlock) state.getBlock()).withAge(state.get(((CropsBlock) state.getBlock()).getAgeProperty()) + 1), 2);
+                            } else if (state.get(StemBlock.AGE) < 7)
+                                world.setBlockState(pos, state.with(StemBlock.AGE, state.get(StemBlock.AGE) + 1), 2);
+                        });
+                master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
+                world.setGameTime(world.getGameTime() + 200);
+                world.setDayTime(world.getDayTime() + 200);
+                stand.setCooldown(200);
+            }
+        });
+    }
+
     @Override
     public void tick() {
         super.tick();

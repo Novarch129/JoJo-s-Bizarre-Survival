@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
@@ -22,7 +21,7 @@ public class EmperorItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStack = playerIn.getHeldItem(handIn);
         if (!playerIn.world.isRemote) {
-            IStand stand = Stand.getCapabilityFromPlayer(playerIn);
+            Stand stand = Stand.getCapabilityFromPlayer(playerIn);
             if (stand.getStandID() != Util.StandID.THE_EMPEROR)
                 itemStack.shrink(1);
             if (stand.getCooldown() <= 0) {

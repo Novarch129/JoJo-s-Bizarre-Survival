@@ -245,7 +245,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         super.onRemovedFromWorld();
         MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(master, this));
         if (master != null)
-            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(0)); //Resets the IStand#getPlayerStand for easier null checks.
+            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(0)); //Resets the Stand#getPlayerStand for easier null checks.
     }
 
     /**

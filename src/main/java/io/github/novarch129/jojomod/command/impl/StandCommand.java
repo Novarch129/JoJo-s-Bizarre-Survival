@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.command.impl;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.command.CommandSource;
@@ -98,7 +97,7 @@ public class StandCommand {
     }
 
     private static int setPlayerStandID(CommandSource source, PlayerEntity target, int standID) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != standID) {
             props.setStandID(standID);
             props.setStandOn(false);
@@ -109,7 +108,7 @@ public class StandCommand {
     }
 
     private static int removePlayerStand(CommandSource source, PlayerEntity target) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != 0) {
             props.removeStand();
             source.sendFeedback(new StringTextComponent("Successfully removed Stand from " + target.getDisplayName().getFormattedText() + "."), true);
@@ -119,7 +118,7 @@ public class StandCommand {
     }
 
     private static int evolvePlayerStand(CommandSource source, PlayerEntity target) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand props = Stand.getCapabilityFromPlayer(target);
         int standID = 0;
         switch (props.getStandID()) {
             default: {

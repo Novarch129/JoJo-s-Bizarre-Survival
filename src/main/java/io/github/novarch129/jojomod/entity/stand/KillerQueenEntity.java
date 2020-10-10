@@ -40,7 +40,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
 
     public void detonate() {
         if (getMaster() == null) return;
-        IStand stand = Stand.getCapabilityFromPlayer(master);
+        Stand stand = Stand.getCapabilityFromPlayer(master);
         if (master.isCrouching() && !world.isRemote) {
             if (master.isCrouching() && stand.getGameTime() == -1) {
                 stand.setGameTime(world.getGameTime());

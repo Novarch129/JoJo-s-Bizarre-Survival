@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
@@ -83,7 +82,7 @@ public class StandArrowItem extends ArrowItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        IStand props = Stand.getCapabilityFromPlayer(playerIn);
+        Stand props = Stand.getCapabilityFromPlayer(playerIn);
         if (!Stand.getLazyOptional(playerIn).isPresent()) return ActionResult.resultFail(stack);
         if (props.getStandID() == 0 || props.getStandID() == Util.StandID.GOLD_EXPERIENCE) {
             playerIn.setActiveHand(handIn);

@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.event.custom;
 
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -29,7 +28,7 @@ public class StandEvent extends PlayerEvent {
     }
 
     /**
-     * Fired when {@link IStand} standOn is set to false.
+     * Fired when {@link io.github.novarch129.jojomod.capability.Stand} standOn is set to false.
      * This Event is fired from {@link AbstractStandEntity} right before it's removed from the world.
      * You should check if the {@link AbstractStandEntity} provided in this event is <code>null</code> as it can be dead.
      * This Event does not have a result.

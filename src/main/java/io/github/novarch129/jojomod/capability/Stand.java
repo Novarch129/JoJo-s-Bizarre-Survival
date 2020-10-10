@@ -32,9 +32,9 @@ import static io.github.novarch129.jojomod.util.Util.StandID.*;
 /**
  * The {@link Capability} used for storing the player's Stand ability.
  */
-public class Stand implements IStand, ICapabilitySerializable<INBT> {
-    @CapabilityInject(IStand.class)
-    public static final Capability<IStand> STAND = Null(); //Null method suppresses warnings
+public class Stand implements ICapabilitySerializable<INBT> {
+    @CapabilityInject(Stand.class)
+    public static final Capability<Stand> STAND = Null(); //Null method suppresses warnings
     private final PlayerEntity player;
     private int standID;
     /**
@@ -61,25 +61,25 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
     private long dayTime = -1;
     private int abilitiesUnlocked;
     private double prevTimeLeft = 1000;
-    private LazyOptional<IStand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
+    private LazyOptional<Stand> holder = LazyOptional.of(() -> new Stand(getPlayer()));
 
     public Stand(@Nonnull PlayerEntity player) {
         this.player = player;
     }
 
-    public static IStand getCapabilityFromPlayer(PlayerEntity player) {
+    public static Stand getCapabilityFromPlayer(PlayerEntity player) {
         return player.getCapability(STAND).orElse(new Stand(player));
     }
 
-    public static LazyOptional<IStand> getLazyOptional(PlayerEntity player) {
+    public static LazyOptional<Stand> getLazyOptional(PlayerEntity player) {
         return player.getCapability(STAND);
     }
 
     public static void register() {
-        CapabilityManager.INSTANCE.register(IStand.class, new Capability.IStorage<IStand>() {
+        CapabilityManager.INSTANCE.register(Stand.class, new Capability.IStorage<Stand>() {
             @Nonnull
             @Override
-            public INBT writeNBT(Capability<IStand> capability, IStand props, Direction side) {
+            public INBT writeNBT(Capability<Stand> capability, Stand props, Direction side) {
                 CompoundNBT nbt = new CompoundNBT();
                 nbt.putInt("standID", props.getStandID());
                 nbt.putInt("standAct", props.getAct());
@@ -116,81 +116,68 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
             }
 
             @Override
-            public void readNBT(Capability<IStand> capability, IStand props, Direction side, INBT nbt) {
+            public void readNBT(Capability<Stand> capability, Stand props, Direction side, INBT nbt) {
                 CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                props.putStandID(compoundNBT.getInt("standID"));
-                props.putAct(compoundNBT.getInt("standAct"));
-                props.putStandOn(compoundNBT.getBoolean("standOn"));
-                props.putCooldown(compoundNBT.getDouble("cooldown"));
-                props.putTimeLeft(compoundNBT.getDouble("timeLeft"));
-                props.putAbility(compoundNBT.getBoolean("ability"));
-                props.putTransformed(compoundNBT.getInt("transformed"));
-                props.putDiavolo(compoundNBT.getString("diavolo"));
-                props.putNoClip(compoundNBT.getBoolean("noClip"));
-                props.putPlayerStand(compoundNBT.getInt("standEntityID"));
-                props.putAbilityActive(compoundNBT.getBoolean("abilityActive"));
-                props.putInvulnerableTicks(compoundNBT.getDouble("invulnerableTicks"));
-                props.putStandDamage(compoundNBT.getFloat("standDamage"));
-                props.putCharging(compoundNBT.getBoolean("charging"));
-                props.putAbilityUseCount(compoundNBT.getInt("abilityUseCount"));
-                props.putBlockPos(new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ")));
-                props.putExperiencePoints(compoundNBT.getInt("experiencePoints"));
-                props.putGameTime(compoundNBT.getLong("gameTime"));
-                props.putDayTime(compoundNBT.getLong("dayTime"));
-                props.putAbilitiesUnlocked(compoundNBT.getInt("abilitiesUnlocked"));
-                props.putPrevTimeLeft(compoundNBT.getDouble("prevTimeLeft"));
+                props.standID = compoundNBT.getInt("standID");
+                props.standAct = compoundNBT.getInt("standAct");
+                props.standOn = compoundNBT.getBoolean("standOn");
+                props.cooldown = compoundNBT.getDouble("cooldown");
+                props.timeLeft = compoundNBT.getDouble("timeLeft");
+                props.ability = compoundNBT.getBoolean("ability");
+                props.transformed = compoundNBT.getInt("transformed");
+                props.diavolo = compoundNBT.getString("diavolo");
+                props.noClip = compoundNBT.getBoolean("noClip");
+                props.standEntityID = compoundNBT.getInt("standEntityID");
+                props.abilityActive = compoundNBT.getBoolean("abilityActive");
+                props.invulnerableTicks = compoundNBT.getDouble("invulnerableTicks");
+                props.standDamage = compoundNBT.getFloat("standDamage");
+                props.charging = compoundNBT.getBoolean("charging");
+                props.abilityUseCount = compoundNBT.getInt("abilityUseCount");
+                props.blockPos = new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ"));
+                props.experiencePoints = compoundNBT.getInt("experiencePoints");
+                props.gameTime = compoundNBT.getLong("gameTime");
+                props.dayTime = compoundNBT.getLong("dayTime");
+                props.abilityUseCount = compoundNBT.getInt("abilitiesUnlocked");
+                props.prevTimeLeft = compoundNBT.getDouble("prevTimeLeft");
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
-                        props.addAffectedChunk(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
+                        props.affectedChunkList.add(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
                 });
             }
         }, () -> new Stand(Null()));
     }
 
-    @Override
     public PlayerEntity getPlayer() {
         return player;
     }
 
-    @Override
     public int getStandID() {
         return standID;
     }
 
-    @Override
     public void setStandID(int value) {
         this.standID = value;
         onDataUpdated();
     }
 
-    @Override
     public int getPlayerStand() {
         return standEntityID;
     }
 
-    @Override
     public void setPlayerStand(int standEntityID) {
         this.standEntityID = standEntityID;
         onDataUpdated();
     }
 
-    @Override
-    public void putPlayerStand(int standEntityID) {
-        this.standEntityID = standEntityID;
-    }
-
-    @Override
     public int getAct() {
         return standAct;
     }
 
-    @Override
     public void setAct(int standAct) {
         this.standAct = standAct;
         onDataUpdated();
     }
 
-    @Override
     public void changeAct() {
         standAct++;
         if (standAct == getMaxAct())
@@ -198,12 +185,10 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
-    @Override
     public boolean hasAct() {
         return Util.StandID.STANDS_WITH_ACTS.contains(getStandID());
     }
 
-    @Override
     public int getMaxAct() {
         switch (standID) {
             case TUSK_ACT_4:
@@ -221,379 +206,234 @@ public class Stand implements IStand, ICapabilitySerializable<INBT> {
         return 0;
     }
 
-    @Override
     public boolean getStandOn() {
         return this.standOn;
     }
 
-    @Override
     public void setStandOn(boolean value) {
         this.standOn = value;
         onDataUpdated();
     }
 
-    @Override
     public double getCooldown() {
         return this.cooldown;
     }
 
-    @Override
     public void setCooldown(double cooldown) {
         this.cooldown = cooldown;
         onDataUpdated();
     }
 
-    @Override
     public double getTimeLeft() {
         return timeLeft;
     }
 
-    @Override
     public void setTimeLeft(double timeLeft) {
         this.prevTimeLeft = this.timeLeft;
         this.timeLeft = timeLeft;
         onDataUpdated();
     }
 
-    @Override
     public String getDiavolo() {
         return diavolo;
     }
 
-    @Override
     public void setDiavolo(String truth) {
         this.diavolo = truth;
         onDataUpdated();
     }
 
-    @Override
     public boolean getAbility() {
         return ability;
     }
 
-    @Override
     public void setAbility(boolean ability) {
         this.ability = ability;
         onDataUpdated();
     }
 
-    @Override
     public int getTransformed() {
         return transformed;
     }
 
-    @Override
     public void setTransformed(int value) {
         this.transformed = value;
         onDataUpdated();
     }
 
-    @Override
     public void addTransformed(int addition) {
         this.transformed += addition;
         onDataUpdated();
     }
 
-    @Override
     public boolean getNoClip() {
         return noClip;
     }
 
-    @Override
     public void setNoClip(boolean noClip) {
         this.noClip = noClip;
         onDataUpdated();
     }
 
-    @Override
-    public void putStandID(int standID) {
-        this.standID = standID;
-    }
-
-    @Override
-    public void putAct(int standAct) {
-        this.standAct = standAct;
-    }
-
-    @Override
-    public void putStandOn(boolean standOn) {
-        this.standOn = standOn;
-    }
-
-    @Override
-    public void putTimeLeft(double timeLeft) {
-        this.timeLeft = timeLeft;
-    }
-
-    @Override
-    public void putCooldown(double cooldown) {
-        this.cooldown = cooldown;
-    }
-
-    @Override
-    public void putAbility(boolean ability) {
-        this.ability = ability;
-    }
-
-    @Override
-    public void putTransformed(int transformed) {
-        this.transformed = transformed;
-    }
-
-    @Override
-    public void putDiavolo(String truth) {
-        this.diavolo = truth;
-    }
-
-    @Override
-    public void putNoClip(boolean noClip) {
-        this.noClip = noClip;
-    }
-
-    @Override
     public boolean getAbilityActive() {
         return abilityActive;
     }
 
-    @Override
     public void setAbilityActive(boolean abilityActive) {
         this.abilityActive = abilityActive;
         onDataUpdated();
     }
 
-    @Override
-    public void putAbilityActive(boolean abilityActive) {
-        this.abilityActive = abilityActive;
-    }
-
-    @Override
     public double getInvulnerableTicks() {
         return invulnerableTicks;
     }
 
-    @Override
     public void setInvulnerableTicks(double invulnerableTicks) {
         this.invulnerableTicks = invulnerableTicks;
         onDataUpdated();
     }
 
-    @Override
-    public void putInvulnerableTicks(double invulnerableTicks) {
-        this.invulnerableTicks = invulnerableTicks;
-    }
-
-    @Override
     public float getStandDamage() {
         return standDamage;
     }
 
-    @Override
     public void setStandDamage(float standDamage) {
         this.standDamage = standDamage;
         onDataUpdated();
     }
 
-    @Override
-    public void putStandDamage(float standDamage) {
-        this.standDamage = standDamage;
-    }
-
-    @Override
     public boolean isCharging() {
         return charging;
     }
 
-    @Override
     public void setCharging(boolean charging) {
         this.charging = charging;
         onDataUpdated();
     }
 
-    @Override
-    public void putCharging(boolean charging) {
-        this.charging = charging;
-    }
-
-    @Override
     public int getAbilityUseCount() {
         return abilityUseCount;
     }
 
-    @Override
     public void setAbilityUseCount(int abilityUseCount) {
         this.abilityUseCount = abilityUseCount;
         onDataUpdated();
     }
 
-    @Override
-    public void putAbilityUseCount(int abilityUseCount) {
-        this.abilityUseCount = abilityUseCount;
-    }
-
-    @Override
     public BlockPos getBlockPos() {
         return blockPos;
     }
 
-    @Override
     public void setBlockPos(BlockPos blockPos) {
         this.blockPos = blockPos;
         onDataUpdated();
     }
 
-    @Override
-    public void putBlockPos(BlockPos blockPos) {
-        this.blockPos = blockPos;
-    }
-
-    @Override
     public List<ChunkPos> getAffectedChunkList() {
         return affectedChunkList;
     }
 
-    @Override
     public void addAffectedChunk(ChunkPos pos) {
         affectedChunkList.add(pos);
         onDataUpdated();
     }
 
-    @Override
     public void removeAffectedChunk(ChunkPos pos) {
         affectedChunkList.remove(pos);
         onDataUpdated();
     }
 
-    @Override
-    public void putAffectedChunkList(List<ChunkPos> list) {
-        affectedChunkList = list;
-    }
-
-    @Override
     public void addExperiencePoints(int experiencePoints) {
         this.experiencePoints += experiencePoints;
         onDataUpdated();
     }
 
-    @Override
     public int getExperiencePoints() {
         return experiencePoints;
     }
 
-    @Override
-    public void putExperiencePoints(int experiencePoints) {
-        this.experiencePoints = experiencePoints;
-    }
-
-    @Override
     public long getGameTime() {
         return gameTime;
     }
 
-    @Override
     public void setGameTime(long time) {
         this.gameTime = time;
         onDataUpdated();
     }
 
-    @Override
-    public void putGameTime(long time) {
-        this.gameTime = time;
-    }
-
-    @Override
     public long getDayTime() {
         return dayTime;
     }
 
-    @Override
     public void setDayTime(long time) {
         this.dayTime = time;
         onDataUpdated();
     }
 
-    @Override
-    public void putDayTime(long time) {
-        this.dayTime = time;
-    }
-
-    @Override
     public int getAbilitiesUnlocked() {
         return abilitiesUnlocked;
     }
 
-    @Override
     public void addAbilityUnlocked(int amount) {
         abilitiesUnlocked += amount;
         onDataUpdated();
     }
 
-    @Override
-    public void putAbilitiesUnlocked(int abilitiesUnlocked) {
-        this.abilitiesUnlocked = abilitiesUnlocked;
-    }
-
-    @Override
     public double getPrevTimeLeft() {
         return prevTimeLeft;
     }
 
-    @Override
     public void setPrevTimeLeft(double prevTimeLeft) {
         this.prevTimeLeft = prevTimeLeft;
         onDataUpdated();
     }
 
-    @Override
-    public void putPrevTimeLeft(double prevTimeLeft) {
-        this.prevTimeLeft = prevTimeLeft;
-    }
-
-    public void clone(IStand props) {
-        putStandID(props.getStandID());
-        putAct(props.getAct());
-        putStandOn(props.getStandOn());
-        putCooldown(props.getCooldown());
-        putTimeLeft(props.getTimeLeft());
-        putTransformed(props.getTransformed());
-        putDiavolo(props.getDiavolo());
-        putAbility(props.getAbility());
-        putPlayerStand(props.getPlayerStand());
-        putAbilityActive(props.getAbilityActive());
-        putInvulnerableTicks(props.getInvulnerableTicks());
-        putStandDamage(props.getStandDamage());
-        putCharging(props.isCharging());
-        putAbilityUseCount(props.getAbilityUseCount());
-        putAffectedChunkList(props.getAffectedChunkList());
-        putExperiencePoints(props.getExperiencePoints());
+    public void clone(Stand stand) {
+        standID = stand.getStandID();
+        standAct = stand.getAct();
+        standOn = stand.getStandOn();
+        cooldown = stand.getCooldown();
+        timeLeft = stand.getTimeLeft();
+        transformed = stand.getTransformed();
+        diavolo = stand.getDiavolo();
+        ability = stand.getAbility();
+        standEntityID = stand.getPlayerStand();
+        abilityActive = stand.getAbilityActive();
+        invulnerableTicks = stand.getInvulnerableTicks();
+        standDamage = stand.getStandDamage();
+        charging = stand.isCharging();
+        abilityUseCount = stand.getAbilityUseCount();
+        affectedChunkList = stand.getAffectedChunkList();
+        experiencePoints = stand.getExperiencePoints();
+        prevTimeLeft = stand.getTimeLeft();
         onDataUpdated();
     }
 
-    @Override
     public void removeStand() {
-        putStandOn(false);
-        putAct(0);
-        putStandID(0);
-        putCooldown(0);
-        putTimeLeft(1000);
-        putTransformed(0);
-        putDiavolo("");
-        putAbility(false);
-        putNoClip(false);
-        putPlayerStand(0);
-        putAbilityActive(false);
-        putInvulnerableTicks(0);
-        putStandDamage(0);
-        putCharging(false);
-        putAbilityUseCount(0);
-        putAffectedChunkList(new ArrayList<>());
-        putExperiencePoints(0);
+        standOn = false;
+        standAct = 0;
+        standID = 0;
+        cooldown = 0;
+        timeLeft = 1000;
+        transformed = 0;
+        diavolo = "";
+        ability = false;
+        noClip = false;
+        standEntityID = 0;
+        abilityActive = false;
+        invulnerableTicks = 0;
+        standDamage = 0;
+        charging = false;
+        abilityUseCount = 0;
+        affectedChunkList = new ArrayList<>();
+        experiencePoints = 0;
+        prevTimeLeft = 0;
         onDataUpdated();
     }
 
     /**
      * Called to update the {@link Capability} to the client.
      */
-    @Override
     public void onDataUpdated() {
         if (!player.world.isRemote)
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new SSyncStandCapabilityPacket(this));

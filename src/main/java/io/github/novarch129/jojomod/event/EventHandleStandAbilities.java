@@ -69,7 +69,6 @@ public class EventHandleStandAbilities {
             Random rand = player.world.rand;
             int standID = stand.getStandID();
             boolean standOn = stand.getStandOn();
-            boolean ability = stand.getAbility();
             double cooldown = stand.getCooldown();
             double timeLeft = stand.getTimeLeft();
             double invulnerableTicks = stand.getInvulnerableTicks();
@@ -267,9 +266,6 @@ public class EventHandleStandAbilities {
                 if (timeLeft < 1000 && cooldown == 0)
                     stand.setTimeLeft(stand.getTimeLeft() + 0.5);
             }
-
-            if (standID == Util.StandID.KING_CRIMSON && (!standOn || !ability || !stand.getAbilityActive()) && player.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                player.removePotionEffect(EffectInit.CRIMSON_USER.get());
         });
     }
 
@@ -380,25 +376,11 @@ public class EventHandleStandAbilities {
     }
 
     @SubscribeEvent
-    public static void effectAddedEvent(PotionEvent.PotionAddedEvent event) {
-        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get())
-            event.getEntityLiving().setGlowing(true);
-    }
-
-    @SubscribeEvent
     public static void effectRemovedEvent(PotionEvent.PotionRemoveEvent event) {
-        if (event.getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
         if (event.getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
         if (event.getPotion() == EffectInit.OXYGEN_POISONING.get()) event.setCanceled(true);
         if (event.getPotion() == EffectInit.HAZE.get()) event.setCanceled(true);
         if (event.getPotion() == EffectInit.AGING.get()) event.setCanceled(true);
-    }
-
-    @SubscribeEvent
-    public static void effectExpiredEvent(PotionEvent.PotionExpiryEvent event) {
-        if (event.getPotionEffect().getPotion() == null) return;
-        if (event.getPotionEffect().getPotion() == EffectInit.CRIMSON.get()) event.getEntityLiving().setGlowing(false);
-        if (event.getPotionEffect().getPotion() == Effects.GLOWING) event.getEntityLiving().setGlowing(false);
     }
 
     @SubscribeEvent //This one still bugs me to this day, can't think of a way to automate it.
@@ -561,8 +543,6 @@ public class EventHandleStandAbilities {
             player.setNoGravity(false);
             if (!player.isCreative() && !player.isSpectator())
                 player.setGameType(GameType.SURVIVAL);
-            if (player.isPotionActive(EffectInit.CRIMSON_USER.get()))
-                player.removePotionEffect(EffectInit.CRIMSON_USER.get());
             if (props.getStandID() == Util.StandID.THE_WORLD) {
                 if (props.getAbility() && props.getTimeLeft() > 780)
                     player.world.playSound(null, player.getPosition(), SoundInit.RESUME_TIME.get(), SoundCategory.NEUTRAL, 5, 1);
