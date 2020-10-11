@@ -61,6 +61,7 @@ public class Stand implements ICapabilitySerializable<INBT> {
     private BlockPos blockPos = BlockPos.ZERO;
     private List<ChunkPos> affectedChunkList = new ArrayList<>();
     private int experiencePoints;
+    private int prevExperiencePoints;
     private long gameTime = -1;
     private long dayTime = -1;
     private int abilitiesUnlocked;
@@ -104,6 +105,7 @@ public class Stand implements ICapabilitySerializable<INBT> {
                 nbt.putDouble("blockPosY", instance.getBlockPos().getY());
                 nbt.putDouble("blockPosZ", instance.getBlockPos().getZ());
                 nbt.putInt("experiencePoints", instance.getExperiencePoints());
+                nbt.putInt("prevExperiencePoints", instance.prevExperiencePoints);
                 nbt.putLong("gameTime", instance.getGameTime());
                 nbt.putLong("dayTime", instance.getDayTime());
                 nbt.putInt("abilitiesUnlocked", instance.getAbilitiesUnlocked());
@@ -156,9 +158,10 @@ public class Stand implements ICapabilitySerializable<INBT> {
                 instance.abilityUseCount = compoundNBT.getInt("abilityUseCount");
                 instance.blockPos = new BlockPos(compoundNBT.getDouble("blockPosX"), compoundNBT.getDouble("blockPosY"), compoundNBT.getDouble("blockPosZ"));
                 instance.experiencePoints = compoundNBT.getInt("experiencePoints");
+                instance.prevExperiencePoints = compoundNBT.getInt("prevExperiencePoints");
                 instance.gameTime = compoundNBT.getLong("gameTime");
                 instance.dayTime = compoundNBT.getLong("dayTime");
-                instance.abilityUseCount = compoundNBT.getInt("abilitiesUnlocked");
+                instance.abilitiesUnlocked = compoundNBT.getInt("abilitiesUnlocked");
                 compoundNBT.getList("affectedChunkList", Constants.NBT.TAG_COMPOUND).forEach(inbt -> {
                     if (inbt instanceof CompoundNBT && ((CompoundNBT) inbt).contains("chunkX"))
                         instance.affectedChunkList.add(new ChunkPos(((CompoundNBT) inbt).getInt("chunkX"), ((CompoundNBT) inbt).getInt("chunkZ")));
@@ -372,6 +375,10 @@ public class Stand implements ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
+    public int getPrevExperiencePoints() {
+        return prevExperiencePoints;
+    }
+
     public List<ChunkPos> getAffectedChunkList() {
         return affectedChunkList;
     }
@@ -382,6 +389,7 @@ public class Stand implements ICapabilitySerializable<INBT> {
     }
 
     public void addExperiencePoints(int experiencePoints) {
+        this.prevExperiencePoints = this.experiencePoints;
         this.experiencePoints += experiencePoints;
         onDataUpdated();
     }
@@ -434,6 +442,8 @@ public class Stand implements ICapabilitySerializable<INBT> {
         abilityUseCount = stand.getAbilityUseCount();
         affectedChunkList = stand.getAffectedChunkList();
         experiencePoints = stand.getExperiencePoints();
+        prevExperiencePoints = stand.getPrevExperiencePoints();
+        abilitiesUnlocked = stand.getAbilitiesUnlocked();
         onDataUpdated();
     }
 
@@ -455,6 +465,8 @@ public class Stand implements ICapabilitySerializable<INBT> {
         abilityUseCount = 0;
         affectedChunkList = new ArrayList<>();
         experiencePoints = 0;
+        prevExperiencePoints = 0;
+        abilitiesUnlocked = 0;
         onDataUpdated();
     }
 

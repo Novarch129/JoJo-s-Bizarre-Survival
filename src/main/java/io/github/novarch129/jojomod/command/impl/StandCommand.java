@@ -118,9 +118,9 @@ public class StandCommand {
     }
 
     private static int evolvePlayerStand(CommandSource source, PlayerEntity target) {
-        Stand props = Stand.getCapabilityFromPlayer(target);
+        Stand stand = Stand.getCapabilityFromPlayer(target);
         int standID = 0;
-        switch (props.getStandID()) {
+        switch (stand.getStandID()) {
             default: {
                 source.sendErrorMessage(new StringTextComponent(target.getDisplayName().getFormattedText() + "'s Stand cannot be evolved."));
                 break;
@@ -161,12 +161,16 @@ public class StandCommand {
                 standID = Util.StandID.ECHOES_ACT_3;
                 break;
             }
+            case Util.StandID.KILLER_QUEEN: {
+                stand.addAbilityUnlocked(2);
+                break;
+            }
         }
         if (standID != 0) {
-            props.setStandOn(false);
-            props.setStandID(standID);
+            stand.setStandOn(false);
+            stand.setStandID(standID);
             source.sendFeedback(new StringTextComponent("Successfully evolved " + target.getDisplayName().getFormattedText() + "'s Stand."), true);
         }
-        return props.getStandID();
+        return stand.getStandID();
     }
 }

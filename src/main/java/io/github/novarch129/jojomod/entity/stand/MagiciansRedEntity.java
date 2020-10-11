@@ -26,11 +26,16 @@ public class MagiciansRedEntity extends AbstractStandEntity {
 
     public void crossfireHurricane() {
         if (getMaster() == null) return;
-        MagiciansRedFlameEntity crossfireHurricane = new MagiciansRedFlameEntity(world, this, master);
-        crossfireHurricane.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.5f);
-        crossfireHurricane.setExplosive(true);
-        world.addEntity(crossfireHurricane);
-        world.addParticle(ParticleTypes.LARGE_SMOKE, crossfireHurricane.getPosX(), crossfireHurricane.getPosY(), crossfireHurricane.getPosZ(), crossfireHurricane.getMotion().getX(), crossfireHurricane.getMotion().getY(), crossfireHurricane.getMotion().getZ());
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (stand.getCooldown() > 0)
+                return;
+            MagiciansRedFlameEntity crossfireHurricane = new MagiciansRedFlameEntity(world, this, master);
+            crossfireHurricane.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.5f);
+            crossfireHurricane.setExplosive(true);
+            world.addEntity(crossfireHurricane);
+            world.addParticle(ParticleTypes.LARGE_SMOKE, crossfireHurricane.getPosX(), crossfireHurricane.getPosY(), crossfireHurricane.getPosZ(), crossfireHurricane.getMotion().getX(), crossfireHurricane.getMotion().getY(), crossfireHurricane.getMotion().getZ());
+            stand.setCooldown(160);
+        });
     }
 
     /**

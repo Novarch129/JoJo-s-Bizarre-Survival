@@ -361,11 +361,12 @@ public class Util {
         public static final List<Integer> EVOLUTION_STANDS = Arrays.asList(
                 WHITESNAKE,
                 CMOON,
-                TUSK_ACT_2,
+                TUSK_ACT_1,
                 TUSK_ACT_2,
                 TUSK_ACT_3,
                 ECHOES_ACT_1,
-                ECHOES_ACT_2
+                ECHOES_ACT_2,
+                KILLER_QUEEN
         );
 
         /**

@@ -41,40 +41,43 @@ public class StandArrowItem extends ArrowItem {
     public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
         if (!(entity instanceof PlayerEntity)) return;
         PlayerEntity player = (PlayerEntity) entity;
-        Stand.getLazyOptional(player).ifPresent(props -> {
+        Stand.getLazyOptional(player).ifPresent(stand -> {
             final int random = world.rand.nextInt(Util.StandID.STANDS.length);
             int newStandID;
             if (standID == 0)
                 newStandID = Util.StandID.STANDS[random];
             else
                 newStandID = standID;
-            if (props.getStandID() == 0) {
+            if (stand.getStandID() == 0) {
                 if (!player.isCreative())
                     stack.shrink(1);
-                props.setStandID(newStandID);
-                props.setStandOn(true);
-                final AbstractStandEntity stand = Util.StandID.getStandByID(newStandID, world);
-                if (stand != null) { //Can be null if Stand is The Emperor
-                    stand.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
-                    stand.setMasterUUID(player.getUniqueID());
-                    stand.setMaster(player);
-                    world.addEntity(stand);
+                stand.setStandID(newStandID);
+                stand.setStandOn(true);
+                final AbstractStandEntity standEntity = Util.StandID.getStandByID(newStandID, world);
+                if (standEntity != null) { //Can be null if Stand is The Emperor
+                    standEntity.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
+                    standEntity.setMasterUUID(player.getUniqueID());
+                    standEntity.setMaster(player);
+                    world.addEntity(standEntity);
                 }
-            } else if (props.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
-                props.removeStand();
+            } else if (stand.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
+                stand.removeStand();
                 if (!world.isRemote) {
                     Objects.requireNonNull(world.getServer()).getWorld(player.dimension).getEntities()
                             .filter(entity1 -> entity1 instanceof GoldExperienceEntity)
                             .filter(entity1 -> ((GoldExperienceEntity) entity1).getMaster() == player)
                             .forEach(Entity::remove);
                 }
-                props.setStandID(Util.StandID.GER);
-                props.setStandOn(true);
+                stand.setStandID(Util.StandID.GER);
+                stand.setStandOn(true);
                 GoldExperienceRequiemEntity goldExperienceRequiem = new GoldExperienceRequiemEntity(EntityInit.GOLD_EXPERIENCE_REQUIEM.get(), world);
                 goldExperienceRequiem.setLocationAndAngles(player.getPosX() + 0.1, player.getPosY(), player.getPosZ(), player.rotationYaw, player.rotationPitch);
                 goldExperienceRequiem.setMasterUUID(player.getUniqueID());
                 goldExperienceRequiem.setMaster(player);
                 world.addEntity(goldExperienceRequiem);
+            } else if (stand.getStandID() == Util.StandID.KILLER_QUEEN && stand.getAbilitiesUnlocked() == 1 && this.standID == 0) {
+                stand.addAbilityUnlocked(1);
+                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Killer Queen\u00A7f has obtained\u00A7e Bites the Dust!"), true);
             }
         });
     }
@@ -82,12 +85,12 @@ public class StandArrowItem extends ArrowItem {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        Stand props = Stand.getCapabilityFromPlayer(playerIn);
+        Stand stand = Stand.getCapabilityFromPlayer(playerIn);
         if (!Stand.getLazyOptional(playerIn).isPresent()) return ActionResult.resultFail(stack);
-        if (props.getStandID() == 0 || props.getStandID() == Util.StandID.GOLD_EXPERIENCE) {
+        if (stand.getStandID() == 0 || stand.getStandID() == Util.StandID.GOLD_EXPERIENCE || (stand.getStandID() == Util.StandID.KILLER_QUEEN && stand.getAbilitiesUnlocked() == 1)) {
             playerIn.setActiveHand(handIn);
             return ActionResult.resultSuccess(stack);
-        } else if (props.getStandID() != 0 && props.getStandID() != Util.StandID.GOLD_EXPERIENCE) {
+        } else if (stand.getStandID() != 0 && stand.getStandID() != Util.StandID.GOLD_EXPERIENCE && (stand.getStandID() != Util.StandID.KILLER_QUEEN && stand.getAbilitiesUnlocked() != 1)) {
             playerIn.sendMessage(new StringTextComponent("You already have a Stand!"));
             return ActionResult.resultFail(stack);
         }

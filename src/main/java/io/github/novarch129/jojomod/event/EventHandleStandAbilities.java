@@ -4,14 +4,17 @@ import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.*;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
+import io.github.novarch129.jojomod.entity.stand.MadeInHeavenEntity;
 import io.github.novarch129.jojomod.entity.stand.StarPlatinumEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import io.github.novarch129.jojomod.event.custom.StandEvent;
 import io.github.novarch129.jojomod.init.EffectInit;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.ItemInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
+import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,9 +23,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
+import net.minecraft.item.EnchantedGoldenAppleItem;
 import net.minecraft.item.HoneyBottleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particles.ParticleTypes;
@@ -42,25 +47,18 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
-import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("ConstantConditions")
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -257,6 +255,24 @@ public class EventHandleStandAbilities {
             if (standID == Util.StandID.GER)
                 player.clearActivePotions();
 
+            if (!player.world.isRemote && standID == Util.StandID.CMOON && stand.getAbilitiesUnlocked() == 3) {
+                if ((int) player.getPosX() == 28 && (int) player.getPosZ() == 80 && player.world.canSeeSky(player.getPosition())) {
+                    stand.removeStand();
+                    stand.setStandID(Util.StandID.MADE_IN_HEAVEN);
+                    stand.setStandOn(true);
+                    MadeInHeavenEntity madeInHeaven = new MadeInHeavenEntity(EntityInit.MADE_IN_HEAVEN.get(), player.world);
+                    if (Collections.frequency(player.getServer().getWorld(player.dimension).getEntities().collect(Collectors.toList()), madeInHeaven) > 0)
+                        return;
+                    Vec3d position = player.getLookVec().mul(0.5, 1, 0.5).add(player.getPositionVec()).add(0, 0.5, 0);
+                    madeInHeaven.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), player.rotationYaw, player.rotationPitch);
+                    madeInHeaven.setMaster(player);
+                    madeInHeaven.setMasterUUID(player.getUniqueID());
+                    JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> player), new SSyncStandMasterPacket(madeInHeaven.getEntityId(), player.getEntityId()));
+                    player.world.addEntity(madeInHeaven);
+                    player.sendStatusMessage(new StringTextComponent("Made in Heaven! 4/4"), true);
+                }
+            }
+
             if (!standOn) {
                 if (cooldown > 0)
                     stand.setCooldown(stand.getCooldown() - 0.5);
@@ -285,60 +301,56 @@ public class EventHandleStandAbilities {
         Stand.getLazyOptional(player).ifPresent(stand -> {
             if (Util.StandID.EVOLUTION_STANDS.contains(stand.getStandID())) {
                 stand.addExperiencePoints(event.getAmount());
-                switch (stand.getExperiencePoints()) {
-                    default:
-                        break;
-                    case 1000: {
-                        switch (stand.getStandID()) {
-                            default:
-                                break;
-                            case Util.StandID.ECHOES_ACT_1: {
-                                stand.removeStand();
-                                stand.setStandID(Util.StandID.ECHOES_ACT_2);
-                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 2!"), true);
-                                break;
-                            }
-                            case Util.StandID.TUSK_ACT_1: {
-                                stand.removeStand();
-                                stand.setStandID(Util.StandID.TUSK_ACT_2);
-                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 2!"), true);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    case 3000: {
-                        switch (stand.getStandID()) {
-                            default:
-                                break;
-                            case Util.StandID.WHITESNAKE: {
-                                stand.removeStand();
-                                stand.setStandID(Util.StandID.CMOON);
-                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Whitesnake\u00A7f has evolved into\u00A7e C-Moon!"), true);
-                                break;
-                            }
-                            case Util.StandID.ECHOES_ACT_2: {
-                                stand.removeStand();
-                                stand.setStandID(Util.StandID.ECHOES_ACT_3);
-                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 3!"), true);
-                                break;
-                            }
-                            case Util.StandID.TUSK_ACT_2: {
-                                stand.removeStand();
-                                stand.setStandID(Util.StandID.TUSK_ACT_3);
-                                player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 3!"), true);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                    case 5000: {
-                        if (stand.getStandID() == Util.StandID.TUSK_ACT_3) {
+                if (stand.getExperiencePoints() >= 1000 && stand.getExperiencePoints() < 3000 && stand.getPrevExperiencePoints() < 1000) {
+                    switch (stand.getStandID()) {
+                        default:
+                            break;
+                        case Util.StandID.ECHOES_ACT_1: {
                             stand.removeStand();
-                            stand.setStandID(Util.StandID.TUSK_ACT_4);
-                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 4!"), true);
+                            stand.setStandID(Util.StandID.ECHOES_ACT_2);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 2!"), true);
+                            break;
                         }
-                        break;
+                        case Util.StandID.TUSK_ACT_1: {
+                            stand.removeStand();
+                            stand.setStandID(Util.StandID.TUSK_ACT_2);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 2!"), true);
+                            break;
+                        }
+                    }
+                } else if (stand.getExperiencePoints() >= 3000 && stand.getExperiencePoints() < 8000 && stand.getPrevExperiencePoints() < 3000) {
+                    switch (stand.getStandID()) {
+                        default:
+                            break;
+                        case Util.StandID.WHITESNAKE: {
+                            stand.removeStand();
+                            stand.setStandID(Util.StandID.CMOON);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Whitesnake\u00A7f has evolved into\u00A7e C-Moon!"), true);
+                            break;
+                        }
+                        case Util.StandID.ECHOES_ACT_2: {
+                            stand.removeStand();
+                            stand.setStandID(Util.StandID.ECHOES_ACT_3);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Echoes\u00A7f has evolved to\u00A7e Act 3!"), true);
+                            break;
+                        }
+                        case Util.StandID.TUSK_ACT_2: {
+                            stand.removeStand();
+                            stand.setStandID(Util.StandID.TUSK_ACT_3);
+                            player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 3!"), true);
+                            break;
+                        }
+                    }
+                } else if (stand.getExperiencePoints() >= 8000 && stand.getExperiencePoints() < 25000 && stand.getPrevExperiencePoints() < 8000) {
+                    if (stand.getStandID() == Util.StandID.TUSK_ACT_3) {
+                        stand.removeStand();
+                        stand.setStandID(Util.StandID.TUSK_ACT_4);
+                        player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 4!"), true);
+                    }
+                } else if (stand.getExperiencePoints() >= 25000 && stand.getPrevExperiencePoints() < 25000) {
+                    if (stand.getStandID() == Util.StandID.KILLER_QUEEN) {
+                        stand.addAbilityUnlocked(1);
+                        player.sendStatusMessage(new StringTextComponent("Your\u00A7e Killer Queen\u00A7f can now obtain\u00A7e Bites the Dust!"), true);
                     }
                 }
             }
@@ -381,6 +393,43 @@ public class EventHandleStandAbilities {
             StandEffects.getLazyOptional(player).ifPresent(standEffects -> {
                 if (standEffects.getBitesTheDustPos() != BlockPos.ZERO)
                     standEffects.putAlteredTileEntity(chunk.getPos(), event.getPos());
+            });
+    }
+
+    @SubscribeEvent
+    public static void itemCrafted(PlayerEvent.ItemCraftedEvent event) {
+        PlayerEntity player = event.getPlayer();
+        Stand.getLazyOptional(player).ifPresent(stand -> {
+            if (stand.getStandID() == Util.StandID.CMOON && stand.getAbilitiesUnlocked() == 0 && event.getCrafting().getItem() == ItemInit.SUMMON_THE_WORLD.get()) {
+                stand.addAbilityUnlocked(1);
+                player.sendStatusMessage(new StringTextComponent("A bit closer to Heaven... 1/4"), true);
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void livingDeath(LivingDeathEvent event) {
+        if (event.getSource() != null && event.getSource().getTrueSource() instanceof PlayerEntity && (event.getEntityLiving() instanceof EnderDragonEntity || (event.getEntityLiving() instanceof PlayerEntity && Stand.getCapabilityFromPlayer((PlayerEntity) event.getEntityLiving()).getStandID() != 0))) {
+            PlayerEntity player = (PlayerEntity) event.getSource().getTrueSource();
+            Stand.getLazyOptional(player).ifPresent(stand -> {
+                if (stand.getStandID() == Util.StandID.CMOON && stand.getAbilitiesUnlocked() == 1) {
+                    stand.addAbilityUnlocked(1);
+                    player.sendStatusMessage(new StringTextComponent("A bit closer to Heaven... 2/4"), true);
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void destroyItem(LivingEntityUseItemEvent.Finish event) {
+        if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+        if (event.getItem().getItem() instanceof EnchantedGoldenAppleItem)
+            Stand.getLazyOptional(player).ifPresent(stand -> {
+                if (stand.getStandID() == Util.StandID.CMOON && stand.getAbilitiesUnlocked() == 2) {
+                    stand.addAbilityUnlocked(1);
+                    player.sendStatusMessage(new StringTextComponent("A bit closer to Heaven... 3/4"), true);
+                }
             });
     }
 

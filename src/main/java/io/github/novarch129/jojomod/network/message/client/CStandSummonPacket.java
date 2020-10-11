@@ -34,23 +34,23 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                 ServerPlayerEntity sender = ctx.get().getSender();
                 if (sender == null || sender.isSpectator()) return;
                 if (!sender.world.isRemote) {
-                    Stand.getLazyOptional(sender).ifPresent(props -> {
-                        props.setStandOn(!props.getStandOn());
-                        if (props.getStandOn()) {
-                            if (props.getStandID() != 0 && !Util.StandID.ITEM_STANDS.contains(props.getStandID())) {
-                                AbstractStandEntity stand = Util.StandID.getStandByID(props.getStandID(), sender.world);
-                                if (Collections.frequency(sender.getServerWorld().getEntities().collect(Collectors.toList()), stand) > 0)
+                    Stand.getLazyOptional(sender).ifPresent(stand -> {
+                        stand.setStandOn(!stand.getStandOn());
+                        if (stand.getStandOn()) {
+                            if (stand.getStandID() != 0 && !Util.StandID.ITEM_STANDS.contains(stand.getStandID())) {
+                                AbstractStandEntity standEntity = Util.StandID.getStandByID(stand.getStandID(), sender.world);
+                                if (Collections.frequency(sender.getServerWorld().getEntities().collect(Collectors.toList()), standEntity) > 0)
                                     return;
                                 Vec3d position = sender.getLookVec().mul(0.5, 1, 0.5).add(sender.getPositionVec()).add(0, 0.5, 0);
-                                stand.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
-                                stand.setMaster(sender);
-                                stand.setMasterUUID(sender.getUniqueID());
-                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(stand.getEntityId(), sender.getEntityId()));
-                                sender.world.addEntity(stand);
-                            } else if (Util.StandID.ITEM_STANDS.contains(props.getStandID()))
+                                standEntity.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
+                                standEntity.setMaster(sender);
+                                standEntity.setMasterUUID(sender.getUniqueID());
+                                JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(standEntity.getEntityId(), sender.getEntityId()));
+                                sender.world.addEntity(standEntity);
+                            } else if (Util.StandID.ITEM_STANDS.contains(stand.getStandID()))
                                 Util.StandID.summonItemStand(sender);
                         } else
-                            props.setAct(0);
+                            stand.setAct(0);
                     });
                 }
             });
