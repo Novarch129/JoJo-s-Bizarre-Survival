@@ -21,8 +21,3 @@
 <p><span style="font-size: 18px;">FAQ:&nbsp;</span></p>
 <p><span style="font-size: 18px;">My game crashes with&nbsp;Error: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException</span></p>
 <p><span style="font-size: 14px;">- The mod is created for Forge versions <strong>31.2.36</strong> and over, running versions under that will crash the game. </span><span style="font-size: 14px;">TLDR; <strong>Use 1.15.2 Forge Latest, not Recommended</strong>.</span></p>
-<p>&nbsp;<img src="https://raw.githubusercontent.com/Novarch129/JoJo-s-Bizarre-Survival/1.15.x/images/screenshots/2020-10-12_19.40.53.png" alt="" width="1688" height="949" /></p>
-<p>A picture of me with Sticky Fingers! ^^^</p>
-<p><img src="https://raw.githubusercontent.com/Novarch129/JoJo-s-Bizarre-Survival/1.15.x/images/screenshots/2020-10-12_19.43.47.png" alt="" width="1165" height="655" />The World stopping time! ^^^</p>
-<p><img src="https://raw.githubusercontent.com/Novarch129/JoJo-s-Bizarre-Survival/1.15.x/images/screenshots/2020-10-12_19.45.35.png" alt="" width="1688" height="949" />King Crimson creating an afterimage! ^^^</p>
-<p>&nbsp;</p>
