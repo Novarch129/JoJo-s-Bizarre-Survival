@@ -33,7 +33,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
     @CapabilityInject(StandEffects.class)
     public static final Capability<StandEffects> STAND_EFFECTS = Null();
     private final Entity entity;
-    private boolean crimson;
     private boolean aging;
     private Vec3d motion = Vec3d.ZERO;
     private boolean bomb;
@@ -66,7 +65,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
             @Override
             public INBT writeNBT(Capability<StandEffects> capability, StandEffects instance, Direction side) {
                 CompoundNBT nbt = new CompoundNBT();
-                nbt.putBoolean("crimson", instance.crimson);
                 nbt.putBoolean("aging", instance.aging);
                 nbt.putDouble("motionX", instance.motion.getX());
                 nbt.putDouble("motionY", instance.motion.getY());
@@ -123,7 +121,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
             @Override
             public void readNBT(Capability<StandEffects> capability, StandEffects instance, Direction side, INBT nbt) {
                 CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                instance.crimson = compoundNBT.getBoolean("crimson");
                 instance.aging = compoundNBT.getBoolean("aging");
                 instance.motion = new Vec3d(compoundNBT.getDouble("motionX"), compoundNBT.getDouble("motionY"), compoundNBT.getDouble("motionZ"));
                 instance.bomb = compoundNBT.getBoolean("bomb");
@@ -203,15 +200,6 @@ public class StandEffects implements ICapabilitySerializable<INBT> {
 
     public void setMotion(Vec3d motion) {
         this.motion = motion;
-        onDataUpdated();
-    }
-
-    public boolean isCrimson() {
-        return crimson;
-    }
-
-    public void setCrimson(boolean crimson) {
-        this.crimson = crimson;
         onDataUpdated();
     }
 

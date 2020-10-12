@@ -23,6 +23,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -45,7 +46,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
     public void detonate() {
         if (getMaster() == null) return;
         Stand stand = Stand.getCapabilityFromPlayer(master);
-        if (master.isCrouching() && !world.isRemote && stand.getAbilitiesUnlocked() > 1) {
+        if (stand.getCooldown() == 0 && master.isCrouching() && !world.isRemote && stand.getAbilitiesUnlocked() > 1 && master.dimension == DimensionType.OVERWORLD) {
             if (master.isCrouching() && stand.getGameTime() == -1) {
                 stand.setGameTime(world.getGameTime());
                 stand.setDayTime(world.getDayTime());
@@ -281,6 +282,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                         }
                     });
                 });
+                stand.setCooldown(36000);
             }
             return;
         }
@@ -481,6 +483,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                         }
                                     });
                                 });
+                                stand.setCooldown(36000);
                             }
                         } else if (bombEntity instanceof PlayerEntity) {
                             Stand.getLazyOptional((PlayerEntity) bombEntity).ifPresent(bombProps -> {
@@ -488,7 +491,7 @@ public class KillerQueenEntity extends AbstractStandEntity {
                                     Explosion explosion = new Explosion(bombEntity.world, master, bombEntity.getPosX(), bombEntity.getPosY(), bombEntity.getPosZ(), 4, true, Explosion.Mode.NONE);
                                     ((PlayerEntity) bombEntity).spawnSweepParticles();
                                     explosion.doExplosionB(true);
-                                    bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 4.5f * bombEntity.getArmorCoverPercentage());
+                                    bombEntity.attackEntityFrom(DamageSource.FIREWORKS, 15);
                                 } else {
                                     Explosion explosion = new Explosion(master.world, master, master.getPosX(), master.getPosY(), master.getPosZ(), 4, true, Explosion.Mode.NONE);
                                     if (master.world.isRemote) {
@@ -585,6 +588,12 @@ public class KillerQueenEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(stand -> stand.setAbility(false));
+
+            if (master.isCrouching())
+                StandEffects.getLazyOptional(master).ifPresent(standEffects -> {
+                    standEffects.setTimeOfDeath(world.getGameTime() + 100);
+                    standEffects.setStandUser(master.getUniqueID());
+                });
 
             followMaster();
             setRotationYawHead(master.rotationYawHead);

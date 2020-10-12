@@ -4,13 +4,11 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandChunkEffects;
-import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
-import io.github.novarch129.jojomod.entity.stand.KingCrimsonEntity;
 import io.github.novarch129.jojomod.entity.stand.StickyFingersEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
@@ -176,32 +174,6 @@ public class EventClientTick {
                         Minecraft.getInstance().getRenderManager().getPackedLight(player, partialTicks)
                 );
                 matrixStack.pop();
-            }
-            if (props.getStandID() == Util.StandID.KING_CRIMSON && props.getStandOn() && props.getAbility() && props.getAbilityActive()) {
-                StreamSupport.stream(world.getAllEntities().spliterator(), false)
-                        .filter(entity -> !entity.equals(player))
-                        .filter(entity -> !(entity instanceof KingCrimsonEntity))
-                        .filter(entity -> entity instanceof LivingEntity)
-                        .filter(entity -> StandEffects.getCapabilityFromEntity(entity).isCrimson())
-                        .forEach(entity -> {
-                            double posX = MathHelper.lerp(partialTicks, entity.lastTickPosX, entity.getPosX());
-                            double posY = MathHelper.lerp(partialTicks, entity.lastTickPosY, entity.getPosY());
-                            double posZ = MathHelper.lerp(partialTicks, entity.lastTickPosZ, entity.getPosZ());
-                            float yaw = MathHelper.lerp(partialTicks, entity.prevRotationYaw, entity.rotationYaw);
-                            matrixStack.push();
-                            Minecraft.getInstance().getRenderManager().renderEntityStatic(
-                                    entity,
-                                    posX - projectedView.getX(),
-                                    posY - projectedView.getY(),
-                                    posZ - projectedView.getZ(),
-                                    yaw,
-                                    partialTicks,
-                                    matrixStack,
-                                    Minecraft.getInstance().getRenderTypeBuffers().getBufferSource(),
-                                    Minecraft.getInstance().getRenderManager().getPackedLight(entity, partialTicks)
-                            );
-                            matrixStack.pop();
-                        });
             }
             if (event.getPhase() != EventPriority.NORMAL || player == null) return;
             //Code below is *very* experimental, not final in any way.

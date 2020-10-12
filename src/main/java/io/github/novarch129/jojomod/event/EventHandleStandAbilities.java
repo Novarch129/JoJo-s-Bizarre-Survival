@@ -226,6 +226,7 @@ public class EventHandleStandAbilities {
                         }
                     });
                 });
+                stand.setCooldown(36000);
             }
 
             if (invulnerableTicks > 0) {
@@ -416,6 +417,12 @@ public class EventHandleStandAbilities {
                     stand.addAbilityUnlocked(1);
                     player.sendStatusMessage(new StringTextComponent("A bit closer to Heaven... 2/4"), true);
                 }
+            });
+        } else if (event.getEntityLiving() != null && event.getSource().getTrueSource() instanceof LivingEntity && event.getEntityLiving() instanceof PlayerEntity) {
+            LivingEntity livingEntity = (LivingEntity) event.getSource().getTrueSource();
+            StandEffects.getLazyOptional(livingEntity).ifPresent(standEffects -> {
+                if (standEffects.getTimeOfDeath() != -1 && event.getEntityLiving().getUniqueID().equals(standEffects.getStandUser()))
+                    standEffects.setTimeOfDeath(-1);
             });
         }
     }
@@ -1187,12 +1194,23 @@ public class EventHandleStandAbilities {
                 if (entity.world.rand.nextInt(6) == 1)
                     entity.attackEntityFrom(DamageSource.IN_FIRE, 2);
             }
-            if (entity instanceof MobEntity && props.getTimeOfDeath() != -1 && props.getTimeOfDeath() <= entity.world.getGameTime()) {
-                Explosion explosion = new Explosion(entity.world, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 4, true, Explosion.Mode.NONE);
-                ((MobEntity) entity).spawnExplosionParticle();
-                explosion.doExplosionB(true);
-                entity.world.playSound(null, entity.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
-                entity.remove();
+            if (props.getStandUser() != null && entity.world.getPlayerByUuid(props.getStandUser()) != null && entity.world.getPlayerByUuid(props.getStandUser()).isAlive() && props.getTimeOfDeath() != -1 && props.getTimeOfDeath() <= entity.world.getGameTime()) {
+                if (entity instanceof MobEntity) {
+                    Explosion explosion = new Explosion(entity.world, entity.world.getPlayerByUuid(props.getStandUser()), entity.getPosX(), entity.getPosY(), entity.getPosZ(), 4, true, Explosion.Mode.NONE);
+                    ((MobEntity) entity).spawnExplosionParticle();
+                    explosion.doExplosionB(true);
+                    entity.world.playSound(null, entity.getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 1, 1);
+                    entity.remove();
+                } else if (entity instanceof PlayerEntity) {
+                    Stand.getLazyOptional((PlayerEntity) entity).ifPresent(bombProps -> {
+                        if (bombProps.getStandID() != Util.StandID.GER) {
+                            Explosion explosion = new Explosion(entity.world, null, entity.getPosX(), entity.getPosY(), entity.getPosZ(), 4, true, Explosion.Mode.NONE);
+                            ((PlayerEntity) entity).spawnSweepParticles();
+                            explosion.doExplosionB(true);
+                            entity.attackEntityFrom(DamageSource.FIREWORKS, Float.MAX_VALUE);
+                        }
+                    });
+                }
             }
         });
         StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->

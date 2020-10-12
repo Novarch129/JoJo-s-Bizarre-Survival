@@ -82,10 +82,9 @@ public class SheerHeartAttackEntity extends CreeperEntity {
                         else if (!getAttackTarget().equals(this))
                             remove();
                     }
-
                 }
 
-                if (getAttackTarget() != null && getAttackTarget().equals(masterStand) || getAttackTarget().equals(master))
+                if (getAttackTarget() != null && (getAttackTarget().equals(masterStand) || getAttackTarget().equals(master)))
                     setAttackTarget(this);
 
                 if (getLastDamageSource() != null && getLastDamageSource().getTrueSource() instanceof PlayerEntity)

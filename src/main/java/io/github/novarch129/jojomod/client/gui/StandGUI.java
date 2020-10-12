@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.client.gui;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
@@ -31,20 +32,20 @@ public class StandGUI extends AbstractGui {
 
     public void render() {
         assert mc.player != null;
-        Stand.getLazyOptional(mc.player).ifPresent(props -> {
-            int standID = props.getStandID();
-            int act = props.getAct();
-            int timeLeft = (int) props.getTimeLeft();
-            int cooldown = (int) props.getCooldown();
-            int transformed = props.getTransformed();
-            double invulnerableTicks = props.getInvulnerableTicks();
-            boolean charging = props.isCharging();
-            float damage = props.getStandDamage();
-            int abilityUseCount = props.getAbilityUseCount();
-            if (props.getStandOn()) {
+        Stand.getLazyOptional(mc.player).ifPresent(stand -> {
+            int standID = stand.getStandID();
+            int act = stand.getAct();
+            int timeLeft = (int) stand.getTimeLeft();
+            int cooldown = (int) stand.getCooldown();
+            int transformed = stand.getTransformed();
+            double invulnerableTicks = stand.getInvulnerableTicks();
+            boolean charging = stand.isCharging();
+            float damage = stand.getStandDamage();
+            int abilityUseCount = stand.getAbilityUseCount();
+            if (stand.getStandOn()) {
                 switch (standID) {
                     case Util.StandID.MADE_IN_HEAVEN: {
-                        if (props.getAct() == 0) {
+                        if (stand.getAct() == 0) {
                             if (timeLeft > -1400)
                                 renderTimeValue(timeLeft + 1400);
                             else
@@ -91,8 +92,8 @@ public class StandGUI extends AbstractGui {
                     case Util.StandID.TUSK_ACT_3: {
                         renderString("Nails left: " + (10 - abilityUseCount));
                         if (charging && damage > 7 && cooldown == 0)
-                            renderString("Damage: " + damage + (damage == (act == 2 ? 15 : 26) ? " MAX DAMAGE" : ""), 4, act == 1 && props.getAbilityActive() ? 32 : 16);
-                        if (props.getAbilityActive() && act == 0 && cooldown == 0)
+                            renderString("Damage: " + damage + (damage == (act == 2 ? 15 : 26) ? " MAX DAMAGE" : ""), 4, act == 1 && stand.getAbilityActive() ? 32 : 16);
+                        if (stand.getAbilityActive() && act == 0 && cooldown == 0)
                             renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
                         break;
                     }
@@ -118,14 +119,14 @@ public class StandGUI extends AbstractGui {
                                 break;
                         }
                         if (charging && damage > 7 && cooldown == 0)
-                            renderString("Damage: " + damage + (damage == maxDamage ? " MAX DAMAGE" : ""), 4, act == 1 && props.getAbilityActive() ? 32 : 16);
-                        if (props.getAbilityActive() && act == 1 && cooldown == 0)
+                            renderString("Damage: " + damage + (damage == maxDamage ? " MAX DAMAGE" : ""), 4, act == 1 && stand.getAbilityActive() ? 32 : 16);
+                        if (stand.getAbilityActive() && act == 1 && cooldown == 0)
                             renderString((timeLeft - 800) / 20 + " seconds left.", 4, 16);
                         break;
                     }
                     case Util.StandID.ECHOES_ACT_3:
                     case Util.StandID.ECHOES_ACT_2: {
-                        if (act == props.getAct() - 2)
+                        if (act == stand.getAct() - 2)
                             renderString("Sound effects left: " + (4 - abilityUseCount), 4, cooldown > 0 ? 16 : 4);
                         break;
                     }
@@ -144,9 +145,9 @@ public class StandGUI extends AbstractGui {
                 }
                 case Util.StandID.MADE_IN_HEAVEN: {
                     if (cooldown > 0)
-                        renderString("Cooldown: " + cooldown / 20, 4, (props.getStandOn() && act == 0 ? 16 : 4));
+                        renderString("Cooldown: " + cooldown / 20, 4, (stand.getStandOn() && act == 0 ? 16 : 4));
                     if (invulnerableTicks > 0)
-                        renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20), 4, props.getStandOn() ? 16 : 4);
+                        renderString("Invulnerable ticks: " + (int) (invulnerableTicks / 20), 4, stand.getStandOn() ? 16 : 4);
                     break;
                 }
                 case Util.StandID.GER: {
@@ -168,10 +169,15 @@ public class StandGUI extends AbstractGui {
                 case Util.StandID.TUSK_ACT_2:
                 case Util.StandID.TUSK_ACT_1: {
                     if (cooldown > 0)
-                        renderString("Cooldown: " + cooldown / 20, 4, props.getStandOn() ? 16 : 4);
+                        renderString("Cooldown: " + cooldown / 20, 4, stand.getStandOn() ? 16 : 4);
                     break;
                 }
             }
+        });
+        StandEffects.getLazyOptional(mc.player).ifPresent(standEffects -> {
+            long timeLeft = standEffects.getTimeOfDeath() - mc.player.world.getGameTime();
+            if (timeLeft > 0)
+                renderString("Time until death: " + timeLeft / 20 + " seconds", 4, 350);
         });
     }
 }
