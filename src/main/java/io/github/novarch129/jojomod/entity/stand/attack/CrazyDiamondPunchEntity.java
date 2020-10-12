@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.client.entity.model.CrazyDiamondPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
-import io.github.novarch129.jojomod.entity.stand.CrazyDiamondEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
@@ -48,7 +48,7 @@ public class CrazyDiamondPunchEntity extends AbstractStandAttackEntity {
         if (state.getBlockHardness(world, pos) != -1 && state.getBlockHardness(world, pos) < 3) {
             if (shootingStand.ability) {
                 if (state.getMaterial() != Material.AIR && state.getMaterial() != Material.WATER && state.getMaterial() != Material.LAVA)
-                    ((CrazyDiamondEntity) shootingStand).putRepairBlock(pos, state);
+                    Stand.getLazyOptional(standMaster).ifPresent(stand -> stand.putCrazyDiamondBlock(world.getChunkAt(pos).getPos(), pos, state));
             } else if (world.rand.nextBoolean())
                 state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
             world.removeBlock(pos, false);

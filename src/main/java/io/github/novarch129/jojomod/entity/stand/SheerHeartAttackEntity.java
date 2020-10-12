@@ -23,8 +23,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import java.util.Optional;
-
 /**
  * 99% same as {@link CreeperEntity}, had to add some ATs to extend it.
  */
@@ -50,15 +48,15 @@ public class SheerHeartAttackEntity extends CreeperEntity {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new CreeperSwellGoal(this));
-        this.goalSelector.addGoal(11, new AvoidEntityGoal<>(this, GoldExperienceRequiemEntity.class, 6.0f, 1.0f, 1.2f));
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.0f, false));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, VillagerEntity.class, 8.0f));
-        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, VillagerEntity.class, true));
-        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
+        goalSelector.addGoal(1, new SwimGoal(this));
+        goalSelector.addGoal(2, new CreeperSwellGoal(this));
+        goalSelector.addGoal(11, new AvoidEntityGoal<>(this, GoldExperienceRequiemEntity.class, 6, 1, 1.2f));
+        goalSelector.addGoal(4, new MeleeAttackGoal(this, 1, false));
+        goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8));
+        goalSelector.addGoal(6, new LookAtGoal(this, VillagerEntity.class, 8));
+        goalSelector.addGoal(6, new LookRandomlyGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, VillagerEntity.class, true));
+        targetSelector.addGoal(2, new HurtByTargetGoal(this));
     }
 
     @Override
@@ -84,23 +82,16 @@ public class SheerHeartAttackEntity extends CreeperEntity {
                         else if (!getAttackTarget().equals(this))
                             remove();
                     }
-
                 }
 
-                if (getAttackTarget().equals(masterStand) || getAttackTarget().equals(master))
+                if (getAttackTarget() != null && (getAttackTarget().equals(masterStand) || getAttackTarget().equals(master)))
                     setAttackTarget(this);
 
-                Optional<Entity> damageSource = Optional.empty();
-                if (getLastDamageSource() != null)
-                    damageSource = Optional.ofNullable(getLastDamageSource().getTrueSource());
-
-                damageSource.ifPresent(damageSourceEntity -> {
-                    if (damageSourceEntity instanceof PlayerEntity)
-                        Stand.getLazyOptional((PlayerEntity) damageSourceEntity).ifPresent(props -> {
-                            if (props.getStandID() == Util.StandID.GER)
-                                remove();
-                        });
-                });
+                if (getLastDamageSource() != null && getLastDamageSource().getTrueSource() instanceof PlayerEntity)
+                    Stand.getLazyOptional((PlayerEntity) getLastDamageSource().getTrueSource()).ifPresent(props -> {
+                        if (props.getStandID() == Util.StandID.GER)
+                            remove();
+                    });
             }
         }
     }
@@ -113,7 +104,7 @@ public class SheerHeartAttackEntity extends CreeperEntity {
     @Override
     protected void registerAttributes() {
         super.registerAttributes();
-        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
+        getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25);
     }
 
     /**
@@ -142,7 +133,7 @@ public class SheerHeartAttackEntity extends CreeperEntity {
             CreeperEntity creeperentity = (CreeperEntity) entity;
             if (creeperentity.ableToCauseSkullDrop()) {
                 creeperentity.incrementDroppedSkulls();
-                this.entityDropItem(ItemInit.SUMMON_KILLER_QUEEN.get());
+                entityDropItem(ItemInit.SUMMON_KILLER_QUEEN.get());
             }
         }
 
@@ -166,10 +157,10 @@ public class SheerHeartAttackEntity extends CreeperEntity {
     protected boolean processInteract(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == Items.FLINT_AND_STEEL) {
-            this.world.playSound(player, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, this.getSoundCategory(), 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-            if (!this.world.isRemote) {
+            this.world.playSound(player, getPosX(), getPosY(), getPosZ(), SoundEvents.ITEM_FLINTANDSTEEL_USE, getSoundCategory(), 1, rand.nextFloat() * 0.4f + 0.8f);
+            if (!world.isRemote) {
                 explode();
-                itemstack.damageItem(1, player, (p_213625_1_) -> p_213625_1_.sendBreakAnimation(hand));
+                itemstack.damageItem(1, player, (playerEntity) -> playerEntity.sendBreakAnimation(hand));
             }
             return true;
         } else
@@ -183,8 +174,8 @@ public class SheerHeartAttackEntity extends CreeperEntity {
     public void explode() {
         if (!this.world.isRemote) {
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            float f = isCharged() ? 2.0F : 1.0F;
-            this.world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * f * 3, explosion$mode);
+            float multiplier = isCharged() ? 2 : 1;
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * multiplier * 3, explosion$mode);
         }
 
     }
@@ -195,8 +186,8 @@ public class SheerHeartAttackEntity extends CreeperEntity {
     private void destroy() {
         if (!this.world.isRemote) {
             Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            float f = this.isCharged() ? 2.0F : 1.0F;
-            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * f * 100, explosion$mode);
+            float multiplier = this.isCharged() ? 2 : 1;
+            world.createExplosion(this, getPosX(), getPosY(), getPosZ(), (float) explosionRadius * multiplier * 100, explosion$mode);
             remove();
         }
     }

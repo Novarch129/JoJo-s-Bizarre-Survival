@@ -120,7 +120,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
     /**
      * Used in followMaster() to shorten code, moves the Stand based on it's distance from it's master.
      */
-    private void moveStand() {
+    protected void moveStand() {
         double distanceFromMaster = master.getDistance(this);
         Vec3d distance = getPositionVec().subtract(master.getPositionVec());
         float speed = distanceFromMaster < 0.5 ? -0.1f : (float) distanceFromMaster / 45; //The speed at which the Stand should move towards it's master
@@ -192,7 +192,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
                     master.velocityChanged = true;
                 }
             });
-
             dodgeAttacks();
         }
     }
@@ -246,7 +245,7 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
         super.onRemovedFromWorld();
         MinecraftForge.EVENT_BUS.post(new StandEvent.StandRemovedEvent(master, this));
         if (master != null)
-            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(0)); //Resets the IStand#getPlayerStand for easier null checks.
+            Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(0)); //Resets the Stand#getPlayerStand for easier null checks.
     }
 
     /**

@@ -1,7 +1,6 @@
 package io.github.novarch129.jojomod.network.message.server;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +22,7 @@ public class SSyncStandCapabilityPacket implements IMessage<SSyncStandCapability
         data = compoundNBT;
     }
 
-    public SSyncStandCapabilityPacket(IStand props) {
+    public SSyncStandCapabilityPacket(Stand props) {
         data = Stand.STAND.getStorage().writeNBT(Stand.STAND, props, null);
     }
 

@@ -48,9 +48,9 @@ public class TheHandEntity extends AbstractStandEntity {
         if (getMaster() == null) return; //Probably not necessary, but I'll leave it here anyway.
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() <= 0) {
-                double distance = 5; //The distance the player will teleport, feel free to change this.
+                double distance = 12; //The distance the player will teleport, feel free to change this.
                 Vec3d position = master.getLookVec().mul(distance, distance, distance).add(master.getPositionVec());
-                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getX(), i, position.getZ())).isSolid(); i++)
                     position = position.add(0, 0.5, 0);
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, getPosition(), SoundInit.THE_HAND_TELEPORT.get(), SoundCategory.NEUTRAL, 1, 1);

@@ -1,7 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.ITimestop;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.Timestop;
@@ -319,12 +318,14 @@ public class StarPlatinumEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() == 0) {
-                Vec3d position = master.getLookVec().mul(5, 1, 5).add(master.getPositionVec());
-                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                Vec3d position = master.getLookVec().mul(28.06, 1, 28.06).add(master.getPositionVec());
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getX(), i, position.getZ())).isSolid(); i++)
                     position = position.add(0, 0.5, 0);
+                if (world.getBlockState(new BlockPos(position)).isSolid())
+                    return;
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, master.getPosition(), SoundInit.THE_WORLD_TELEPORT.get(), SoundCategory.HOSTILE, 1, 1);
-                props.setCooldown(80);
+                props.setCooldown(200);
             }
         });
     }
@@ -385,7 +386,7 @@ public class StarPlatinumEntity extends AbstractStandEntity {
                                 .filter(entity -> !(entity instanceof GoldExperienceRequiemEntity))
                                 .forEach(entity -> {
                                     if (entity instanceof PlayerEntity) {
-                                        IStand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
+                                        Stand props = Stand.getCapabilityFromPlayer((PlayerEntity) entity);
                                         if (props.getStandID() == Util.StandID.GER)
                                             return;
                                         if (props.getStandID() == Util.StandID.THE_WORLD && props.getAbility() && props.getStandOn() && props.getCooldown() <= 0)

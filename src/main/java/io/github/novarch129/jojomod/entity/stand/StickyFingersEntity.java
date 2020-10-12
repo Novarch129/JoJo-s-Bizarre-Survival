@@ -77,6 +77,19 @@ public class StickyFingersEntity extends AbstractStandEntity {
         });
     }
 
+    public void zipPunch() {
+        if (getMaster() == null || world.isRemote) return;
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (stand.getCooldown() == 0) {
+                world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
+                StickyFingersPunchEntity stickyFingersPunchEntity = new StickyFingersPunchEntity(world, this, getMaster(), true);
+                stickyFingersPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 5, 0.05f);
+                world.addEntity(stickyFingersPunchEntity);
+                stand.setCooldown(120);
+            }
+        });
+    }
+
     @Override
     public void tick() {
         super.tick();

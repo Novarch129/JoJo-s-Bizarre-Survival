@@ -54,8 +54,8 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
         if (getMaster() == null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() == 0) {
-                Vec3d position = master.getLookVec().mul(22, 1, 22).add(master.getPositionVec());
-                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getZ(), i, position.getZ())).isSolid(); i++)
+                Vec3d position = master.getLookVec().mul(70, 1, 70).add(master.getPositionVec());
+                for (double i = position.getY() - 0.5; world.getBlockState(new BlockPos(position.getX(), i, position.getZ())).isSolid(); i++)
                     position = position.add(0, 0.5, 0);
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, master.getPosition(), SoundEvents.ENTITY_PLAYER_SPLASH_HIGH_SPEED, SoundCategory.HOSTILE, 1, 1);

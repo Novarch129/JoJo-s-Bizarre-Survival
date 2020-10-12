@@ -1,7 +1,9 @@
 package io.github.novarch129.jojomod.init;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
-import io.github.novarch129.jojomod.effect.*;
+import io.github.novarch129.jojomod.effect.AgingEffect;
+import io.github.novarch129.jojomod.effect.HazeEffect;
+import io.github.novarch129.jojomod.effect.OxygenPoisoningEffect;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.potion.Effect;
@@ -12,14 +14,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class EffectInit {
     public static final DeferredRegister<Effect> EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, JojoBizarreSurvival.MOD_ID);
-
-    public static final RegistryObject<Effect> CRIMSON_USER = EFFECTS.register("crimson_effect_user",
-            () -> new CrimsonEffectUser(EffectType.NEUTRAL, 10819625, -4)
-                    .addAttributesModifier(SharedMonsterAttributes.ATTACK_DAMAGE, "63d19b01-3d33-4b4c-bbee-a48eb417cfde", 0, AttributeModifier.Operation.ADDITION));
-
-    public static final RegistryObject<Effect> CRIMSON = EFFECTS.register("crimson_effect",
-            () -> new CrimsonEffect(EffectType.HARMFUL, 10819625)
-                    .addAttributesModifier(SharedMonsterAttributes.MOVEMENT_SPEED, "a55e2313-560e-4881-95a7-0ee8df22fa04", -0.15f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Effect> OXYGEN_POISONING = EFFECTS.register("oxygen_poisoning",
             () -> new OxygenPoisoningEffect(EffectType.HARMFUL, 7009526)

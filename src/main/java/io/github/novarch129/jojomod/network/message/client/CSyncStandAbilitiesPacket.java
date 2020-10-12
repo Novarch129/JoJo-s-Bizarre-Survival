@@ -61,7 +61,12 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof KingCrimsonEntity)
                                             .filter(entity -> ((KingCrimsonEntity) entity).getMaster().equals(sender))
-                                            .forEach(entity -> ((KingCrimsonEntity) entity).epitaph());
+                                            .forEach(entity -> {
+                                                if (message.action == 1)
+                                                    ((KingCrimsonEntity) entity).epitaph();
+                                                else
+                                                    ((KingCrimsonEntity) entity).teleport(8.01714285714);
+                                            });
                                     break;
                                 }
                                 case D4C: {
@@ -159,7 +164,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .forEach(entity -> {
                                                 switch (message.action) {
                                                     case 1: {
-                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 0.5 : 1);
+                                                        ((TheWorldEntity) entity).teleport(StandEffects.getCapabilityFromEntity(sender).isThreeFreeze() ? 2 : 8.01714285714);
                                                         break;
                                                     }
                                                     case 2: {
@@ -240,7 +245,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                             Minecraft.getInstance().getProfiler().endSection();
                                                         }
                                                     }
-                                                } else
+                                                } else if (message.action == 2)
                                                     ((TheHandEntity) entity).teleportMaster();
                                             });
                                     break;
@@ -250,21 +255,33 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> entity instanceof StickyFingersEntity)
                                             .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
-                                                if (message.action == 1) {
-                                                    if (((StickyFingersEntity) entity).disguiseEntity == null) {
-                                                        if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
-                                                            ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
-                                                        if (((StickyFingersEntity) entity).disguiseEntity != null) {
-                                                            Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).disguiseEntity);
-                                                            Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                                                switch (message.action) {
+                                                    default:
+                                                        break;
+                                                    case 1: {
+                                                        if (((StickyFingersEntity) entity).disguiseEntity == null) {
+                                                            if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
+                                                                ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
+                                                            if (((StickyFingersEntity) entity).disguiseEntity != null) {
+                                                                Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).disguiseEntity);
+                                                                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                                                            }
+                                                        } else {
+                                                            Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
+                                                            Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                                                            ((StickyFingersEntity) entity).disguise(-100);
                                                         }
-                                                    } else {
-                                                        Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
-                                                        Minecraft.getInstance().gameSettings.thirdPersonView = 0;
-                                                        ((StickyFingersEntity) entity).disguise(-100);
+                                                        break;
                                                     }
-                                                } else
-                                                    ((StickyFingersEntity) entity).zipThroughWall();
+                                                    case 2: {
+                                                        ((StickyFingersEntity) entity).zipThroughWall();
+                                                        break;
+                                                    }
+                                                    case 3: {
+                                                        ((StickyFingersEntity) entity).zipPunch();
+                                                        break;
+                                                    }
+                                                }
                                             });
                                     break;
                                 }

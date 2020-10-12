@@ -15,11 +15,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class EmperorBulletRenderer extends EntityRenderer<EmperorBulletEntity> {
-    protected EmperorBulletModel bullet;
-
     public EmperorBulletRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn);
-        bullet = new EmperorBulletModel();
     }
 
     @Override
@@ -39,12 +36,12 @@ public class EmperorBulletRenderer extends EntityRenderer<EmperorBulletEntity> {
         matrixStackIn.translate((float) entityIn.getPosX(), (float) entityIn.getPosY(), (float) entityIn.getPosZ());
         matrixStackIn.scale(2, 2, 2);
         matrixStackIn.pop();
-        bullet.render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0, 0, 0, 0, 0);
+        new EmperorBulletModel().render(matrixStackIn, bufferIn.getBuffer(RenderType.getEntitySmoothCutout(getEntityTexture(entityIn))), packedLightIn, 0, 0, 0, 0, 0);
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(final EmperorBulletEntity entity) {
+    public ResourceLocation getEntityTexture(EmperorBulletEntity entity) {
         return Util.ResourceLocations.EMPEROR_BULLET;
     }
 }

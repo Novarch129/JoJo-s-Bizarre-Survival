@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
@@ -22,18 +21,18 @@ public class EmperorItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStack = playerIn.getHeldItem(handIn);
         if (!playerIn.world.isRemote) {
-            IStand props = Stand.getCapabilityFromPlayer(playerIn);
-            if (props.getStandID() != Util.StandID.THE_EMPEROR)
+            Stand stand = Stand.getCapabilityFromPlayer(playerIn);
+            if (stand.getStandID() != Util.StandID.THE_EMPEROR)
                 itemStack.shrink(1);
-            if (props.getCooldown() <= 0) {
+            if (stand.getCooldown() <= 0) {
                 EmperorBulletEntity bullet = new EmperorBulletEntity(playerIn, worldIn);
                 bullet.setSilent(true);
                 bullet.setPositionAndRotation(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), playerIn.rotationYaw, playerIn.rotationPitch);
-                bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 20.0f, Float.MIN_VALUE);
+                bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 1, Float.MIN_VALUE);
                 playerIn.world.addEntity(bullet);
                 if (!playerIn.isCreative() && !playerIn.isSpectator())
                     playerIn.getFoodStats().addStats(2, 0);
-                props.setCooldown(100);
+                stand.setCooldown(100);
                 return ActionResult.resultSuccess(itemStack);
             } else
                 return ActionResult.resultFail(itemStack);
@@ -46,10 +45,6 @@ public class EmperorItem extends Item {
         if (entityIn instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) entityIn).ifPresent(props -> {
                 props.setAbility(false);
-                if (!isSelected) {
-                    props.setStandOn(false);
-                    stack.shrink(1);
-                }
                 if (!props.getStandOn() || props.getStandID() != Util.StandID.THE_EMPEROR)
                     stack.shrink(1);
             });

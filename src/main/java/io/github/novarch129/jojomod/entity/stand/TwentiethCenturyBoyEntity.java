@@ -32,7 +32,7 @@ public class TwentiethCenturyBoyEntity extends AbstractStandEntity {
         super.tick();
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> {
-                props.setAbilityActive(props.getTimeLeft() > 801 && props.getCooldown() <= 0 && props.getAbility());
+                props.setAbilityActive(props.getStandOn() && props.getTimeLeft() > 801 && props.getCooldown() <= 0 && props.getAbility());
                 ability = props.getTimeLeft() > 800 && props.getCooldown() <= 0 && props.getAbility();
                 if (ability) {
                     master.setMotion(0, master.onGround && !world.getBlockState(master.getPosition().down()).isAir(world, master.getPosition().down()) ? 0 : master.getMotion().getY(), 0);

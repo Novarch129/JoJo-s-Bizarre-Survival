@@ -2,7 +2,6 @@ package io.github.novarch129.jojomod.command.impl;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.command.CommandSource;
@@ -83,6 +82,8 @@ public class StandCommand {
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_2)))
                                 .then(Commands.literal("echoes_act_3")
                                         .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.ECHOES_ACT_3)))
+                                .then(Commands.literal("beach_boy")
+                                        .executes(context -> setPlayerStandID(context.getSource(), EntityArgument.getPlayer(context, "target"), Util.StandID.BEACH_BOY)))
                         ))
                 .then(Commands.literal("remove")
                         .then(Commands.argument("target", EntityArgument.player())
@@ -96,7 +97,7 @@ public class StandCommand {
     }
 
     private static int setPlayerStandID(CommandSource source, PlayerEntity target, int standID) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != standID) {
             props.setStandID(standID);
             props.setStandOn(false);
@@ -107,7 +108,7 @@ public class StandCommand {
     }
 
     private static int removePlayerStand(CommandSource source, PlayerEntity target) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand props = Stand.getCapabilityFromPlayer(target);
         if (props.getStandID() != 0) {
             props.removeStand();
             source.sendFeedback(new StringTextComponent("Successfully removed Stand from " + target.getDisplayName().getFormattedText() + "."), true);
@@ -117,9 +118,9 @@ public class StandCommand {
     }
 
     private static int evolvePlayerStand(CommandSource source, PlayerEntity target) {
-        IStand props = Stand.getCapabilityFromPlayer(target);
+        Stand stand = Stand.getCapabilityFromPlayer(target);
         int standID = 0;
-        switch (props.getStandID()) {
+        switch (stand.getStandID()) {
             default: {
                 source.sendErrorMessage(new StringTextComponent(target.getDisplayName().getFormattedText() + "'s Stand cannot be evolved."));
                 break;
@@ -160,12 +161,16 @@ public class StandCommand {
                 standID = Util.StandID.ECHOES_ACT_3;
                 break;
             }
+            case Util.StandID.KILLER_QUEEN: {
+                stand.addAbilityUnlocked(2);
+                break;
+            }
         }
         if (standID != 0) {
-            props.setStandOn(false);
-            props.setStandID(standID);
+            stand.setStandOn(false);
+            stand.setStandID(standID);
             source.sendFeedback(new StringTextComponent("Successfully evolved " + target.getDisplayName().getFormattedText() + "'s Stand."), true);
         }
-        return props.getStandID();
+        return stand.getStandID();
     }
 }

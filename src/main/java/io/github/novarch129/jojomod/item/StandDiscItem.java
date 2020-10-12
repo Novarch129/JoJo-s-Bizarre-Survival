@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.item;
 
-import io.github.novarch129.jojomod.capability.IStand;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.LivingEntity;
@@ -22,7 +21,7 @@ public class StandDiscItem extends Item {
         if (!player.world.isRemote) {
             ItemStack stack = player.getHeldItem(hand);
             CompoundNBT nbt = stack.getTag() == null ? new CompoundNBT() : stack.getTag();
-            IStand props = Stand.getCapabilityFromPlayer(player);
+            Stand props = Stand.getCapabilityFromPlayer(player);
             if (props.getStandID() != 0 && props.getStandID() != Util.StandID.GER && nbt.getInt("StandID") == 0) {
                 nbt.putInt("StandID", props.getStandID());
                 props.removeStand();

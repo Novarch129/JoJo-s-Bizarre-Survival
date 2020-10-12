@@ -21,6 +21,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -36,6 +38,7 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
     private LazyOptional<StandChunkEffects> holder = LazyOptional.of(() -> new StandChunkEffects(getWorld(), getChunk()));
     private Map<UUID, BlockPos> bombs = new ConcurrentHashMap<>();
     private Map<UUID, ArrayBlockingQueue<BlockPos>> soundEffects = new ConcurrentHashMap<>();
+    private List<BlockPos> destroyedPositions = new ArrayList<>();
 
     public StandChunkEffects(World world, ChunkPos chunk) {
         this.world = world;
@@ -81,6 +84,15 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
                     soundList.add(compoundNBT);
                 }));
                 nbt.put("sounds", soundList);
+                ListNBT positionList = new ListNBT();
+                instance.destroyedPositions.forEach(pos -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putDouble("blockPosX", pos.getX());
+                    compoundNBT.putDouble("blockPosY", pos.getY());
+                    compoundNBT.putDouble("blockPosZ", pos.getZ());
+                    positionList.add(compoundNBT);
+                });
+                nbt.put("positions", positionList);
                 return nbt;
             }
 
@@ -100,6 +112,10 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
                         });
                         instance.soundEffects.put(compoundNBT.getUniqueId("standUser"), list);
                     }
+                });
+                compoundNBT.getList("positions", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("blockPosX"))
+                        instance.destroyedPositions.add(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
                 });
             }
         }, () -> new StandChunkEffects(Null(), Null()));
@@ -144,6 +160,20 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
     public void removeSoundEffect(PlayerEntity player, BlockPos pos) {
         soundEffects.get(player.getUniqueID()).remove(pos);
         onDataUpdated();
+    }
+
+    public void addDestroyedPosition(@Nonnull BlockPos pos) {
+        destroyedPositions.add(pos);
+        onDataUpdated();
+    }
+
+    public void removeDestroyedPosition(@Nonnull BlockPos pos) {
+        destroyedPositions.remove(pos);
+        onDataUpdated();
+    }
+
+    public List<BlockPos> getDestroyedPositions() {
+        return destroyedPositions;
     }
 
     private void onDataUpdated() {
