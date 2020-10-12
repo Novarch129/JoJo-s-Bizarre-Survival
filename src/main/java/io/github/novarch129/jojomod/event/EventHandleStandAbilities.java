@@ -348,10 +348,15 @@ public class EventHandleStandAbilities {
                         stand.setStandID(Util.StandID.TUSK_ACT_4);
                         player.sendStatusMessage(new StringTextComponent("Your\u00A7e Tusk\u00A7f has evolved to\u00A7e Act 4!"), true);
                     }
-                } else if (stand.getExperiencePoints() >= 25000 && stand.getPrevExperiencePoints() < 25000) {
+                } else if (stand.getExperiencePoints() >= 25000 && stand.getPrevExperiencePoints() < 25000 && stand.getExperiencePoints() < 1000000) {
                     if (stand.getStandID() == Util.StandID.KILLER_QUEEN) {
                         stand.addAbilityUnlocked(1);
                         player.sendStatusMessage(new StringTextComponent("Your\u00A7e Killer Queen\u00A7f can now obtain\u00A7e Bites the Dust!"), true);
+                    }
+                } else if (stand.getExperiencePoints() >= 1000000 && stand.getPrevExperiencePoints() < 1000000) {
+                    if (stand.getStandID() == Util.StandID.GOLD_EXPERIENCE) {
+                        stand.addAbilityUnlocked(1);
+                        player.sendStatusMessage(new StringTextComponent("Your\u00A7e Gold Experience\u00A7f can now\u00A7e evolve!"), true);
                     }
                 }
             }

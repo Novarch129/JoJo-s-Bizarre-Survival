@@ -589,12 +589,6 @@ public class KillerQueenEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(stand -> stand.setAbility(false));
 
-            if (master.isCrouching())
-                StandEffects.getLazyOptional(master).ifPresent(standEffects -> {
-                    standEffects.setTimeOfDeath(world.getGameTime() + 100);
-                    standEffects.setStandUser(master.getUniqueID());
-                });
-
             followMaster();
             setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);

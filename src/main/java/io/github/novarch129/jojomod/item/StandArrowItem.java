@@ -60,7 +60,7 @@ public class StandArrowItem extends ArrowItem {
                     standEntity.setMaster(player);
                     world.addEntity(standEntity);
                 }
-            } else if (stand.getStandID() == Util.StandID.GOLD_EXPERIENCE && this.standID == 0) {
+            } else if (stand.getStandID() == Util.StandID.GOLD_EXPERIENCE && stand.getAbilitiesUnlocked() == 1 && this.standID == 0) {
                 stand.removeStand();
                 if (!world.isRemote) {
                     Objects.requireNonNull(world.getServer()).getWorld(player.dimension).getEntities()
@@ -87,10 +87,10 @@ public class StandArrowItem extends ArrowItem {
         ItemStack stack = playerIn.getHeldItem(handIn);
         Stand stand = Stand.getCapabilityFromPlayer(playerIn);
         if (!Stand.getLazyOptional(playerIn).isPresent()) return ActionResult.resultFail(stack);
-        if (stand.getStandID() == 0 || stand.getStandID() == Util.StandID.GOLD_EXPERIENCE || (stand.getStandID() == Util.StandID.KILLER_QUEEN && stand.getAbilitiesUnlocked() == 1)) {
+        if (stand.getStandID() == 0 || ((stand.getStandID() == Util.StandID.GOLD_EXPERIENCE || stand.getStandID() == Util.StandID.KILLER_QUEEN) && stand.getAbilitiesUnlocked() == 1)) {
             playerIn.setActiveHand(handIn);
             return ActionResult.resultSuccess(stack);
-        } else if (stand.getStandID() != 0 && stand.getStandID() != Util.StandID.GOLD_EXPERIENCE && (stand.getStandID() != Util.StandID.KILLER_QUEEN && stand.getAbilitiesUnlocked() != 1)) {
+        } else if (stand.getStandID() != 0 && ((stand.getStandID() != Util.StandID.GOLD_EXPERIENCE || stand.getStandID() != Util.StandID.KILLER_QUEEN) && stand.getAbilitiesUnlocked() != 1)) {
             playerIn.sendMessage(new StringTextComponent("You already have a Stand!"));
             return ActionResult.resultFail(stack);
         }

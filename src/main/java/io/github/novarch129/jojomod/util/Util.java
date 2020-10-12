@@ -366,7 +366,8 @@ public class Util {
                 TUSK_ACT_3,
                 ECHOES_ACT_1,
                 ECHOES_ACT_2,
-                KILLER_QUEEN
+                KILLER_QUEEN,
+                GOLD_EXPERIENCE
         );
 
         /**
