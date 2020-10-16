@@ -1,12 +1,10 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.HierophantGreenTailModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -60,12 +58,7 @@ public class HierophantGreenTailEntity extends AbstractStandAttackEntity {
     }
 
     @Override
-    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return Util.cast(new HierophantGreenTailModel());
-    }
-
-    @Override
     protected int getRange() {
-        return 4; //Default value is 2, tail has much more range.
+        return 4;
     }
 }

@@ -11,7 +11,7 @@ public class PurpleHazePunchModel extends AbstractStandAttackModel<PurpleHazePun
         textureHeight = 32;
 
         Punch = new ModelRenderer(this);
-        Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Punch.setRotationPoint(0.0F, 4.0F, 0.0F);
         Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
 
         ModelRenderer elbowPad = new ModelRenderer(this);

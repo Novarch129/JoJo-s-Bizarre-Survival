@@ -74,9 +74,9 @@ public class KingCrimsonEntity extends AbstractStandEntity implements IChargeabl
 
     public void epitaph() {
         if (getMaster() == null) return;
-        Stand.getLazyOptional(master).ifPresent(props -> {
-            if (props.getCooldown() == 0) {
-                props.setInvulnerableTicks(100);
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (stand.getCooldown() == 0 && stand.getInvulnerableTicks() == 0) {
+                stand.setInvulnerableTicks(100);
                 master.addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 0));
             }
         });

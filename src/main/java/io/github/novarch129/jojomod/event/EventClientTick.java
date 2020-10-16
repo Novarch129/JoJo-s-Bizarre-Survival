@@ -11,6 +11,7 @@ import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.entity.stand.StickyFingersEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
+import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Blocks;
@@ -25,10 +26,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -86,6 +89,141 @@ public class EventClientTick {
             if (((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISONING.get()))
                 event.setCanceled(true);
         event.setDensity(5);
+    }
+
+    @SubscribeEvent //This one still bugs me to this day, can't think of a way to automate it.
+    public static void tooltipEvent(ItemTooltipEvent event) {
+        if (!(event.getItemStack().getItem() instanceof StandDiscItem)) return;
+        String standName = "";
+        if (event.getItemStack().getTag() != null)
+            switch (event.getItemStack().getTag().getInt("StandID")) {
+                case Util.StandID.KING_CRIMSON: {
+                    standName = "King Crimson";
+                    break;
+                }
+                case Util.StandID.D4C: {
+                    standName = "D4C";
+                    break;
+                }
+                case Util.StandID.GOLD_EXPERIENCE: {
+                    standName = "Gold Experience";
+                    break;
+                }
+                case Util.StandID.MADE_IN_HEAVEN: {
+                    standName = "Made in Heaven";
+                    break;
+                }
+                case Util.StandID.GER: {
+                    standName = "Gold Experience Requiem";
+                    break;
+                }
+                case Util.StandID.AEROSMITH: {
+                    standName = "Aerosmith";
+                    break;
+                }
+                case Util.StandID.WEATHER_REPORT: {
+                    standName = "Weather Report";
+                    break;
+                }
+                case Util.StandID.KILLER_QUEEN: {
+                    standName = "Killer Queen";
+                    break;
+                }
+                case Util.StandID.CRAZY_DIAMOND: {
+                    standName = "Crazy Diamond";
+                    break;
+                }
+                case Util.StandID.PURPLE_HAZE: {
+                    standName = "Purple Haze";
+                    break;
+                }
+                case Util.StandID.THE_EMPEROR: {
+                    standName = "The Emperor";
+                    break;
+                }
+                case Util.StandID.WHITESNAKE: {
+                    standName = "Whitesnake";
+                    break;
+                }
+                case Util.StandID.CMOON: {
+                    standName = "C-Moon";
+                    break;
+                }
+                case Util.StandID.THE_WORLD: {
+                    standName = "The World";
+                    break;
+                }
+                case Util.StandID.STAR_PLATINUM: {
+                    standName = "Star Platinum";
+                    break;
+                }
+                case Util.StandID.SILVER_CHARIOT: {
+                    standName = "Silver Chariot";
+                    break;
+                }
+                case Util.StandID.MAGICIANS_RED: {
+                    standName = "Magician's Red";
+                    break;
+                }
+                case Util.StandID.THE_HAND: {
+                    standName = "The Hand";
+                    break;
+                }
+                case Util.StandID.HIEROPHANT_GREEN: {
+                    standName = "Hierophant Green";
+                    break;
+                }
+                case Util.StandID.GREEN_DAY: {
+                    standName = "Green Day";
+                    break;
+                }
+                case Util.StandID.TWENTIETH_CENTURY_BOY: {
+                    standName = "20th Century Boy";
+                    break;
+                }
+                case Util.StandID.THE_GRATEFUL_DEAD: {
+                    standName = "The Grateful Dead";
+                    break;
+                }
+                case Util.StandID.STICKY_FINGERS: {
+                    standName = "Sticky Fingers";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_1: {
+                    standName = "Tusk (Act 1)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_2: {
+                    standName = "Tusk (Act 2)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_3: {
+                    standName = "Tusk (Act 3)";
+                    break;
+                }
+                case Util.StandID.TUSK_ACT_4: {
+                    standName = "Tusk (Act 4)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_1: {
+                    standName = "Echoes (Act 1)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_2: {
+                    standName = "Echoes (Act 2)";
+                    break;
+                }
+                case Util.StandID.ECHOES_ACT_3: {
+                    standName = "Echoes (Act 3)";
+                    break;
+                }
+                case Util.StandID.BEACH_BOY: {
+                    standName = "Beach Boy";
+                    break;
+                }
+            }
+        if (!standName.equals(""))
+            event.getToolTip().add(new StringTextComponent(standName));
     }
 
     @SubscribeEvent

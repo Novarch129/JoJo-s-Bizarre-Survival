@@ -45,6 +45,7 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                 standEntity.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
                                 standEntity.setMaster(sender);
                                 standEntity.setMasterUUID(sender.getUniqueID());
+                                standEntity.playSpawnSound();
                                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(standEntity.getEntityId(), sender.getEntityId()));
                                 sender.world.addEntity(standEntity);
                             } else if (Util.StandID.ITEM_STANDS.contains(stand.getStandID()))

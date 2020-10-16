@@ -5,7 +5,6 @@ import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,7 +51,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     }
 
     public AbstractStandAttackEntity(EntityType<? extends Entity> type, World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
-        this(type, worldIn, shooter.getPosX(), shooter.getPosY() + 0.1, shooter.getPosZ());
+        this(type, worldIn, shooter.getPosX(), shooter.getPosY() + 0.5, shooter.getPosZ());
         shootingStand = shooter;
         standMaster = player;
         movePunchInFrontOfStand(shooter);
@@ -63,8 +62,6 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
     protected abstract void onBlockHit(BlockRayTraceResult result);
 
     public abstract ResourceLocation getEntityTexture();
-
-    public abstract <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel();
 
     /**
      * Defines the range of a Stand attack, {@link Override} to change, default is 1.
@@ -212,8 +209,10 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                     if (!world.isRemote) {
                         world.addParticle(ParticleTypes.EXPLOSION, getPosX(), getPosY(), getPosZ(), 1, 0, 0);
                         if (!world.isRemote) {
-                            if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.EntityHit(this, result, entity)))
+                            if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.EntityHit(this, result, entity))) {
+                                remove();
                                 return;
+                            }
                             onEntityHit((EntityRayTraceResult) result);
                         }
                     }
@@ -236,9 +235,14 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             inGround = true;
             arrowShake = 7;
             if (!world.isRemote) {
-                if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.BlockHit(this, result, null))) return;
-                if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, blockPos, state, standMaster)))
+                if (MinecraftForge.EVENT_BUS.post(new StandAttackEvent.BlockHit(this, result, null))) {
+                    remove();
                     return;
+                }
+                if (MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, blockPos, state, standMaster))) {
+                    remove();
+                    return;
+                }
                 onBlockHit((BlockRayTraceResult) result);
                 if (state.getMaterial() != Material.AIR) {
                     state.getBlock().onProjectileCollision(world, state, (BlockRayTraceResult) result, this);

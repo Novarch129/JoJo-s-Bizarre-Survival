@@ -1,6 +1,6 @@
 ![GitHub](https://img.shields.io/github/license/Novarch129/JoJo-s-Bizarre-Survival)
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Novarch129/JoJo-s-Bizarre-Survival?label=version)
-![](https://cf.way2muchnoise.eu/full_jojos-bizarre-survival_downloads.svg)
+![](https://cf.way2muchnoise.eu/full_412721_downloads.svg)
 ![Discord](https://img.shields.io/discord/732996800973111307?color=deeppink&label=discord)
 
 [Join the official Discord!](https://discord.gg/an4BDqZ)

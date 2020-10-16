@@ -1,17 +1,18 @@
 package io.github.novarch129.jojomod.client.entity.model;
 
+
 import io.github.novarch129.jojomod.entity.stand.attack.StarPlatinumPunchEntity;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class StarPlatinumPunchModel extends AbstractStandAttackModel<StarPlatinumPunchEntity> {
-    public final ModelRenderer Punch;
+    private final ModelRenderer Punch;
 
     public StarPlatinumPunchModel() {
         textureWidth = 64;
         textureHeight = 32;
 
         Punch = new ModelRenderer(this);
-        Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Punch.setRotationPoint(0.0F, 4.0F, 0.0F);
         Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
 
         ModelRenderer elbowPad2 = new ModelRenderer(this);

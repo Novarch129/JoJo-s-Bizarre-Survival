@@ -234,7 +234,6 @@ public abstract class AbstractStandEntity extends MobEntity implements IEntityAd
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SSyncStandMasterPacket(getEntityId(), master.getEntityId()));
             Stand.getLazyOptional(master).ifPresent(props -> props.setPlayerStand(getEntityId())); //Sets the Stand's Entity#getEntityID to the player's capability.
         }
-        playSpawnSound();
     }
 
     /**

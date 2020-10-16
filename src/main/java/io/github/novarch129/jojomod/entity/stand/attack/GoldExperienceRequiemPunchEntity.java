@@ -1,7 +1,6 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
 import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.client.entity.model.GoldExperienceRequiemPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
@@ -9,7 +8,6 @@ import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.WitherEntity;
@@ -237,10 +235,5 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
     @Override
     public ResourceLocation getEntityTexture() {
         return Util.ResourceLocations.GER_PUNCH;
-    }
-
-    @Override
-    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return Util.cast(new GoldExperienceRequiemPunchModel());
     }
 }

@@ -35,7 +35,7 @@ public class AerosmithEntity extends AbstractStandEntity {
             if (props.getCooldown() <= 0) {
                 TNTEntity tnt = new TNTEntity(world, getPosX(), getPosY(), getPosZ(), getMaster());
                 tnt.setFuse(20);
-                tnt.setVelocity(getLookVec().getX(), getLookVec().getY(), getLookVec().getZ());
+                tnt.setMotion(getLookVec().getX(), getLookVec().getY(), getLookVec().getZ());
                 if (!world.isRemote)
                     world.addEntity(tnt);
                 props.setCooldown(200);

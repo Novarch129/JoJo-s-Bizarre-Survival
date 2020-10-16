@@ -3,13 +3,9 @@ package io.github.novarch129.jojomod.entity.stand.attack;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.IRendersAsItem;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -19,7 +15,7 @@ import net.minecraft.world.World;
 
 import static io.github.novarch129.jojomod.util.Util.Null;
 
-public class EmeraldSplashEntity extends AbstractStandAttackEntity implements IRendersAsItem {
+public class EmeraldSplashEntity extends AbstractStandAttackEntity {
     public EmeraldSplashEntity(EntityType<? extends AbstractStandAttackEntity> type, World worldIn) {
         super(type, worldIn);
     }
@@ -52,17 +48,7 @@ public class EmeraldSplashEntity extends AbstractStandAttackEntity implements IR
     }
 
     @Override
-    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return Null();
-    }
-
-    @Override
     protected int getRange() {
         return 3;
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return new ItemStack(Items.EMERALD);
     }
 }

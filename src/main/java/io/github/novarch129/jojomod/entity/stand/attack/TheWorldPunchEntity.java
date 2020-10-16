@@ -1,12 +1,10 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.client.entity.model.TheWorldPunchModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.TheWorldEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -50,10 +48,5 @@ public class TheWorldPunchEntity extends AbstractStandAttackEntity {
     @Override
     public ResourceLocation getEntityTexture() {
         return Util.ResourceLocations.THE_WORLD_PUNCH;
-    }
-
-    @Override
-    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() {
-        return Util.cast(new TheWorldPunchModel());
     }
 }

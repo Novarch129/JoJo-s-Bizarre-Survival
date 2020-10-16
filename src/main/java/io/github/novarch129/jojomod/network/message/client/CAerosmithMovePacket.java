@@ -62,22 +62,22 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
                                     switch (message.direction) {
                                         case FORWARDS: {
                                             if (message.sprint) {
-                                                entity.setVelocity(motion.getX(), motion.getY(), motion.getZ());
+                                                entity.setMotion(motion.getX(), motion.getY(), motion.getZ());
                                                 entity.setSprinting(true);
                                             } else
-                                                entity.setVelocity(motion.getX() * 0.5, entity.getMotion().getY(), motion.getZ() * 0.5);
+                                                entity.setMotion(motion.getX() * 0.5, entity.getMotion().getY(), motion.getZ() * 0.5);
                                             break;
                                         }
                                         case BACKWARDS: {
-                                            entity.setVelocity(-motion.getX() * 0.6, entity.getMotion().getY(), -motion.getZ() * 0.6);
+                                            entity.setMotion(-motion.getX() * 0.6, entity.getMotion().getY(), -motion.getZ() * 0.6);
                                             break;
                                         }
                                         case RIGHT: {
-                                            entity.setVelocity(-motion.getZ() * 0.5, entity.getMotion().getY(), motion.getX() * 0.5);
+                                            entity.setMotion(-motion.getZ() * 0.5, entity.getMotion().getY(), motion.getX() * 0.5);
                                             break;
                                         }
                                         case LEFT: {
-                                            entity.setVelocity(motion.getZ() * 0.5, entity.getMotion().getY(), -motion.getX() * 0.5);
+                                            entity.setMotion(motion.getZ() * 0.5, entity.getMotion().getY(), -motion.getX() * 0.5);
                                             break;
                                         }
                                         case UP: {

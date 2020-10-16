@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.client.entity.model.AbstractStandAttackModel;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import net.minecraft.client.Minecraft;
@@ -14,9 +15,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class StandAttackRenderer<T extends AbstractStandAttackEntity> extends EntityRenderer<T> {
+    AbstractStandAttackModel<T> model;
+
     public StandAttackRenderer(EntityRendererManager manager) {
         super(manager);
     }
+
+    public StandAttackRenderer(EntityRendererManager manager, AbstractStandAttackModel<T> model) {
+        super(manager);
+        this.model = model;
+    }
+
 
     protected void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityModel<T> model) {
         renderManager.textureManager.bindTexture(getEntityTexture(entityIn));
@@ -32,11 +41,11 @@ public class StandAttackRenderer<T extends AbstractStandAttackEntity> extends En
     @Override
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (Minecraft.getInstance().renderViewEntity instanceof AbstractStandEntity)
-            render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, entityIn.getEntityModel());
+            render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, model);
         else if (Minecraft.getInstance().renderViewEntity instanceof PlayerEntity)
             Stand.getLazyOptional((PlayerEntity) Minecraft.getInstance().renderViewEntity).ifPresent(props -> {
                 if (props.getStandID() != 0)
-                    render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, entityIn.getEntityModel());
+                    render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn, model);
             });
     }
 

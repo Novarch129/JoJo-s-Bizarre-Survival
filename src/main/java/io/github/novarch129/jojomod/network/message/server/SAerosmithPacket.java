@@ -1,11 +1,12 @@
 package io.github.novarch129.jojomod.network.message.server;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -38,7 +39,7 @@ public class SAerosmithPacket implements IMessage<SAerosmithPacket> {
     public void handle(SAerosmithPacket message, Supplier<NetworkEvent.Context> ctx) {
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
             ctx.get().enqueueWork(() -> {
-                ClientWorld world = Minecraft.getInstance().world;
+                World world = JojoBizarreSurvival.PROXY.getWorld();
                 if (world == null) return;
                 Entity entity = world.getEntityByID(message.entityID);
                 if (!(entity instanceof AerosmithEntity)) return;
@@ -46,8 +47,8 @@ public class SAerosmithPacket implements IMessage<SAerosmithPacket> {
                     default:
                         return;
                     case 0: {
-                        if (Minecraft.getInstance().player != null)
-                            Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().player);
+                        if (JojoBizarreSurvival.PROXY.getPlayer() != null)
+                            Minecraft.getInstance().setRenderViewEntity(JojoBizarreSurvival.PROXY.getPlayer());
                         break;
                     }
                     case 1: {

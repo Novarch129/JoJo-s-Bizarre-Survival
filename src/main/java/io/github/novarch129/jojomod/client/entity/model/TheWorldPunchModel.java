@@ -4,14 +4,14 @@ import io.github.novarch129.jojomod.entity.stand.attack.TheWorldPunchEntity;
 import net.minecraft.client.renderer.model.ModelRenderer;
 
 public class TheWorldPunchModel extends AbstractStandAttackModel<TheWorldPunchEntity> {
-    public final ModelRenderer Punch;
+    private final ModelRenderer Punch;
 
     public TheWorldPunchModel() {
         textureWidth = 64;
         textureHeight = 32;
 
         Punch = new ModelRenderer(this);
-        Punch.setRotationPoint(0.0F, 24.0F, 0.0F);
+        Punch.setRotationPoint(0.0F, 4.0F, 0.0F);
         Punch.setTextureOffset(0, 0).addBox(-2.0F, -4.0F, -6.0F, 4.0F, 4.0F, 12.0F, 0.0F, false);
 
         ModelRenderer elbowPad2 = new ModelRenderer(this);
@@ -28,7 +28,6 @@ public class TheWorldPunchModel extends AbstractStandAttackModel<TheWorldPunchEn
         ModelRenderer heart7 = new ModelRenderer(this);
         heart7.setRotationPoint(4.0503F, 2.8628F, 3.4072F);
         elbowPad2.addChild(heart7);
-
 
         ModelRenderer heartPiece20 = new ModelRenderer(this);
         heartPiece20.setRotationPoint(-0.5F, -18.0F, -4.5F);

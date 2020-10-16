@@ -39,15 +39,11 @@ public class StandArrowItem extends ArrowItem {
     @SuppressWarnings("ConstantConditions")
     @Override //TODO add an animation when obtaining GER
     public void onPlayerStoppedUsing(ItemStack stack, World world, LivingEntity entity, int timeLeft) {
-        if (!(entity instanceof PlayerEntity)) return;
+        if (!(entity instanceof PlayerEntity || world.isRemote)) return;
         PlayerEntity player = (PlayerEntity) entity;
         Stand.getLazyOptional(player).ifPresent(stand -> {
             final int random = world.rand.nextInt(Util.StandID.STANDS.length);
-            int newStandID;
-            if (standID == 0)
-                newStandID = Util.StandID.STANDS[random];
-            else
-                newStandID = standID;
+            int newStandID = standID == 0 ? Util.StandID.STANDS[random] : standID;
             if (stand.getStandID() == 0) {
                 if (!player.isCreative())
                     stack.shrink(1);
@@ -100,10 +96,15 @@ public class StandArrowItem extends ArrowItem {
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (standID != 0) {
-            if (Util.isClientHoldingShift() && !this.tooltip.equals(""))
-                tooltip.add(new StringTextComponent(this.tooltip));
-            else if (!Util.isClientHoldingShift())
-                tooltip.add(new StringTextComponent("Hold\u00A7e Shift\u00A7f for more information!"));
+            if (!this.tooltip.equals("")) {
+                String displayText = this.tooltip
+                        .replaceAll("ABILITY1", Util.KeyCodes.ABILITY_1)
+                        .replaceAll("ABILITY2", Util.KeyCodes.ABILITY_2)
+                        .replaceAll("ABILITY3", Util.KeyCodes.ABILITY_3)
+                        .replaceAll("ABILITYTOGGLE", Util.KeyCodes.ABILITY_TOGGLE)
+                        .replaceAll("SWITCHACT", Util.KeyCodes.SWITCH_ACT);
+                tooltip.add(new StringTextComponent(Util.isClientHoldingShift() ? displayText : "Hold\u00A7e Shift\u00A7f for more information!"));
+            }
         } else
             tooltip.add(new StringTextComponent(this.tooltip));
     }

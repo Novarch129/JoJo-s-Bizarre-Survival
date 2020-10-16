@@ -12,7 +12,7 @@ public class HierophantGreenTailModel extends AbstractStandAttackModel<Hierophan
 
         Tail = new ModelRenderer(this);
         Tail.setRotationPoint(0.0F, 24.0F, 0.0F);
-        Tail.setTextureOffset(0, 0).addBox(-1.5F, -2.0F, -7.5F, 3.0F, 2.0F, 15.0F, 0.0F, false);
+        Tail.setTextureOffset(0, 0).addBox(-1.5F, -22.0F, -7.5F, 3.0F, 2.0F, 15.0F, 0.0F, false);
     }
 
     @Override

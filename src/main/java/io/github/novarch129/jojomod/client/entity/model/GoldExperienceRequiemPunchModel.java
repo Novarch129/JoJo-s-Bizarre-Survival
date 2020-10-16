@@ -11,7 +11,7 @@ public class GoldExperienceRequiemPunchModel extends AbstractStandAttackModel<Go
         textureHeight = 32;
 
         Punch = new ModelRenderer(this);
-        Punch.setRotationPoint(-4.7225F, 25.4467F, -8.6359F);
+        Punch.setRotationPoint(-4.7225F, 5.4467F, -8.6359F);
         setRotationAngle(Punch, -1.5621F, 0.0F, -0.0044F);
         Punch.setTextureOffset(1, 1).addBox(2.7025F, -14.5533F, -5.6359F, 4.0F, 12.0F, 4.0F, 0.0F, true);
 

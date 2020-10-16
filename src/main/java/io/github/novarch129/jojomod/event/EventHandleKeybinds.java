@@ -17,7 +17,7 @@ import static io.github.novarch129.jojomod.network.message.client.CAerosmithMove
 @Mod.EventBusSubscriber(modid = JojoBizarreSurvival.MOD_ID, bus = Bus.FORGE, value = Dist.CLIENT)
 public class EventHandleKeybinds {
     @SubscribeEvent
-    public static void onInput(TickEvent.ClientTickEvent event) { //It's recommended to use ClientickEvent instead of any of the input events.
+    public static void onInput(TickEvent.ClientTickEvent event) { //It's recommended to use ClienTickEvent instead of any of the input events.
         if (event.phase != TickEvent.Phase.END || !Minecraft.getInstance().isGameFocused()) return;
         Minecraft mc = Minecraft.getInstance();
 

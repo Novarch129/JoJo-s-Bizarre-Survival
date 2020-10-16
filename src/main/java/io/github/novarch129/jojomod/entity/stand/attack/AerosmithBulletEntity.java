@@ -1,13 +1,10 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -51,18 +48,5 @@ public class AerosmithBulletEntity extends AbstractStandAttackEntity {
     @Override
     public ResourceLocation getEntityTexture() {
         return Util.ResourceLocations.AEROSMITH_BULLET;
-    }
-
-    @Override
-    public <T extends AbstractStandAttackEntity> EntityModel<T> getEntityModel() { //They don't render at all.
-        return new EntityModel<T>() {
-            @Override
-            public void setRotationAngles(T t, float v, float v1, float v2, float v3, float v4) {
-            }
-
-            @Override
-            public void render(MatrixStack matrixStack, IVertexBuilder iVertexBuilder, int i, int i1, float v, float v1, float v2, float v3) {
-            }
-        };
     }
 }

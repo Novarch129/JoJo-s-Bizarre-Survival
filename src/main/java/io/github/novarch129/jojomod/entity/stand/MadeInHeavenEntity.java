@@ -66,9 +66,9 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
 
     public void dodgeAttacks() {
         if (getMaster() == null) return;
-        Stand.getLazyOptional(master).ifPresent(props -> {
-            if (props.getCooldown() == 0)
-                props.setInvulnerableTicks(200);
+        Stand.getLazyOptional(master).ifPresent(stand -> {
+            if (stand.getCooldown() == 0 && stand.getInvulnerableTicks() == 0)
+                stand.setInvulnerableTicks(200);
         });
     }
 
