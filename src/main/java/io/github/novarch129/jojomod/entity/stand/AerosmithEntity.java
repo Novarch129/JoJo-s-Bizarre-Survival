@@ -10,7 +10,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -31,6 +30,7 @@ public class AerosmithEntity extends AbstractStandEntity {
     }
 
     public void shootBomb() {
+        if (getMaster() == null) return;
         Stand.getLazyOptional(getMaster()).ifPresent(props -> {
             if (props.getCooldown() <= 0) {
                 TNTEntity tnt = new TNTEntity(world, getPosX(), getPosY(), getPosZ(), getMaster());
@@ -54,7 +54,7 @@ public class AerosmithEntity extends AbstractStandEntity {
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 AerosmithBulletEntity aerosmithBulletEntity = new AerosmithBulletEntity(world, this, getMaster());
-                aerosmithBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.4f);
+                aerosmithBulletEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.000001f);
                 world.addEntity(aerosmithBulletEntity);
                 attackTick = 0;
             }
@@ -71,14 +71,16 @@ public class AerosmithEntity extends AbstractStandEntity {
                         JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SAerosmithPacket(getEntityId(), (byte) 0));
                     ability = props.getAbility();
                 }
-                if (ability)
-                    if (props.getCooldown() > 0)
-                        props.setCooldown(props.getCooldown() - 1);
+                if (props.getCooldown() > 0)
+                    props.setCooldown(props.getCooldown() - 1);
             });
 
-            setRotation(master.rotationYaw, master.rotationPitch);
-            if (getMotion() == Vec3d.ZERO)
-                setRotationYawHead(master.rotationYawHead);
+            rotationYaw = master.rotationYaw;
+            prevRotationYaw = rotationYaw;
+            rotationPitch = master.rotationPitch * 0.5f;
+            setRotation(rotationYaw, rotationPitch);
+            renderYawOffset = rotationYaw;
+            rotationYawHead = renderYawOffset;
 
             if (master.swingProgressInt == 0 && !ability && !attackRush)
                 attackTick = 0;

@@ -19,27 +19,15 @@ import java.util.function.Supplier;
 public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
     private Direction direction;
     private boolean sprint;
-    private float yaw, pitch;
 
     public CAerosmithMovePacket(Direction direction) {
         this.direction = direction;
         this.sprint = false;
-        this.yaw = 0;
-        this.pitch = 0;
     }
 
     public CAerosmithMovePacket(Direction direction, boolean sprint) {
         this.direction = direction;
         this.sprint = sprint;
-        this.yaw = 0;
-        this.pitch = 0;
-    }
-
-    public CAerosmithMovePacket(Direction direction, boolean sprint, float yaw, float pitch) {
-        this.direction = direction;
-        this.sprint = sprint;
-        this.yaw = yaw;
-        this.pitch = pitch;
     }
 
     public CAerosmithMovePacket() {
@@ -62,7 +50,7 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
                                     switch (message.direction) {
                                         case FORWARDS: {
                                             if (message.sprint) {
-                                                entity.setMotion(motion.getX(), motion.getY(), motion.getZ());
+                                                entity.setMotion(motion.getX(), 0, motion.getZ());
                                                 entity.setSprinting(true);
                                             } else
                                                 entity.setMotion(motion.getX() * 0.5, entity.getMotion().getY(), motion.getZ() * 0.5);
@@ -102,17 +90,13 @@ public class CAerosmithMovePacket implements IMessage<CAerosmithMovePacket> {
     public void encode(CAerosmithMovePacket message, PacketBuffer buffer) {
         buffer.writeEnumValue(message.direction);
         buffer.writeBoolean(message.sprint);
-        buffer.writeFloat(message.yaw);
-        buffer.writeFloat(message.pitch);
     }
 
     @Override
     public CAerosmithMovePacket decode(PacketBuffer buffer) {
         return new CAerosmithMovePacket(
                 buffer.readEnumValue(Direction.class),
-                buffer.readBoolean(),
-                buffer.readFloat(),
-                buffer.readFloat()
+                buffer.readBoolean()
         );
     }
 

@@ -5,6 +5,7 @@ import io.github.novarch129.jojomod.capability.StandChunkEffects;
 import io.github.novarch129.jojomod.entity.stand.attack.EchoesSoundEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
@@ -42,7 +43,7 @@ public class EchoesAct2Entity extends AbstractStandEntity {
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getAbilityUseCount() < 4) {
                 Vec3d position = master.getLookVec().mul(3, 1, 3).add(master.getPositionVec());
-                if (world.getBlockState(new BlockPos(position)).isSolid())
+                if (world.getBlockState(new BlockPos(position)).isSolid() && world.getBlockState(new BlockPos(position)).getBlock() != Blocks.BEDROCK)
                     StandChunkEffects.getLazyOptional(world.getChunkAt(new BlockPos(position))).ifPresent(chunkEffects -> {
                         if (chunkEffects.getSoundEffects().containsKey(master.getUniqueID()) && chunkEffects.getSoundEffects().get(master.getUniqueID()).contains(new BlockPos(position)))
                             return;

@@ -31,7 +31,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
 
     @Override
     public void attack(boolean special) {
-        if (getMaster() == null) return;
+        if (getMaster() == null || disguiseEntity != null) return;
         attackTick++;
         if (attackTick == 1)
             if (special) {
@@ -60,7 +60,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
     }
 
     public void zipThroughWall() {
-        if (getMaster() == null || world.isRemote) return;
+        if (getMaster() == null || world.isRemote || disguiseEntity != null) return;
         Stand.getLazyOptional(master).ifPresent(props -> {
             if (props.getCooldown() == 0) {
                 Vec3d position = master.getLookVec().mul(3, 1, 3).add(master.getPositionVec());
@@ -78,7 +78,7 @@ public class StickyFingersEntity extends AbstractStandEntity {
     }
 
     public void zipPunch() {
-        if (getMaster() == null || world.isRemote) return;
+        if (getMaster() == null || world.isRemote || disguiseEntity != null) return;
         Stand.getLazyOptional(master).ifPresent(stand -> {
             if (stand.getCooldown() == 0) {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);

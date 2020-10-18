@@ -3,7 +3,6 @@ package io.github.novarch129.jojomod.network.message.client;
 import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import io.github.novarch129.jojomod.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
@@ -147,10 +146,6 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
                                         case 1: { //Mob will always fight back a bit when you're doing this.
                                             ((HierophantGreenEntity) entity).yaw = message.yaw;
                                             ((HierophantGreenEntity) entity).pitch = message.pitch;
-                                            break;
-                                        }
-                                        case 2: { //Called here so I don't have to sync HierophantGreenEntity#possesedEntity to the Client.
-                                            Minecraft.getInstance().setRenderViewEntity(possessedEntity);
                                             break;
                                         }
                                     }

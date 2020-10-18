@@ -91,9 +91,10 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
                             if (playerEntity != getMaster()) {
                                 if (playerEntity.getDisplayName().toString().equals(props.getDiavolo())) {
                                     if (playerEntity.isAlive()) {
-                                        world.getServer().getWorld(dimension).getEntities()
-                                                .filter(entity -> entity instanceof MobEntity)
-                                                .forEach(entity -> ((MobEntity) entity).setAttackTarget(playerEntity));
+                                        if (!playerEntity.world.isRemote)
+                                            playerEntity.world.getServer().getWorld(playerEntity.dimension).getEntities()
+                                                    .filter(entity -> entity instanceof MobEntity)
+                                                    .forEach(entity -> ((MobEntity) entity).setAttackTarget(playerEntity));
                                         CreeperEntity truth = new CreeperEntity(EntityType.CREEPER, playerEntity.world);
                                         truth.setCustomName(truthname);
                                         truth.setPosition(playerEntity.getPosX(), playerEntity.getPosY(), playerEntity.getPosZ());

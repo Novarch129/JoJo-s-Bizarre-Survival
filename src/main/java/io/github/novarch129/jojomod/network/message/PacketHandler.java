@@ -27,6 +27,8 @@ public class PacketHandler {
         registerPacket(SSyncStickyFingersDisguisePacket.class, new SSyncStickyFingersDisguisePacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(SAerosmithPacket.class, new SAerosmithPacket(), NetworkDirection.PLAY_TO_CLIENT);
         registerPacket(SSyncStandChunkEffectCapabilityPacket.class, new SSyncStandChunkEffectCapabilityPacket(), NetworkDirection.PLAY_TO_CLIENT);
+        registerPacket(SSyncHierophantGreenPacket.class, new SSyncHierophantGreenPacket(), NetworkDirection.PLAY_TO_CLIENT);
+        registerPacket(CAerosmithRotationPacket.class, new CAerosmithRotationPacket(), NetworkDirection.PLAY_TO_SERVER);
     }
 
     public static <MSG> void registerPacket(Class<MSG> clazz, IMessage<MSG> message) {

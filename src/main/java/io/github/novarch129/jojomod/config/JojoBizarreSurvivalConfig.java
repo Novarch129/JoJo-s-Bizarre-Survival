@@ -35,6 +35,7 @@ public class JojoBizarreSurvivalConfig {
         public final ForgeConfigSpec.BooleanValue infiniteTimestop;
         public final ForgeConfigSpec.BooleanValue abilityImmediatelyActive;
         public final ForgeConfigSpec.BooleanValue singularityPoint;
+        public final ForgeConfigSpec.IntValue gerXpPoints;
 
         Common(final ForgeConfigSpec.Builder builder) {
             builder.push("common");
@@ -70,6 +71,10 @@ public class JojoBizarreSurvivalConfig {
             singularityPoint = builder
                     .comment("Toggle Made in Heaven's singularity point.")
                     .define("singularityPoint", true);
+
+            gerXpPoints = builder
+                    .comment("Set the amount of XP points required to obtain Gold Experience Requiem.")
+                    .defineInRange("gerXpPoints", 1000000, 100000, Integer.MAX_VALUE);
 
             builder.pop();
         }

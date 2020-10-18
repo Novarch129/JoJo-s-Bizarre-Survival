@@ -9,10 +9,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
 public class PurpleHazeEntity extends AbstractStandEntity {
+    private boolean shouldFollowMaster = true;
+
     public PurpleHazeEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
     }
@@ -29,6 +32,12 @@ public class PurpleHazeEntity extends AbstractStandEntity {
                 .filter(entity -> !(entity instanceof AbstractStandEntity))
                 .filter(entity -> entity.getDistance(this) < 80)
                 .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
+    }
+
+    public void toggleShouldFollowMaster() {
+        if (getMaster() == null) return;
+        shouldFollowMaster = !shouldFollowMaster;
+        master.sendStatusMessage(new StringTextComponent("Following master: " + shouldFollowMaster), true);
     }
 
     @Override
@@ -58,7 +67,8 @@ public class PurpleHazeEntity extends AbstractStandEntity {
         if (getMaster() != null) {
             Stand.getLazyOptional(master).ifPresent(props -> ability = props.getAbility());
 
-            followMaster();
+            if (shouldFollowMaster)
+                followMaster();
             setRotationYawHead(master.rotationYawHead);
             setRotation(master.rotationYaw, master.rotationPitch);
 

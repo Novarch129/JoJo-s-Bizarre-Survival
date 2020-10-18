@@ -59,7 +59,7 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
             } else
                 entity.remove();
         } else
-            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 5);
+            entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 10);
         entity.hurtResistantTime = 0;
     }
 

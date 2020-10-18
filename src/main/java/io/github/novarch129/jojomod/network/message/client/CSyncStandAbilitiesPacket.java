@@ -6,16 +6,11 @@ import io.github.novarch129.jojomod.entity.stand.*;
 import io.github.novarch129.jojomod.entity.stand.attack.AbstractStandAttackEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import io.github.novarch129.jojomod.util.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileHelper;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -209,40 +204,24 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             .filter(entity -> ((TheHandEntity) entity).getMaster().equals(sender))
                                             .forEach(entity -> {
                                                 if (message.action == 1) {
-                                                    Entity entity1 = Minecraft.getInstance().getRenderViewEntity();
-                                                    float partialTicks = Minecraft.getInstance().getRenderPartialTicks();
-                                                    if (entity1 != null) {
-                                                        if (Minecraft.getInstance().world != null) {
-                                                            Minecraft.getInstance().getProfiler().startSection("pick");
-                                                            Minecraft.getInstance().pointedEntity = null;
-                                                            Minecraft.getInstance().objectMouseOver = entity1.pick(Minecraft.getInstance().playerController.getBlockReachDistance(), partialTicks, false);
-                                                            Vec3d vec3d = entity1.getEyePosition(partialTicks);
-                                                            double range = 30;
-                                                            Vec3d vec3d1 = entity1.getLook(1);
-                                                            Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
-                                                            AxisAlignedBB axisalignedbb = entity1.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
-                                                            EntityRayTraceResult entityRayTraceResult =
-                                                                    ProjectileHelper.rayTraceEntities(
-                                                                            entity1,
-                                                                            vec3d,
-                                                                            vec3d2,
-                                                                            axisalignedbb,
-                                                                            Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandAttackEntity)),
-                                                                            3000);
-                                                            if (entityRayTraceResult != null) {
-                                                                Entity entity11 = entityRayTraceResult.getEntity();
-                                                                Vec3d vec3d3 = entityRayTraceResult.getHitVec();
-                                                                if (entity11 != null)
-                                                                    ((TheHandEntity) entity).dragEntityToStand(entity11.getEntityId());
-                                                                double d2 = vec3d.squareDistanceTo(vec3d3);
-                                                                if (d2 < 30 || Minecraft.getInstance().objectMouseOver == null) {
-                                                                    Minecraft.getInstance().objectMouseOver = entityRayTraceResult;
-                                                                    if (entity11 instanceof LivingEntity || entity11 instanceof ItemFrameEntity) {
-                                                                        Minecraft.getInstance().pointedEntity = entity11;
-                                                                    }
-                                                                }
-                                                            }
-                                                            Minecraft.getInstance().getProfiler().endSection();
+                                                    if (sender != null) {
+                                                        Vec3d vec3d = sender.getPositionVec().add(0, sender.getEyeHeight(), 0);
+                                                        double range = 30;
+                                                        Vec3d vec3d1 = sender.getLook(1);
+                                                        Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
+                                                        AxisAlignedBB axisalignedbb = sender.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
+                                                        EntityRayTraceResult entityRayTraceResult =
+                                                                Util.rayTraceEntities(
+                                                                        sender,
+                                                                        vec3d,
+                                                                        vec3d2,
+                                                                        axisalignedbb,
+                                                                        Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandAttackEntity)),
+                                                                        3000);
+                                                        if (entityRayTraceResult != null) {
+                                                            Entity entity11 = entityRayTraceResult.getEntity();
+                                                            if (entity11 != null)
+                                                                ((TheHandEntity) entity).dragEntityToStand(entity11.getEntityId());
                                                         }
                                                     }
                                                 } else if (message.action == 2)
@@ -260,17 +239,26 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                         break;
                                                     case 1: {
                                                         if (((StickyFingersEntity) entity).disguiseEntity == null) {
-                                                            if (Minecraft.getInstance().objectMouseOver != null && Minecraft.getInstance().objectMouseOver.getType() == RayTraceResult.Type.ENTITY && ((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity() != null)
-                                                                ((StickyFingersEntity) entity).disguise(((EntityRayTraceResult) Minecraft.getInstance().objectMouseOver).getEntity().getEntityId());
-                                                            if (((StickyFingersEntity) entity).disguiseEntity != null) {
-                                                                Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).disguiseEntity);
-                                                                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                                                            Vec3d vec3d = sender.getPositionVec().add(0, sender.getEyeHeight(), 0);
+                                                            double range = 10;
+                                                            Vec3d vec3d1 = sender.getLook(1);
+                                                            Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
+                                                            AxisAlignedBB axisalignedbb = sender.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
+                                                            EntityRayTraceResult entityRayTraceResult =
+                                                                    Util.rayTraceEntities(
+                                                                            sender,
+                                                                            vec3d,
+                                                                            vec3d2,
+                                                                            axisalignedbb,
+                                                                            Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> predicateEntity != entity && !(predicateEntity instanceof AbstractStandAttackEntity)),
+                                                                            3000);
+                                                            if (entityRayTraceResult != null) {
+                                                                Entity entity11 = entityRayTraceResult.getEntity();
+                                                                if (entity11 != null)
+                                                                    ((StickyFingersEntity) entity).disguise(entity11.getEntityId());
                                                             }
-                                                        } else {
-                                                            Minecraft.getInstance().setRenderViewEntity(Minecraft.getInstance().world.getPlayerByUuid(sender.getUniqueID()));
-                                                            Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                                                        } else
                                                             ((StickyFingersEntity) entity).disguise(-100);
-                                                        }
                                                         break;
                                                     }
                                                     case 2: {
@@ -347,6 +335,16 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                                     }
                                                 });
                                     }
+                                    break;
+                                }
+                                case PURPLE_HAZE: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof PurpleHazeEntity)
+                                            .filter(entity -> ((PurpleHazeEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                if (message.action == 1)
+                                                    ((PurpleHazeEntity) entity).toggleShouldFollowMaster();
+                                            });
                                     break;
                                 }
                                 default:

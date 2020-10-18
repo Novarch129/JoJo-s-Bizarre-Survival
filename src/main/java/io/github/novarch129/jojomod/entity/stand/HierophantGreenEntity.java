@@ -1,17 +1,22 @@
 package io.github.novarch129.jojomod.entity.stand;
 
+import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.attack.EmeraldSplashEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.HierophantGreenTailEntity;
 import io.github.novarch129.jojomod.init.SoundInit;
+import io.github.novarch129.jojomod.network.message.server.SSyncHierophantGreenPacket;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @SuppressWarnings("ConstantConditions")
 public class HierophantGreenEntity extends AbstractStandEntity {
@@ -43,6 +48,18 @@ public class HierophantGreenEntity extends AbstractStandEntity {
             }
     }
 
+    public void setPossessedEntity(int entityID) {
+        if (getMaster() == null) return;
+        Entity entity = world.getEntityByID(entityID);
+        if (entity instanceof LivingEntity) {
+            possessedEntity = (LivingEntity) entity;
+            master.setInvulnerable(true);
+        } else if (entity == null)
+            possessedEntity = null;
+        if (!world.isRemote)
+            JojoBizarreSurvival.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) master), new SSyncHierophantGreenPacket(getEntityId(), entityID));
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -50,6 +67,7 @@ public class HierophantGreenEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> props.setAbilityActive(possessedEntity != null));
 
             if (possessedEntity != null) {
+                possessedEntity.renderYawOffset = 0;
                 possessedEntity.setRotation(yaw, pitch);
                 if (possessedEntity.getMotion() == Vec3d.ZERO)
                     possessedEntity.setRotationYawHead(yaw);

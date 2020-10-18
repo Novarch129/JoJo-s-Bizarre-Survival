@@ -36,7 +36,7 @@ public class HierophantGreenTailEntity extends AbstractStandAttackEntity {
                 ((MobEntity) ((HierophantGreenEntity) shootingStand).possessedEntity).goalSelector.enableFlag(Goal.Flag.LOOK);
                 ((MobEntity) ((HierophantGreenEntity) shootingStand).possessedEntity).goalSelector.enableFlag(Goal.Flag.MOVE);
             }
-            ((HierophantGreenEntity) shootingStand).possessedEntity = (LivingEntity) entity;
+            ((HierophantGreenEntity) shootingStand).setPossessedEntity(entity.getEntityId());
         }
         entity.hurtResistantTime = 0;
     }

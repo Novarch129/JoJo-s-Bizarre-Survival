@@ -1,9 +1,9 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.event.custom.StandAttackEvent;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.monster.EndermanEntity;
@@ -106,7 +106,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         Vec3d random = new Vec3d(rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1, rand.nextDouble() * 2 - 1);
         Vec3d position = getPositionVec().add(random).add(standMaster.getLookVec().mul(1.5, 0.2, 1.5));
         setPosition(position.getX(), position.getY(), position.getZ());
-        setRotation(standMaster.rotationYaw, standMaster.rotationPitch);
+        setRotation(rotationYaw, rotationPitch);
     }
 
     public void movePunchInFrontOfStand(AbstractStandEntity stand) {
@@ -146,7 +146,7 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
             ticksInAir++;
             if (ticksInAir > getRange() && !world.isRemote)
                 remove();
-            BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(getPositionVec(), getPositionVec().add(getMotion()), BlockMode.OUTLINE, RayTraceContext.FluidMode.ANY, this));
+            BlockRayTraceResult raytraceresult = world.rayTraceBlocks(new RayTraceContext(getPositionVec(), getPositionVec().add(getMotion()), BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, this));
             EntityRayTraceResult entityRayTraceResult = null;
             EntityRayTraceResult result = rayTraceEntities(getPositionVec(), getPositionVec().add(getMotion()));
             if (result != null) {
@@ -176,16 +176,12 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
                 onHit(raytraceresult);
             setPosition(getPosX() + getMotion().getX(), getPosY() + getMotion().getY(), getPosZ() + getMotion().getZ());
             float f1 = 0.99f;
-            if (isInWater()) {
+            if (isInWater())
                 for (int i = 0; i < 4; i++)
                     world.addParticle(ParticleTypes.BUBBLE, getPosX() - getMotion().getX() * 0.25, getPosY() - getMotion().getY() * 0.25, getPosZ() - getMotion().getZ() * 0.25, getMotion().getX(), getMotion().getY(), getMotion().getZ());
-                f1 = 0.8f;
-            }
             if (isWet())
                 extinguish();
             setMotion(getMotion().mul(f1, f1, f1));
-            if (!hasNoGravity() && Stand.getCapabilityFromPlayer(standMaster).getStandID() > 23 && Stand.getCapabilityFromPlayer(standMaster).getStandID() < 28)
-                setMotion(getMotion().add(0, -0.05000000074505806, 0));
             setPosition(getPosX(), getPosY(), getPosZ());
             doBlockCollisions();
         }
@@ -225,6 +221,8 @@ public abstract class AbstractStandAttackEntity extends Entity implements IProje
         } else if (result.getType() == RayTraceResult.Type.BLOCK) {
             BlockPos blockPos = ((BlockRayTraceResult) result).getPos();
             BlockState state = world.getBlockState(blockPos);
+            if (state == null)
+                state = Blocks.AIR.getDefaultState();
             xTile = blockPos.getX();
             yTile = blockPos.getY();
             zTile = blockPos.getZ();

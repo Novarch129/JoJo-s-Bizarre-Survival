@@ -32,9 +32,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
@@ -46,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
 
@@ -141,6 +140,42 @@ public class Util {
 
     public static boolean isClientHoldingShift() {
         return InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_LEFT_SHIFT) || InputMappings.isKeyDown(Minecraft.getInstance().getMainWindow().getHandle(), GLFW.GLFW_KEY_RIGHT_SHIFT);
+    }
+
+    public static EntityRayTraceResult rayTraceEntities(Entity shooter, Vec3d startVec, Vec3d endVec, AxisAlignedBB boundingBox, Predicate<Entity> filter, double distance) {
+        World world = shooter.world;
+        double d0 = distance;
+        Entity entity = null;
+        Vec3d vec3d = null;
+
+        for (Entity entity1 : world.getEntitiesInAABBexcluding(shooter, boundingBox, filter)) {
+            AxisAlignedBB axisalignedbb = entity1.getBoundingBox().grow(entity1.getCollisionBorderSize());
+            Optional<Vec3d> optional = axisalignedbb.rayTrace(startVec, endVec);
+            if (axisalignedbb.contains(startVec)) {
+                if (d0 >= 0) {
+                    entity = entity1;
+                    vec3d = optional.orElse(startVec);
+                    d0 = 0;
+                }
+            } else if (optional.isPresent()) {
+                Vec3d vec3d1 = optional.get();
+                double d1 = startVec.squareDistanceTo(vec3d1);
+                if (d1 < d0 || d0 == 0) {
+                    if (entity1.getLowestRidingEntity() == shooter.getLowestRidingEntity() && !entity1.canRiderInteract()) {
+                        if (d0 == 0) {
+                            entity = entity1;
+                            vec3d = vec3d1;
+                        }
+                    } else {
+                        entity = entity1;
+                        vec3d = vec3d1;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        return entity == null ? Null() : new EntityRayTraceResult(entity, vec3d);
     }
 
     /**

@@ -12,6 +12,7 @@ import io.github.novarch129.jojomod.entity.stand.HierophantGreenEntity;
 import io.github.novarch129.jojomod.entity.stand.StickyFingersEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
+import io.github.novarch129.jojomod.network.message.client.CAerosmithRotationPacket;
 import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Blocks;
@@ -53,14 +54,37 @@ public class EventClientTick {
                         .filter(entity -> entity instanceof AerosmithEntity)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster() != null)
                         .filter(entity -> ((AerosmithEntity) entity).getMaster().equals(player))
-                        .forEach(Minecraft.getInstance()::setRenderViewEntity);
+                        .forEach(entity -> {
+                            Minecraft.getInstance().setRenderViewEntity(entity);
+                            JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithRotationPacket(entity.getEntityId(), entity.rotationYaw, entity.rotationPitch, ((AerosmithEntity) entity).rotationYawHead));
+                        });
+            if (stand.getStandID() == Util.StandID.STICKY_FINGERS && stand.getStandOn())
+                StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
+                        .filter(entity -> entity instanceof StickyFingersEntity)
+                        .filter(entity -> ((StickyFingersEntity) entity).getMaster() != null)
+                        .filter(entity -> ((StickyFingersEntity) entity).getMaster().equals(player))
+                        .forEach(entity -> {
+                            if (((StickyFingersEntity) entity).disguiseEntity != null) {
+                                Minecraft.getInstance().setRenderViewEntity(((StickyFingersEntity) entity).disguiseEntity);
+                                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                            } else {
+                                Minecraft.getInstance().setRenderViewEntity(player);
+                                Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                            }
+                        });
             if (stand.getStandID() == Util.StandID.HIEROPHANT_GREEN && stand.getStandOn() && stand.getAbility())
                 StreamSupport.stream(Minecraft.getInstance().world.getAllEntities().spliterator(), false)
                         .filter(entity -> entity instanceof HierophantGreenEntity)
                         .filter(entity -> ((HierophantGreenEntity) entity).getMaster() != null)
                         .filter(entity -> ((HierophantGreenEntity) entity).getMaster().equals(player))
                         .forEach(entity -> {
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket((byte) 2));
+                            if (((HierophantGreenEntity) entity).possessedEntity != null) {
+                                Minecraft.getInstance().setRenderViewEntity(((HierophantGreenEntity) entity).possessedEntity);
+                                Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                            } else {
+                                Minecraft.getInstance().setRenderViewEntity(player);
+                                Minecraft.getInstance().gameSettings.thirdPersonView = 0;
+                            }
                             float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
                             float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
                             if (pitch > 89)
