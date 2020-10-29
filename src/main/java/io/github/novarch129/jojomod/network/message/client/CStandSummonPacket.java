@@ -2,6 +2,7 @@ package io.github.novarch129.jojomod.network.message.client;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import io.github.novarch129.jojomod.network.message.server.SSyncStandMasterPacket;
@@ -45,7 +46,8 @@ public class CStandSummonPacket implements IMessage<CStandSummonPacket> {
                                 standEntity.setLocationAndAngles(position.getX(), position.getY(), position.getZ(), sender.rotationYaw, sender.rotationPitch);
                                 standEntity.setMaster(sender);
                                 standEntity.setMasterUUID(sender.getUniqueID());
-                                standEntity.playSpawnSound();
+                                if (JojoBizarreSurvivalConfig.CLIENT.playStandSpawnSounds.get())
+                                    standEntity.playSpawnSound();
                                 JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> sender), new SSyncStandMasterPacket(standEntity.getEntityId(), sender.getEntityId()));
                                 sender.world.addEntity(standEntity);
                             } else if (Util.StandID.ITEM_STANDS.contains(stand.getStandID()))

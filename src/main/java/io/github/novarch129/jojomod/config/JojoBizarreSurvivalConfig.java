@@ -83,6 +83,7 @@ public class JojoBizarreSurvivalConfig {
     public static class Client {
         public final ForgeConfigSpec.BooleanValue renderMagiciansRedFire;
         public final ForgeConfigSpec.BooleanValue kingCrimsonOreRendering;
+        public final ForgeConfigSpec.BooleanValue playStandSpawnSounds;
 
         Client(ForgeConfigSpec.Builder builder) {
             builder.push("client");
@@ -94,6 +95,10 @@ public class JojoBizarreSurvivalConfig {
             kingCrimsonOreRendering = builder
                     .comment("Toggle King Crimson's experimental ore rendering.")
                     .define("kingCrimsonOreRendering", false);
+
+            playStandSpawnSounds = builder
+                    .comment("Toggle Stand spawn sounds.")
+                    .define("playStandSpawnSounds", true);
 
             builder.pop();
         }

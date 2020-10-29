@@ -45,7 +45,7 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 MadeInHeavenPunchEntity madeInHeavenPunchEntity = new MadeInHeavenPunchEntity(world, this, master);
-                madeInHeavenPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 6, Float.MIN_VALUE);
+                madeInHeavenPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1000, Float.MIN_VALUE);
                 world.addEntity(madeInHeavenPunchEntity);
             }
     }
@@ -59,7 +59,8 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                     position = position.add(0, 0.5, 0);
                 master.setPositionAndUpdate(position.getX(), position.getY(), position.getZ());
                 world.playSound(null, master.getPosition(), SoundEvents.ENTITY_PLAYER_SPLASH_HIGH_SPEED, SoundCategory.HOSTILE, 1, 1);
-                props.setCooldown(80);
+                if (props.getTimeLeft() > -1400)
+                    props.setCooldown(80);
             }
         });
     }
@@ -105,23 +106,23 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                     master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 39));
                     LightningBoltEntity lightning = new LightningBoltEntity(world, getPosX() + rand.nextInt(50), getPosY(), getPosZ() + rand.nextInt(50), false);
                     lightning.setSilent(true);
-                    if (!world.isRemote)
+                    if (!world.isRemote) {
                         ((ServerWorld) world).addLightningBolt(lightning);
-                    world.addEntity(lightning);
+                        world.addEntity(lightning);
+                    }
                     world.getGameRules().write().putInt(GameRules.RANDOM_TICK_SPEED.getName(), world.getGameRules().getInt(GameRules.RANDOM_TICK_SPEED) + 5);
                 }
 
                 if (props.getTimeLeft() < -1800) {
                     world.setDayTime(world.getDayTime() + 80);
-                    world.setRainStrength(10.0f);
-                    world.getWorldInfo().setRaining(true);
                     master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 99));
                 }
 
                 if (props.getTimeLeft() < -2200) {
                     master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 255));
                     master.addPotionEffect(new EffectInstance(Effects.LEVITATION, 40, 2));
-                    world.createExplosion(this, getPosX() + rand.nextInt(100), getPosY() - fallDistance, getPosZ() + rand.nextInt(100), 4.0f, Explosion.Mode.DESTROY);
+                    if (!world.isRemote)
+                        world.createExplosion(this, getPosX() + rand.nextInt(100), getPosY() - fallDistance, getPosZ() + rand.nextInt(100), 4.0f, Explosion.Mode.DESTROY);
                     world.setDayTime(world.getDayTime() + 500);
                 }
 
@@ -139,37 +140,37 @@ public class MadeInHeavenEntity extends AbstractStandEntity {
                         }
                     }));
                 }
-            });
-            master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
-            master.setHealth(20);
-            master.getFoodStats().addStats(20, 20);
+                master.addPotionEffect(new EffectInstance(Effects.SPEED, 40, 19));
+                master.setHealth(20);
+                master.getFoodStats().addStats(20, 20);
 
-            followMaster();
-            setRotationYawHead(master.rotationYawHead);
-            setRotation(master.rotationYaw, master.rotationPitch);
+                followMaster();
+                setRotationYawHead(master.rotationYawHead);
+                setRotation(master.rotationYaw, master.rotationPitch);
 
-            if (master.swingProgressInt == 0 && !attackRush)
-                attackTick = 0;
-            if (attackRush) {
-                master.setSprinting(false);
-                attackTicker++;
-                if (attackTicker >= 10)
-                    if (!world.isRemote) {
-                        master.setSprinting(false);
-                        MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, master);
-                        madeInHeaven1.randomizePositions();
-                        madeInHeaven1.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
-                        world.addEntity(madeInHeaven1);
-                        MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, master);
-                        madeInHeaven2.randomizePositions();
-                        madeInHeaven2.shoot(master, master.rotationPitch, master.rotationYaw, 4, 0.1f);
-                        world.addEntity(madeInHeaven2);
+                if (master.swingProgressInt == 0 && !attackRush)
+                    attackTick = 0;
+                if (attackRush) {
+                    master.setSprinting(false);
+                    attackTicker++;
+                    if (attackTicker >= 10)
+                        if (!world.isRemote) {
+                            master.setSprinting(false);
+                            MadeInHeavenPunchEntity madeInHeaven1 = new MadeInHeavenPunchEntity(world, this, master);
+                            madeInHeaven1.randomizePositions();
+                            madeInHeaven1.shoot(master, master.rotationPitch, master.rotationYaw, props.getTimeLeft() > -1400 ? 10 : 100, 0.1f);
+                            world.addEntity(madeInHeaven1);
+                            MadeInHeavenPunchEntity madeInHeaven2 = new MadeInHeavenPunchEntity(world, this, master);
+                            madeInHeaven2.randomizePositions();
+                            madeInHeaven2.shoot(master, master.rotationPitch, master.rotationYaw, props.getTimeLeft() > -1400 ? 10 : 100, 0.1f);
+                            world.addEntity(madeInHeaven2);
+                        }
+                    if (attackTicker >= 80) {
+                        attackRush = false;
+                        attackTicker = 0;
                     }
-                if (attackTicker >= 80) {
-                    attackRush = false;
-                    attackTicker = 0;
                 }
-            }
+            });
         }
     }
 }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
 import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandChunkEffects;
+import io.github.novarch129.jojomod.capability.Timestop;
 import io.github.novarch129.jojomod.client.gui.CarbonDioxideRadarGUI;
 import io.github.novarch129.jojomod.client.gui.StandGUI;
 import io.github.novarch129.jojomod.config.JojoBizarreSurvivalConfig;
@@ -13,7 +14,6 @@ import io.github.novarch129.jojomod.entity.stand.StickyFingersEntity;
 import io.github.novarch129.jojomod.init.EffectInit;
 import io.github.novarch129.jojomod.item.StandDiscItem;
 import io.github.novarch129.jojomod.network.message.client.CAerosmithRotationPacket;
-import io.github.novarch129.jojomod.network.message.client.CHierophantGreenPossessionPacket;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
@@ -81,17 +81,11 @@ public class EventClientTick {
                             if (((HierophantGreenEntity) entity).possessedEntity != null) {
                                 Minecraft.getInstance().setRenderViewEntity(((HierophantGreenEntity) entity).possessedEntity);
                                 Minecraft.getInstance().gameSettings.thirdPersonView = 1;
+                                JojoBizarreSurvival.INSTANCE.sendToServer(new CAerosmithRotationPacket(((HierophantGreenEntity) entity).possessedEntity.getEntityId(), ((HierophantGreenEntity) entity).possessedEntity.rotationYaw, ((HierophantGreenEntity) entity).possessedEntity.rotationPitch, ((HierophantGreenEntity) entity).possessedEntity.rotationYawHead));
                             } else {
                                 Minecraft.getInstance().setRenderViewEntity(player);
                                 Minecraft.getInstance().gameSettings.thirdPersonView = 0;
                             }
-                            float yaw = (float) Minecraft.getInstance().mouseHelper.getMouseX();
-                            float pitch = (float) Minecraft.getInstance().mouseHelper.getMouseY();
-                            if (pitch > 89)
-                                pitch = 89;
-                            else if (pitch < -89)
-                                pitch = -89;
-                            JojoBizarreSurvival.INSTANCE.sendToServer(new CHierophantGreenPossessionPacket(yaw, pitch));
                         });
             if (!player.isSpectator() && !stand.getStandOn())
                 if (Minecraft.getInstance().renderViewEntity != player)
@@ -104,14 +98,26 @@ public class EventClientTick {
         if (event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
         new StandGUI().render();
         new CarbonDioxideRadarGUI().renderRadar();
+//        if (Minecraft.getInstance().player == null) return;
+//        int width = Minecraft.getInstance().getMainWindow().getFramebufferWidth();
+//        int height = Minecraft.getInstance().getMainWindow().getFramebufferHeight();
+//        NativeImage image = ScreenShotHelper.createScreenshot(width, height, Minecraft.getInstance().getFramebuffer());
+//        DynamicTexture texture = new DynamicTexture(image);
+//        Minecraft.getInstance().getTextureManager().bindTexture(Minecraft.getInstance().getTextureManager().getDynamicTextureLocation("screenshots", texture));
+//        GuiUtils.drawContinuousTexturedBox(0, 0, 0, 0, width, height, width, height, 0, 0);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public static void renderCrimsonEffect(EntityViewRenderEvent.FogDensity event) {
+    public static void deRenderScreen(EntityViewRenderEvent.FogDensity event) {
         event.setDensity(0.3f);
-        if (event.getInfo().getRenderViewEntity() instanceof LivingEntity)
+        if (event.getInfo().getRenderViewEntity() instanceof LivingEntity) {
             if (((LivingEntity) event.getInfo().getRenderViewEntity()).isPotionActive(EffectInit.OXYGEN_POISONING.get()))
                 event.setCanceled(true);
+            Timestop.getLazyOptional(event.getInfo().getRenderViewEntity()).ifPresent(timestop -> {
+                if (timestop.getPosX() != 0)
+                    event.setCanceled(true);
+            });
+        }
         event.setDensity(5);
     }
 
@@ -243,6 +249,10 @@ public class EventClientTick {
                 }
                 case Util.StandID.BEACH_BOY: {
                     standName = "Beach Boy";
+                    break;
+                }
+                case Util.StandID.SOFT_AND_WET: {
+                    standName = "Soft & Wet";
                     break;
                 }
             }

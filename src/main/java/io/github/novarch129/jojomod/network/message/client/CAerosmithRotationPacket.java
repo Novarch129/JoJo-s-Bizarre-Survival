@@ -1,8 +1,8 @@
 package io.github.novarch129.jojomod.network.message.client;
 
-import io.github.novarch129.jojomod.entity.stand.AerosmithEntity;
 import io.github.novarch129.jojomod.network.message.IMessage;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkDirection;
@@ -44,10 +44,10 @@ public class CAerosmithRotationPacket implements IMessage<CAerosmithRotationPack
                 ServerPlayerEntity sender = ctx.get().getSender();
                 if (sender == null) return;
                 Entity entity = sender.world.getEntityByID(message.entityID);
-                if (entity instanceof AerosmithEntity) {
+                if (entity instanceof LivingEntity) {
                     entity.rotationYaw = message.yaw;
                     entity.rotationPitch = message.pitch;
-                    ((AerosmithEntity) entity).rotationYawHead = message.yawHead;
+                    ((LivingEntity) entity).rotationYawHead = message.yawHead;
                 }
             });
         }

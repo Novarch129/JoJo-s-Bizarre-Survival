@@ -123,12 +123,7 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                     world.getServer().getWorld(sender.dimension).getEntities()
                                             .filter(entity -> entity instanceof GoldExperienceRequiemEntity)
                                             .filter(entity -> ((GoldExperienceRequiemEntity) entity).getMaster().equals(sender))
-                                            .forEach(entity -> {
-                                                if (message.action == 1)
-                                                    ((GoldExperienceRequiemEntity) entity).toggleTruth();
-                                                else
-                                                    ((GoldExperienceRequiemEntity) entity).toggleFlight();
-                                            });
+                                            .forEach(entity -> ((GoldExperienceRequiemEntity) entity).toggleFlight());
                                     break;
                                 }
                                 case AEROSMITH: {

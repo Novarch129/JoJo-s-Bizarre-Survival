@@ -484,5 +484,14 @@
         "steam": false
       }
     ]
+  },
+  "spawn_soft_and_wet": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "name": "jojomod:spawn_soft_and_wet",
+        "steam": false
+      }
+    ]
   }
 }

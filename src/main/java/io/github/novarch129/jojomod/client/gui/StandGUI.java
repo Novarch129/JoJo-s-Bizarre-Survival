@@ -172,6 +172,10 @@ public class StandGUI extends AbstractGui {
                         renderString("Cooldown: " + cooldown / 20, 4, stand.getStandOn() ? 16 : 4);
                     break;
                 }
+                case Util.StandID.KILLER_QUEEN: {
+                    if (cooldown > 0)
+                        renderTimeValue(cooldown);
+                }
             }
         });
         StandEffects.getLazyOptional(mc.player).ifPresent(standEffects -> {

@@ -1,6 +1,5 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
-import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.util.Util;
@@ -27,48 +26,16 @@ public class MadeInHeavenPunchEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
-        int act = Stand.getCapabilityFromPlayer(standMaster).getAct();
-        switch (act) {
-            default: {
-                entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 3);
-                entity.hurtResistantTime = 0;
-            }
-            break;
-            case 1: {
-                CMoonPunchEntity cMoonPunch = new CMoonPunchEntity(world, shootingStand, standMaster);
-                cMoonPunch.onEntityHit(result);
-                break;
-            }
-            case 2: {
-                WhitesnakePunchEntity whitesnakePunch = new WhitesnakePunchEntity(world, shootingStand, standMaster);
-                whitesnakePunch.onEntityHit(result);
-                break;
-            }
-        }
+        entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), 7);
+        entity.hurtResistantTime = 0;
     }
 
     @Override
     protected void onBlockHit(BlockRayTraceResult result) {
         BlockPos pos = result.getPos();
         BlockState state = world.getBlockState(pos);
-        int act = Stand.getCapabilityFromPlayer(standMaster).getAct();
-        switch (act) {
-            default: {
-                world.removeBlock(pos, false);
-                state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
-                break;
-            }
-            case 1: {
-                CMoonPunchEntity cMoonPunch = new CMoonPunchEntity(world, shootingStand, standMaster);
-                cMoonPunch.onBlockHit(result);
-                break;
-            }
-            case 2: {
-                WhitesnakePunchEntity whitesnakePunch = new WhitesnakePunchEntity(world, shootingStand, standMaster);
-                whitesnakePunch.onBlockHit(result);
-                break;
-            }
-        }
+        world.removeBlock(pos, false);
+        state.getBlock().harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
     }
 
     @Override

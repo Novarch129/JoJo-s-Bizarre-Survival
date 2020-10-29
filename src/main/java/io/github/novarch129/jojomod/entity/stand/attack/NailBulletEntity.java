@@ -1,10 +1,13 @@
 package io.github.novarch129.jojomod.entity.stand.attack;
 
+import io.github.novarch129.jojomod.capability.Stand;
 import io.github.novarch129.jojomod.capability.StandEffects;
 import io.github.novarch129.jojomod.entity.stand.AbstractStandEntity;
 import io.github.novarch129.jojomod.init.EntityInit;
+import io.github.novarch129.jojomod.util.TruthException;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.block.BlockState;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.EntityType;
@@ -79,6 +82,8 @@ public class NailBulletEntity extends AbstractStandAttackEntity {
     @Override
     protected void onEntityHit(EntityRayTraceResult result) {
         Entity entity = result.getEntity();
+        if (entity instanceof PlayerEntity && Stand.getCapabilityFromPlayer((PlayerEntity) entity).getStandID() == Util.StandID.GER)
+            throw new TruthException(new CrashReport("You will never reach the truth, " + entity.getDisplayName().getFormattedText() + ".", new Throwable()));
         entity.attackEntityFrom(DamageSource.causeMobDamage(standMaster), damage);
         if (damage > 5 && entity instanceof LivingEntity)
             ((LivingEntity) entity).knockBack(this, damage / 7, getPosX() - entity.getPosX(), getPosZ() - entity.getPosZ());

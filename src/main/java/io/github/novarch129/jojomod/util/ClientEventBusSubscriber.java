@@ -55,8 +55,6 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.PURPLE_HAZE.get(), PurpleHazeRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.PURPLE_HAZE_PUNCH.get(), manager -> new StandAttackRenderer<>(manager, new PurpleHazePunchModel()));
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityInit.EMPEROR_BULLET.get(), EmperorBulletRenderer::new);
-
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE.get(), WhitesnakeRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.WHITESNAKE_PUNCH.get(), manager -> new StandAttackRenderer<>(manager, new DefaultStandAttackModel<>()));
 
@@ -109,5 +107,10 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.ECHOES_ACT_3_PUNCH.get(), manager -> new StandAttackRenderer<>(manager, new EchoesAct3PunchModel()));
 
         RenderingRegistry.registerEntityRenderingHandler(EntityInit.KING_CRIMSON_AFTERIMAGE.get(), KingCrimsonAfterimageRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.CAMERA.get(), CameraRenderer::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.SOFT_AND_WET.get(), SoftAndWetRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.SOFT_AND_WET_PUNCH.get(), manager -> new StandAttackRenderer<>(manager, new SoftAndWetPunchModel()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityInit.BUBBLE.get(), BubbleRenderer::new);
     }
 }

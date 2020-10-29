@@ -19,15 +19,19 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.monster.*;
+import net.minecraft.entity.passive.IFlyingAnimal;
 import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.ResourceLocation;
@@ -47,6 +51,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import static net.minecraft.entity.Entity.horizontalMag;
 
 /**
  * Used for various utilities and constants.
@@ -255,6 +261,120 @@ public class Util {
         return null;
     }
 
+    public static void travelWithFriction(LivingEntity entity, float slipperiness) {
+        Vec3d positionIn = new Vec3d(entity.moveStrafing, entity.moveVertical, entity.moveForward);
+        if (entity.isServerWorld() || entity.canPassengerSteer()) {
+            double d0 = 0.08;
+            boolean flag = entity.getMotion().y <= 0;
+            if (flag && entity.isPotionActive(Effects.SLOW_FALLING))
+                entity.fallDistance = 0;
+            if (!entity.isInWater() || entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isFlying) {
+                if (!entity.isInLava() || entity instanceof PlayerEntity && ((PlayerEntity) entity).abilities.isFlying) {
+                    if (entity.isElytraFlying()) {
+                        Vec3d vec3d3 = entity.getMotion();
+                        if (vec3d3.y > -0.5)
+                            entity.fallDistance = 1;
+
+                        Vec3d vec3d = entity.getLookVec();
+                        float f6 = entity.rotationPitch * ((float) Math.PI / 180);
+                        double d9 = Math.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
+                        double d11 = Math.sqrt(horizontalMag(vec3d3));
+                        double d12 = vec3d.length();
+                        float f3 = MathHelper.cos(f6);
+                        f3 = (float) ((double) f3 * (double) f3 * Math.min(1, d12 / 0.4));
+                        vec3d3 = entity.getMotion().add(0, d0 * (-1 + (double) f3 * 0.75), 0);
+                        if (vec3d3.y < 0 && d9 > 0) {
+                            double d3 = vec3d3.y * -0.1 * (double) f3;
+                            vec3d3 = vec3d3.add(vec3d.x * d3 / d9, d3, vec3d.z * d3 / d9);
+                        }
+                        if (f6 < 0 && d9 > 0) {
+                            double d13 = d11 * (double) (-MathHelper.sin(f6)) * 0.04;
+                            vec3d3 = vec3d3.add(-vec3d.x * d13 / d9, d13 * 3.2, -vec3d.z * d13 / d9);
+                        }
+                        if (d9 > 0)
+                            vec3d3 = vec3d3.add((vec3d.x / d9 * d11 - vec3d3.x) * 0.1, 0.0, (vec3d.z / d9 * d11 - vec3d3.z) * 0.1D);
+
+                        entity.setMotion(vec3d3.mul(0.99, 0.98, 0.99));
+                        entity.move(MoverType.SELF, entity.getMotion());
+                        if (entity.collidedHorizontally && !entity.world.isRemote) {
+                            double d14 = Math.sqrt(horizontalMag(entity.getMotion()));
+                            double d4 = d11 - d14;
+                            float f4 = (float) (d4 * 10 - 3);
+                            if (f4 > 0)
+                                entity.attackEntityFrom(DamageSource.FLY_INTO_WALL, f4);
+                        }
+                    } else {
+                        BlockPos blockpos = new BlockPos(entity.getPosX(), entity.getBoundingBox().minY - 0.5000001, entity.getPosZ());
+                        float f7 = entity.onGround ? slipperiness * 0.91F : 0.91F;
+                        entity.moveRelative(entity.onGround ? entity.getAIMoveSpeed() * (0.21600002f / (slipperiness * slipperiness * slipperiness)) : entity.jumpMovementFactor, positionIn);
+                        entity.move(MoverType.SELF, entity.getMotion());
+                        Vec3d vec3d5 = entity.getMotion();
+                        if ((entity.collidedHorizontally || !entity.onGround) && entity.isOnLadder())
+                            vec3d5 = new Vec3d(vec3d5.x, 0.2, vec3d5.z);
+                        double d10 = vec3d5.y;
+                        if (entity.isPotionActive(Effects.LEVITATION)) {
+                            d10 += (0.05 * (double) (entity.getActivePotionEffect(Effects.LEVITATION).getAmplifier() + 1) - vec3d5.y) * 0.2;
+                            entity.fallDistance = 0;
+                        } else if (entity.world.isRemote && !entity.world.isBlockLoaded(blockpos)) {
+                            if (entity.getPosY() > 0)
+                                d10 = -0.1;
+                            else
+                                d10 = 0;
+                        } else if (!entity.hasNoGravity())
+                            d10 -= d0;
+                        entity.setMotion(vec3d5.x * (double) f7, d10 * 0.98, vec3d5.z * (double) f7);
+                    }
+                } else {
+                    double d7 = entity.getPosY();
+                    entity.moveRelative(0.02F, positionIn);
+                    entity.move(MoverType.SELF, entity.getMotion());
+                    entity.setMotion(entity.getMotion().scale(0.5D));
+                    if (!entity.hasNoGravity())
+                        entity.setMotion(entity.getMotion().add(0, -d0 / 4, 0));
+                    Vec3d vec3d4 = entity.getMotion();
+                    if (entity.collidedHorizontally && entity.isOffsetPositionInLiquid(vec3d4.x, vec3d4.y + 0.6 - entity.getPosY() + d7, vec3d4.z))
+                        entity.setMotion(vec3d4.x, 0.3, vec3d4.z);
+                }
+            } else {
+                double d1 = entity.getPosY();
+                float f1 = 0.02f;
+                float f2 = (float) EnchantmentHelper.getDepthStriderModifier(entity);
+                entity.move(MoverType.SELF, entity.getMotion());
+                Vec3d vec3d1 = entity.getMotion();
+                if (entity.collidedHorizontally && entity.isOnLadder()) {
+                    vec3d1 = new Vec3d(vec3d1.x, 0.2, vec3d1.z);
+                }
+
+                entity.setMotion(vec3d1.mul(1, 0.8, 1));
+                if (!entity.hasNoGravity() && !entity.isSprinting()) {
+                    Vec3d vec3d2 = entity.getMotion();
+                    double d2;
+                    if (flag && Math.abs(vec3d2.y - 0.005) >= 0.003 && Math.abs(vec3d2.y - d0 / 16) < 0.003)
+                        d2 = -0.003D;
+                    else
+                        d2 = vec3d2.y - d0 / 16;
+                    entity.setMotion(vec3d2.x, d2, vec3d2.z);
+                }
+
+                Vec3d vec3d6 = entity.getMotion();
+                if (entity.collidedHorizontally && entity.isOffsetPositionInLiquid(vec3d6.x, vec3d6.y + 0.6 - entity.getPosY() + d1, vec3d6.z))
+                    entity.setMotion(vec3d6.x, 0.3, vec3d6.z);
+            }
+        }
+
+        entity.prevLimbSwingAmount = entity.limbSwingAmount;
+        double d5 = entity.getPosX() - entity.prevPosX;
+        double d6 = entity.getPosZ() - entity.prevPosZ;
+        double d8 = entity instanceof IFlyingAnimal ? entity.getPosY() - entity.prevPosY : 0.0D;
+        float f8 = MathHelper.sqrt(d5 * d5 + d8 * d8 + d6 * d6) * 4.0F;
+        if (f8 > 1.0F) {
+            f8 = 1.0F;
+        }
+
+        entity.limbSwingAmount += (f8 - entity.limbSwingAmount) * 0.4F;
+        entity.limbSwing += entity.limbSwingAmount;
+    }
+
     public static class Predicates {
         public static final Predicate<Entity> NOT_STAND = entity -> !(entity instanceof AbstractStandEntity);
         public static final Predicate<Entity> IS_STAND = entity -> entity instanceof AbstractStandEntity;
@@ -345,6 +465,8 @@ public class Util {
 
         public static final int BEACH_BOY = 31;
 
+        public static final int SOFT_AND_WET = 32;
+
         /**
          * An array of Stand's that can be obtained through the {@link StandArrowItem}.
          */
@@ -371,7 +493,8 @@ public class Util {
                 STICKY_FINGERS,
                 TUSK_ACT_1,
                 ECHOES_ACT_1,
-                BEACH_BOY
+                BEACH_BOY,
+                SOFT_AND_WET
         };
 
         public static final List<Integer> ITEM_STANDS = Arrays.asList(
@@ -471,6 +594,8 @@ public class Util {
                     return new EchoesAct2Entity(EntityInit.ECHOES_ACT_2.get(), world);
                 case ECHOES_ACT_3:
                     return new EchoesAct3Entity(EntityInit.ECHOES_ACT_3.get(), world);
+                case SOFT_AND_WET:
+                    return new SoftAndWetEntity(EntityInit.SOFT_AND_WET.get(), world);
             }
         }
 
@@ -581,5 +706,7 @@ public class Util {
         public static final ResourceLocation ECHOES_ACT_2 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_2.png");
         public static final ResourceLocation ECHOES_ACT_3 = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3.png");
         public static final ResourceLocation ECHOES_ACT_3_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3_punch.png");
+        public static final ResourceLocation SOFT_AND_WET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/soft_and_wet.png");
+        public static final ResourceLocation SOFT_AND_WET_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/soft_and_wet_punch.png");
     }
 }

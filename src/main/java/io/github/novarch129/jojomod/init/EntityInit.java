@@ -1,6 +1,7 @@
 package io.github.novarch129.jojomod.init;
 
 import io.github.novarch129.jojomod.JojoBizarreSurvival;
+import io.github.novarch129.jojomod.entity.CameraEntity;
 import io.github.novarch129.jojomod.entity.KingCrimsonAfterimageEntity;
 import io.github.novarch129.jojomod.entity.StandArrowEntity;
 import io.github.novarch129.jojomod.entity.stand.*;
@@ -133,11 +134,6 @@ public class EntityInit {
                     () -> EntityType.Builder.<PurpleHazePunchEntity>create(PurpleHazePunchEntity::new, EntityClassification.MISC)
                             .disableSummoning().size(0.2f, 0.2f)
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "purple_haze_punch").toString()));
-
-    public static final RegistryObject<EntityType<EmperorBulletEntity>> EMPEROR_BULLET = ENTITY_TYPES
-            .register("emperor_bullet", () -> EntityType.Builder.<EmperorBulletEntity>create(EmperorBulletEntity::new, EntityClassification.MISC)
-                    .disableSummoning().size(0.5f, 0.5f)
-                    .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "emperor_bullet").toString()));
 
     public static final RegistryObject<EntityType<WhitesnakeEntity>> WHITESNAKE = ENTITY_TYPES
             .register("whitesnake",
@@ -360,4 +356,26 @@ public class EntityInit {
                     () -> EntityType.Builder.<KingCrimsonAfterimageEntity>create(KingCrimsonAfterimageEntity::new, EntityClassification.MISC)
                             .disableSummoning()
                             .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "king_crimson_afterimage").toString()));
+
+    public static final RegistryObject<EntityType<CameraEntity>> CAMERA = ENTITY_TYPES
+            .register("camera",
+                    () -> EntityType.Builder.<CameraEntity>create(CameraEntity::new, EntityClassification.MISC)
+                            .disableSummoning().size(0.1f, 0.1f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "camera").toString()));
+
+    public static final RegistryObject<EntityType<SoftAndWetEntity>> SOFT_AND_WET = ENTITY_TYPES
+            .register("soft_and_wet",
+                    () -> EntityType.Builder.create(SoftAndWetEntity::new, EntityClassification.CREATURE)
+                            .disableSummoning().size(1.2f, 2.7f)
+                            .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "soft_and_wet").toString()));
+
+    public static final RegistryObject<EntityType<SoftAndWetPunchEntity>> SOFT_AND_WET_PUNCH = ENTITY_TYPES
+            .register("soft_and_wet_punch", () -> EntityType.Builder.<SoftAndWetPunchEntity>create(SoftAndWetPunchEntity::new, EntityClassification.MISC)
+                    .disableSummoning().size(0.2f, 0.2f)
+                    .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "soft_and_wet_punch").toString()));
+
+    public static final RegistryObject<EntityType<BubbleEntity>> BUBBLE = ENTITY_TYPES
+            .register("bubble", () -> EntityType.Builder.create(BubbleEntity::new, EntityClassification.MISC)
+                    .size(0.5f, 0.5f)
+                    .build(new ResourceLocation(JojoBizarreSurvival.MOD_ID, "bubble").toString()));
 }

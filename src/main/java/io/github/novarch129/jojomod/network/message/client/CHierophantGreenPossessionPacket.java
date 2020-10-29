@@ -47,13 +47,6 @@ public class CHierophantGreenPossessionPacket implements IMessage<CHierophantGre
         pitch = 0;
     }
 
-    public CHierophantGreenPossessionPacket(float yaw, float pitch) {
-        direction = Direction.FORWARDS;
-        action = 1;
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
-
     @Override
     public void encode(CHierophantGreenPossessionPacket message, PacketBuffer buffer) {
         buffer.writeEnumValue(message.direction);

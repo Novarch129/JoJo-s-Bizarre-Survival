@@ -14,7 +14,6 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.PacketDistributor;
 
@@ -67,10 +66,12 @@ public class HierophantGreenEntity extends AbstractStandEntity {
             Stand.getLazyOptional(master).ifPresent(props -> props.setAbilityActive(possessedEntity != null));
 
             if (possessedEntity != null) {
-                possessedEntity.renderYawOffset = 0;
-                possessedEntity.setRotation(yaw, pitch);
-                if (possessedEntity.getMotion() == Vec3d.ZERO)
-                    possessedEntity.setRotationYawHead(yaw);
+                possessedEntity.rotationYaw = master.rotationYaw;
+                possessedEntity.rotationPitch = master.rotationPitch * 0.5f;
+                possessedEntity.setRotation(rotationYaw, rotationPitch);
+                possessedEntity.prevRotationYaw = rotationYaw;
+                possessedEntity.renderYawOffset = rotationYaw;
+                possessedEntity.rotationYawHead = renderYawOffset;
                 if (possessedEntity instanceof MobEntity) {
                     ((MobEntity) possessedEntity).goalSelector.disableFlag(Goal.Flag.LOOK);
                     ((MobEntity) possessedEntity).goalSelector.disableFlag(Goal.Flag.MOVE);

@@ -21,8 +21,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -38,7 +36,8 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
     private LazyOptional<StandChunkEffects> holder = LazyOptional.of(() -> new StandChunkEffects(getWorld(), getChunk()));
     private Map<UUID, BlockPos> bombs = new ConcurrentHashMap<>();
     private Map<UUID, ArrayBlockingQueue<BlockPos>> soundEffects = new ConcurrentHashMap<>();
-    private List<BlockPos> destroyedPositions = new ArrayList<>();
+    private ArrayBlockingQueue<BlockPos> destroyedPositions = new ArrayBlockingQueue<>(65356);
+    private ArrayBlockingQueue<BlockPos> slipperyBlocks = new ArrayBlockingQueue<>(65356);
 
     public StandChunkEffects(World world, ChunkPos chunk) {
         this.world = world;
@@ -93,6 +92,15 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
                     positionList.add(compoundNBT);
                 });
                 nbt.put("positions", positionList);
+                ListNBT softAndWet = new ListNBT();
+                instance.slipperyBlocks.forEach(pos -> {
+                    CompoundNBT compoundNBT = new CompoundNBT();
+                    compoundNBT.putDouble("blockPosX", pos.getX());
+                    compoundNBT.putDouble("blockPosY", pos.getY());
+                    compoundNBT.putDouble("blockPosZ", pos.getZ());
+                    softAndWet.add(compoundNBT);
+                });
+                nbt.put("softAndWet", softAndWet);
                 return nbt;
             }
 
@@ -116,6 +124,10 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
                 compoundNBT.getList("positions", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
                     if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("blockPosX"))
                         instance.destroyedPositions.add(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
+                });
+                compoundNBT.getList("softAndWet", Constants.NBT.TAG_COMPOUND).forEach(compound -> {
+                    if (compound instanceof CompoundNBT && ((CompoundNBT) compound).contains("blockPosX"))
+                        instance.slipperyBlocks.add(new BlockPos(((CompoundNBT) compound).getDouble("blockPosX"), ((CompoundNBT) compound).getDouble("blockPosY"), ((CompoundNBT) compound).getDouble("blockPosZ")));
                 });
             }
         }, () -> new StandChunkEffects(Null(), Null()));
@@ -172,7 +184,16 @@ public class StandChunkEffects implements ICapabilitySerializable<INBT> {
         onDataUpdated();
     }
 
-    public List<BlockPos> getDestroyedPositions() {
+    public ArrayBlockingQueue<BlockPos> getSlipperyBlocks() {
+        return slipperyBlocks;
+    }
+
+    public void addSlipperyBlock(@Nonnull BlockPos pos) {
+        slipperyBlocks.add(pos);
+        onDataUpdated();
+    }
+
+    public ArrayBlockingQueue<BlockPos> getDestroyedPositions() {
         return destroyedPositions;
     }
 

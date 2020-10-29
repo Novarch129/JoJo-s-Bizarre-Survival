@@ -9,7 +9,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.StringTextComponent;
@@ -18,7 +17,6 @@ import net.minecraft.world.World;
 @SuppressWarnings("ConstantConditions")
 public class GoldExperienceRequiemEntity extends AbstractStandEntity {
     private StringTextComponent truthname = new StringTextComponent("You will never reach the truth.");
-    private boolean truth;
 
     public GoldExperienceRequiemEntity(EntityType<? extends AbstractStandEntity> type, World world) {
         super(type, world);
@@ -34,10 +32,6 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
             getMaster().setNoGravity(!getMaster().hasNoGravity());
     }
 
-    public void toggleTruth() {
-        truth = !truth;
-    }
-
     @Override
     public void attack(boolean special) {
         if (getMaster() == null) return;
@@ -49,7 +43,7 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 GoldExperienceRequiemPunchEntity goldExperienceRequiemPunchEntity = new GoldExperienceRequiemPunchEntity(world, this, master);
-                goldExperienceRequiemPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 5, Float.MIN_VALUE);
+                goldExperienceRequiemPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 1001, Float.MIN_VALUE);
                 world.addEntity(goldExperienceRequiemPunchEntity);
             }
     }
@@ -67,23 +61,17 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
                     props.setTransformed(0);
                     props.setCooldown(60);
                 }
-                master.getFoodStats().addStats(20, 20.0f);
+                master.getFoodStats().addStats(20, 20);
 
                 if (ability) {
                     if (master.getLastAttackedEntity() != null) {
-                        if (truth)
-                            master.getLastAttackedEntity().attackEntityFrom(DamageSource.OUT_OF_WORLD, 3.0f);
-
-                        if (master.getLastAttackedEntity() instanceof PlayerEntity) {
+                        if (master.getLastAttackedEntity() instanceof PlayerEntity)
                             props.setDiavolo(master.getLastAttackedEntity().getDisplayName().toString());
-                        }
                     }
                     for (PlayerEntity playerEntity : world.getPlayers()) {
-                        if (playerEntity != getMaster()) {
-                            if (playerEntity.getLastAttackedEntity() == getMaster()) {
+                        if (playerEntity != getMaster())
+                            if (playerEntity.getLastAttackedEntity() == getMaster())
                                 props.setDiavolo(playerEntity.getDisplayName().toString());
-                            }
-                        }
                     }
 
                     if (props.getDiavolo() != null && !props.getDiavolo().equals("")) {
@@ -131,11 +119,11 @@ public class GoldExperienceRequiemEntity extends AbstractStandEntity {
                         master.setSprinting(false);
                         GoldExperienceRequiemPunchEntity goldExperienceRequiem1 = new GoldExperienceRequiemPunchEntity(world, this, master);
                         goldExperienceRequiem1.randomizePositions();
-                        goldExperienceRequiem1.shoot(master, master.rotationPitch, master.rotationYaw, 4, Float.MIN_VALUE);
+                        goldExperienceRequiem1.shoot(master, master.rotationPitch, master.rotationYaw, 1001, Float.MIN_VALUE);
                         world.addEntity(goldExperienceRequiem1);
                         GoldExperienceRequiemPunchEntity goldExperienceRequiem2 = new GoldExperienceRequiemPunchEntity(world, this, master);
                         goldExperienceRequiem2.randomizePositions();
-                        goldExperienceRequiem2.shoot(master, master.rotationPitch, master.rotationYaw, 4, Float.MIN_VALUE);
+                        goldExperienceRequiem2.shoot(master, master.rotationPitch, master.rotationYaw, 1001, Float.MIN_VALUE);
                         world.addEntity(goldExperienceRequiem2);
                     }
                 if (attackTicker >= 110) {

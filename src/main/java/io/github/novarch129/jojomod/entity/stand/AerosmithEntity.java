@@ -76,9 +76,9 @@ public class AerosmithEntity extends AbstractStandEntity {
             });
 
             rotationYaw = master.rotationYaw;
-            prevRotationYaw = rotationYaw;
             rotationPitch = master.rotationPitch * 0.5f;
             setRotation(rotationYaw, rotationPitch);
+            prevRotationYaw = rotationYaw;
             renderYawOffset = rotationYaw;
             rotationYawHead = renderYawOffset;
 
@@ -114,5 +114,10 @@ public class AerosmithEntity extends AbstractStandEntity {
         super.onRemovedFromWorld();
         if (!world.isRemote)
             JojoBizarreSurvival.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this), new SAerosmithPacket(getEntityId(), (byte) 0));
+    }
+
+    @Override
+    public float getYaw(float partialTicks) {
+        return rotationYawHead >= 351 || rotationYawHead <= 9 ? rotationYawHead : super.getYaw(partialTicks);
     }
 }

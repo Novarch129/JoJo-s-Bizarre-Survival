@@ -40,8 +40,6 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
     @Override
     public void tick() {
         super.tick();
-        if (ticksExisted > 5)
-            remove();
         if (getMotion().getX() == 0 || getMotion().getY() == 0 || getMotion().getZ() == 0)
             remove();
     }
@@ -230,6 +228,11 @@ public class GoldExperienceRequiemPunchEntity extends AbstractStandAttackEntity 
         }
         world.removeBlock(pos, false);
         block.harvestBlock(world, standMaster, pos, state, null, standMaster.getActiveItemStack());
+    }
+
+    @Override
+    protected int getRange() {
+        return Integer.MAX_VALUE;
     }
 
     @Override

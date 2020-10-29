@@ -1,15 +1,19 @@
 package io.github.novarch129.jojomod.item;
 
 import io.github.novarch129.jojomod.capability.Stand;
-import io.github.novarch129.jojomod.entity.stand.attack.EmperorBulletEntity;
 import io.github.novarch129.jojomod.util.Util;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.EntityRayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EmperorItem extends Item {
@@ -17,6 +21,7 @@ public class EmperorItem extends Item {
         super(properties);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStack = playerIn.getHeldItem(handIn);
@@ -25,11 +30,25 @@ public class EmperorItem extends Item {
             if (stand.getStandID() != Util.StandID.THE_EMPEROR)
                 itemStack.shrink(1);
             if (stand.getCooldown() <= 0) {
-                EmperorBulletEntity bullet = new EmperorBulletEntity(playerIn, worldIn);
-                bullet.setSilent(true);
-                bullet.setPositionAndRotation(playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), playerIn.rotationYaw, playerIn.rotationPitch);
-                bullet.shoot(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 1, Float.MIN_VALUE);
-                playerIn.world.addEntity(bullet);
+                Vec3d vec3d = playerIn.getPositionVec().add(0, playerIn.getEyeHeight(), 0);
+                double range = 100;
+                Vec3d vec3d1 = playerIn.getLook(1);
+                Vec3d vec3d2 = vec3d.add(vec3d1.x * range, vec3d1.y * range, vec3d1.z * range);
+                AxisAlignedBB axisalignedbb = playerIn.getBoundingBox().expand(vec3d1.scale(range)).grow(1, 1, 1);
+                EntityRayTraceResult entityRayTraceResult =
+                        Util.rayTraceEntities(
+                                playerIn,
+                                vec3d,
+                                vec3d2,
+                                axisalignedbb,
+                                Util.Predicates.STAND_PUNCH_TARGET.and((predicateEntity) -> !predicateEntity.equals(playerIn)),
+                                10000);
+                if (entityRayTraceResult != null && entityRayTraceResult.getEntity() instanceof LivingEntity) {
+                    LivingEntity entity = (LivingEntity) entityRayTraceResult.getEntity();
+                    entity.knockBack(playerIn, 5, playerIn.getPosX() - entity.getPosX(), playerIn.getPosZ() - entity.getPosZ());
+                    entity.attackEntityFrom(DamageSource.causePlayerDamage(playerIn), 20);
+
+                }
                 if (!playerIn.isCreative() && !playerIn.isSpectator())
                     playerIn.getFoodStats().addStats(2, 0);
                 stand.setCooldown(100);

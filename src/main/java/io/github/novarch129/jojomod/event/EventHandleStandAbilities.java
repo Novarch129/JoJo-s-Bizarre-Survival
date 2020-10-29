@@ -1085,16 +1085,21 @@ public class EventHandleStandAbilities {
                 }
             }
         });
-        StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props ->
-                props.getSoundEffects().forEach((uuid, list) -> {
-                    if (list.size() > 0) {
-                        List<BlockPos> removalList = new ArrayList<>();
-                        list.forEach(blockPos -> {
-                            if (blockPos.equals(entity.getPosition().add(0, -1, 0)))
-                                Util.activateEchoesAbility(entity.world, entity, blockPos, props, entity.world.getPlayerByUuid(uuid), removalList);
-                        });
-                        list.removeAll(removalList);
-                    }
-                }));
+        StandChunkEffects.getLazyOptional(entity.world.getChunkAt(entity.getPosition())).ifPresent(props -> {
+            props.getSoundEffects().forEach((uuid, list) -> {
+                if (list.size() > 0) {
+                    List<BlockPos> removalList = new ArrayList<>();
+                    list.forEach(blockPos -> {
+                        if (blockPos.equals(entity.getPosition().add(0, -1, 0)))
+                            Util.activateEchoesAbility(entity.world, entity, blockPos, props, entity.world.getPlayerByUuid(uuid), removalList);
+                    });
+                    list.removeAll(removalList);
+                }
+            });
+            props.getSlipperyBlocks().forEach(blockPos -> {
+                if (blockPos.equals(entity.getPosition().add(0, -1, 0)))
+                    Util.travelWithFriction(entity, 1.33f);
+            });
+        });
     }
 }
