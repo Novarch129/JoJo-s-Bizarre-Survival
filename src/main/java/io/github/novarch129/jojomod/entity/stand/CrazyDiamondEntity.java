@@ -63,7 +63,7 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
             } else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 CrazyDiamondPunchEntity crazyDiamondPunchEntity = new CrazyDiamondPunchEntity(world, this, master);
-                crazyDiamondPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2.9f, 0.15f);
+                crazyDiamondPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 2.9f, 0.05f);
                 world.addEntity(crazyDiamondPunchEntity);
             }
     }
@@ -92,11 +92,11 @@ public class CrazyDiamondEntity extends AbstractStandEntity {
                         master.setSprinting(false);
                         CrazyDiamondPunchEntity crazyDiamond1 = new CrazyDiamondPunchEntity(world, this, master);
                         crazyDiamond1.randomizePositions();
-                        crazyDiamond1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
+                        crazyDiamond1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.1f);
                         world.addEntity(crazyDiamond1);
                         CrazyDiamondPunchEntity crazyDiamond2 = new CrazyDiamondPunchEntity(world, this, master);
                         crazyDiamond2.randomizePositions();
-                        crazyDiamond2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.2f);
+                        crazyDiamond2.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.1f);
                         world.addEntity(crazyDiamond2);
                     }
                 if (attackTicker >= 100) {

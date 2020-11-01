@@ -1,11 +1,14 @@
 package io.github.novarch129.jojomod.entity.stand;
 
 import io.github.novarch129.jojomod.capability.Stand;
+import io.github.novarch129.jojomod.entity.stand.attack.BubbleEntity;
 import io.github.novarch129.jojomod.entity.stand.attack.SoftAndWetPunchEntity;
+import io.github.novarch129.jojomod.init.EntityInit;
 import io.github.novarch129.jojomod.init.SoundInit;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 @SuppressWarnings("ConstantConditions")
@@ -29,9 +32,17 @@ public class SoftAndWetEntity extends AbstractStandEntity {
             else {
                 world.playSound(null, getPosition(), SoundInit.PUNCH_MISS.get(), SoundCategory.NEUTRAL, 1, 0.6f / (rand.nextFloat() * 0.3f + 1) * 2);
                 SoftAndWetPunchEntity softAndWetPunchEntity = new SoftAndWetPunchEntity(world, this, getMaster());
-                softAndWetPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 4, 0.01f);
+                softAndWetPunchEntity.shoot(getMaster(), rotationPitch, rotationYaw, 3, 0.01f);
                 world.addEntity(softAndWetPunchEntity);
             }
+    }
+
+    public void bubble() {
+        if (getMaster() == null || world.isRemote) return;
+        BubbleEntity bubble = new BubbleEntity(EntityInit.BUBBLE.get(), world);
+        Vec3d position = master.getLookVec().add(master.getPositionVec());
+        bubble.setPosition(position.getX(), position.getY() + 1, position.getZ());
+        world.addEntity(bubble);
     }
 
     @Override
@@ -54,11 +65,11 @@ public class SoftAndWetEntity extends AbstractStandEntity {
                         master.setSprinting(false);
                         SoftAndWetPunchEntity softAndWetPunchEntity = new SoftAndWetPunchEntity(world, this, master);
                         softAndWetPunchEntity.randomizePositions();
-                        softAndWetPunchEntity.shoot(master, master.rotationPitch, master.rotationYaw, 3.5f, 0.1f);
+                        softAndWetPunchEntity.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.1f);
                         world.addEntity(softAndWetPunchEntity);
                         SoftAndWetPunchEntity softAndWetPunchEntity1 = new SoftAndWetPunchEntity(world, this, master);
                         softAndWetPunchEntity1.randomizePositions();
-                        softAndWetPunchEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 3.5f, 0.1f);
+                        softAndWetPunchEntity1.shoot(master, master.rotationPitch, master.rotationYaw, 2.5f, 0.1f);
                         world.addEntity(softAndWetPunchEntity1);
                     }
                 if (attackTicker >= 80) {

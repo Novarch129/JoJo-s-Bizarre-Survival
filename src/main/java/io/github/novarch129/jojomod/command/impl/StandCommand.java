@@ -99,14 +99,15 @@ public class StandCommand {
     }
 
     private static int setPlayerStandID(CommandSource source, PlayerEntity target, int standID) {
-        Stand props = Stand.getCapabilityFromPlayer(target);
-        if (props.getStandID() != standID) {
-            props.setStandID(standID);
-            props.setStandOn(false);
+        Stand stand = Stand.getCapabilityFromPlayer(target);
+        if (stand.getStandID() != standID) {
+            stand.removeStand();
+            stand.setStandID(standID);
+            stand.setStandOn(false);
             source.sendFeedback(new StringTextComponent("Successfully set StandID for " + target.getDisplayName().getFormattedText() + "."), true);
         } else
             source.sendErrorMessage(new StringTextComponent(target.getDisplayName().getFormattedText() + " already has that Stand."));
-        return props.getStandID();
+        return stand.getStandID();
     }
 
     private static int removePlayerStand(CommandSource source, PlayerEntity target) {
@@ -169,6 +170,7 @@ public class StandCommand {
             }
         }
         if (standID != 0) {
+            stand.removeStand();
             stand.setStandOn(false);
             stand.setStandID(standID);
             source.sendFeedback(new StringTextComponent("Successfully evolved " + target.getDisplayName().getFormattedText() + "'s Stand."), true);

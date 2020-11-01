@@ -708,5 +708,6 @@ public class Util {
         public static final ResourceLocation ECHOES_ACT_3_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/echoes_act_3_punch.png");
         public static final ResourceLocation SOFT_AND_WET = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/soft_and_wet.png");
         public static final ResourceLocation SOFT_AND_WET_PUNCH = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/soft_and_wet_punch.png");
+        public static final ResourceLocation BUBBLE = new ResourceLocation(JojoBizarreSurvival.MOD_ID, "textures/stands/bubble.png");
     }
 }

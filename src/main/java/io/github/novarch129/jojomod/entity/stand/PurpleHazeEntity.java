@@ -30,7 +30,7 @@ public class PurpleHazeEntity extends AbstractStandEntity {
         getServer().getWorld(dimension).getEntities()
                 .filter(entity -> entity instanceof LivingEntity)
                 .filter(entity -> !(entity instanceof AbstractStandEntity))
-                .filter(entity -> entity.getDistance(this) < 80)
+                .filter(entity -> entity.getDistance(this) < 7.5f)
                 .forEach(entity -> ((LivingEntity) entity).addPotionEffect(new EffectInstance(EffectInit.HAZE.get(), 200, 2)));
     }
 

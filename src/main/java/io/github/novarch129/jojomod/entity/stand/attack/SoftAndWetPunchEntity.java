@@ -21,7 +21,7 @@ public class SoftAndWetPunchEntity extends AbstractStandAttackEntity {
     }
 
     public SoftAndWetPunchEntity(World worldIn, AbstractStandEntity shooter, PlayerEntity player) {
-        super(EntityInit.KING_CRIMSON_PUNCH.get(), worldIn, shooter, player);
+        super(EntityInit.SOFT_AND_WET_PUNCH.get(), worldIn, shooter, player);
     }
 
     @Override

@@ -342,6 +342,15 @@ public class CSyncStandAbilitiesPacket implements IMessage<CSyncStandAbilitiesPa
                                             });
                                     break;
                                 }
+                                case SOFT_AND_WET: {
+                                    world.getServer().getWorld(sender.dimension).getEntities()
+                                            .filter(entity -> entity instanceof SoftAndWetEntity)
+                                            .filter(entity -> ((SoftAndWetEntity) entity).getMaster().equals(sender))
+                                            .forEach(entity -> {
+                                                if (message.action == 1)
+                                                    ((SoftAndWetEntity) entity).bubble();
+                                            });
+                                }
                                 default:
                                     break;
                             }
